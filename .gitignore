@@ -1,0 +1,27 @@
+# --- AI / Python ---
+AI/Dataset/
+AI/**/results/
+AI/**/runs/
+AI/.torch_gpu_setup
+*.pt
+*.pth
+*.onnx
+__pycache__/
+*.py[cod]
+AI/.venv/
+
+# --- Docker ---
+docker/.env
+.env
+
+# --- IDE / OS ---
+.vscode/settings.json
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+*.suo
+*.sw?
+
+# --- Claude Code ---
+.claude/settings.local.json

@@ -1,0 +1,42 @@
+# Python
+__pycache__
+*.py[cod]
+*.so
+*.egg-info/
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Model weights (mounted as volume at runtime)
+models/
+*.pt
+*.pth
+*.onnx
+
+# Data (too large for build context)
+Dataset/
+
+# Generated outputs
+**/results/
+**/runs/
+
+# Dev reference files
+**/samples/
+
+# Environment
+.env
+.env.local
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Logs
+*.log
+.cache

@@ -1,0 +1,269 @@
+{
+  "_comment": "Prompts e confiancas por tipo de rocha. Use 'default' como fallback para rochas sem config especifica. Chave = nome do prompt SAM3, valor = confidence threshold.",
+  "default": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3
+  },
+  "ice_leke": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.08
+  },
+  "nevada_black": {
+    "crack": 0.05,
+    "vein": 0.01,
+    "Stain": 0.25,
+    "light spot": 0.2
+  },
+  "sao_gabriel_black": {
+    "crack": 0.05,
+    "vein": 0.01,
+    "Stain": 0.25,
+    "light spot": 0.15
+  },
+  "ubatuba_green": {
+    "crack": 0.06,
+    "vein": 0.01,
+    "Stain": 0.2
+  },
+  "xango_red": {
+    "crack": 0.07,
+    "vein": 0.01,
+    "Stain": 0.2,
+    "light spot": 0.1
+  },
+  "tabaco_red": {
+    "crack": 0.07,
+    "vein": 0.01,
+    "Stain": 0.2
+  },
+  "kalahari": {
+    "crack": 0.06,
+    "vein": 0.01,
+    "Stain": 0.25
+  },
+  "itaunas_white": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.08
+  },
+  "white_bellukha": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.08
+  },
+  "white_ceara": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.08
+  },
+  "white_cintilante": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.08
+  },
+  "white_everest": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.08
+  },
+  "white_extreme": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.08
+  },
+  "white_himalaya": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.08
+  },
+  "white_mirage": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.08
+  },
+  "white_olympus": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.08
+  },
+  "white_samoa": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.08
+  },
+  "white_sea": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.08
+  },
+  "white_serenata": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.08
+  },
+  "white_superiore": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.08
+  },
+  "whte_liberdade": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.08
+  },
+  "shadow_white": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.1
+  },
+  "siena_white": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.08
+  },
+  "vitoria_white": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.08
+  },
+  "naica": {
+    "crack": 0.1,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.08
+  },
+  "giallo_fiorito": {
+    "crack": 0.09,
+    "vein": 0.008,
+    "Stain": 0.3,
+    "Dark patches": 0.1
+  },
+  "giallo_maracana": {
+    "crack": 0.218,
+    "scratch": 0.06,
+    "vein": 0.008,
+    "Stain": 0.3
+  },
+  "golden_storm": {
+    "crack": 0.09,
+    "vein": 0.008,
+    "Stain": 0.3,
+    "Dark patches": 0.1
+  },
+  "icarai_yellow": {
+    "crack": 0.09,
+    "vein": 0.008,
+    "Stain": 0.3,
+    "Dark patches": 0.1
+  },
+  "maracuja_yellow": {
+    "crack": 0.09,
+    "vein": 0.008,
+    "Stain": 0.3,
+    "Dark patches": 0.1
+  },
+  "solarius": {
+    "crack": 0.09,
+    "vein": 0.008,
+    "Stain": 0.3,
+    "Dark patches": 0.1
+  },
+  "splendor_gold": {
+    "crack": 0.09,
+    "vein": 0.008,
+    "Stain": 0.3,
+    "Dark patches": 0.1
+  },
+  "santa_cecilia": {
+    "crack": 0.09,
+    "vein": 0.008,
+    "Stain": 0.3,
+    "Dark patches": 0.1
+  },
+  "santa_cecilia_light": {
+    "crack": 0.09,
+    "vein": 0.008,
+    "Stain": 0.3,
+    "Dark patches": 0.1
+  },
+  "ipanema_beige": {
+    "crack": 0.09,
+    "vein": 0.008,
+    "Stain": 0.3,
+    "Dark patches": 0.1
+  },
+  "rocky_mountain": {
+    "crack": 0.09,
+    "vein": 0.008,
+    "Stain": 0.25,
+    "Dark patches": 0.1
+  },
+  "ornamental": {
+    "crack": 0.09,
+    "vein": 0.008,
+    "Stain": 0.25,
+    "Dark patches": 0.1
+  },
+  "olympios": {
+    "crack": 0.09,
+    "vein": 0.008,
+    "Stain": 0.25,
+    "Dark patches": 0.1
+  },
+  "perla_venato": {
+    "crack": 0.09,
+    "vein": 0.007,
+    "Stain": 0.3,
+    "Dark patches": 0.08
+  },
+  "new_caledonia": {
+    "crack": 0.08,
+    "vein": 0.008,
+    "Stain": 0.25
+  },
+  "san_francisco_green": {
+    "crack": 0.08,
+    "vein": 0.008,
+    "Stain": 0.25
+  },
+  "quartzito_green_da_vinci": {
+    "crack": 0.08,
+    "vein": 0.008,
+    "Stain": 0.25
+  },
+  "quartzito_thannos": {
+    "crack": 0.08,
+    "vein": 0.008,
+    "Stain": 0.25
+  },
+  "quartzito_venom": {
+    "crack": 0.08,
+    "vein": 0.008,
+    "Stain": 0.25
+  },
+  "quartzito_verde_sauipe": {
+    "crack": 0.08,
+    "vein": 0.008,
+    "Stain": 0.25
+  }
+}

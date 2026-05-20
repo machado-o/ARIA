@@ -1,0 +1,11 @@
+# Enforce LF line endings for files that run on Linux containers.
+# Without this, Windows Git may check out with CRLF and break shebangs.
+
+*.sh        text eol=lf
+*.py        text eol=lf
+Dockerfile* text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.json      text eol=lf
+*.md        text eol=lf
+*.env*      text eol=lf
