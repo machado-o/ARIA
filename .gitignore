@@ -1,8 +1,5 @@
 # --- AI / Python ---
 AI/Dataset/
-AI/**/results/
-AI/**/runs/
-AI/.torch_gpu_setup
 *.pt
 *.pth
 *.onnx
@@ -24,4 +21,4 @@ Thumbs.db
 *.sw?
 
 # --- Claude Code ---
-.claude/settings.local.json
+.claude

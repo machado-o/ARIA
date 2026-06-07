@@ -66,6 +66,15 @@ CLASS_ID_MAP: dict[str, int] = {
     "vein": 0, "crack": 1, "Stain": 2, "Dark patches": 3, "light spot": 4,
 }
 
+def _bgr_to_hex(bgr: tuple[int, int, int]) -> str:
+    b, g, r = bgr
+    return f"#{r:02x}{g:02x}{b:02x}"
+
+def _hex_to_bgr(hex_color: str) -> tuple[int, int, int]:
+    h = hex_color.lstrip("#")
+    r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+    return (b, g, r)
+
 OVERRIDES = dict(
     task="segment", mode="predict",
     model=str(SAM_DIR / "../models/sam3.pt"),
@@ -183,10 +192,14 @@ def _init_prompt_state(rock: str, key_suffix: str, conf: Optional[float],
     cb  = f"cb_{rock}_{key_suffix}"
     sl  = f"sl_{rock}_{key_suffix}"
     ni  = f"ni_{rock}_{key_suffix}"
+    ck  = f"ck_{rock}_{key_suffix}"
     st.session_state[cb] = enabled
     val = float(conf) if conf is not None else 0.1
     st.session_state[sl] = val
     st.session_state[ni] = val
+    if ck not in st.session_state:
+        default_bgr = CLASS_COLORS.get(key_suffix, (180, 180, 180))
+        st.session_state[ck] = _bgr_to_hex(default_bgr)
 
 
 # ── Callback factories ────────────────────────────────────────────────────────
@@ -201,7 +214,7 @@ def _sync_ni_to_sl(sl_key: str, ni_key: str):
     return _cb
 
 # ── Inference ─────────────────────────────────────────────────────────────────
-def run_sam(rock: str, active: dict[str, float]) -> dict[str, Path]:
+def run_sam(rock: str, active: dict[str, float], colors: dict[str, tuple[int, int, int]]) -> dict[str, Path]:
     from ultralytics.utils.plotting import Annotator  # noqa
 
     img_path = get_select_image(rock)
@@ -234,7 +247,7 @@ def run_sam(rock: str, active: dict[str, float]) -> dict[str, Path]:
         results[prompt] = out
 
         if result.masks is not None:
-            color = CLASS_COLORS.get(prompt, (180, 180, 180))
+            color = colors.get(prompt, (180, 180, 180))
             masks = result.masks.data.cpu().numpy()
             annotator.masks(masks, [color] * len(masks))
             cid = CLASS_ID_MAP.get(prompt, -1)
@@ -255,11 +268,12 @@ def run_sam(rock: str, active: dict[str, float]) -> dict[str, Path]:
 
 # ── Prompt controls (sidebar) ─────────────────────────────────────────────────
 def _render_prompt_row(rock: str, prompt: str, key_suffix: str,
-                       label: str) -> Optional[float]:
-    """Renders checkbox + slider + number_input for one prompt. Returns conf or None."""
+                       label: str) -> Optional[tuple[float, str]]:
+    """Renders checkbox + slider + number_input + color_picker for one prompt. Returns (conf, hex_color) or None."""
     cb  = f"cb_{rock}_{key_suffix}"
     sl  = f"sl_{rock}_{key_suffix}"
     ni  = f"ni_{rock}_{key_suffix}"
+    ck  = f"ck_{rock}_{key_suffix}"
 
     if cb not in st.session_state:
         st.session_state[cb] = False
@@ -267,6 +281,8 @@ def _render_prompt_row(rock: str, prompt: str, key_suffix: str,
         st.session_state[sl] = 0.1
     if ni not in st.session_state:
         st.session_state[ni] = 0.1
+    if ck not in st.session_state:
+        st.session_state[ck] = _bgr_to_hex(CLASS_COLORS.get(key_suffix, (180, 180, 180)))
 
     enabled = st.checkbox(label, key=cb)
     if not enabled:
@@ -284,7 +300,10 @@ def _render_prompt_row(rock: str, prompt: str, key_suffix: str,
         key=ni, label_visibility="collapsed",
         on_change=_sync_ni_to_sl(sl, ni),
     )
-    return float(st.session_state[sl])
+    c_lbl, c_picker = st.columns([1, 3])
+    c_lbl.caption("cor:")
+    c_picker.color_picker("", key=ck, label_visibility="collapsed")
+    return float(st.session_state[sl]), st.session_state[ck]
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 def render_sidebar() -> None:
@@ -324,21 +343,26 @@ def render_sidebar() -> None:
         st.markdown(f"**Prompts — `{rock}`**")
 
         active: dict[str, float] = {}
+        active_colors: dict[str, tuple[int, int, int]] = {}
 
         for category, prompts in PROMPT_LIBRARY.items():
             with st.expander(category, expanded=False):
                 for prompt in prompts:
-                    conf = _render_prompt_row(rock, prompt, prompt, f"**{prompt}**")
-                    if conf is not None:
+                    result = _render_prompt_row(rock, prompt, prompt, f"**{prompt}**")
+                    if result is not None:
+                        conf, hex_color = result
                         active[prompt] = conf
+                        active_colors[prompt] = _hex_to_bgr(hex_color)
 
         # Custom prompts previously added
         if st.session_state.custom_prompts:
             with st.expander("Personalizados", expanded=True):
                 for cp in st.session_state.custom_prompts:
-                    conf = _render_prompt_row(rock, cp, f"custom_{cp}", f"*{cp}*")
-                    if conf is not None:
+                    result = _render_prompt_row(rock, cp, f"custom_{cp}", f"*{cp}*")
+                    if result is not None:
+                        conf, hex_color = result
                         active[cp] = conf
+                        active_colors[cp] = _hex_to_bgr(hex_color)
 
         # Add new custom prompt
         st.markdown("**+ Novo prompt**")
@@ -371,7 +395,7 @@ def render_sidebar() -> None:
             else:
                 hist = st.session_state.history.setdefault(rock, [])
                 hist.append({"ts": datetime.now().strftime("%H:%M:%S"), "config": dict(active)})
-                st.session_state.run_requested = dict(active)
+                st.session_state.run_requested = {"prompts": dict(active), "colors": dict(active_colors)}
                 st.rerun()
 
         # ── Salvar ─────────────────────────────────────────────
@@ -421,9 +445,9 @@ def render_main() -> None:
 
     # ── Handle SAM run (triggered by sidebar button on previous rerun) ────────
     if st.session_state.run_requested is not None:
-        active = st.session_state.run_requested
+        payload = st.session_state.run_requested
         st.session_state.run_requested = None
-        results = run_sam(rock, active)
+        results = run_sam(rock, payload["prompts"], payload["colors"])
         st.session_state.last_results[rock] = results
         st.rerun()
 

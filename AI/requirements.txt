@@ -1,9 +1,0 @@
-ultralytics
-opencv-python-headless
-transformers
-pillow
-timm
-git+https://github.com/openai/CLIP.git
-ftfy
-regex
-streamlit

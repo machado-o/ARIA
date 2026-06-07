@@ -12,6 +12,17 @@ Ver [`PROJETO.md`](PROJETO.md) para o contexto da plataforma Hartheus. Ver [`ROA
 
 ---
 
+## Setup do ambiente
+
+```bash
+cd AI/SAM
+python -m venv .venv
+.venv\Scripts\pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+.venv\Scripts\pip install ultralytics openai-clip opencv-python streamlit
+```
+
+---
+
 ## Comandos
 
 Todos os scripts rodam a partir de `AI/SAM/`.
@@ -65,6 +76,7 @@ results/<rock>/<stem>/<stem>.txt                    ← polígonos YOLO (input d
 - O arquivo é **gitignored** — cada dev mantém sua própria cópia local
 
 **Grupos de calibração por cor/textura:**
+
 - Brancas/claras: incluem `"Dark patches"` (conf ~0.08)
 - Escuras (nevada_black, sao_gabriel_black): usam `"light spot"` em vez de `"Dark patches"` (conf mais baixo: 0.05–0.01)
 - Verdes/quartzitos: sem `"Dark patches"`, crack 0.06–0.08
@@ -88,6 +100,7 @@ results/<rock>/<stem>/<stem>.txt                    ← polígonos YOLO (input d
 ### Docker
 
 O compose monta apenas dois diretórios (não o `AI/` inteiro para evitar `.venv/` no mount):
+
 - `../AI/SAM:/app/SAM` — scripts, selectRocks/, results/, rock_prompts.json
 - `../AI/models:/app/models:ro` — pesos do modelo (read-only)
 
