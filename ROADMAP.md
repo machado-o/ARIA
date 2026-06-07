@@ -4,20 +4,20 @@ Próximos passos do desenvolvimento, em ordem cronológica de execução.
 
 ---
 
-## 1. Reconstruir `calibrator.py`
+## 1. ~~Reconstruir `calibrator.py`~~ ✅
 
-UI interativa de calibração de prompts. Pré-requisito prático para completar as 42 rochas pendentes com eficiência — sem ela o ciclo é editar JSON à mão → rodar `inference.py` → abrir `results/` manualmente.
+UI interativa de calibração de prompts via Streamlit — concluída.
 
 ---
 
-## 2. Completar seleção de imagens representativas (42 rochas)
+## 2. Completar seleção de imagens representativas (31 rochas)
 
-Selecionar uma imagem representativa por rocha via `rock_viewer.py` para as 42 rochas ainda sem seleção em `selectRocks/`.
+Selecionar uma imagem representativa por rocha via `rock_viewer.py` para as 31 rochas ainda sem seleção em `selectRocks/`.
 
 Estado atual:
 - `ice_leke` — calibrado e validado
-- `giallo_fiorito`, `giallo_maracana` — imagem selecionada, calibração pendente
-- 42 rochas — sem imagem selecionada
+- `giallo_fiorito`, `giallo_maracana`, `golden_storm`, `icarai_yellow`, `ipanema_beige`, `itaunas_white`, `kalahari`, `maracuja_yellow`, `naica`, `nevada_black`, `new_caledonia`, `olympios`, `ornamental` — imagem selecionada, calibração pendente
+- 31 rochas — sem imagem selecionada
 
 ---
 

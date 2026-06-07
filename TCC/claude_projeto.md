@@ -39,7 +39,7 @@ Dataset: 45 classes, ~34.630 imagens industriais reais, desbalanceamento natural
 
 Fundamentação teórica: TAM, Difusão de Inovações, Teoria Sociotécnica, Indústria 4.0.
 
-Estado atual (maio 2026): calibração de prompts SAM por tipo de rocha. Pipeline end-to-end ainda não testado. Resultados iniciais do SAM muito promissores. Escrita acontece em paralelo ao desenvolvimento.
+Estado atual (junho 2026): calibração de prompts SAM por tipo de rocha. 14/45 rochas com imagem selecionada; 1 calibrada (ice_leke). Pipeline end-to-end ainda não testado. Resultados iniciais do SAM muito promissores. Escrita acontece em paralelo ao desenvolvimento.
 
 O TCC será escrito em LaTeX no Overleaf com template institucional. Vamos trabalhar capítulo por capítulo. Claude deve sempre pedir o trecho do template antes de escrever cada seção.
 
@@ -123,8 +123,8 @@ Estado atual do desenvolvimento (maio 2026)
 - Dataset coletado: 45 tipos de rocha, ~34.630 imagens, splits train/val/test
 - Pipeline SAM rodando; resultado de demonstração em AI/samples/ (ice_leke)
 - ice_leke: única rocha com prompts calibrados e validados
-- giallo_fiorito, giallo_maracana: imagem selecionada, prompts pendentes
-- 42 rochas restantes: sem imagem selecionada nem prompts calibrados
+- giallo_fiorito, giallo_maracana, golden_storm, icarai_yellow, ipanema_beige, itaunas_white, kalahari, maracuja_yellow, naica, nevada_black, new_caledonia, olympios, ornamental: imagem selecionada, prompts pendentes
+- 31 rochas restantes: sem imagem selecionada nem prompts calibrados
 - Treinamento YOLO: não iniciado (aguarda calibração completa)
 - Pipeline end-to-end: não testado
 - Integração Xception + SAM + YOLO: definida conceitualmente, não implementada

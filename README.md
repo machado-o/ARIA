@@ -47,13 +47,12 @@ Abre contact sheet HTML no browser. Clique na imagem para abrir lightbox (←→
 
 ### 2. Calibrar prompts
 
-Editar `rock_prompts.json` diretamente: chave = nome da pasta em `SAM/selectRocks/`, valor = `{ "prompt_label": conf_float }`.
-
-```json
-{ "crack": 0.1, "vein": 0.007, "Stain": 0.3 }
+```bash
+cd AI/SAM
+.venv\Scripts\python.exe -m streamlit run calibrator.py
 ```
 
-Rodar `inference.py` e verificar os resultados em `results/`. O `calibrator.py` (UI Streamlit para calibração interativa) está sendo reconstruído.
+UI interativa para ativar prompts, ajustar limiares de confiança, visualizar as máscaras geradas e salvar em `rock_prompts.json`. Alternativa manual: editar `rock_prompts.json` diretamente (`{ "prompt_label": conf_float }`).
 
 **Dica:** rochas com fundo escuro (nevada_black, sao_gabriel_black) usam `light spot` em vez de `Dark patches` nos prompts.
 
@@ -65,16 +64,6 @@ python inference.py   # lê selectRocks/, grava máscaras em results/
 ```
 
 **Gotcha:** `inference.py` aplica um monkey-patch em `clip.simple_tokenizer.SimpleTokenizer` para compatibilidade com Ultralytics SAM3. Não remover o bloco `try/except` no topo do arquivo.
-
-## Docker
-
-```bash
-# A partir de /docker
-docker compose up --build ai    # sobe o serviço de IA (batch, sem porta exposta)
-docker compose down
-```
-
-Suporta sm_50 a sm_120 (Maxwell → Blackwell) via PyTorch cu128.
 
 ## Estrutura
 
@@ -90,8 +79,7 @@ AI/
 │   ├── results/            # máscaras .jpg + labels .txt (YOLO format)
 │   └── samples/            # exemplos de resultado para documentação
 ├── Xception/               # classificador de tipo de rocha (futuro)
-├── YOLO/                   # fase do aluno (futuro)
-└── requirements.txt
+└── YOLO/                   # fase do aluno (futuro)
 TCC/                        # documentação acadêmica
 BRANCHES.md                 # comparação com feat/matheus + plano híbrido
 ```

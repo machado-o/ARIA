@@ -166,8 +166,8 @@ Conceito: SAM refinaria inferências de baixa confiança do YOLO em produção, 
 - [X] Pipeline SAM rodando — resultados em `results/` para todas as 45 rochas
 - [X] Resultado de demonstração em `samples/` (ice_leke) — muito promissor; demais resultados em `results/`
 - [X] Configuração de prompts iniciada em `rock_prompts.json`
-- [ ] Calibração de prompts: 3/45 rochas com imagem representativa selecionada
-- [ ] Calibração de prompts: 42/45 rochas pendentes
+- [ ] Calibração de prompts: 14/45 rochas com imagem representativa selecionada
+- [ ] Calibração de prompts: 31/45 rochas pendentes
 - [ ] Treinamento YOLO: não iniciado
 - [ ] Integração classificador + segmentador: não definida
 - [ ] Pipeline end-to-end testado: não

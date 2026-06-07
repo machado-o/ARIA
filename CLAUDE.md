@@ -36,11 +36,8 @@ python rock_viewer.py --cols 6        # grade mais larga (padrão: 8)
 # Inferência SAM
 python inference.py                   # lê selectRocks/, grava em results/
 
-# Docker — inferência em container com GPU
-cd docker
-docker compose up --build ai          # build + run
-docker compose up ai                  # run sem rebuild
-docker compose down
+# Calibrador interativo (UI Streamlit)
+.venv\Scripts\python.exe -m streamlit run calibrator.py
 ```
 
 ---
@@ -95,16 +92,7 @@ results/<rock>/<stem>/<stem>.txt                    ← polígonos YOLO (input d
 
 **Monkey-patch CLIP (linhas 4–13):** Ultralytics SAM3 instancia `SimpleTokenizer` e o chama como função (`self.tokenizer(texts)`), mas `SimpleTokenizer` não tem `__call__`. O patch injeta `__call__` delegando para `clip.tokenize`. **Não remover este bloco** — sem ele o modelo falha silenciosamente (sem exceção, sem saída).
 
-**Path do modelo:** hardcoded em `OVERRIDES` como `"../models/sam3.pt"` (relativo a `AI/SAM/`). A env var `MODEL_PATH` do compose existe mas não é lida por ninguém — o path é sempre o hardcoded.
-
-### Docker
-
-O compose monta apenas dois diretórios (não o `AI/` inteiro para evitar `.venv/` no mount):
-
-- `../AI/SAM:/app/SAM` — scripts, selectRocks/, results/, rock_prompts.json
-- `../AI/models:/app/models:ro` — pesos do modelo (read-only)
-
-Base image: `python:3.11-slim` + PyTorch cu128 wheel (bundle o CUDA runtime — não precisa de imagem base CUDA). Suporta sm_50 a sm_120 (Maxwell → Blackwell).
+**Path do modelo:** hardcoded em `OVERRIDES` como `"../models/sam3.pt"` (relativo a `AI/SAM/`).
 
 ---
 

@@ -69,7 +69,7 @@ Abordagem alternativa: loop de auto-melhoria onde o SAM3 gera anotações inicia
 |---|---|---|
 | Diretório IA | `AI/` | `ai/` |
 | Entry point | `inference.py` (batch script) | `api.py` (FastAPI) |
-| Trigger | Docker CMD | `POST /pipeline/run` |
+| Trigger | script direto (`inference.py`) | `POST /pipeline/run` |
 | Config | `SAM/rock_prompts.json` | `ai/config.py` |
 | Abordagem | Prompts calibrados por litologia + Teacher-Student hierárquico | SAM3 → YOLO active-learning loop |
 | HTTP API | Nenhuma (batch) | FastAPI + SSE |
