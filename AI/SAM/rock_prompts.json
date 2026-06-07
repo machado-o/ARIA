@@ -37,7 +37,8 @@
   "tabaco_red": {
     "crack": 0.07,
     "vein": 0.01,
-    "Stain": 0.2
+    "Stain": 0.2,
+    "light spot": 0.1
   },
   "kalahari": {
     "crack": 0.06,
@@ -122,7 +123,7 @@
     "Stain": 0.3,
     "Dark patches": 0.08
   },
-  "whte_liberdade": {
+  "white_liberdade": {
     "crack": 0.1,
     "vein": 0.007,
     "Stain": 0.3,
