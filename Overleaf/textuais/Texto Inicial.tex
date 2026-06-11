@@ -103,3 +103,38 @@ O planejamento das atividades para a concretização da pesquisa está distribu�
     \end{tabular}
     \label{tab:cronograma}
 \end{table}
+
+\chapter[RESULTADOS INICIAIS]{RESULTADOS INICIAIS}
+
+Este capítulo apresenta as primeiras evidências práticas do desenvolvimento do sistema, em consonância com a proposta descrita na metodologia. O foco atual encontra-se na etapa do segmentador especialista, mais especificamente na atuação do modelo \textit{Segment Anything Model} (SAM) como Professor, responsável pela geração automatizada de anotações (\textit{pseudo-labeling}). Os resultados a seguir foram obtidos na rocha \textit{ice leke}, primeiro litótipo a ter seus \textit{prompts} e limiares de confiança calibrados e validados no arquivo de configuração \texttt{rock\_prompts.json}.
+
+\section{Geração de Anotações pelo Professor (SAM)}
+A partir de uma imagem industrial real da chapa, o SAM foi guiado por \textit{prompts} de linguagem natural calibrados para a litologia (injeção de conhecimento de domínio), segmentando as anomalias superficiais sem qualquer treinamento prévio específico para rochas ornamentais (capacidade \textit{zero-shot}). A Figura \ref{fig:resultado_combined} contrapõe a imagem original às máscaras de segmentação sobrepostas, geradas de forma totalmente automatizada.
+
+\begin{figure}[htpb]
+    \centering
+    \caption{Segmentação automatizada de anomalias gerada pelo SAM na rocha \textit{ice leke}: imagem original (a) e máscaras de anomalias sobrepostas (b).}
+    \label{fig:resultado_combined}
+    \subfloat[Imagem original da chapa\label{subfig:original}]{\includegraphics[width=0.45\textwidth]{sample_ice_leke_original.jpg}}
+    \hfill
+    \subfloat[Anotações geradas pelo SAM\label{subfig:combined}]{\includegraphics[width=0.45\textwidth]{sample_ice_leke_combined.jpg}}
+\end{figure}
+
+\section{Decomposição por Tipo de Anomalia}
+Cada \textit{prompt} calibrado atua sobre um tipo específico de irregularidade. A Figura \ref{fig:resultado_decomposto} apresenta as máscaras isoladas por categoria — fissuras (\textit{crack}), veios minerais (\textit{vein}), manchas (\textit{Stain}) e áreas escuras (\textit{Dark patches}) —, evidenciando a capacidade do modelo de distinguir diferentes feições visuais a partir de descrições textuais.
+
+\begin{figure}[htpb]
+    \centering
+    \caption{Decomposição das anotações do SAM por tipo de anomalia na rocha \textit{ice leke}.}
+    \label{fig:resultado_decomposto}
+    \subfloat[\textit{crack} (fissuras)\label{subfig:crack}]{\includegraphics[width=0.45\textwidth]{sample_ice_leke_crack.jpg}}
+    \hfill
+    \subfloat[\textit{vein} (veios)\label{subfig:vein}]{\includegraphics[width=0.45\textwidth]{sample_ice_leke_vein.jpg}}
+    \\[0.4cm]
+    \subfloat[\textit{Stain} (manchas)\label{subfig:stain}]{\includegraphics[width=0.45\textwidth]{sample_ice_leke_stain.jpg}}
+    \hfill
+    \subfloat[\textit{Dark patches} (áreas escuras)\label{subfig:darkpatches}]{\includegraphics[width=0.45\textwidth]{sample_ice_leke_darkpatches.jpg}}
+\end{figure}
+
+\section{Análise Preliminar}
+Os resultados confirmam a viabilidade da etapa central da proposta: o modelo de fundação, sem treinamento dedicado ao domínio, é capaz de segmentar anomalias relevantes quando guiado por \textit{prompts} calibrados por litologia. As máscaras resultantes são exportadas como polígonos no formato de segmentação do YOLO (coordenadas normalizadas), constituindo o conjunto de \textit{pseudo-labels} que alimentará o treinamento do modelo Aluno (YOLO11). Trata-se de uma validação \textbf{qualitativa e preliminar}: das 45 litologias do conjunto de dados, a \textit{ice leke} é a primeira plenamente calibrada, e a calibração das demais segue em andamento. As métricas quantitativas (mAP e IoU) serão obtidas após o treinamento do Aluno, em etapa posterior do cronograma.
