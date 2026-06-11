@@ -31,4 +31,4 @@ ou apagar nada do `Dataset/`.
 | Arquitetura detalhada do pipeline | `arquitetura.md` |
 | Dataset, classes, formato de anotação | `dataset.md` |
 | Decisões fechadas (rotulagem, baseline...) | `decisoes.md` |
-| Próximos passos do desenvolvimento | `ROADMAP.md` |
+| Próximos passos do desenvolvimento | `roadmap.md` |

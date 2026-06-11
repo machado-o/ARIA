@@ -80,7 +80,7 @@ AI/
 │   └── samples/            # exemplos de resultado para documentação
 ├── Xception/               # classificador de tipo de rocha (futuro)
 └── YOLO/                   # fase do aluno (futuro)
-docs/                       # base de conhecimento e governança (.md): decisões, diretrizes, ROADMAP, PENDENCIAS
+docs/                       # base de conhecimento e governança (.md): decisões, diretrizes, roadmap, pendencias
 Hartheus.md                 # contexto da plataforma Hartheus e branches
 ```
 

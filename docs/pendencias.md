@@ -1,7 +1,7 @@
 # Pendências — ARIA
 
 > Caixa de entrada de coisas a fazer/corrigir que **não** são marcos grandes do
-> desenvolvimento (esses ficam no `ROADMAP.md`). Itens soltos de escrita, template, docs e
+> desenvolvimento (esses ficam no `roadmap.md`). Itens soltos de escrita, template, docs e
 > código. Marcar `[x]` ao concluir; remover quando virar irrelevante.
 >
 > Abra a sessão lendo `CLAUDE.md` + este arquivo.
@@ -52,7 +52,7 @@ diagnóstico de 2026-06-10:
 
 ## 🧩 Código
 
-- [ ] (sem itens soltos no momento — marcos de desenvolvimento estão no `ROADMAP.md`)
+- [ ] (sem itens soltos no momento — marcos de desenvolvimento estão no `roadmap.md`)
 
 ## 📁 Docs
 

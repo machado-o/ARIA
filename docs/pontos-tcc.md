@@ -130,7 +130,7 @@ Definição do baseline e do experimento central (45 especialistas × 1 generali
 
 ## Decisões Metodológicas
 
-As questões metodológicas originalmente em aberto (rotulagem, integração dos estágios, baseline, ground truth, escopo de anomalias, versão do YOLO, nome, identidade ARIA/Hartheus) foram **fechadas** e migradas para a fonte única `decisoes.md`. Novas pendências ficam em `PENDENCIAS.md`.
+As questões metodológicas originalmente em aberto (rotulagem, integração dos estágios, baseline, ground truth, escopo de anomalias, versão do YOLO, nome, identidade ARIA/Hartheus) foram **fechadas** e migradas para a fonte única `decisoes.md`. Novas pendências ficam em `pendencias.md`.
 
 ---
 

@@ -32,7 +32,7 @@ e ponto como separador de milhar (34.630 imagens). Unidades com espaço antes (6
 
 2.1. **Nunca inventar fatos sobre o sistema.** Métricas, configurações, resultados, detalhes
 de arquitetura, nomes de classes — tudo vem dos `.md` de contexto (`arquitetura.md`,
-`dataset.md`, `pontos_tcc.md`, `decisoes.md`) ou do Henrique.
+`dataset.md`, `pontos-tcc.md`, `decisoes.md`) ou do Henrique.
 
 2.2. Se faltar um dado real (ex.: "descreva os resultados do YOLO" antes de existirem), **não
 usar placeholder genérico**: inserir um `TODO` explícito e perguntar. Lacuna honesta > frase
@@ -118,7 +118,7 @@ merge).
 "Irregularidade" e "avaria" podem ser usados pontualmente para evitar repetição, mas "anomalia"
 é a referência — não tratar "defeito"/"avaria"/"anomalia" como conceitos distintos sem
 necessidade. (O título atual usa "avarias"; alinhar quando revisarmos o título — ver
-`PENDENCIAS.md`.)
+`pendencias.md`.)
 
 7.2. **Nomenclatura do sistema (D1):** **ARIA** nomeia o pipeline/método; **Hartheus** nomeia a
 plataforma. Nunca chamar o pipeline de "Hartheus".
@@ -139,6 +139,6 @@ plataforma. Nunca chamar o pipeline de "Hartheus".
 | Decisão metodológica fechada | `decisoes.md` |
 | Como o sistema funciona (técnico) | `arquitetura.md` |
 | Dados, classes, anomalias | `dataset.md` |
-| Argumento acadêmico, hipótese, métricas, capítulos | `pontos_tcc.md` |
-| Estado atual / próximos passos | `ROADMAP.md` |
-| Coisas pendentes a corrigir/escrever | `PENDENCIAS.md` |
+| Argumento acadêmico, hipótese, métricas, capítulos | `pontos-tcc.md` |
+| Estado atual / próximos passos | `roadmap.md` |
+| Coisas pendentes a corrigir/escrever | `pendencias.md` |

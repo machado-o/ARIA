@@ -1,7 +1,7 @@
 # Decisões Metodológicas Fechadas — ARIA
 
 > **Fonte única de verdade.** Toda decisão metodológica fechada do TCC mora aqui.
-> Os demais documentos (`arquitetura.md`, `dataset.md`, `pontos_tcc.md`) **linkam** para
+> Os demais documentos (`arquitetura.md`, `dataset.md`, `pontos-tcc.md`) **linkam** para
 > esta página em vez de repetir o teor. Se uma decisão mudar, muda-se **aqui** e só aqui.
 >
 > Última atualização: 2026-06-10
@@ -105,7 +105,7 @@ em produção) é **trabalho futuro**. **Nunca** aparece como contribuição des
 na seção de Trabalhos Futuros.
 
 > ⚠️ Regra inegociável. O `.tex` antigo descrevia o AL como parte central do sistema — isso
-> está sendo corrigido (ver `PENDENCIAS.md`).
+> está sendo corrigido (ver `pendencias.md`).
 
 ---
 
