@@ -129,7 +129,7 @@ Para cada tipo de rocha: (1) selecionar imagem representativa via `rock_viewer.p
 
 A calibração completa (45/45) é pré-requisito para gerar as anotações SAM do pipeline especialista e executar a comparação com o baseline.
 
-> Status vivo (quais rochas já calibradas) → `../ROADMAP.md`.
+> Status vivo (quais rochas já calibradas) → `ROADMAP.md`.
 
 ---
 

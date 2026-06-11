@@ -148,4 +148,4 @@ Trabalho futuro — fora do escopo desta entrega. Conceito: SAM refinaria infer�
 
 ## Estado Atual
 
-O estado vivo do desenvolvimento e os próximos passos são fonte única em `../ROADMAP.md`.
+O estado vivo do desenvolvimento e os próximos passos são fonte única em `ROADMAP.md`.

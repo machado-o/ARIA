@@ -56,4 +56,8 @@ diagnóstico de 2026-06-10:
 
 ## 📁 Docs
 
+- [ ] 🔔 **Atualizar o `Hartheus.md`** (ex-`PROJETO.md`) com os arquivos do Hartheus que o Henrique
+  vai passar. O contexto mudou: a branch **`feat/matheus` não existe mais**. Ao atualizar, purgar as
+  referências restantes a `feat/matheus` no `Hartheus.md` (seções de branches/comparação).
+  → **Claude: lembrar o Henrique de te passar os arquivos ao retomar a sessão.**
 - [ ] (manter este arquivo e os `.md` de contexto sem informação duplicada — princípio DRY)

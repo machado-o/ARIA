@@ -3,7 +3,7 @@
 > Contrato de comportamento para a escrita do TCC em LaTeX (Overleaf, sincronizado via Git).
 > Cláusulas numeradas. Em caso de conflito, **o que o Henrique disser na conversa vence.**
 >
-> Última atualização: 2026-06-10
+> Última atualização: 2026-06-11
 
 ---
 
@@ -16,7 +16,15 @@ satisfatórios foram obtidos").
 
 1.3. Se a informação cabe em **tabela**, gerar tabela; se em **equação**, `\begin{equation}`;
 se em **lista**, `itemize`/`enumerate`. Evitar parágrafo corrido onde o template prevê
-estrutura.
+estrutura. Ressalva: o corpo argumentativo (introdução, discussão) é prosa — listas servem
+para fatos enumeráveis, não para substituir o raciocínio.
+
+1.4. **Tempo verbal:** proposta e metodologia no futuro ("o modelo será treinado"); resultados
+já obtidos no passado ("obteve-se", "a segmentação identificou"). Não misturar os dois para o
+mesmo fato.
+
+1.5. **Formatação numérica (pt-BR):** vírgula como separador decimal (mAP de 0,85; IoU de 0,72)
+e ponto como separador de milhar (34.630 imagens). Unidades com espaço antes (60 FPS, 10 ms).
 
 ---
 
@@ -64,6 +72,17 @@ Henrique preenche depois (ou pedimos pra popular `bibliografia.bib`).
 4.4. Antes de escrever uma seção nova, conferir o trecho correspondente do template
 (`Overleaf/textuais/`, `pre_textuais/`, etc.) para casar com a estrutura existente.
 
+4.5. **Mecânica de citação (abntex2-alf, autor-data):** usar `\citeonline{chave}` quando o autor
+é sujeito da frase ("segundo \citeonline{...}, ...") e `\cite{chave}` para citação parentética
+ao fim da ideia. Citação direta com mais de três linhas vai em ambiente de recuo, sem aspas; até
+três linhas, entre aspas no corpo. Enquanto a referência não existe no `.bib`, usar
+`\cite{TODO-chave}` (ver 4.2).
+
+4.6. **Floats sempre completos:** toda figura, tabela ou quadro deve ter `\caption` descritiva,
+`\label` no padrão (`fig:`, `tab:`, `quad:`, `eq:`), ser **referenciada no texto** antes de
+aparecer ("a Figura \ref{...} ilustra...") e indicar a **fonte** via `\source`/`\legend`
+(ABNT — "Fonte: elaborado pelo autor" quando própria). Nenhum float órfão.
+
 ---
 
 ## 5. Fluxo de trabalho
@@ -93,7 +112,27 @@ merge).
 
 ---
 
-## 7. Onde está a verdade
+## 7. Terminologia, siglas e estrangeirismos
+
+7.1. **Terminologia canônica:** o termo padrão para os defeitos superficiais é **"anomalia"**.
+"Irregularidade" e "avaria" podem ser usados pontualmente para evitar repetição, mas "anomalia"
+é a referência — não tratar "defeito"/"avaria"/"anomalia" como conceitos distintos sem
+necessidade. (O título atual usa "avarias"; alinhar quando revisarmos o título — ver
+`PENDENCIAS.md`.)
+
+7.2. **Nomenclatura do sistema (D1):** **ARIA** nomeia o pipeline/método; **Hartheus** nomeia a
+plataforma. Nunca chamar o pipeline de "Hartheus".
+
+7.3. **Siglas:** definir por extenso na primeira ocorrência, com a sigla entre parênteses —
+"Redes Neurais Convolucionais (CNN)" — e usar só a sigla depois. Registrar cada sigla em
+`../Overleaf/pre_textuais/siglas.tex`.
+
+7.4. **Estrangeirismos:** termos em língua estrangeira sempre em itálico (`\textit{}`) —
+\textit{Deep Learning}, \textit{pseudo-labels}, \textit{crack}, \textit{Edge Computing}.
+
+---
+
+## 8. Onde está a verdade
 
 | Preciso de... | Olhar em |
 |---|---|
@@ -101,5 +140,5 @@ merge).
 | Como o sistema funciona (técnico) | `arquitetura.md` |
 | Dados, classes, anomalias | `dataset.md` |
 | Argumento acadêmico, hipótese, métricas, capítulos | `pontos_tcc.md` |
-| Estado atual / próximos passos | `../ROADMAP.md` |
-| Coisas pendentes a corrigir/escrever | `../PENDENCIAS.md` |
+| Estado atual / próximos passos | `ROADMAP.md` |
+| Coisas pendentes a corrigir/escrever | `PENDENCIAS.md` |

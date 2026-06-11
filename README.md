@@ -80,10 +80,10 @@ AI/
 │   └── samples/            # exemplos de resultado para documentação
 ├── Xception/               # classificador de tipo de rocha (futuro)
 └── YOLO/                   # fase do aluno (futuro)
-TCC/                        # documentação acadêmica
-BRANCHES.md                 # comparação com feat/matheus + plano híbrido
+docs/                       # base de conhecimento e governança (.md): decisões, diretrizes, ROADMAP, PENDENCIAS
+Hartheus.md                 # contexto da plataforma Hartheus e branches
 ```
 
 ## Relação com outras branches
 
-Ver [`PROJETO.md`](PROJETO.md) para o contexto da plataforma Hartheus, comparação com `feat/matheus` e o plano de integração futura.
+Ver [`Hartheus.md`](Hartheus.md) para o contexto da plataforma Hartheus e o plano de integração futura.

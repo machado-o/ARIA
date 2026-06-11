@@ -18,7 +18,7 @@ destina a ser o núcleo inteligente.
 - **Protagonista do texto:** ARIA (o método proposto e validado).
 - **Papel do Hartheus:** contexto aplicado, estabelecido em um parágrafo na introdução —
   ARIA é a contribuição de IA destinada a alimentar o AI Service do Hartheus.
-- ARIA é uma das abordagens de IA pesquisadas dentro do Hartheus (ver `PROJETO.md`).
+- ARIA é uma das abordagens de IA pesquisadas dentro do Hartheus (ver `../Hartheus.md`).
 
 **Justificativa:** sendo um TCC de Sistemas de Informação, nomear a plataforma situa a
 contribuição num produto real e demonstra visão sistêmica, sem desviar o foco do método.
@@ -105,7 +105,7 @@ em produção) é **trabalho futuro**. **Nunca** aparece como contribuição des
 na seção de Trabalhos Futuros.
 
 > ⚠️ Regra inegociável. O `.tex` antigo descrevia o AL como parte central do sistema — isso
-> está sendo corrigido (ver `../PENDENCIAS.md`).
+> está sendo corrigido (ver `PENDENCIAS.md`).
 
 ---
 
