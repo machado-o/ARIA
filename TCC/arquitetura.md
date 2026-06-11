@@ -102,8 +102,7 @@ O CLIP foi treinado em legendas e descrições de imagens, não em palavras isol
 ```
 
 Class IDs gerados pelo `inference.py`: 0=vein, 1=crack, 2=Stain, 3=Dark patches, 4=light spot.
-
-**Decisão de rotulagem para treinamento YOLO (esta versão):** os class_ids são colapsados para `0` (anomalia genérica) antes do treinamento. O `inference.py` continua gerando os IDs originais — isso preserva a opção de treinar multi-classe futuramente sem reprocessar o dataset. A motivação para colapsar: os labels dependem da qualidade semântica dos embeddings CLIP no domínio de rochas ornamentais, o que não foi validado independentemente. Multi-classe é evolução planejada, não descartada.
+São colapsados para `class_id=0` antes do treino YOLO — ver decisão **D2** em `decisoes.md`.
 
 **Gotcha técnico obrigatório:** `inference.py` aplica monkey-patch em `clip.simple_tokenizer.SimpleTokenizer` para compatibilidade com Ultralytics SAM3. O bloco `try/except` no topo do arquivo é obrigatório — sem ele o modelo falha silenciosamente. Não remover.
 
@@ -121,28 +120,15 @@ Class IDs gerados pelo `inference.py`: 0=vein, 1=crack, 2=Stain, 3=Dark patches,
 
 ## Conexão entre os Estágios
 
-**Decisão: o Xception seleciona a configuração de prompts SAM por tipo de rocha e roteia para o modelo YOLO especialista correspondente.**
+Mecanismo técnico: o Xception identifica o tipo litológico da chapa e usa esse resultado para escolher os prompts e limiares calibrados em `rock_prompts.json`. O SAM então segmenta com conhecimento de domínio específico daquela rocha, e a imagem é roteada para o modelo YOLO especialista correspondente. Em produção: Xception identifica o tipo → roteia para o YOLO do tipo.
 
-O papel do Xception é identificar o tipo litológico da chapa e usar esse resultado para escolher os prompts e limiares calibrados em `rock_prompts.json`. O SAM então segmenta com conhecimento de domínio específico para aquela rocha. São treinados **45 modelos YOLO especializados** — um por tipo de rocha. Cada modelo treina exclusivamente nas anotações SAM do seu tipo litológico. Em produção: Xception identifica o tipo → roteia a imagem para o modelo YOLO correspondente.
-
-Isso define o experimento central do TCC:
-
-| Pipeline                         | Xception                                                    | SAM                                                              | YOLO                                                                                |
-| -------------------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| **Especialista (ARIA)**    | Identifica o tipo → seleciona prompts calibrados → roteia | Segmenta com prompts específicos por rocha                      | **45 modelos** — um por tipo; treina nas anotações do seu tipo litológico |
-| **Baseline (generalista)** | Ausente                                                     | Segmenta com config genérica (`default`) para todas as rochas | **1 modelo** generalista; treina em anotações de todas as rochas            |
-
-O YOLO tem a mesma arquitetura nos dois casos (YOLO11-seg); o que muda é a quantidade de modelos (45 vs. 1) e a especificidade das anotações de treinamento. O experimento isola o ganho da abordagem hierárquica especialista.
-
-**Hipótese de benefício:** anotações geradas com prompts calibrados por litologia capturam anomalias reais com menos ruído — veios naturais de uma rocha não são marcados como defeito, manchas normais de outra não disparam falsos positivos. O YOLO treinado nesses dados herda essa especificidade.
+A definição do **experimento central (45 especialistas × 1 generalista)** e a hipótese de benefício associada são fonte única em `decisoes.md` (**D3**, **D4**).
 
 ---
 
 ## Loop de Aprendizado Ativo
 
-**Status: Trabalho futuro. Fora do escopo desta entrega.**
-
-Conceito: SAM refinaria inferências de baixa confiança do YOLO em produção, melhorando o aluno continuamente sem intervenção humana.
+Trabalho futuro — fora do escopo desta entrega. Conceito: SAM refinaria inferências de baixa confiança do YOLO em produção, melhorando o aluno continuamente sem intervenção humana. Ver `decisoes.md` (**D8**).
 
 ---
 
@@ -160,14 +146,6 @@ Conceito: SAM refinaria inferências de baixa confiança do YOLO em produção, 
 
 ---
 
-## Estado Atual (maio 2026)
+## Estado Atual
 
-- [X] Dataset coletado (45 classes, 34.630 imagens, train/val/test)
-- [X] Pipeline SAM rodando — resultados em `results/` para todas as 45 rochas
-- [X] Resultado de demonstração em `samples/` (ice_leke) — muito promissor; demais resultados em `results/`
-- [X] Configuração de prompts iniciada em `rock_prompts.json`
-- [ ] Calibração de prompts: 14/45 rochas com imagem representativa selecionada
-- [ ] Calibração de prompts: 31/45 rochas pendentes
-- [ ] Treinamento YOLO: não iniciado
-- [ ] Integração classificador + segmentador: não definida
-- [ ] Pipeline end-to-end testado: não
+O estado vivo do desenvolvimento e os próximos passos são fonte única em `../ROADMAP.md`.

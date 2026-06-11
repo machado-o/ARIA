@@ -124,25 +124,13 @@ Desenvolver e validar um pipeline hierárquico de IA para automatizar o controle
 
 ### Baseline para comparação
 
-Pipeline SAM→YOLO sem Xception, usando config genérica de prompts (`default` do `rock_prompts.json`) para todas as rochas. Um único modelo YOLO11 generalista treina com anotações de todas as rochas. Comparação direta com os 45 modelos especialistas do pipeline ARIA nas mesmas métricas (mAP, IoU). Mesma arquitetura YOLO11-seg nos dois casos — o que muda é a quantidade de modelos (1 vs. 45) e a especificidade das anotações.
+Definição do baseline e do experimento central (45 especialistas × 1 generalista) → fonte única em `decisoes.md` (**D3**).
 
 ---
 
-## Perguntas em Aberto
+## Decisões Metodológicas
 
-1. **Rotulagem:** ~~Em aberto.~~ **Decisão: binário (`class_id = 0` para todas as anomalias) nesta versão.** O `inference.py` já produz class_ids por prompt, mas serão colapsados antes do treinamento YOLO. Justificativa: labels multi-classe dependem da qualidade semântica dos embeddings CLIP no domínio de rochas — não validada. Multi-classe com labels originais (`crack`, `vein`, `Stain`...) é evolução planejada se houver tempo; requer validação humana ou tratamento explícito como pseudorrótulos.
-
-2. **Integração dos estágios:** ~~Em aberto.~~ **Decisão: 45 modelos YOLO especializados — um por tipo de rocha.** O Xception identifica o tipo litológico e roteia a imagem para o modelo YOLO correspondente. Cada especialista treina exclusivamente nas anotações SAM geradas para aquele tipo litológico.
-
-3. **Baseline:** ~~Em aberto.~~ **Decisão: pipeline SAM → YOLO sem Xception, usando config genérica de prompts (sem calibração por tipo de rocha).** O baseline representa um modelo generalista: o SAM recebe os mesmos prompts para todas as rochas (config `default` do `rock_prompts.json`), gera anotações sem conhecimento do tipo litológico, e o YOLO treina nessas anotações. A comparação isola exatamente a variável da hierarquia: o ganho de usar o Xception para selecionar prompts calibrados por rocha antes de segmentar.
-
-4. **Ground truth humano:** ~~Em aberto.~~ **Decisão: avaliação qualitativa por especialistas da área.** Serão coletadas amostras dos resultados SAM de cada tipo litológico e submetidas à análise de especialistas do setor de rochas ornamentais. A validação é qualitativa — os especialistas avaliam se as segmentações fazem sentido do ponto de vista técnico/industrial, não geram anotações humanas paralelas para comparação pixel a pixel.
-
-5. **Escopo de anomalias:** ~~Em aberto.~~ **Decisão: prompts atuais (`crack`, `vein`, `Stain`, `Dark patches`, `light spot`) são o conjunto de trabalho desta versão.** As anomalias não são rotuladas no treinamento (decisão binária). Novos tipos podem ser adicionados futuramente ao `rock_prompts.json` sem quebrar o pipeline.
-
-6. **Nome do projeto:** ARIA (Análise e Reconhecimento Inteligente de Anomalias) — definido.
-
-7. **Versão do YOLO:** ~~Em aberto.~~ **Versão estudada: YOLO11 (YOLOv11-seg).** YOLO12 e YOLO26 surgiram após o período de estudo inicial e são candidatos a avaliação — se o tempo permitir, vale comparar o desempenho com YOLO11 como referência. Não é bloqueador para iniciar o treinamento.
+As questões metodológicas originalmente em aberto (rotulagem, integração dos estágios, baseline, ground truth, escopo de anomalias, versão do YOLO, nome, identidade ARIA/Hartheus) foram **fechadas** e migradas para a fonte única `decisoes.md`. Novas pendências ficam em `../PENDENCIAS.md`.
 
 ---
 

@@ -107,14 +107,7 @@ O dataset contém múltiplos tipos de irregularidades superficiais. A categoriza
 
 ## Rotulagem de Classes de Anomalia
 
-**Decisão atual: Opção A — binário (anomalia genérica, `class_id = 0`).**
-
-O `inference.py` já atribui class_ids por prompt via `CLASS_ID_MAP` (`crack→1`, `vein→0`, `Stain→2`, etc.), mas as anotações geradas serão normalizadas para `class_id = 0` antes do treinamento YOLO. Motivação: os labels multi-classe são tão confiáveis quanto os embeddings CLIP no domínio de rochas — e isso não foi validado. Usar class_ids distintos como ground truth assumiria que o SAM distingue fissura de veio corretamente, o que é uma afirmação não verificada.
-
-**Opção B — multi-classe: prevista, mas fora do escopo desta entrega.**
-Se houver tempo, o objetivo é treinar o YOLO com os class_ids originais (`crack`, `vein`, `Stain`, `Dark patches`, `light spot`) e comparar com o modelo binário. Isso requer ou validação humana de uma amostra das anotações SAM, ou uma justificativa explícita de que os labels são tratados como pseudorrótulos. Registrado como evolução desejada, não limitação permanente.
-
-**Impacto na metodologia:** A seção de Metodologia deve explicar a escolha binária como decisão deliberada (não omissão), e mencionar multi-classe como extensão natural na seção de Trabalhos Futuros.
+A rotulagem é **binária** (`class_id = 0`) nesta versão; multi-classe é trabalho futuro. A decisão completa — justificativa (confiabilidade dos embeddings CLIP) e impacto na metodologia — é fonte única em `decisoes.md` (**D2** e **D9**).
 
 ---
 
@@ -128,19 +121,15 @@ Se houver tempo, o objetivo é treinar o YOLO com os class_ids originais (`crack
 
 ---
 
-## Status de Calibração
+## Calibração — processo
 
 Para cada tipo de rocha: (1) selecionar imagem representativa via `rock_viewer.py` → `selectRocks/`; (2) rodar `inference.py` e ajustar prompts/limiares em `rock_prompts.json` até o resultado ser satisfatório; (3) salvar resultado validado em `samples/`.
 
-| Status | Rochas | Observação |
-|---|---|---|
-| **Calibrado e validado** | `ice_leke` | Resultado salvo em `results/`; cópia em `samples/` como demonstração |
-| **Imagem selecionada, prompts pendentes** | `giallo_fiorito`, `giallo_maracana` | Imagem em `selectRocks/`, calibração não concluída |
-| **Pendentes** | 42 rochas restantes | Sem imagem selecionada nem prompts calibrados |
-
-**`samples/`** — pasta de demonstração, contém apenas o resultado do ice_leke. Não é o destino dos resultados de calibração; todos os outputs do `inference.py` vão para `results/`.
+**`samples/`** — pasta de demonstração, contém apenas o resultado do `ice_leke`. Não é o destino dos resultados de calibração; todos os outputs do `inference.py` vão para `results/`.
 
 A calibração completa (45/45) é pré-requisito para gerar as anotações SAM do pipeline especialista e executar a comparação com o baseline.
+
+> Status vivo (quais rochas já calibradas) → `../ROADMAP.md`.
 
 ---
 

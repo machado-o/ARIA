@@ -1,14 +1,32 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guia de entrada para o Claude Code neste repositório. **Leia este arquivo + [`PENDENCIAS.md`](PENDENCIAS.md) ao iniciar a sessão.**
 
 ---
 
-**ARIA** (Análise e Reconhecimento Inteligente de Anomalias) — pipeline hierárquico de IA para controle de qualidade de chapas de rochas ornamentais. TCC de Henrique (Bacharelado em Sistemas de Informação, IFES Cachoeiro). Esta branch cobre a fase do SAM3 como professor: gerar anotações poligonais de alta qualidade que depois treinam o YOLO.
+**ARIA** (Análise e Reconhecimento Inteligente de Anomalias) — pipeline hierárquico de IA para controle de qualidade de chapas de rochas ornamentais. TCC de Henrique (Bacharelado em Sistemas de Informação, IFES Cachoeiro). **ARIA é o método/pipeline; Hartheus é a plataforma web** onde ARIA se destina a ser o núcleo de IA (ver `decisoes.md` D1 e `PROJETO.md`).
 
-Arquitetura completa: Xception (classifica tipo litológico) → SAM3 com prompts calibrados por tipo (gera anotações) → YOLO11-seg × 45 modelos especialistas (inferência rápida em produção).
+Arquitetura: Xception (classifica tipo litológico) → SAM3 com prompts calibrados por tipo (gera anotações) → YOLO11-seg × 45 modelos especialistas (inferência rápida em produção). Esta branch cobre a fase do **SAM3 como professor**: gerar anotações poligonais que depois treinam o YOLO.
 
-Ver [`PROJETO.md`](PROJETO.md) para o contexto da plataforma Hartheus. Ver [`ROADMAP.md`](ROADMAP.md) para os próximos passos. Ver `TCC/` para o contexto acadêmico.
+A escrita do TCC acontece **direto aqui** (LaTeX em `Overleaf/`, sincronizado com o Overleaf via Git) — não mais via Claude App.
+
+---
+
+## Mapa da documentação — onde está a verdade
+
+Cada fato mora em **um** lugar só (princípio DRY). Antes de escrever/codar, consultar a fonte:
+
+| Preciso de... | Fonte única |
+|---|---|
+| Decisões metodológicas fechadas (rotulagem, baseline, AL, identidade...) | [`TCC/decisoes.md`](TCC/decisoes.md) |
+| Como o sistema funciona (técnico) | [`TCC/arquitetura.md`](TCC/arquitetura.md) |
+| Dataset, 45 classes, anomalias, calibração | [`TCC/dataset.md`](TCC/dataset.md) |
+| Argumento acadêmico, hipótese, métricas, capítulos | [`TCC/pontos_tcc.md`](TCC/pontos_tcc.md) |
+| **Como escrever o TCC** (cláusulas, estilo, fluxo) | [`TCC/diretrizes-escrita.md`](TCC/diretrizes-escrita.md) |
+| **Como mexer no código** (cláusulas, gotchas, disciplina) | [`TCC/diretrizes-implementacao.md`](TCC/diretrizes-implementacao.md) |
+| Estado vivo + próximos passos | [`ROADMAP.md`](ROADMAP.md) |
+| Pendências soltas (corrigir/escrever) | [`PENDENCIAS.md`](PENDENCIAS.md) |
+| Contexto da plataforma Hartheus e branches | [`PROJETO.md`](PROJETO.md) |
 
 ---
 
@@ -21,84 +39,39 @@ python -m venv .venv
 .venv\Scripts\pip install ultralytics openai-clip opencv-python streamlit
 ```
 
----
-
 ## Comandos
 
 Todos os scripts rodam a partir de `AI/SAM/`.
 
 ```bash
-# Seleção de imagem representativa
-python rock_viewer.py                 # próxima rocha pendente em modo loop
+python rock_viewer.py                 # seleção de imagem: próxima rocha pendente (modo loop)
 python rock_viewer.py <rock_name>     # rocha específica
-python rock_viewer.py --cols 6        # grade mais larga (padrão: 8)
-
-# Inferência SAM
-python inference.py                   # lê selectRocks/, grava em results/
-
-# Calibrador interativo (UI Streamlit)
-.venv\Scripts\python.exe -m streamlit run calibrator.py
+python inference.py                   # inferência SAM: lê selectRocks/, grava em results/
+.venv\Scripts\python.exe -m streamlit run calibrator.py   # calibrador interativo
 ```
 
----
-
-## Arquitetura
-
-### Fluxo de dados
+## Fluxo de dados
 
 ```
-selectRocks/<rock>.EXT          ← imagem representativa por tipo (entrada)
-rock_prompts.json               ← { rock_name: { prompt: confidence } }
+selectRocks/<rock>.EXT          ← imagem representativa por tipo (entrada, manual)
+rock_prompts.json               ← { rock_name: { prompt: confidence } }  (gitignored)
         ↓
 inference.py (SAM3SemanticPredictor)
         ↓
 results/<rock>/<stem>/<stem>_<prompt>_<conf>.jpg    ← máscara individual por prompt
-results/<rock>/<stem>/<stem>_combined.jpg           ← todas as masks sobrepostas
+results/<rock>/<stem>/<stem>_combined.jpg           ← masks sobrepostas
 results/<rock>/<stem>/<stem>.txt                    ← polígonos YOLO (input do treino)
 ```
 
-### `rock_prompts.json` — schema e lógica de fallback
-
-```json
-{
-  "default": { "crack": 0.1, "vein": 0.007, "Stain": 0.3 },
-  "ice_leke": { "crack": 0.1, "vein": 0.007, "Stain": 0.3, "Dark patches": 0.08 }
-}
-```
-
-- Chave = nome exato da pasta em `selectRocks/` (sem extensão, case-sensitive)
-- Valor = `{ "prompt_label": confidence_threshold }`
-- Rochas sem entrada própria caem no `"default"` automaticamente
-- Chaves prefixadas com `_` são ignoradas pelo parser (ex.: `"_comment"`)
-- O arquivo é **gitignored** — cada dev mantém sua própria cópia local
-
-**Grupos de calibração por cor/textura:**
-
-- Brancas/claras: incluem `"Dark patches"` (conf ~0.08)
-- Escuras (nevada_black, sao_gabriel_black): usam `"light spot"` em vez de `"Dark patches"` (conf mais baixo: 0.05–0.01)
-- Verdes/quartzitos: sem `"Dark patches"`, crack 0.06–0.08
-- Vermelhas (xango_red, tabaco_red): incluem `"light spot"`
-
-**Class IDs no `.txt` de saída:** `vein=0, crack=1, Stain=2, Dark patches=3, light spot=4` — mas todos colapsados para `class_id=0` antes do treinamento YOLO (decisão metodológica do TCC; multi-classe é extensão futura).
-
-### `rock_viewer.py` — modo loop vs. modo direto
-
-- **Modo loop** (sem argumento): itera automaticamente pelas rochas que ainda não têm arquivo em `selectRocks/`. Ao fim de cada rocha pergunta se continua.
-- **Modo direto** (`rock_name`): abre uma rocha específica, independente de já ter seleção.
-- Arquivo salvo como `selectRocks/<rock_name><.EXT_MAIÚSCULO>` — ex.: `ice_leke.JPG`.
-- Roda a partir de `AI/SAM/`; os paths internos assumem `../Dataset` relativo.
-
-### `inference.py` — gotchas obrigatórios
-
-**Monkey-patch CLIP (linhas 4–13):** Ultralytics SAM3 instancia `SimpleTokenizer` e o chama como função (`self.tokenizer(texts)`), mas `SimpleTokenizer` não tem `__call__`. O patch injeta `__call__` delegando para `clip.tokenize`. **Não remover este bloco** — sem ele o modelo falha silenciosamente (sem exceção, sem saída).
-
-**Path do modelo:** hardcoded em `OVERRIDES` como `"../models/sam3.pt"` (relativo a `AI/SAM/`).
+Detalhe do schema de `rock_prompts.json`, grupos de calibração por cor e estratégia de prompts → `TCC/arquitetura.md`. Class IDs colapsam para `class_id=0` antes do treino → `TCC/decisoes.md` D2.
 
 ---
 
-## Gotchas
+## Gotchas críticos (não esquecer)
 
-- **Typo no rock_prompts.json:** a entrada `"whte_liberdade"` (falta o 'i') não é reconhecida — a rocha `white_liberdade` cai no `default`. Corrigir para `"white_liberdade"` na cópia local.
+- **Monkey-patch CLIP (`inference.py` linhas 4–13):** Ultralytics SAM3 chama `SimpleTokenizer()` como função, mas ele não tem `__call__`. O patch injeta `__call__` delegando para `clip.tokenize`. **Não remover** — sem ele o modelo falha **silenciosamente** (sem exceção, sem saída).
+- **Path do modelo:** hardcoded em `OVERRIDES` como `../models/sam3.pt` (relativo a `AI/SAM/`).
 - **Seleção de imagem é sempre manual** — usar o próprio SAM para escolher a imagem de calibração é raciocínio circular.
-- **`rock_prompts.json` não commitado** — ao clonar o repo do zero, o arquivo não existe. `inference.py` avisa e usa o fallback hardcoded (`crack: 0.1, vein: 0.007, Stain: 0.3`).
-- **`results/` e `selectRocks/` não commitados** — gitignored. `samples/` é a pasta de demonstração commitada (só ice_leke).
+- **Gitignored:** `rock_prompts.json`, `results/`, `selectRocks/`. `samples/` é a demo commitada (só `ice_leke`). Sem `rock_prompts.json`, `inference.py` usa fallback hardcoded (`crack: 0.1, vein: 0.007, Stain: 0.3`).
+- **Typo conhecido no `rock_prompts.json`:** `"whte_liberdade"` (falta o 'i') → `white_liberdade` cai no `default`. Corrigir na cópia local.
+- **Não misturar código entre branches** `ARIA` (`AI/`, batch) e `feat/matheus` (`ai/`, FastAPI) — ver `PROJETO.md`.
