@@ -1,16 +1,16 @@
 \chapter[INTRODUÇÃO]{INTRODUÇÃO}
 
 \section{Tema Delimitado}
-O tema deste trabalho é a automação do controle de qualidade de rochas ornamentais por meio de um sistema hierárquico de Inteligência Artificial, denominado Hartheus. Mais especificamente, a pesquisa aborda o desenvolvimento e a validação deste pipeline computacional que integra modelos de \textit{Deep Learning} em duas etapas: um classificador taxonômico baseado na arquitetura Xception (DeepStoneAI), responsável por identificar o domínio litológico da chapa; e um segmentador especialista, estruturado em uma arquitetura \textit{Teacher-Student}. Este segmentador utiliza o \textit{Segment Anything Model} (SAM) para geração de anotações de alta precisão (\textit{pseudo-labeling}) que, por sua vez, alimentam o treinamento de um modelo YOLO11 focado na detecção rápida de anomalias superficiais (fissuras, oxidações e manchas). A pesquisa tem aplicação direta no setor industrial do Espírito Santo — principal polo produtor e exportador do Brasil —, alinhando-se aos conceitos da Indústria 4.0.
+O tema deste trabalho é a automação do controle de qualidade de rochas ornamentais por meio de um sistema hierárquico de Inteligência Artificial, denominado ARIA (Análise e Reconhecimento Inteligente de Anomalias). O ARIA é o \textit{pipeline} de visão computacional proposto e validado nesta pesquisa, concebido para ser o núcleo inteligente da plataforma industrial Hartheus, voltada ao controle de qualidade de chapas. Mais especificamente, a pesquisa aborda o desenvolvimento e a validação deste pipeline computacional que integra modelos de \textit{Deep Learning} em duas etapas: um classificador taxonômico baseado na arquitetura Xception (DeepStoneAI), responsável por identificar o domínio litológico da chapa; e um segmentador especialista, estruturado em uma arquitetura \textit{Teacher-Student}. Este segmentador utiliza o \textit{Segment Anything Model} (SAM) para geração de anotações de alta precisão (\textit{pseudo-labeling}) que, por sua vez, alimentam o treinamento de um modelo YOLO11 focado na detecção rápida de anomalias superficiais (fissuras, oxidações e manchas). A pesquisa tem aplicação direta no setor industrial do Espírito Santo — principal polo produtor e exportador do Brasil —, alinhando-se aos conceitos da Indústria 4.0.
 
 \section{Problema de Pesquisa}
-A inspeção de defeitos superficiais em chapas de rochas ornamentais é realizada de forma manual, dependendo da acuidade visual humana, o que a torna subjetiva, propensa a falhas e de difícil padronização. A alta variabilidade geológica das rochas dificulta o treinamento de modelos de IA generalistas, tornando a distinção entre características naturais (como veios minerais) e defeitos reais um desafio técnico de difícil parametrização. Além disso, a anotação manual de milhares de defeitos sutis para treinamento é um processo oneroso e limitante. Diante disso, formula-se a seguinte pergunta: a implementação do sistema Hartheus, um pipeline hierárquico que utiliza classificação litológica prévia para calibrar uma arquitetura \textit{Teacher-Student} (SAM e YOLO11), é capaz de automatizar a geração de anotações (\textit{pseudo-labeling}) e superar a precisão de modelos generalistas na detecção de anomalias em rochas ornamentais?
+A inspeção de defeitos superficiais em chapas de rochas ornamentais é realizada de forma manual, dependendo da acuidade visual humana, o que a torna subjetiva, propensa a falhas e de difícil padronização. A alta variabilidade geológica das rochas dificulta o treinamento de modelos de IA generalistas, tornando a distinção entre características naturais (como veios minerais) e defeitos reais um desafio técnico de difícil parametrização. Além disso, a anotação manual de milhares de defeitos sutis para treinamento é um processo oneroso e limitante. Diante disso, formula-se a seguinte pergunta: a implementação do sistema ARIA, um pipeline hierárquico que utiliza classificação litológica prévia para calibrar uma arquitetura \textit{Teacher-Student} (SAM e YOLO11), é capaz de automatizar a geração de anotações (\textit{pseudo-labeling}) e superar a precisão de modelos generalistas na detecção de anomalias em rochas ornamentais?
 
 \section{Justificativa}
 Economicamente, o projeto justifica-se pela importância de padronizar o controle de qualidade em um setor estratégico para as exportações brasileiras, garantindo uma precificação mais justa e reduzindo perdas industriais. Do ponto de vista tecnológico e acadêmico, o trabalho propõe uma solução inovadora para o gargalo da escassez de dados anotados na indústria, preenchendo uma lacuna identificada na literatura sobre a integração hierárquica entre modelos de classificação e segmentação. Ao introduzir a injeção de conhecimento de domínio na calibração do modelo SAM (Professor), o sistema automatiza a criação de \textit{datasets} de alta qualidade para o treinamento do modelo YOLO11 (Aluno). Isso permite criar um ciclo contínuo de inferência rápida em tempo real, alinhando a manufatura do setor de rochas ornamentais aos paradigmas da Indústria 4.0 de forma viável e escalável.
 
 \section{Objetivo Geral}
-Desenvolver, otimizar e validar o sistema Hartheus, um pipeline hierárquico de Inteligência Artificial para o controle de qualidade de rochas ornamentais, integrando a classificação taxonômica (DeepStoneAI) a um segmentador especialista em arquitetura \textit{Teacher-Student}, visando automatizar a detecção de anomalias superficiais e reduzir o índice de falsos positivos em comparação a abordagens generalistas.
+Desenvolver, otimizar e validar o sistema ARIA, um pipeline hierárquico de Inteligência Artificial para o controle de qualidade de rochas ornamentais, integrando a classificação taxonômica (DeepStoneAI) a um segmentador especialista em arquitetura \textit{Teacher-Student}, visando automatizar a detecção de anomalias superficiais e reduzir o índice de falsos positivos em comparação a abordagens generalistas.
 
 \section{Objetivos Específicos}
 \begin{itemize}
@@ -23,7 +23,7 @@ Desenvolver, otimizar e validar o sistema Hartheus, um pipeline hierárquico de 
 
 \chapter[FUNDAMENTAÇÃO TEÓRICA]{FUNDAMENTAÇÃO TEÓRICA}
 
-Para sustentar a proposta do sistema Hartheus, este referencial teórico aborda as bases organizacionais da adoção tecnológica e os conceitos de \textit{Deep Learning} que fundamentam a classificação hierárquica e a segmentação visual.
+Para sustentar a proposta do sistema ARIA, este referencial teórico aborda as bases organizacionais da adoção tecnológica e os conceitos de \textit{Deep Learning} que fundamentam a classificação hierárquica e a segmentação visual.
 
 \section{Automação e Sistemas de Informação no Setor de Rochas}
 A inspeção de qualidade no setor de rochas ornamentais é uma etapa crítica, tradicionalmente dependente de operadores humanos. Por ser um processo visual, ele é inerentemente subjetivo, suscetível à fadiga do trabalhador e propenso a inconsistências. Para mitigar esses problemas, a adoção de sistemas baseados em Inteligência Artificial atua como uma solução estratégica para modernizar o fluxo de trabalho. A implementação em ambientes industriais envolve dinâmicas organizacionais explicadas por Teorias de Sistemas de Informação:
@@ -42,9 +42,9 @@ Nos últimos anos, a Inteligência Artificial avançou para o paradigma dos Mode
 \section{Arquitetura Teacher-Student e Pseudo-labeling}
 O principal gargalo para a implementação de Visão Computacional na indústria é a escassez de dados anotados manualmente (\textit{Ground Truth}). Para contornar essa limitação, a literatura adota a transferência de conhecimento por meio da arquitetura \textit{Teacher-Student} acoplada à técnica de \textit{pseudo-labeling}. Nesta abordagem, um modelo robusto e de alto custo computacional atua como Professor (neste trabalho, o SAM), processando imagens brutas de forma \textit{offline} para gerar máscaras de segmentação automatizadas. Essas anotações simuladas, denominadas \textit{pseudo-labels}, são então utilizadas para supervisionar e treinar um modelo Aluno, que é estatisticamente menor, porém otimizado para inferências rápidas.
 
-\section{Inferência em Tempo Real com YOLO e Aprendizado Ativo}
+\section{Inferência em Tempo Real com YOLO}
 No ambiente industrial de manufatura contínua, onde prevalecem hardwares com restrição de memória (\textit{Edge Computing}), a velocidade de inferência é prioritária. O modelo Aluno escolhido é a arquitetura YOLO (\textit{You Only Look Once} - versão 11), que se destaca por processar extração de características (Backbone) e predição de máscaras (Head) em uma única passagem pela rede, atingindo altas taxas de quadros por segundo (FPS). 
-A integração entre os modelos encerra-se no paradigma do Aprendizado Ativo (\textit{Active Learning}). O sistema prevê um ciclo de melhoria contínua onde o YOLO, ao realizar uma predição com baixo índice de confiança em uma rocha complexa, roteia essa imagem de volta ao SAM (Professor). O SAM refina a segmentação dessa instância anômala, gerando um novo \textit{pseudo-label} de alta qualidade que será reintroduzido no próximo ciclo de treinamento, garantindo a evolução contínua da precisão do sistema Hartheus.
+Essa eficiência viabiliza a inferência em tempo real na linha de produção, requisito central para a aplicação industrial proposta.
 
 \chapter[METODOLOGIA]{METODOLOGIA}
 
@@ -54,32 +54,34 @@ A integração entre os modelos encerra-se no paradigma do Aprendizado Ativo (\t
 O presente trabalho classifica-se como uma pesquisa aplicada, de natureza experimental e abordagem mista (quantitativa e qualitativa). É aplicada pois busca resolver um problema prático do setor industrial capixaba (a subjetividade e o custo da inspeção manual de chapas de rochas ornamentais). Caracteriza-se como experimental pois envolve a manipulação de variáveis, arquiteturas de redes neurais e limiares de hiperparâmetros para observar seus efeitos nas métricas de acurácia, precisão e velocidade de inferência.
 
 \subsection{Procedimentos Metodológicos}
-O desenvolvimento do sistema Hartheus será conduzido em etapas sequenciais, garantindo a validação de cada módulo antes da integração final:
+O desenvolvimento do sistema ARIA será conduzido em etapas sequenciais, garantindo a validação de cada módulo antes da integração final:
 
 \begin{enumerate}
     \item \textbf{Coleta e Pré-processamento de Dados:} Constituição de um banco de imagens industriais reais e customizadas, garantindo a representatividade de diferentes litologias e o desbalanceamento natural de classes (anomalias sutis vs. chapas perfeitas).
     \item \textbf{Implementação do Módulo de Classificação (DeepStoneAI):} Treinamento e validação da rede Xception para classificar o domínio litológico da chapa, estabelecendo a base para a restrição de domínio da próxima etapa.
-    \item \textbf{Calibração do Professor e Geração de \textit{Pseudo-labels}:} Injeção de conhecimento de domínio no modelo \textit{Segment Anything Model} (SAM). Será utilizado um arquivo de configuração estruturado (\texttt{rock\_prompts.json}) para definir parâmetros e restrições visuais específicas de cada rocha. O SAM processará o \textit{dataset} de forma \textit{offline}, gerando as anotações automatizadas.
+    \item \textbf{Calibração do Professor e Geração de \textit{Pseudo-labels}:} Injeção de conhecimento de domínio no modelo \textit{Segment Anything Model} (SAM). Será utilizado um arquivo de configuração estruturado (\texttt{rock\_prompts.json}) para definir parâmetros e restrições visuais específicas de cada rocha. O SAM processará o \textit{dataset} de forma \textit{offline}, gerando as anotações automatizadas. Nesta versão, todas as anomalias são tratadas como uma única classe genérica (rotulagem binária), uma vez que a distinção semântica entre tipos de anomalia depende da qualidade dos \textit{embeddings} de texto, ainda não validada de forma independente; a rotulagem multiclasse fica registrada como extensão futura.
     \item \textbf{Treinamento do Aluno (YOLO11):} Alimentação do motor de inferência rápida utilizando os \textit{pseudo-labels} gerados na etapa anterior. O modelo YOLO será treinado para maximizar a taxa de quadros por segundo (FPS) e a assertividade na detecção.
-    \item \textbf{Validação e Aprendizado Ativo:} Avaliação quantitativa utilizando métricas como \textit{Mean Average Precision} (mAP) e \textit{Intersection over Union} (IoU). Implementação do loop de \textit{Active Learning}, onde predições de baixa confiança do YOLO são roteadas de volta ao SAM para refinamento e reintrodução no \textit{dataset}.
+    \item \textbf{Validação:} Avaliação quantitativa utilizando métricas como \textit{Mean Average Precision} (mAP) e \textit{Intersection over Union} (IoU), complementada pela validação qualitativa das anotações por especialistas do setor de rochas ornamentais.
 \end{enumerate}
+
+\subsection{Protocolo Experimental}
+O experimento central avalia a hipótese da especialização hierárquica por meio da comparação entre dois \textit{pipelines} treinados sobre a mesma arquitetura YOLO11-seg. No \textit{pipeline} especialista (ARIA), o classificador Xception identifica o tipo litológico e seleciona os \textit{prompts} calibrados correspondentes, resultando em \textbf{45 modelos especializados} --- um por tipo de rocha, treinado exclusivamente nas anotações daquela litologia. No \textit{pipeline} \textit{baseline} (generalista), o estágio de classificação é ausente: o SAM utiliza uma configuração genérica de \textit{prompts} para todas as rochas e um \textbf{único modelo} YOLO é treinado com as anotações de todos os tipos. A comparação isola a variável da hierarquia --- a quantidade de modelos (45 \textit{vs.} 1) e a especificidade das anotações ---, permitindo medir o ganho da abordagem especialista nas métricas de mAP e IoU.
 
 \section{Ferramentas e Tecnologias Utilizadas}
 Para a condução dos experimentos e desenvolvimento do pipeline computacional, será adotada a seguinte \textit{stack} tecnológica:
 \begin{itemize}
     \item \textbf{Linguagem e Bibliotecas:} Desenvolvimento primário em Python, utilizando o \textit{framework} PyTorch para a construção, treinamento e inferência dos tensores e modelos de \textit{Deep Learning}.
     \item \textbf{Aceleração de Hardware:} Utilização da plataforma CUDA (NVIDIA) para viabilizar o processamento paralelo em GPU, reduzindo drasticamente o tempo de treinamento dos modelos e permitindo a inferência do SAM.
-    \item \textbf{Isolamento e Controle de Ambiente:} Uso de contêineres Docker para isolar os ambientes de desenvolvimento e dependências dos modelos de IA, garantindo a reprodutibilidade do sistema.
-    \item \textbf{Anotação e Verificação:} Softwares auxiliares, como o Label Studio, poderão ser utilizados pontualmente para a verificação qualitativa por amostragem dos \textit{pseudo-labels} gerados.
+    \item \textbf{Validação Qualitativa:} Amostras dos \textit{pseudo-labels} gerados serão submetidas à avaliação de especialistas do setor de rochas ornamentais, verificando se as segmentações identificam anomalias reais do ponto de vista industrial.
 \end{itemize}
 
 \section{Elemento Visual: Arquitetura do Sistema}
-A Figura \ref{fig:arquitetura_hartheus} ilustra o fluxo de processamento e a hierarquia do sistema Hartheus, detalhando a transição desde a classificação taxonômica até o loop de aprendizado ativo entre as arquiteturas \textit{Teacher-Student}.
+A Figura \ref{fig:arquitetura_hartheus} ilustra o fluxo de processamento e a hierarquia do sistema ARIA, detalhando a transição desde a classificação taxonômica até a segmentação de anomalias pelas arquiteturas \textit{Teacher-Student}.
 
 % ATENÇÃO: Substitua 'nome_da_sua_imagem.png' pelo nome do arquivo que você fará upload no Overleaf.
 \begin{figure}[htpb]
     \centering
-    \caption{Pipeline hierárquico do sistema Hartheus: Integração do DeepStoneAI e segmentador especialista (SAM e YOLO11).}
+    \caption{Pipeline hierárquico do sistema ARIA: Integração do DeepStoneAI e segmentador especialista (SAM e YOLO11).}
     \label{fig:arquitetura_hartheus}
 \end{figure}
 
@@ -98,7 +100,7 @@ O planejamento das atividades para a concretização da pesquisa está distribu�
         Coleta e Pré-processamento do Dataset & & X & X & & & \\ \hline
         Implementação e Teste do DeepStoneAI & & & X & X & & \\ \hline
         Calibração do SAM e Geração de Labels & & & & X & X & \\ \hline
-        Treinamento YOLO11 e Loop de Validação & & & & & X & X \\ \hline
+        Treinamento e Avaliação do YOLO11 & & & & & X & X \\ \hline
         Escrita do Documento e Defesa & X & X & X & X & X & X \\ \hline
     \end{tabular}
     \label{tab:cronograma}

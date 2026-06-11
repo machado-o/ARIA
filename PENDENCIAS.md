@@ -15,18 +15,20 @@
 Correções no `Overleaf/textuais/Texto Inicial.tex` (rascunho real do TCC), pendentes desde o
 diagnóstico de 2026-06-10:
 
-- [ ] **Remover o Aprendizado Ativo do corpo do texto** (ref. teórico + passo 5 da metodologia)
-  e movê-lo para Trabalhos Futuros. Ver `decisoes.md` D8.
-- [ ] **Remover a menção a Docker** ("contêineres Docker para isolar os ambientes") — a infra
-  Docker foi removida do projeto.
-- [ ] **Alinhar nomes ARIA × Hartheus** — trocar "sistema Hartheus" por "ARIA" onde for o
-  pipeline; introduzir o Hartheus como a plataforma num parágrafo. Ver `decisoes.md` D1.
-- [ ] **Inserir o experimento central 45 × 1** (especialistas vs. generalista) na metodologia —
-  hoje ausente. Ver `decisoes.md` D3.
-- [ ] **Documentar a rotulagem binária** (`class_id=0`) como decisão deliberada na metodologia.
-  Ver `decisoes.md` D2.
-- [ ] **Trocar "Label Studio / verificação por amostragem"** por validação qualitativa por
-  especialistas. Ver `decisoes.md` D5.
+- [x] **Remover o Aprendizado Ativo do corpo do texto** (ref. teórico + passo 5 da metodologia).
+  Removido. ⚠️ **Falta** adicioná-lo à seção de Trabalhos Futuros (que ainda é stub em
+  `conclusao.tex`). Ver `decisoes.md` D8.
+- [x] **Remover a menção a Docker** — removido das Ferramentas. Ver `decisoes.md`.
+- [x] **Alinhar nomes ARIA × Hartheus** — "sistema Hartheus" → "sistema ARIA"; Hartheus
+  apresentado como a plataforma no Tema Delimitado. Ver `decisoes.md` D1.
+- [x] **Inserir o experimento central 45 × 1** — nova subseção "Protocolo Experimental" na
+  metodologia. Ver `decisoes.md` D3.
+- [x] **Documentar a rotulagem binária** (`class_id=0`) — adicionada ao passo de calibração do
+  Professor. Ver `decisoes.md` D2.
+- [x] **Trocar "Label Studio"** por validação qualitativa por especialistas. Ver `decisoes.md` D5.
+
+> Pendente relacionado: escrever a seção de **Trabalhos Futuros** (em `conclusao.tex`) contemplando
+> Aprendizado Ativo (D8), rotulagem multiclasse (D9) e integração com a plataforma Hartheus.
 
 ## 📄 Template / LaTeX (`macros.tex`, `main.tex`)
 
