@@ -30,13 +30,10 @@
 \begin{abstract}
   Surface quality control of ornamental stone slabs is still largely manual, subjective and hard to standardize. This work proposes ARIA, a hierarchical computer-vision pipeline in which a prior taxonomic classification (Xception) restricts the visual domain of a \textit{Teacher-Student} segmenter: the Segment Anything Model (SAM) generates calibrated annotations (pseudo-labels) that train specialist YOLO11-seg models. We hypothesize that this specialization reduces false positives compared to monolithic generalist models. Initial results on the \textit{ice leke} lithotype confirm that the foundation model segments relevant anomalies in a zero-shot setting when guided by lithology-calibrated prompts.
 
-  \vspace{0.3cm}\noindent\normalfont\textbf{Keywords:} computer vision; ornamental stones; anomaly segmentation; foundation models; teacher-student learning.
 \end{abstract}
 
 \begin{resumo}
-  A inspeção de anomalias superficiais em chapas de rochas ornamentais é majoritariamente manual, subjetiva e de difícil padronização. Este trabalho propõe o ARIA (Análise e Reconhecimento Inteligente de Anomalias), um \textit{pipeline} hierárquico de visão computacional: uma classificação taxonômica prévia (Xception) restringe o domínio visual de um segmentador \textit{Teacher-Student}, no qual o \textit{Segment Anything Model} (SAM) gera anotações calibradas (\textit{pseudo-labels}) que treinam modelos especialistas YOLO11-seg. A hipótese é que essa especialização reduz falsos positivos frente a modelos generalistas monolíticos. Os resultados iniciais, na litologia \textit{ice leke}, confirmam que o modelo de fundação segmenta anomalias em regime \textit{zero-shot} quando guiado por \textit{prompts} calibrados por litologia.
-
-  \vspace{0.3cm}\noindent\normalfont\textbf{Palavras-chave:} visão computacional; rochas ornamentais; segmentação de anomalias; modelos de fundação; aprendizado \textit{Teacher-Student}.
+  A inspeção de anomalias superficiais em chapas de rochas ornamentais é majoritariamente manual, subjetiva e de difícil padronização. Este trabalho propõe o ARIA (Análise e Reconhecimento Inteligente de Anomalias), um \textit{pipeline} hierárquico no qual uma classificação taxonômica prévia (Xception) restringe o domínio visual de um segmentador \textit{Teacher-Student}: o \textit{Segment Anything Model} (SAM) gera anotações calibradas (\textit{pseudo-labels}) que treinam modelos especialistas YOLO11-seg. A hipótese é que essa especialização reduz falsos positivos frente a modelos generalistas. Os resultados iniciais, na litologia \textit{ice leke}, confirmam que o SAM segmenta anomalias em regime \textit{zero-shot} quando guiado por \textit{prompts} calibrados por litologia.
 \end{resumo}
 
 \section{Introdução}
