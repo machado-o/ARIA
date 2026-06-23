@@ -128,6 +128,34 @@ O desenvolvimento do ARIA será conduzido em etapas sequenciais, validando-se ca
   \item \textbf{Validação:} avaliação quantitativa por mAP e IoU, complementada pela validação qualitativa das anotações por especialistas do setor de rochas ornamentais.
 \end{enumerate}
 
+\subsection{Calibração do SAM por Litologia}
+
+A injeção de conhecimento de domínio no Professor é operacionalizada por um arquivo de configuração (\texttt{rock\_prompts.json}) que associa, a cada litologia, um conjunto de \textit{prompts} de anomalia e um limiar de confiança próprio para cada um deles. A motivação é direta: um limiar adequado para realçar fissuras em um mármore branco tende a super-segmentar a textura de um granito escuro, produzindo falsos positivos. Calibrar \textit{prompts} e limiares por tipo de rocha é, portanto, o mecanismo concreto que converte um modelo genérico em um segmentador especializado no domínio de cada litologia.
+
+Os \textit{prompts} são expressos em linguagem natural e interpretados pelo CLIP~\cite{clip_radford2021}, que aproxima o vetor textual das regiões visualmente similares. Como o CLIP foi treinado a partir de legendas, e não de palavras isoladas, \textit{prompts} contextuais (por exemplo, \textit{crack on a stone surface}) tendem a desambiguar melhor o alvo do que termos isolados (\textit{crack}), que podem evocar contextos alheios ao domínio. A sensibilidade dos resultados à formulação dos \textit{prompts} é, ela própria, uma variável de análise prevista para as etapas quantitativas.
+
+Em vez de ajustar 45 configurações independentes a partir do zero, as litologias foram organizadas em grupos por cor e textura, que compartilham estratégias de \textit{prompt} e faixas de limiar semelhantes, com refinamentos individuais quando necessário (Tabela~\ref{tab:calibracao}). Rochas claras, por exemplo, empregam o \textit{prompt} \textit{dark patches} para oxidações --- ausente nas escuras, que em contrapartida usam \textit{light spot} --- e rochas escuras exigem limiares mais baixos para que anomalias sutis não passem despercebidas. A configuração padrão de referência, usada como ponto de partida, adota limiares de 0,1 para \textit{crack}, 0,007 para \textit{vein} e 0,3 para \textit{stain}.
+
+\begin{table}[ht]
+\centering
+\caption{Estratégias de calibração de \textit{prompts} e limiares por grupo de litologia.}
+\label{tab:calibracao}
+\begin{tabular}{l p{8cm}}
+\hline
+\textbf{Grupo} & \textbf{Ajuste característico} \\
+\hline
+Brancas / claras & Incluem \textit{dark patches}; limiares próximos do padrão \\
+Escuras & Usam \textit{light spot} no lugar de \textit{dark patches}; limiares mais baixos (ex.: 0,05 e 0,01) \\
+Amarelas / bege & Grupo intermediário; incluem \textit{dark patches} \\
+Verdes / quartzitos & Sem \textit{dark patches}; \textit{crack} entre 0,06 e 0,08 \\
+Coloridas (vermelhas) & Incluem \textit{light spot}; \textit{crack} em 0,07 \\
+Especiais & Configurações individuais, próximas do padrão \\
+\hline
+\end{tabular}
+\end{table}
+
+A seleção da imagem representativa de cada litologia, sobre a qual a calibração é conduzida, é feita \textbf{manualmente}. Trata-se de uma decisão metodológica deliberada: empregar o próprio SAM para escolher a imagem de calibração configuraria raciocínio circular, enviesando a avaliação do modelo a partir de uma amostra que ele mesmo selecionou. Para cada litologia, ajusta-se a configuração e executa-se a inferência de forma iterativa, inspecionando as máscaras resultantes até que a segmentação seja considerada satisfatória; as anotações finais são exportadas como polígonos no formato de segmentação do YOLO (coordenadas normalizadas).
+
 \subsection{Protocolo Experimental}
 
 O experimento central avalia a hipótese da especialização hierárquica comparando dois \textit{pipelines} treinados sobre a mesma arquitetura YOLO11-seg. No \textit{pipeline} especialista (ARIA), o classificador Xception identifica o tipo litológico e seleciona os \textit{prompts} calibrados correspondentes, resultando em \textbf{45 modelos especializados} --- um por tipo de rocha, treinado exclusivamente nas anotações daquela litologia. No \textit{pipeline} \textit{baseline} (generalista), o estágio de classificação é ausente: o SAM usa uma configuração genérica de \textit{prompts} para todas as rochas e um \textbf{único modelo} YOLO é treinado com as anotações de todos os tipos. A comparação isola a variável da hierarquia --- a quantidade de modelos (45 \textit{vs.} 1) e a especificidade das anotações ---, permitindo medir o ganho da abordagem especialista.
