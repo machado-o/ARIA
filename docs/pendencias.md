@@ -6,9 +6,28 @@
 >
 > Abra a sessão lendo `CLAUDE.md` + este arquivo.
 >
-> Última atualização: 2026-06-10
+> Última atualização: 2026-06-23
 
 ---
+
+## 📰 Artigo SBC (entrega PD1) — `Overleaf/artigo/`
+
+Entrega do Projeto de Diplomação I: artigo científico completo no template SBC (10–12
+páginas). Estrutura criada portando o conteúdo de `Overleaf/TCC/textuais/Texto Inicial.tex`.
+O `Overleaf/` agora tem duas pastas: **`TCC/`** (monografia) e **`artigo/`** (SBC).
+
+- [ ] **Re-apontar o "main document" no Overleaf** para `artigo/main.tex` após dar `pull`
+  (a reestruturação de pastas foi feita no Git local).
+- [ ] **Compilar no Overleaf** — não há LaTeX local; validar que `subfig`, `sbc-template` e a
+  bibliografia fecham sem erro.
+- [ ] **Nome completo do autor** — `main.tex` tem `Henrique \textsc{[Sobrenome --- TODO]}`.
+- [ ] **E-mail institucional** (hoje o pessoal como placeholder).
+- [x] **Diagrama da arquitetura** — feito em TikZ (vetorial) em `\label{fig:arquitetura}`.
+- [x] **Bibliografia:** `referencias.bib` consolidada com as refs reais dos `.bib` anteriores do
+  grupo (`Bibliografia.bib`, `ifacconf.bib`) + canônicas (SAM, CLIP, KD, pseudo-label). Todas as
+  chaves citadas batem com o `.bib`; placeholders TODO eliminados.
+- [ ] **Apagar os `.bib` temporários da raiz** (`Bibliografia.bib`, `ifacconf.bib`) após confirmar
+  que tudo necessário foi migrado para `Overleaf/artigo/referencias.bib`.
 
 ## ✍️ Escrita / `.tex` — alinhar com as decisões
 
