@@ -16,17 +16,17 @@ A escrita do TCC acontece **direto aqui** (LaTeX em `Overleaf/`, sincronizado co
 
 Cada fato mora em **um** lugar só (princípio DRY). Antes de escrever/codar, consultar a fonte:
 
-| Preciso de... | Fonte única |
-|---|---|
-| Decisões metodológicas fechadas (rotulagem, baseline, AL, identidade...) | [`docs/decisoes.md`](docs/decisoes.md) |
-| Como o sistema funciona (técnico) | [`docs/arquitetura.md`](docs/arquitetura.md) |
-| Dataset, 45 classes, anomalias, calibração | [`docs/dataset.md`](docs/dataset.md) |
-| Argumento acadêmico, hipótese, métricas, capítulos | [`docs/pontos-tcc.md`](docs/pontos-tcc.md) |
-| **Como escrever o TCC** (cláusulas, estilo, fluxo) | [`docs/diretrizes-escrita.md`](docs/diretrizes-escrita.md) |
-| **Como mexer no código** (cláusulas, gotchas, disciplina) | [`docs/diretrizes-implementacao.md`](docs/diretrizes-implementacao.md) |
-| Estado vivo + próximos passos | [`roadmap.md`](docs/roadmap.md) |
-| Pendências soltas (corrigir/escrever) | [`pendencias.md`](docs/pendencias.md) |
-| Contexto da plataforma Hartheus e branches | [`Hartheus.md`](Hartheus.md) |
+| Preciso de...                                                              | Fonte única                                                          |
+| -------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| Decisões metodológicas fechadas (rotulagem, baseline, AL, identidade...) | [`docs/decisoes.md`](docs/decisoes.md)                                 |
+| Como o sistema funciona (técnico)                                         | [`docs/arquitetura.md`](docs/arquitetura.md)                           |
+| Dataset, 45 classes, anomalias, calibração                               | [`docs/dataset.md`](docs/dataset.md)                                   |
+| Argumento acadêmico, hipótese, métricas, capítulos                     | [`docs/pontos-tcc.md`](docs/pontos-tcc.md)                             |
+| **Como escrever o TCC** (cláusulas, estilo, fluxo)                  | [`docs/diretrizes-escrita.md`](docs/diretrizes-escrita.md)             |
+| **Como mexer no código** (cláusulas, gotchas, disciplina)          | [`docs/diretrizes-implementacao.md`](docs/diretrizes-implementacao.md) |
+| Estado vivo + próximos passos                                             | [`roadmap.md`](docs/roadmap.md)                                        |
+| Pendências soltas (corrigir/escrever)                                     | [`pendencias.md`](docs/pendencias.md)                                  |
+| Contexto da plataforma Hartheus e branches                                 | [`Hartheus.md`](Hartheus.md)                                           |
 
 ---
 

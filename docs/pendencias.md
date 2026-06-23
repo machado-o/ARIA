@@ -22,8 +22,8 @@ O `Overleaf/` agora tem duas pastas: **`TCC/`** (monografia) e **`artigo/`** (SB
   bibliografia fecham sem erro.
 - [ ] **Nome completo do autor** — `main.tex` tem `Henrique \textsc{[Sobrenome --- TODO]}`.
 - [ ] **E-mail institucional** (hoje o pessoal como placeholder).
-- [x] **Diagrama da arquitetura** — feito em TikZ (vetorial) em `\label{fig:arquitetura}`.
-- [x] **Bibliografia:** `referencias.bib` consolidada com as refs reais dos `.bib` anteriores do
+- [X] **Diagrama da arquitetura** — feito em TikZ (vetorial) em `\label{fig:arquitetura}`.
+- [X] **Bibliografia:** `referencias.bib` consolidada com as refs reais dos `.bib` anteriores do
   grupo (`Bibliografia.bib`, `ifacconf.bib`) + canônicas (SAM, CLIP, KD, pseudo-label). Todas as
   chaves citadas batem com o `.bib`; placeholders TODO eliminados.
 - [ ] **Apagar os `.bib` temporários da raiz** (`Bibliografia.bib`, `ifacconf.bib`) após confirmar
@@ -34,17 +34,17 @@ O `Overleaf/` agora tem duas pastas: **`TCC/`** (monografia) e **`artigo/`** (SB
 Correções no `Overleaf/textuais/Texto Inicial.tex` (rascunho real do TCC), pendentes desde o
 diagnóstico de 2026-06-10:
 
-- [x] **Remover o Aprendizado Ativo do corpo do texto** (ref. teórico + passo 5 da metodologia).
+- [X] **Remover o Aprendizado Ativo do corpo do texto** (ref. teórico + passo 5 da metodologia).
   Removido. ⚠️ **Falta** adicioná-lo à seção de Trabalhos Futuros (que ainda é stub em
   `conclusao.tex`). Ver `decisoes.md` D8.
-- [x] **Remover a menção a Docker** — removido das Ferramentas. Ver `decisoes.md`.
-- [x] **Alinhar nomes ARIA × Hartheus** — "sistema Hartheus" → "sistema ARIA"; Hartheus
+- [X] **Remover a menção a Docker** — removido das Ferramentas. Ver `decisoes.md`.
+- [X] **Alinhar nomes ARIA × Hartheus** — "sistema Hartheus" → "sistema ARIA"; Hartheus
   apresentado como a plataforma no Tema Delimitado. Ver `decisoes.md` D1.
-- [x] **Inserir o experimento central 45 × 1** — nova subseção "Protocolo Experimental" na
+- [X] **Inserir o experimento central 45 × 1** — nova subseção "Protocolo Experimental" na
   metodologia. Ver `decisoes.md` D3.
-- [x] **Documentar a rotulagem binária** (`class_id=0`) — adicionada ao passo de calibração do
+- [X] **Documentar a rotulagem binária** (`class_id=0`) — adicionada ao passo de calibração do
   Professor. Ver `decisoes.md` D2.
-- [x] **Trocar "Label Studio"** por validação qualitativa por especialistas. Ver `decisoes.md` D5.
+- [X] **Trocar "Label Studio"** por validação qualitativa por especialistas. Ver `decisoes.md` D5.
 
 > Pendente relacionado: escrever a seção de **Trabalhos Futuros** (em `conclusao.tex`) contemplando
 > Aprendizado Ativo (D8), rotulagem multiclasse (D9) e integração com a plataforma Hartheus.
