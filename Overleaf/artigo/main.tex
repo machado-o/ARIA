@@ -9,9 +9,6 @@
 \usepackage{tikz}
 \usetikzlibrary{positioning, arrows.meta, fit}
 
-% Legendas centralizadas (o sbc-template ja carrega o pacote caption).
-\captionsetup{justification=centering}
-
 \sloppy
 
 \title{ARIA: Pipeline Hierárquico \textit{Teacher-Student} para a\\
@@ -31,13 +28,13 @@
 \maketitle
 
 \begin{abstract}
-  Surface quality control of ornamental stone slabs is still largely manual, making it subjective, prone to fatigue and hard to standardize. This work proposes ARIA, a hierarchical computer-vision pipeline in which a prior taxonomic classification (Xception) restricts the visual domain of a \textit{Teacher-Student} segmenter: the Segment Anything Model (SAM) generates calibrated annotations (pseudo-labels) that train specialist YOLO11-seg models. We hypothesize that domain-restricted specialist models reduce false positives compared to monolithic generalist ones. Initial results, obtained on the \textit{ice leke} lithotype, confirm that the foundation model segments relevant anomalies in a zero-shot setting when guided by lithology-calibrated prompts.
+  Surface quality control of ornamental stone slabs is still largely manual, subjective and hard to standardize. This work proposes ARIA, a hierarchical computer-vision pipeline in which a prior taxonomic classification (Xception) restricts the visual domain of a \textit{Teacher-Student} segmenter: the Segment Anything Model (SAM) generates calibrated annotations (pseudo-labels) that train specialist YOLO11-seg models. We hypothesize that this specialization reduces false positives compared to monolithic generalist models. Initial results on the \textit{ice leke} lithotype confirm that the foundation model segments relevant anomalies in a zero-shot setting when guided by lithology-calibrated prompts.
 
   \vspace{0.3cm}\noindent\normalfont\textbf{Keywords:} computer vision; ornamental stones; anomaly segmentation; foundation models; teacher-student learning.
 \end{abstract}
 
 \begin{resumo}
-  O controle de qualidade superficial de chapas de rochas ornamentais ainda é majoritariamente manual, o que o torna subjetivo, sujeito à fadiga e de difícil padronização. Este trabalho propõe o ARIA (Análise e Reconhecimento Inteligente de Anomalias), um \textit{pipeline} hierárquico de visão computacional no qual uma classificação taxonômica prévia (Xception) restringe o domínio visual de um segmentador \textit{Teacher-Student}: o \textit{Segment Anything Model} (SAM) gera anotações calibradas (\textit{pseudo-labels}) que treinam modelos especialistas YOLO11-seg. A hipótese é que modelos especialistas, com domínio restrito, reduzem falsos positivos frente a modelos generalistas monolíticos. Os resultados iniciais, obtidos na litologia \textit{ice leke}, confirmam que o modelo de fundação segmenta anomalias relevantes em regime \textit{zero-shot} quando guiado por \textit{prompts} calibrados por litologia.
+  A inspeção de anomalias superficiais em chapas de rochas ornamentais é majoritariamente manual, subjetiva e de difícil padronização. Este trabalho propõe o ARIA (Análise e Reconhecimento Inteligente de Anomalias), um \textit{pipeline} hierárquico de visão computacional: uma classificação taxonômica prévia (Xception) restringe o domínio visual de um segmentador \textit{Teacher-Student}, no qual o \textit{Segment Anything Model} (SAM) gera anotações calibradas (\textit{pseudo-labels}) que treinam modelos especialistas YOLO11-seg. A hipótese é que essa especialização reduz falsos positivos frente a modelos generalistas monolíticos. Os resultados iniciais, na litologia \textit{ice leke}, confirmam que o modelo de fundação segmenta anomalias em regime \textit{zero-shot} quando guiado por \textit{prompts} calibrados por litologia.
 
   \vspace{0.3cm}\noindent\normalfont\textbf{Palavras-chave:} visão computacional; rochas ornamentais; segmentação de anomalias; modelos de fundação; aprendizado \textit{Teacher-Student}.
 \end{resumo}
@@ -156,7 +153,7 @@ Como o \textit{ground truth} é gerado pelo próprio SAM, sem anotação humana 
 
 \subsection{Ferramentas e Tecnologias}
 
-O desenvolvimento utiliza Python com o \textit{framework} PyTorch~\cite{pytorch_paszke2019} para construção, treinamento e inferência dos modelos, e a plataforma CUDA (NVIDIA) para processamento paralelo em GPU. A Figura~\ref{fig:arquitetura} ilustra o fluxo hierárquico do ARIA, da classificação taxonômica à segmentação pelas arquiteturas \textit{Teacher-Student}.
+O desenvolvimento utiliza Python com o \textit{framework} PyTorch~\cite{pytorch_paszke2019} para construção, treinamento e inferência dos modelos, e a plataforma CUDA (NVIDIA) para processamento paralelo em GPU. A Figura~\ref{fig:arquitetura}, elaborada pelo autor, ilustra o fluxo hierárquico do ARIA, da classificação taxonômica à segmentação pelas arquiteturas \textit{Teacher-Student}.
 
 \begin{figure}[ht]
   \centering
@@ -187,7 +184,7 @@ O desenvolvimento utiliza Python com o \textit{framework} PyTorch~\cite{pytorch_
   \caption{\textit{Pipeline} hierárquico do ARIA: a classificação taxonômica
     (Xception) restringe o domínio visual do segmentador especialista
     \textit{Teacher-Student} (SAM gera as anotações que treinam os modelos
-    YOLO11).\\ Fonte: elaborado pelo autor.}
+    YOLO11).}
   \label{fig:arquitetura}
 \end{figure}
 
@@ -229,7 +226,7 @@ O foco atual do desenvolvimento está na etapa do segmentador especialista, mais
     \includegraphics[width=0.45\textwidth]{figuras/sample_ice_leke_combined.jpg}}
   \caption{Segmentação automatizada de anomalias gerada pelo SAM na rocha
     \textit{ice leke}: imagem original (a) e máscaras de anomalias sobrepostas
-    (b).\\ Fonte: elaborado pelo autor.}
+    (b).}
   \label{fig:resultado_combined}
 \end{figure}
 
@@ -251,7 +248,7 @@ Cada \textit{prompt} calibrado atua sobre um tipo específico de irregularidade.
   \subfloat[\textit{Dark patches} (áreas escuras)\label{subfig:darkpatches}]{%
     \includegraphics[width=0.45\textwidth]{figuras/sample_ice_leke_darkpatches.jpg}}
   \caption{Decomposição das anotações do SAM por tipo de anomalia na rocha
-    \textit{ice leke}.\\ Fonte: elaborado pelo autor.}
+    \textit{ice leke}.}
   \label{fig:resultado_decomposto}
 \end{figure}
 
