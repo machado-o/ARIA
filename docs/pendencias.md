@@ -26,6 +26,11 @@ completo, em conformidade com o SBC e compilando (~11 páginas); segue só refin
 - [x] **Bibliografia** (`referencias.bib`) — consolidada das `.bib` do grupo + canônicas; 32 refs,
   todas citadas (1:1). `.bib` temporários da raiz já apagados.
 - [ ] **Refino de texto** — leitura parágrafo a parágrafo com o Henrique (em andamento).
+- [ ] **🎤 Apresentação final** — a entrega de PD1 inclui uma apresentação (proposta, metodologia,
+  desenvolvimento, resultados) e é **critério de nota**. Ainda não iniciada — só o artigo foi feito.
+- [ ] **Conferir contagem final** após as últimas adições (problema, calibração, contribuição):
+  artigo ≤ 12 páginas; abstract e resumo ≤ 10 linhas cada.
+- [ ] **Validar refs canônicas** que o Claude inseriu (ano/venue de SAM, CLIP, KD, pseudo-label).
 
 ## ✍️ Escrita / `.tex` — alinhar com as decisões
 
