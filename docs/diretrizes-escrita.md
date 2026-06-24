@@ -3,7 +3,7 @@
 > Contrato de comportamento para a escrita do TCC em LaTeX (Overleaf, sincronizado via Git).
 > Cláusulas numeradas. Em caso de conflito, **o que o Henrique disser na conversa vence.**
 >
-> Última atualização: 2026-06-11
+> Última atualização: 2026-06-24
 
 ---
 
@@ -61,18 +61,22 @@ consultar lá antes de escrever.
 
 ## 4. Formato LaTeX
 
-4.1. Saída em **LaTeX puro** pronto pro Overleaf — sem markdown, sem blocos ` ```latex `. Usar
-os comandos/ambientes do template (`iftex.cls`, macros em `macros.tex`).
+4.1. **Dois alvos, dois templates.** A monografia (`Overleaf/TCC/`) usa `iftex.cls` + `macros.tex`
+e citações `abntex2-alf`. O artigo SBC (`Overleaf/artigo/`) usa `sbc-template.sty` + `sbc.bst` e
+citações com `\cite` — **nunca** `\citeonline` (não existe no SBC; quebra a compilação). Detalhes e
+gotchas do artigo em `artigo-sbc.md`. Saída sempre em **LaTeX puro** pronto pro Overleaf — sem
+markdown, sem blocos ` ```latex `.
 
 4.2. Citações como `\cite{TODO-chave}` quando a referência ainda não existe no `.bib`; o
 Henrique preenche depois (ou pedimos pra popular `bibliografia.bib`).
 
 4.3. Fórmulas e métricas (mAP, IoU, FPS) viram `\begin{equation}` formal.
 
-4.4. Antes de escrever uma seção nova, conferir o trecho correspondente do template
-(`Overleaf/textuais/`, `pre_textuais/`, etc.) para casar com a estrutura existente.
+4.4. Antes de escrever uma seção nova, conferir o trecho correspondente da entrega
+(`Overleaf/TCC/textuais/`, `Overleaf/TCC/pre_textuais/`, ou `Overleaf/artigo/main.tex`) para casar
+com a estrutura existente.
 
-4.5. **Mecânica de citação (abntex2-alf, autor-data):** usar `\citeonline{chave}` quando o autor
+4.5. **Mecânica de citação na monografia (abntex2-alf, autor-data):** usar `\citeonline{chave}` quando o autor
 é sujeito da frase ("segundo \citeonline{...}, ...") e `\cite{chave}` para citação parentética
 ao fim da ideia. Citação direta com mais de três linhas vai em ambiente de recuo, sem aspas; até
 três linhas, entre aspas no corpo. Enquanto a referência não existe no `.bib`, usar
@@ -124,8 +128,8 @@ necessidade. (O título atual usa "avarias"; alinhar quando revisarmos o título
 plataforma. Nunca chamar o pipeline de "Hartheus".
 
 7.3. **Siglas:** definir por extenso na primeira ocorrência, com a sigla entre parênteses —
-"Redes Neurais Convolucionais (CNN)" — e usar só a sigla depois. Registrar cada sigla em
-`../Overleaf/pre_textuais/siglas.tex`.
+"Redes Neurais Convolucionais (CNN)" — e usar só a sigla depois. Na monografia, registrar cada
+sigla em `../Overleaf/TCC/pre_textuais/siglas.tex` (o artigo SBC não usa lista de siglas).
 
 7.4. **Estrangeirismos:** termos em língua estrangeira sempre em itálico (`\textit{}`) —
 \textit{Deep Learning}, \textit{pseudo-labels}, \textit{crack}, \textit{Edge Computing}.

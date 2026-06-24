@@ -6,32 +6,30 @@
 >
 > Abra a sessão lendo `CLAUDE.md` + este arquivo.
 >
-> Última atualização: 2026-06-23
+> Última atualização: 2026-06-24
 
 ---
 
 ## 📰 Artigo SBC (entrega PD1) — `Overleaf/artigo/`
 
 Entrega do Projeto de Diplomação I: artigo científico completo no template SBC (10–12
-páginas). Estrutura criada portando o conteúdo de `Overleaf/TCC/textuais/Texto Inicial.tex`.
-O `Overleaf/` agora tem duas pastas: **`TCC/`** (monografia) e **`artigo/`** (SBC).
+páginas). Estrutura, status e gotchas do template → **[`artigo-sbc.md`](artigo-sbc.md)**.
+O `Overleaf/` tem duas pastas: **`TCC/`** (monografia) e **`artigo/`** (SBC). O artigo está
+completo, em conformidade com o SBC e compilando (~11 páginas); segue só refino de texto.
 
-- [ ] **Re-apontar o "main document" no Overleaf** para `artigo/main.tex` após dar `pull`
-  (a reestruturação de pastas foi feita no Git local).
-- [ ] **Compilar no Overleaf** — não há LaTeX local; validar que `subfig`, `sbc-template` e a
-  bibliografia fecham sem erro.
-- [ ] **Nome completo do autor** — `main.tex` tem `Henrique \textsc{[Sobrenome --- TODO]}`.
-- [ ] **E-mail institucional** (hoje o pessoal como placeholder).
-- [X] **Diagrama da arquitetura** — feito em TikZ (vetorial) em `\label{fig:arquitetura}`.
-- [X] **Bibliografia:** `referencias.bib` consolidada com as refs reais dos `.bib` anteriores do
-  grupo (`Bibliografia.bib`, `ifacconf.bib`) + canônicas (SAM, CLIP, KD, pseudo-label). Todas as
-  chaves citadas batem com o `.bib`; placeholders TODO eliminados.
-- [ ] **Apagar os `.bib` temporários da raiz** (`Bibliografia.bib`, `ifacconf.bib`) após confirmar
-  que tudo necessário foi migrado para `Overleaf/artigo/referencias.bib`.
+- [x] **Main document re-apontado / sync resolvido** — conflito Overleaf↔GitHub resolvido; projeto
+  compila a partir de `artigo/main.tex`.
+- [x] **Compila no Overleaf** (~11 páginas); `subfig`, `sbc-template` e bibliografia fecham.
+- [x] **Autoria** — Henrique Machado de Oliveira; orientador Everson Scherrer Borges; e-mails
+  pessoais dos dois no cabeçalho (decisão: sem institucional).
+- [x] **Diagrama da arquitetura** — feito em TikZ (vetorial) em `\label{fig:arquitetura}`.
+- [x] **Bibliografia** (`referencias.bib`) — consolidada das `.bib` do grupo + canônicas; 32 refs,
+  todas citadas (1:1). `.bib` temporários da raiz já apagados.
+- [ ] **Refino de texto** — leitura parágrafo a parágrafo com o Henrique (em andamento).
 
 ## ✍️ Escrita / `.tex` — alinhar com as decisões
 
-Correções no `Overleaf/textuais/Texto Inicial.tex` (rascunho real do TCC), pendentes desde o
+Correções no `Overleaf/TCC/textuais/Texto Inicial.tex` (rascunho real do TCC), pendentes desde o
 diagnóstico de 2026-06-10:
 
 - [X] **Remover o Aprendizado Ativo do corpo do texto** (ref. teórico + passo 5 da metodologia).
@@ -49,7 +47,7 @@ diagnóstico de 2026-06-10:
 > Pendente relacionado: escrever a seção de **Trabalhos Futuros** (em `conclusao.tex`) contemplando
 > Aprendizado Ativo (D8), rotulagem multiclasse (D9) e integração com a plataforma Hartheus.
 
-## 📄 Template / LaTeX (`macros.tex`, `main.tex`)
+## 📄 Template / LaTeX da monografia (`Overleaf/TCC/`)
 
 - [ ] Corrigir typo do título: **"Convulacionais" → "Convolucionais"**.
 - [ ] Decidir/fixar o título definitivo (há 4 alternativas comentadas em `macros.tex`).
@@ -63,9 +61,12 @@ diagnóstico de 2026-06-10:
 - [ ] Deletar `Overleaf/textuais/testes.tex` (demo do template) quando não for mais útil.
 - [ ] Inserir a figura da arquitetura do pipeline (placeholder em `\label{fig:arquitetura_hartheus}`).
 
-## 📚 Bibliografia
+## 📚 Bibliografia da monografia (`Overleaf/TCC/`)
 
-- [ ] `bibliografia.bib` está **vazio**; só `bibliografiaTeste.bib` tem entradas (genéricas).
+> O artigo SBC já tem sua bibliografia pronta (`Overleaf/artigo/referencias.bib`). Os itens abaixo
+> são da **monografia**.
+
+- [ ] `Overleaf/TCC/bibliografia.bib` está **vazio**; só `bibliografiaTeste.bib` tem entradas (genéricas).
 - [ ] Adicionar referências do domínio: **SAM, YOLO, Xception, CLIP, Teacher-Student/Knowledge
   Distillation, Indústria 4.0, TAM, Difusão de Inovações, inspeção visual automatizada (AVI)**.
 

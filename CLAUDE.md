@@ -8,7 +8,7 @@ Guia de entrada para o Claude Code neste repositório. **Leia este arquivo + [`p
 
 Arquitetura: Xception (classifica tipo litológico) → SAM3 com prompts calibrados por tipo (gera anotações) → YOLO11-seg × 45 modelos especialistas (inferência rápida em produção). Esta branch cobre a fase do **SAM3 como professor**: gerar anotações poligonais que depois treinam o YOLO.
 
-A escrita do TCC acontece **direto aqui** (LaTeX em `Overleaf/`, sincronizado com o Overleaf via Git) — não mais via Claude App.
+A escrita acontece **direto aqui** (LaTeX em `Overleaf/`, sincronizado com o Overleaf via Git). O `Overleaf/` separa as entregas em **`TCC/`** (monografia, template IFES `iftex.cls`) e **`artigo/`** (artigo científico SBC da disciplina PD1 — ver `docs/artigo-sbc.md`).
 
 ---
 
@@ -23,6 +23,7 @@ Cada fato mora em **um** lugar só (princípio DRY). Antes de escrever/codar, co
 | Dataset, 45 classes, anomalias, calibração                               | [`docs/dataset.md`](docs/dataset.md)                                   |
 | Argumento acadêmico, hipótese, métricas, capítulos                     | [`docs/pontos-tcc.md`](docs/pontos-tcc.md)                             |
 | **Como escrever o TCC** (cláusulas, estilo, fluxo)                  | [`docs/diretrizes-escrita.md`](docs/diretrizes-escrita.md)             |
+| **Artigo SBC (PD1)**: estrutura, status, gotchas do template               | [`docs/artigo-sbc.md`](docs/artigo-sbc.md)                            |
 | **Como mexer no código** (cláusulas, gotchas, disciplina)          | [`docs/diretrizes-implementacao.md`](docs/diretrizes-implementacao.md) |
 | Estado vivo + próximos passos                                             | [`roadmap.md`](docs/roadmap.md)                                        |
 | Pendências soltas (corrigir/escrever)                                     | [`pendencias.md`](docs/pendencias.md)                                  |
