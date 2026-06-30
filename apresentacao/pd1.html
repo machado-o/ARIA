@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ARIA — Apresentação PD1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100,500;100,600;100,700;100,800;125,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --graphite:#15181C;
+    --graphite-soft:#20252B;
+    --graphite-line:rgba(255,255,255,.13);
+    --marble:#F2F2EE;
+    --panel:#FBFBF9;
+    --ink:#1A1D21;
+    --ink-soft:#5B616A;
+    --ink-faint:#949aa2;
+    --line:#DCDBD3;
+    --teal:#0C8C84;
+    --teal-bright:#34D6C8;
+    --amber:#CF7A22;
+    --dark-text:#ECECE7;
+    --dark-text-soft:#A7ADB3;
+
+    --f-display:"Archivo", system-ui, "Segoe UI", Roboto, sans-serif;
+    --f-body:"IBM Plex Sans", system-ui, "Segoe UI", Roboto, sans-serif;
+    --f-mono:"IBM Plex Mono", "Cascadia Code", Consolas, monospace;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  html,body{ height:100%; }
+  body{
+    font-family:var(--f-body);
+    background:var(--graphite);
+    color:var(--ink);
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  /* ---------- stage / scaling ---------- */
+  .viewport{
+    position:fixed; inset:0;
+    display:grid; place-items:center;
+    background:
+      radial-gradient(120% 120% at 50% -20%, #1c2127 0%, var(--graphite) 60%);
+    overflow:hidden;
+  }
+  .stage{
+    width:1280px; height:720px;
+    position:relative;
+    transform-origin:center center;
+    box-shadow:0 40px 120px -30px rgba(0,0,0,.7);
+  }
+
+  /* ---------- slide base ---------- */
+  .slide{
+    position:absolute; inset:0;
+    padding:62px 72px 58px;
+    background:var(--marble);
+    color:var(--ink);
+    --accent:var(--teal);
+    opacity:0; visibility:hidden;
+    transform:translateY(14px) scale(.992);
+    transition:opacity .5s ease, transform .5s ease, visibility .5s;
+    display:flex; flex-direction:column;
+    overflow:hidden;
+  }
+  .slide.active{ opacity:1; visibility:visible; transform:none; }
+  .slide--dark{
+    background:
+      linear-gradient(160deg, #181c21 0%, var(--graphite) 55%, #11141799 100%);
+    color:var(--dark-text);
+    --accent:var(--teal-bright);
+  }
+
+  /* ---------- header band (content slides) ---------- */
+  .head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:24px; margin-bottom:6px;
+  }
+  .eyebrow{
+    font-family:var(--f-mono); font-size:15px; font-weight:500;
+    letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent);
+  }
+  .stagetag{
+    font-family:var(--f-mono); font-size:14px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--ink-faint);
+  }
+  .slide--dark .stagetag{ color:var(--dark-text-soft); }
+
+  h1.title{
+    font-family:var(--f-display); font-weight:700;
+    font-size:50px; line-height:1.04; letter-spacing:-.015em;
+    margin-top:14px; max-width:23ch;
+  }
+  h1.title .em{ color:var(--accent); }
+  .rule{
+    width:74px; height:5px; background:var(--accent);
+    border-radius:3px; margin:20px 0 26px;
+  }
+
+  .body{ flex:1; min-height:0; display:flex; flex-direction:column; }
+
+  /* ---------- reusable type ---------- */
+  .lead{ font-size:25px; line-height:1.45; color:var(--ink); max-width:30ch; }
+  .mono{ font-family:var(--f-mono); }
+  .muted{ color:var(--ink-soft); }
+  .slide--dark .muted{ color:var(--dark-text-soft); }
+
+  ul.points{ list-style:none; display:flex; flex-direction:column; gap:20px; }
+  ul.points li{
+    position:relative; padding-left:34px;
+    font-size:24px; line-height:1.4; max-width:34ch;
+  }
+  ul.points li::before{
+    content:""; position:absolute; left:0; top:.62em;
+    width:13px; height:13px; border-radius:3px;
+    background:var(--accent); transform:rotate(45deg);
+  }
+  ul.points li b{ font-weight:600; }
+
+  /* ---------- two column ---------- */
+  .cols{ display:grid; grid-template-columns:1.05fr .95fr; gap:46px; flex:1; min-height:0; align-items:center; }
+  .cols--even{ grid-template-columns:1fr 1fr; }
+
+  /* ---------- cards ---------- */
+  .cardrow{ display:grid; gap:24px; flex:1; align-content:center; }
+  .cardrow--3{ grid-template-columns:repeat(3,1fr); }
+  .cardrow--2{ grid-template-columns:repeat(2,1fr); }
+  .card{
+    background:var(--panel); border:1px solid var(--line);
+    border-radius:14px; padding:28px 26px;
+    display:flex; flex-direction:column; gap:12px; height:100%;
+    box-shadow:0 1px 0 rgba(0,0,0,.02);
+  }
+  .card .tag{
+    font-family:var(--f-mono); font-size:13px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--accent);
+  }
+  .card h3{ font-family:var(--f-display); font-weight:700; font-size:26px; letter-spacing:-.01em; }
+  .card p{ font-size:19px; line-height:1.42; color:var(--ink-soft); }
+  .card .big{ font-family:var(--f-display); font-weight:800; font-size:40px; color:var(--ink); letter-spacing:-.02em; }
+
+  /* ---------- aside stat ---------- */
+  .aside{
+    border-left:3px solid var(--accent); padding:6px 0 6px 24px;
+  }
+  .aside .num{ font-family:var(--f-display); font-weight:800; font-size:40px; letter-spacing:-.02em; line-height:1; }
+  .aside .cap{ font-size:18px; color:var(--ink-soft); margin-top:10px; max-width:24ch; }
+
+  /* ---------- cover ---------- */
+  .cover{ justify-content:center; }
+  .cover .toprow{
+    position:absolute; top:54px; left:72px; right:72px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .cover .corner{ position:absolute; width:26px; height:26px; border:2px solid var(--graphite-line); }
+  .corner.tl{ top:40px; left:40px; border-right:0; border-bottom:0; }
+  .corner.tr{ top:40px; right:40px; border-left:0; border-bottom:0; }
+  .corner.bl{ bottom:40px; left:40px; border-right:0; border-top:0; }
+  .corner.br{ bottom:40px; right:40px; border-left:0; border-top:0; }
+  .wordmark{
+    font-family:var(--f-display); font-weight:800; font-stretch:125%;
+    font-size:128px; letter-spacing:.14em; line-height:.9;
+    color:var(--dark-text);
+  }
+  .wordmark .dot{ color:var(--teal-bright); }
+  .cover .veinline{ width:340px; height:4px; background:var(--teal-bright); margin:26px 0 22px; opacity:.9; }
+  .cover .expand{ font-family:var(--f-mono); font-size:16px; letter-spacing:.34em; text-transform:uppercase; color:var(--dark-text-soft); }
+  .cover .ctitle{
+    font-family:var(--f-display); font-weight:600; font-size:31px; line-height:1.22;
+    color:var(--dark-text); margin-top:30px; max-width:26ch;
+  }
+  .cover .authors{ margin-top:42px; display:flex; gap:54px; }
+  .cover .authors .who{ font-size:20px; }
+  .cover .authors .lbl{ font-family:var(--f-mono); font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:var(--teal-bright); margin-bottom:6px; }
+
+  /* ---------- divider (dark, big statement) ---------- */
+  .divider{ justify-content:center; }
+  .divider .q{
+    font-family:var(--f-display); font-weight:700; font-size:46px; line-height:1.18;
+    letter-spacing:-.015em; max-width:24ch;
+  }
+  .divider .q .em{ color:var(--teal-bright); }
+  .hbox{
+    margin-top:46px; border:1px solid var(--graphite-line); border-left:4px solid var(--teal-bright);
+    border-radius:12px; padding:24px 28px; max-width:42ch;
+    background:rgba(255,255,255,.03);
+  }
+  .hbox .h1tag{ font-family:var(--f-mono); font-size:15px; letter-spacing:.14em; text-transform:uppercase; color:var(--teal-bright); margin-bottom:10px; }
+  .hbox p{ font-size:22px; line-height:1.4; color:var(--dark-text); }
+
+  /* ---------- pipeline diagram ---------- */
+  .pipe{ display:flex; align-items:stretch; justify-content:center; gap:0; flex:1; align-content:center; flex-wrap:nowrap; }
+  .pnode{
+    flex:0 0 auto; width:176px; background:var(--panel); border:1.5px solid var(--line);
+    border-radius:12px; padding:18px 16px; display:flex; flex-direction:column; gap:8px; justify-content:center;
+    text-align:center; align-self:center;
+  }
+  .pnode.io{ background:transparent; border-style:dashed; border-color:var(--ink-faint); width:150px; }
+  .pnode .stagei{ font-family:var(--f-mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); }
+  .pnode h4{ font-family:var(--f-display); font-weight:700; font-size:21px; letter-spacing:-.01em; }
+  .pnode .sub{ font-size:14px; line-height:1.3; color:var(--ink-soft); }
+  .pnode.key{ border-color:var(--accent); box-shadow:0 8px 26px -14px rgba(12,140,132,.55); }
+  .parrow{ flex:0 0 auto; width:40px; align-self:center; display:flex; align-items:center; justify-content:center; }
+  .parrow svg{ width:40px; height:18px; }
+  .tsgroup{
+    display:flex; align-items:center; align-self:center;
+    border:2px dashed var(--accent); border-radius:16px; padding:18px 14px 14px; position:relative; gap:0;
+    background:rgba(12,140,132,.04);
+  }
+  .tslabel{
+    position:absolute; top:-13px; left:50%; transform:translateX(-50%);
+    background:var(--marble); padding:0 12px;
+    font-family:var(--f-mono); font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent);
+    white-space:nowrap;
+  }
+  .pipecap{ text-align:center; font-family:var(--f-mono); font-size:15px; color:var(--ink-soft); margin-top:8px; letter-spacing:.02em; }
+  .pipenote{ text-align:center; font-size:18px; color:var(--ink); margin-top:20px; }
+  .pipenote b{ color:var(--accent); font-weight:600; }
+
+  /* ---------- code card ---------- */
+  .code{
+    background:#15181C; color:#e6e6e1; border-radius:14px; padding:24px 26px;
+    font-family:var(--f-mono); font-size:21px; line-height:1.7;
+    box-shadow:0 20px 50px -26px rgba(0,0,0,.5);
+  }
+  .code .k{ color:#7fe3d8; }
+  .code .n{ color:var(--amber); }
+  .code .c{ color:#6f7780; }
+  .code .filename{ display:block; font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:#6f7780; margin-bottom:14px; }
+
+  /* ---------- table ---------- */
+  table.res{ width:100%; border-collapse:collapse; font-size:24px; }
+  table.res th{
+    text-align:left; font-family:var(--f-mono); font-size:14px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-faint); font-weight:500; padding:0 8px 16px; border-bottom:2px solid var(--line);
+  }
+  table.res th.r, table.res td.r{ text-align:right; }
+  table.res td{ padding:18px 8px; border-bottom:1px solid var(--line); }
+  table.res tr.hi td{ background:rgba(12,140,132,.08); }
+  table.res tr.hi td:first-child{ border-left:3px solid var(--accent); }
+  table.res tr.hi .val{ font-family:var(--f-display); font-weight:800; font-size:30px; color:var(--teal); letter-spacing:-.02em; }
+  table.res .arch{ font-weight:600; }
+
+  /* ---------- reveal frame (hero) ---------- */
+  .hero{ display:grid; grid-template-columns:1.3fr 1fr; gap:28px; flex:1; min-height:0; }
+  .heroleft{ display:flex; flex-direction:column; min-height:0; }
+  .revealframe{
+    position:relative; flex:1; min-height:0; border-radius:14px; overflow:hidden; width:100%;
+    border:1px solid var(--line); box-shadow:0 24px 60px -30px rgba(0,0,0,.45); cursor:pointer;
+    background:#111;
+  }
+  .revealframe img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .revealframe .top{ opacity:0; transition:opacity .7s ease; }
+  .revealframe.show .top{ opacity:1; }
+  .revealframe .badge{
+    position:absolute; left:14px; bottom:14px; z-index:3;
+    font-family:var(--f-mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase;
+    background:rgba(0,0,0,.62); color:#fff; padding:7px 12px; border-radius:8px;
+    backdrop-filter:blur(2px);
+  }
+  .revealframe .badge .live{ color:var(--teal-bright); }
+  .decomp{ display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:12px 14px; min-height:0; }
+  .chip{ display:flex; flex-direction:column; min-height:0; gap:6px; }
+  .chip img{ flex:1; min-height:0; width:100%; object-fit:cover; border-radius:10px; border:1px solid var(--line); }
+  .chip .clabel{ flex:0 0 auto; font-family:var(--f-mono); font-size:13px; letter-spacing:.04em; color:var(--ink); display:flex; justify-content:space-between; }
+  .chip .clabel .thr{ color:var(--amber); }
+  .herocap{ font-size:17px; color:var(--ink-soft); margin-top:14px; }
+
+  /* ---------- 45 vs 1 ---------- */
+  .versus{ display:grid; grid-template-columns:1fr auto 1fr; gap:30px; align-items:center; flex:1; align-content:center; }
+  .vpanel{ background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:28px; height:100%; }
+  .vpanel.aria{ border-color:var(--accent); box-shadow:0 10px 30px -18px rgba(12,140,132,.5); }
+  .vpanel .vn{ font-family:var(--f-display); font-weight:800; font-size:64px; letter-spacing:-.03em; color:var(--ink); line-height:1; }
+  .vpanel.aria .vn{ color:var(--teal); }
+  .vpanel .vk{ font-family:var(--f-mono); font-size:14px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+  .vpanel.base .vk{ color:var(--ink-faint); }
+  .vpanel p{ font-size:18px; line-height:1.4; color:var(--ink-soft); margin-top:14px; }
+  .vx{ font-family:var(--f-display); font-weight:700; font-size:30px; color:var(--ink-faint); }
+  .metrics{ margin-top:22px; display:flex; gap:14px; justify-content:center; }
+  .metrics .m{ font-family:var(--f-mono); font-size:15px; letter-spacing:.06em; border:1px solid var(--line); border-radius:99px; padding:8px 16px; color:var(--ink-soft); }
+  .metrics .m b{ color:var(--accent); font-weight:600; }
+
+  /* ---------- honest / future split ---------- */
+  .splitcols{ display:grid; grid-template-columns:1fr 1fr; gap:40px; flex:1; align-content:center; }
+  .verdict{ display:flex; gap:14px; margin-bottom:20px; }
+  .pill{ font-family:var(--f-mono); font-size:16px; padding:10px 16px; border-radius:10px; letter-spacing:.04em; }
+  .pill.ok{ background:rgba(12,140,132,.12); color:var(--teal); border:1px solid rgba(12,140,132,.3); }
+  .pill.pend{ background:rgba(207,122,34,.12); color:var(--amber); border:1px solid rgba(207,122,34,.3); }
+  .blocktitle{ font-family:var(--f-mono); font-size:14px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+  ul.flat{ list-style:none; display:flex; flex-direction:column; gap:14px; }
+  ul.flat li{ font-size:20px; line-height:1.4; padding-left:24px; position:relative; }
+  ul.flat li::before{ content:"›"; position:absolute; left:0; color:var(--accent); font-weight:700; }
+  .nextsteps{ margin-top:18px; font-family:var(--f-mono); font-size:15px; color:var(--ink-soft); line-height:1.6; }
+
+  /* ---------- closing ---------- */
+  .closing{ justify-content:center; }
+  .closing .recap{ font-family:var(--f-display); font-weight:600; font-size:27px; line-height:1.3; max-width:30ch; color:var(--dark-text); }
+  .closing .recap b{ color:var(--teal-bright); font-weight:700; }
+  .closing .thanks{ font-family:var(--f-display); font-weight:800; font-stretch:125%; font-size:84px; letter-spacing:.04em; margin:34px 0 28px; }
+  .closing .contact{ font-family:var(--f-mono); font-size:17px; letter-spacing:.04em; color:var(--dark-text-soft); line-height:1.9; }
+  .closing .contact .sep{ color:var(--teal-bright); margin:0 10px; }
+
+  /* enter stagger */
+  .slide .anim{ opacity:0; transform:translateY(12px); }
+  .slide.active .anim{ opacity:1; transform:none; transition:opacity .5s ease, transform .5s ease; }
+  .slide.active .anim{ transition-delay:.12s; }
+  .slide.active .anim.d1{ transition-delay:.20s; }
+  .slide.active .anim.d2{ transition-delay:.30s; }
+  .slide.active .anim.d3{ transition-delay:.40s; }
+  .slide.active .anim.d4{ transition-delay:.50s; }
+
+  /* ---------- chrome / controls ---------- */
+  .progress{ position:fixed; left:0; bottom:0; height:4px; background:var(--teal); width:0; z-index:50; transition:width .45s ease; }
+  .counter{
+    position:fixed; right:18px; bottom:14px; z-index:50;
+    font-family:var(--f-mono); font-size:13px; letter-spacing:.1em; color:rgba(255,255,255,.8);
+    background:rgba(18,21,25,.6); padding:6px 11px; border-radius:8px; backdrop-filter:blur(3px);
+  }
+  .counter .cur{ color:var(--teal-bright); }
+  .hint{
+    position:fixed; left:18px; bottom:14px; z-index:50;
+    font-family:var(--f-mono); font-size:12px; letter-spacing:.08em; color:rgba(255,255,255,.62);
+    background:rgba(18,21,25,.5); padding:6px 10px; border-radius:8px; backdrop-filter:blur(3px);
+  }
+  .navbtn{
+    position:fixed; top:50%; transform:translateY(-50%); z-index:50;
+    width:46px; height:46px; border-radius:50%; border:1px solid rgba(255,255,255,.18);
+    background:rgba(0,0,0,.35); color:#fff; cursor:pointer; font-size:20px;
+    display:grid; place-items:center; transition:background .2s, opacity .2s; opacity:.4;
+  }
+  .navbtn:hover{ background:rgba(0,0,0,.6); opacity:1; }
+  .navbtn.prev{ left:18px; }
+  .navbtn.next{ right:18px; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; animation:none !important; }
+    .slide{ transform:none; }
+  }
+</style>
+</head>
+<body>
+<div class="viewport">
+  <div class="stage" id="stage">
+
+    <!-- 1 · COVER -->
+    <section class="slide slide--dark cover active">
+      <span class="corner tl"></span><span class="corner tr"></span>
+      <span class="corner bl"></span><span class="corner br"></span>
+      <div class="toprow">
+        <span class="eyebrow">IFES · Cachoeiro de Itapemirim</span>
+        <span class="stagetag">Projeto de Diplomação I · 2026</span>
+      </div>
+      <div class="wordmark anim">ARIA<span class="dot">.</span></div>
+      <div class="veinline anim d1"></div>
+      <div class="expand anim d1">Análise e Reconhecimento Inteligente de Anomalias</div>
+      <div class="ctitle anim d2">Pipeline hierárquico <span style="color:var(--teal-bright)">Teacher–Student</span> para a detecção automatizada de anomalias em rochas ornamentais</div>
+      <div class="authors anim d3">
+        <div class="who"><div class="lbl">Autor</div>Henrique Machado de Oliveira</div>
+        <div class="who"><div class="lbl">Orientador</div>Everson Scherrer Borges</div>
+      </div>
+    </section>
+
+    <!-- 2 · O PROBLEMA -->
+    <section class="slide">
+      <div class="head"><span class="eyebrow">01 — o problema</span><span class="stagetag">contexto</span></div>
+      <h1 class="title anim">A inspeção que decide o preço da chapa ainda é feita <span class="em">a olho</span></h1>
+      <div class="rule anim"></div>
+      <div class="body">
+        <div class="cols">
+          <ul class="points anim d1">
+            <li><b>Sem critério único:</b> operadores diferentes classificam a mesma chapa de formas distintas</li>
+            <li><b>Fadiga e repetição:</b> o olhar do avaliador muda ao longo do turno</li>
+            <li><b>A classificação visual define a precificação</b> — a inconsistência vira perda industrial</li>
+          </ul>
+          <div class="aside anim d2">
+            <div class="num">≈34,6 mil</div>
+            <div class="cap">imagens industriais reais, 45 litologias — o Espírito Santo é o principal polo exportador de rochas do país</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 · POR QUE É DIFÍCIL -->
+    <section class="slide">
+      <div class="head"><span class="eyebrow">02 — o obstáculo</span><span class="stagetag">por que automatizar é difícil</span></div>
+      <h1 class="title anim">Dois muros para a visão computacional</h1>
+      <div class="rule anim"></div>
+      <div class="body">
+        <div class="cardrow cardrow--2">
+          <div class="card anim d1">
+            <span class="tag">inter-litologia</span>
+            <h3>Variabilidade geológica</h3>
+            <p>Um <b>veio</b> é defeito no mármore branco e padrão natural no granito. O modelo generalista monolítico confunde as feições — e gera <b>falsos positivos</b>.</p>
+          </div>
+          <div class="card anim d2">
+            <span class="tag">ground truth</span>
+            <h3>Custo da anotação</h3>
+            <p>Rotular manualmente milhares de imagens com defeitos sutis é <b>caro e inviável em escala</b> — limitando a adoção industrial.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 · PERGUNTA + HIPÓTESE (divider) -->
+    <section class="slide slide--dark divider">
+      <div class="head"><span class="eyebrow">pergunta de pesquisa</span><span class="stagetag">a hipótese</span></div>
+      <div class="body" style="justify-content:center">
+        <p class="q anim">Uma classificação taxonômica prévia, que <span class="em">restringe o domínio visual</span> do segmentador, reduz os falsos positivos frente a um modelo generalista monolítico?</p>
+        <div class="hbox anim d2">
+          <div class="h1tag">Hipótese H1</div>
+          <p>Especialistas hierárquicos têm <b>menos falsos positivos</b> que um generalista único — por conhecerem a aparência normal de cada litologia.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 · BLOCOS TEÓRICOS -->
+    <section class="slide">
+      <div class="head"><span class="eyebrow">03 — fundamentos</span><span class="stagetag">as peças</span></div>
+      <h1 class="title anim">Três peças consolidadas, uma combinação nova</h1>
+      <div class="rule anim"></div>
+      <div class="body">
+        <div class="cardrow cardrow--3">
+          <div class="card anim d1">
+            <span class="tag">foundation · zero-shot</span>
+            <h3>SAM</h3>
+            <p>Modelo de fundação que segmenta <b>sem treino específico</b>, guiado por texto via CLIP (espaço texto↔imagem compartilhado).</p>
+          </div>
+          <div class="card anim d2">
+            <span class="tag">pseudo-labeling</span>
+            <h3>Teacher–Student</h3>
+            <p>Um modelo pesado (Professor) gera <b>anotações automáticas</b> que treinam um modelo leve (Aluno) — sem rótulo humano extenso.</p>
+          </div>
+          <div class="card anim d3">
+            <span class="tag">edge · tempo real</span>
+            <h3>YOLO11</h3>
+            <p>Inferência rápida na borda, <b>viável na linha de produção</b> em alta taxa de quadros por segundo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 · PROPOSTA / PIPELINE -->
+    <section class="slide">
+      <div class="head"><span class="eyebrow">04 — a proposta</span><span class="stagetag">o pipeline ARIA</span></div>
+      <h1 class="title anim" style="font-size:44px">ARIA: classificar <span class="em">antes</span> de segmentar</h1>
+      <div class="rule anim"></div>
+      <div class="body" style="justify-content:center">
+        <div class="pipe anim d1">
+          <div class="pnode io"><div class="sub">Imagem da chapa</div></div>
+          <div class="parrow"><svg viewBox="0 0 40 18"><line x1="0" y1="9" x2="32" y2="9" stroke="var(--accent)" stroke-width="2"/><polygon points="32,4 40,9 32,14" fill="var(--accent)"/></svg></div>
+          <div class="pnode">
+            <div class="stagei">estágio 1</div><h4>Xception</h4><div class="sub">classifica o tipo litológico</div>
+          </div>
+          <div class="parrow"><svg viewBox="0 0 40 18"><line x1="0" y1="9" x2="32" y2="9" stroke="var(--accent)" stroke-width="2"/><polygon points="32,4 40,9 32,14" fill="var(--accent)"/></svg></div>
+          <div class="tsgroup">
+            <div class="tslabel">Teacher – Student</div>
+            <div class="pnode key">
+              <div class="stagei">professor</div><h4>SAM</h4><div class="sub">anota calibrado por litologia</div>
+            </div>
+            <div class="parrow"><svg viewBox="0 0 40 18"><line x1="0" y1="9" x2="32" y2="9" stroke="var(--accent)" stroke-width="2"/><polygon points="32,4 40,9 32,14" fill="var(--accent)"/></svg></div>
+            <div class="pnode">
+              <div class="stagei">aluno · ×45</div><h4>YOLO11-seg</h4><div class="sub">inferência rápida</div>
+            </div>
+          </div>
+          <div class="parrow"><svg viewBox="0 0 40 18"><line x1="0" y1="9" x2="32" y2="9" stroke="var(--accent)" stroke-width="2"/><polygon points="32,4 40,9 32,14" fill="var(--accent)"/></svg></div>
+          <div class="pnode io"><div class="sub">Polígonos de anomalias</div></div>
+        </div>
+        <div class="pipecap anim d2">a hierarquia restringe o domínio visual antes de segmentar</div>
+        <div class="pipenote anim d3">A contribuição central é o <b>segmentador especialista (estágio 2)</b> — não a classificação, que é reaproveitada.</div>
+      </div>
+    </section>
+
+    <!-- 7 · CALIBRAÇÃO -->
+    <section class="slide">
+      <div class="head"><span class="eyebrow">05 — metodologia</span><span class="stagetag">calibração do SAM</span></div>
+      <h1 class="title anim" style="font-size:44px">Injeção de conhecimento de domínio</h1>
+      <div class="rule anim"></div>
+      <div class="body">
+        <div class="cols">
+          <div class="code anim d1">
+            <span class="filename">rock_prompts.json</span>
+            <span class="c">// um conjunto de prompts +</span><br>
+            <span class="c">// limiar por litologia</span><br>
+            <span class="k">"ice_leke"</span>: {<br>
+            &nbsp;&nbsp;<span class="k">"crack"</span>: <span class="n">0.1</span>,<br>
+            &nbsp;&nbsp;<span class="k">"vein"</span>: <span class="n">0.007</span>,<br>
+            &nbsp;&nbsp;<span class="k">"Stain"</span>: <span class="n">0.3</span>,<br>
+            &nbsp;&nbsp;<span class="k">"Dark patches"</span>: <span class="n">0.08</span><br>
+            }
+          </div>
+          <ul class="points anim d2">
+            <li><b>Prompts + limiares por litologia:</b> o CLIP lê linguagem natural — frases contextuais desambiguam melhor que palavras soltas</li>
+            <li><b>45 rochas em grupos por cor e textura</b> — não 45 ajustes do zero</li>
+            <li><b>Imagem de calibração escolhida à mão</b> — usar o próprio SAM seria raciocínio circular</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 · PROTOCOLO -->
+    <section class="slide">
+      <div class="head"><span class="eyebrow">06 — protocolo experimental</span><span class="stagetag">como a hipótese será testada</span></div>
+      <h1 class="title anim" style="font-size:44px">45 especialistas contra 1 generalista</h1>
+      <div class="rule anim"></div>
+      <div class="body">
+        <div class="versus anim d1">
+          <div class="vpanel aria">
+            <div class="vk">ARIA — especialista</div>
+            <div class="vn">45</div>
+            <p>modelos YOLO11-seg, um por litologia, treinados nas anotações calibradas daquele tipo</p>
+          </div>
+          <div class="vx">vs</div>
+          <div class="vpanel base">
+            <div class="vk">baseline — generalista</div>
+            <div class="vn">1</div>
+            <p>modelo único, prompts genéricos, treinado com todas as rochas juntas</p>
+          </div>
+        </div>
+        <div class="metrics anim d2">
+          <span class="m">mesma arquitetura YOLO11-seg → <b>isola a hierarquia</b></span>
+          <span class="m"><b>mAP</b> · <b>IoU</b></span>
+          <span class="m">+ validação <b>qualitativa</b> por especialistas</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9 · RESULTADO 1 -->
+    <section class="slide">
+      <div class="head"><span class="eyebrow">07 — resultado · classificação</span><span class="stagetag">DeepStoneAI</span></div>
+      <h1 class="title anim" style="font-size:44px">O porteiro do pipeline já está validado</h1>
+      <div class="rule anim"></div>
+      <div class="body">
+        <div class="cols">
+          <table class="res anim d1">
+            <thead><tr><th>Arquitetura</th><th class="r">Acurácia</th></tr></thead>
+            <tbody>
+              <tr class="hi"><td class="arch">Xception</td><td class="r"><span class="val">99,21%</span></td></tr>
+              <tr><td class="arch">Inception-ResNetV2</td><td class="r">97,94%</td></tr>
+              <tr><td class="arch">MobileNetV2</td><td class="r">91,26%</td></tr>
+              <tr><td class="arch">EfficientNetV2-L</td><td class="r">54,04%</td></tr>
+            </tbody>
+          </table>
+          <div class="aside anim d2">
+            <div class="num" style="font-size:30px">classificação confiável<br>→ roteamento confiável</div>
+            <div class="cap">A Xception identifica a litologia e envia a chapa ao especialista certo. Classificador publicado pelo grupo, reaproveitado pelo ARIA.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 · RESULTADO 2 (hero) -->
+    <section class="slide">
+      <div class="head"><span class="eyebrow">08 — resultado · segmentação</span><span class="stagetag">SAM · zero-shot · ice_leke</span></div>
+      <h1 class="title anim" style="font-size:42px">O Professor anota sozinho</h1>
+      <div class="rule anim"></div>
+      <div class="body">
+        <div class="hero">
+          <div class="heroleft">
+            <div class="revealframe anim d1" id="reveal" title="clique para alternar a máscara">
+              <img class="base" src="figuras/sample_ice_leke_original.jpg" alt="Chapa ice leke original" />
+              <img class="top" src="figuras/sample_ice_leke_combined.jpg" alt="Anomalias segmentadas pelo SAM" />
+              <span class="badge">imagem original <span class="live">→ anotações SAM</span></span>
+            </div>
+            <div class="herocap anim d2">ice_leke — 1ª das 45 litologias plenamente calibrada · sem qualquer treino específico em rochas</div>
+          </div>
+          <div class="decomp anim d2">
+            <div class="chip"><img src="figuras/sample_ice_leke_crack.jpg" alt="crack"><div class="clabel"><span>crack</span><span class="thr">0.1</span></div></div>
+            <div class="chip"><img src="figuras/sample_ice_leke_vein.jpg" alt="vein"><div class="clabel"><span>vein</span><span class="thr">0.007</span></div></div>
+            <div class="chip"><img src="figuras/sample_ice_leke_stain.jpg" alt="stain"><div class="clabel"><span>stain</span><span class="thr">0.3</span></div></div>
+            <div class="chip"><img src="figuras/sample_ice_leke_darkpatches.jpg" alt="dark patches"><div class="clabel"><span>dark patches</span><span class="thr">0.08</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11 · LEITURA HONESTA + FUTURO -->
+    <section class="slide">
+      <div class="head"><span class="eyebrow">09 — honestidade metodológica</span><span class="stagetag">o que prova, o que falta</span></div>
+      <h1 class="title anim" style="font-size:42px">O que isto prova — e o que ainda não</h1>
+      <div class="rule anim"></div>
+      <div class="body">
+        <div class="splitcols">
+          <div class="anim d1">
+            <div class="verdict">
+              <span class="pill ok">viabilidade ✓</span>
+              <span class="pill pend">H1 ainda não testada</span>
+            </div>
+            <ul class="flat">
+              <li>O resultado confirma que o SAM <b>gera anotações relevantes</b> em zero-shot — é viável.</li>
+              <li>A comparação de falsos positivos (especialista × generalista) depende do <b>treino do YOLO</b>: é a etapa quantitativa seguinte.</li>
+              <li>O <i>ground truth</i> vem do próprio SAM → a validação <b>qualitativa por especialistas</b> complementa o mAP/IoU.</li>
+            </ul>
+          </div>
+          <div class="anim d2">
+            <div class="blocktitle">trabalhos futuros</div>
+            <ul class="flat">
+              <li>Loop de aprendizado ativo (SAM refina predições fracas do YOLO)</li>
+              <li>Rotulagem multiclasse por tipo de anomalia</li>
+              <li>Integração como serviço da plataforma <b>Hartheus</b></li>
+            </ul>
+            <div class="nextsteps">próximos passos →<br>calibrar 45 litologias · treinar especialistas + baseline · comparação quantitativa</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12 · ENCERRAMENTO -->
+    <section class="slide slide--dark closing">
+      <span class="corner tl"></span><span class="corner tr"></span>
+      <span class="corner bl"></span><span class="corner br"></span>
+      <div class="body" style="justify-content:center">
+        <p class="recap anim">ARIA — <b>classificar para segmentar melhor.</b><br>A contribuição central é o segmentador especialista Teacher–Student.</p>
+        <div class="thanks anim d1">Obrigado<span style="color:var(--teal-bright)">.</span></div>
+        <div class="contact anim d2">
+          Henrique Machado de Oliveira <span class="sep">·</span> rikemachado999@gmail.com<br>
+          IFES Cachoeiro de Itapemirim <span class="sep">·</span> Projeto de Diplomação I · 2026
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div class="progress" id="progress"></div>
+<div class="counter"><span class="cur" id="cur">01</span> / <span id="total">12</span></div>
+<div class="hint">← → espaço · F tela cheia</div>
+<button class="navbtn prev" id="prev" aria-label="Anterior">‹</button>
+<button class="navbtn next" id="next" aria-label="Próximo">›</button>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const stage = document.getElementById('stage');
+  const progress = document.getElementById('progress');
+  const curEl = document.getElementById('cur');
+  document.getElementById('total').textContent = String(slides.length).padStart(2,'0');
+  let i = 0;
+
+  function fit(){
+    const s = Math.min(window.innerWidth/1280, window.innerHeight/720);
+    stage.style.transform = `scale(${s})`;
+  }
+  window.addEventListener('resize', fit); fit();
+
+  function show(n){
+    i = Math.max(0, Math.min(slides.length-1, n));
+    slides.forEach((s,idx)=> s.classList.toggle('active', idx===i));
+    progress.style.width = ((i)/(slides.length-1)*100) + '%';
+    curEl.textContent = String(i+1).padStart(2,'0');
+    history.replaceState(null, '', '#' + (i+1));
+    handleReveal();
+  }
+  function initIndex(){
+    const m = (location.hash||'').match(/^#(\d+)$/);
+    return m ? parseInt(m[1],10)-1 : 0;
+  }
+  function next(){ show(i+1); }
+  function prev(){ show(i-1); }
+
+  // hero reveal logic
+  const reveal = document.getElementById('reveal');
+  let revealTimer=null;
+  reveal.addEventListener('click', ()=> reveal.classList.toggle('show'));
+  function handleReveal(){
+    if(revealTimer){ clearTimeout(revealTimer); revealTimer=null; }
+    const heroSlide = reveal.closest('.slide');
+    if(slides[i]===heroSlide){
+      reveal.classList.remove('show');
+      revealTimer = setTimeout(()=> reveal.classList.add('show'), 850);
+    } else {
+      reveal.classList.remove('show');
+    }
+  }
+
+  document.addEventListener('keydown', (e)=>{
+    if(e.key==='ArrowRight' || e.key===' ' || e.key==='PageDown'){ e.preventDefault(); next(); }
+    else if(e.key==='ArrowLeft' || e.key==='PageUp'){ e.preventDefault(); prev(); }
+    else if(e.key==='Home'){ show(0); }
+    else if(e.key==='End'){ show(slides.length-1); }
+    else if(e.key==='f' || e.key==='F'){
+      if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+      else document.exitFullscreen?.();
+    }
+  });
+
+  document.getElementById('next').addEventListener('click', next);
+  document.getElementById('prev').addEventListener('click', prev);
+
+  // click zones on stage (ignore interactive reveal frame)
+  stage.addEventListener('click', (e)=>{
+    if(e.target.closest('.revealframe')) return;
+    const x = e.clientX / window.innerWidth;
+    if(x > 0.62) next(); else if(x < 0.38) prev();
+  });
+
+  // touch swipe
+  let tx=0;
+  stage.addEventListener('touchstart', e=> tx=e.changedTouches[0].clientX, {passive:true});
+  stage.addEventListener('touchend', e=>{
+    const dx = e.changedTouches[0].clientX - tx;
+    if(Math.abs(dx)>50){ dx<0 ? next() : prev(); }
+  }, {passive:true});
+
+  show(initIndex());
+</script>
+</body>
+</html>
