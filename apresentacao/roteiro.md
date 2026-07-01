@@ -1,7 +1,7 @@
 # Roteiro — Apresentação PD1 · ARIA
 
 > Apresentação: `apresentacao/pd1.html` · alvo **10 minutos** · 12 slides
-> Autor: Henrique Machado de Oliveira · Orientador: Everson Scherrer Borges
+> Autor: Henrique Machado de Oliveira · Orientador: Rafael Silva Guimarães
 
 ---
 
@@ -22,7 +22,7 @@
 | 4 | Pergunta + Hipótese | 0:50 | 3:10 |
 | 5 | Fundamentos | 0:50 | 4:00 |
 | 6 | Pipeline ARIA | 1:10 | 5:10 |
-| 7 | Calibração do SAM | 1:00 | 6:10 |
+| 7 | Calibração do SAM3 | 1:00 | 6:10 |
 | 8 | Protocolo experimental | 0:50 | 7:00 |
 | 9 | Resultado — DeepStoneAI | 0:40 | 7:40 |
 | 10 | Resultado — SAM (ice_leke) | 1:10 | 8:50 |
@@ -69,7 +69,7 @@
 
 ### Slide 5 — Fundamentos · 0:50 (→ 4:00)
 **Fala:**
-> A solução combina três peças já consolidadas. O **SAM** é um modelo de fundação: segmenta imagens sem treino específico, em zero-shot, guiado por texto via CLIP. A arquitetura **Teacher–Student** com pseudo-labeling: um modelo pesado funciona como professor e gera anotações automáticas que treinam um modelo leve, o aluno — sem rótulo humano em massa. E o **YOLO11**, o aluno, que faz inferência rápida na borda, viável em tempo real na linha de produção. A novidade não é nenhuma peça isolada — é **como elas se combinam** para este problema.
+> A solução combina três peças já consolidadas. O **SAM3** é um modelo de fundação: segmenta imagens sem treino específico, em zero-shot, guiado por texto via CLIP. A arquitetura **Teacher–Student** com pseudo-labeling: um modelo pesado funciona como professor e gera anotações automáticas que treinam um modelo leve, o aluno — sem rótulo humano em massa. E o **YOLO11**, o aluno, que faz inferência rápida na borda, viável em tempo real na linha de produção. A novidade não é nenhuma peça isolada — é **como elas se combinam** para este problema.
 
 **Transição:** "Vamos ver o encaixe."
 
@@ -77,7 +77,7 @@
 
 ### Slide 6 — Pipeline ARIA · 1:10 (→ 5:10)
 **Fala:**
-> Este é o pipeline. Entra a imagem da chapa. A **Xception** classifica o tipo litológico — é o estágio 1, o porteiro que decide para qual especialista a chapa vai. Em seguida vem o bloco que é o coração do trabalho, o **Teacher–Student**: o **SAM**, como professor, gera as anotações já calibradas para aquela litologia; e essas anotações treinam os modelos **YOLO**, os alunos — um por tipo de rocha, 45 no total — que produzem os polígonos das anomalias. O ponto central: a hierarquia **restringe o domínio antes de segmentar**. E quero ser claro sobre o escopo: a contribuição que investigo é o **segmentador especialista, o estágio 2** — a classificação é reaproveitada de um trabalho anterior do grupo.
+> Este é o pipeline. Entra a imagem da chapa. A **Xception** classifica o tipo litológico — é o estágio 1, o porteiro que decide para qual especialista a chapa vai. Em seguida vem o bloco que é o coração do trabalho, o **Teacher–Student**: o **SAM3**, como professor, gera as anotações já calibradas para aquela litologia; e essas anotações treinam os modelos **YOLO**, os alunos — um por tipo de rocha, 45 no total — que produzem os polígonos das anomalias. O ponto central: a hierarquia **restringe o domínio antes de segmentar**. E quero ser claro sobre o escopo: a contribuição que investigo é o **segmentador especialista, o estágio 2** — a classificação é reaproveitada de um trabalho anterior do grupo.
 
 **Dica:** aponte para o bloco tracejado ao dizer "Teacher–Student". É o foco.
 
@@ -85,7 +85,7 @@
 
 ### Slide 7 — Calibração do SAM · 1:00 (→ 6:10)
 **Fala:**
-> Como o SAM, que nunca viu rocha na vida, vira especialista? Por **injeção de conhecimento de domínio**. Para cada litologia eu defino, num arquivo de configuração, um conjunto de prompts em linguagem natural e um **limiar de confiança** próprio — é o que está nesse JSON, para a rocha ice_leke. Como o CLIP foi treinado com legendas, frases contextuais funcionam melhor que palavras soltas. Três detalhes importam: as 45 rochas são organizadas em **grupos por cor e textura**, então não calibro 45 do zero; e a imagem usada na calibração é escolhida **à mão** — porque usar o próprio SAM para escolher seria raciocínio circular, enviesaria a avaliação.
+> Como o SAM3, que nunca viu rocha na vida, vira especialista? Por **injeção de conhecimento de domínio**. Para cada litologia eu defino, num arquivo de configuração, um conjunto de prompts em linguagem natural e um **limiar de confiança** próprio — é o que está nesse JSON, para a rocha ice_leke. Como o CLIP foi treinado com legendas, frases contextuais funcionam melhor que palavras soltas. Três detalhes importam: as 45 rochas são organizadas em **grupos por cor e textura**, então não calibro 45 do zero; e a imagem usada na calibração é escolhida **à mão** — porque usar o próprio SAM para escolher seria raciocínio circular, enviesaria a avaliação.
 
 **Dica:** "raciocínio circular" costuma render pergunta da banca — deixe claro que é decisão metodológica deliberada.
 
@@ -93,7 +93,7 @@
 
 ### Slide 8 — Protocolo experimental · 0:50 (→ 7:00)
 **Fala:**
-> E como eu testo a hipótese? Comparando dois pipelines sobre **a mesma arquitetura YOLO**. De um lado o ARIA: **45 modelos especialistas**, um por litologia, com anotações calibradas. Do outro o baseline generalista: **um único modelo**, prompts genéricos, todas as rochas juntas. Como a arquitetura é idêntica, a comparação **isola exatamente a variável que me interessa — a hierarquia**. As métricas são mAP e IoU, complementadas por validação qualitativa com especialistas do setor.
+> E como eu testo a hipótese? Comparando dois pipelines sobre **a mesma arquitetura YOLO**. De um lado o ARIA: **45 modelos especialistas**, um por litologia, com anotações calibradas. Do outro o baseline generalista: **um único modelo**, prompts genéricos, todas as rochas juntas. Como a arquitetura é idêntica, a comparação **avalia o efeito combinado da hierarquia e da calibração por litologia** — não isola só a hierarquia, mas é o tratamento que H1 exige. As métricas são mAP e IoU, complementadas por validação qualitativa com especialistas do setor.
 
 **Transição:** "Agora, o que já temos de resultado."
 
@@ -109,7 +109,7 @@
 
 ### Slide 10 — Resultado · SAM (ice_leke) · 1:10 (→ 8:50)
 **Fala:**
-> E este é o resultado central até aqui. À esquerda, uma chapa real da rocha ice_leke. *(clique para alternar)* Estas são as anotações que o **SAM gerou sozinho**, sem nenhum treino específico em rochas — só guiado pelos prompts calibrados. À direita, dá para ver que cada prompt isola um tipo de feição: **fissura, veio, mancha e áreas escuras**, cada um com seu limiar. Essas máscaras viram polígonos no formato do YOLO — são exatamente os pseudo-labels que vão treinar o aluno. A ice_leke é a **primeira das 45** litologias totalmente calibrada; as outras estão em andamento.
+> E este é o resultado central até aqui. À esquerda, uma chapa real da rocha ice_leke. *(clique para alternar)* Estas são as anotações que o **SAM3 gerou sozinho**, sem nenhum treino específico em rochas — só guiado pelos prompts calibrados. À direita, dá para ver que cada prompt isola um tipo de feição: **fissura, veio, mancha e áreas escuras**, cada um com seu limiar. Essas máscaras viram polígonos no formato do YOLO — são exatamente os pseudo-labels que vão treinar o aluno. A ice_leke é a **primeira das 45** litologias totalmente calibrada; as outras estão em andamento.
 
 **Dica:** este é o slide visual mais forte — use o clique para alternar original/máscara ao vivo, dá impacto. Não corra.
 
@@ -136,7 +136,7 @@
 - **"Se o ground truth é o próprio SAM, a comparação não é circular?"** → Não, porque a comparação especialista×generalista usa a *mesma* fonte de anotação para os dois lados; o que varia é a hierarquia. A qualidade absoluta da anotação é checada à parte, com especialistas.
 - **"Por que 45 modelos e não um multitarefa?"** → Exatamente a hipótese: especializar restringe o domínio e reduz falso positivo. O baseline de 1 modelo testa se vale a pena.
 - **"E o custo de manter 45 modelos?"** → YOLO é leve; o roteamento pela Xception carrega só o especialista necessário. Trade-off discutido como trabalho futuro (e o loop ativo ajuda).
-- **"Por que SAM e não anotação humana?"** → Custo e escala — é o segundo muro do slide 3.
+- **"Por que SAM3 e não anotação humana?"** → Custo e escala — é o segundo muro do slide 3.
 - **"Os prompts em inglês num contexto brasileiro?"** → O CLIP é treinado majoritariamente em inglês; os termos técnicos (crack, vein, stain) são os que melhor ancoram no espaço de embeddings.
 
 ## Checklist pré-apresentação

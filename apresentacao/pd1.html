@@ -429,7 +429,7 @@
         <div class="cardrow cardrow--3">
           <div class="card anim d1">
             <span class="tag">foundation · zero-shot</span>
-            <h3>SAM</h3>
+            <h3>SAM3</h3>
             <p>Modelo de fundação que segmenta <b>sem treino específico</b>, guiado por texto via CLIP (espaço texto↔imagem compartilhado).</p>
           </div>
           <div class="card anim d2">
@@ -462,7 +462,7 @@
           <div class="tsgroup">
             <div class="tslabel">Teacher – Student</div>
             <div class="pnode key">
-              <div class="stagei">professor</div><h4>SAM</h4><div class="sub">anota calibrado por litologia</div>
+              <div class="stagei">professor</div><h4>SAM3</h4><div class="sub">anota calibrado por litologia</div>
             </div>
             <div class="parrow"><svg viewBox="0 0 40 18"><line x1="0" y1="9" x2="32" y2="9" stroke="var(--accent)" stroke-width="2"/><polygon points="32,4 40,9 32,14" fill="var(--accent)"/></svg></div>
             <div class="pnode">
@@ -479,7 +479,7 @@
 
     <!-- 7 · CALIBRAÇÃO -->
     <section class="slide">
-      <div class="head"><span class="eyebrow">05 — metodologia</span><span class="stagetag">calibração do SAM</span></div>
+      <div class="head"><span class="eyebrow">05 — metodologia</span><span class="stagetag">calibração do SAM3</span></div>
       <h1 class="title anim" style="font-size:44px">Injeção de conhecimento de domínio</h1>
       <div class="rule anim"></div>
       <div class="body">
@@ -491,8 +491,8 @@
             <span class="k">"ice_leke"</span>: {<br>
             &nbsp;&nbsp;<span class="k">"crack"</span>: <span class="n">0.1</span>,<br>
             &nbsp;&nbsp;<span class="k">"vein"</span>: <span class="n">0.007</span>,<br>
-            &nbsp;&nbsp;<span class="k">"Stain"</span>: <span class="n">0.3</span>,<br>
-            &nbsp;&nbsp;<span class="k">"Dark patches"</span>: <span class="n">0.08</span><br>
+            &nbsp;&nbsp;<span class="k">"stain"</span>: <span class="n">0.3</span>,<br>
+            &nbsp;&nbsp;<span class="k">"dark patches"</span>: <span class="n">0.08</span><br>
             }
           </div>
           <ul class="points anim d2">
@@ -524,7 +524,7 @@
           </div>
         </div>
         <div class="metrics anim d2">
-          <span class="m">mesma arquitetura YOLO11-seg → <b>isola a hierarquia</b></span>
+          <span class="m">mesma arquitetura YOLO11-seg → <b>efeito combinado: hierarquia + calibração</b></span>
           <span class="m"><b>mAP</b> · <b>IoU</b></span>
           <span class="m">+ validação <b>qualitativa</b> por especialistas</span>
         </div>
@@ -557,7 +557,7 @@
 
     <!-- 10 · RESULTADO 2 (hero) -->
     <section class="slide">
-      <div class="head"><span class="eyebrow">08 — resultado · segmentação</span><span class="stagetag">SAM · zero-shot · ice_leke</span></div>
+      <div class="head"><span class="eyebrow">08 — resultado · segmentação</span><span class="stagetag">SAM3 · zero-shot · ice_leke</span></div>
       <h1 class="title anim" style="font-size:42px">O Professor anota sozinho</h1>
       <div class="rule anim"></div>
       <div class="body">
@@ -566,7 +566,7 @@
             <div class="revealframe anim d1" id="reveal" title="clique para alternar a máscara">
               <img class="base" src="figuras/sample_ice_leke_original.jpg" alt="Chapa ice leke original" />
               <img class="top" src="figuras/sample_ice_leke_combined.jpg" alt="Anomalias segmentadas pelo SAM" />
-              <span class="badge">imagem original <span class="live">→ anotações SAM</span></span>
+              <span class="badge">imagem original <span class="live">→ anotações SAM3</span></span>
             </div>
             <div class="herocap anim d2">ice_leke — 1ª das 45 litologias plenamente calibrada · sem qualquer treino específico em rochas</div>
           </div>
