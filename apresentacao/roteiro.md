@@ -37,7 +37,7 @@
 
 ### Slide 1 — Capa · 0:30 (→ 0:30)
 **Fala:**
-> Bom dia a todos. Meu nome é Henrique, sou orientado pelo professor Everson, e vou apresentar o ARIA — um pipeline hierárquico Teacher–Student para detectar automaticamente anomalias em chapas de rochas ornamentais. É um problema de uma indústria que o Espírito Santo lidera no país.
+> Bom dia a todos. Meu nome é Henrique, sou orientado pelo professor Rafael, e vou apresentar o ARIA — um pipeline hierárquico Teacher–Student para detectar automaticamente anomalias em chapas de rochas ornamentais. É um problema de uma indústria que o Espírito Santo lidera no país.
 
 **Dica:** respire, não comece com pressa. Deixe a capa no ar enquanto se apresenta.
 
