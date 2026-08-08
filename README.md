@@ -2,6 +2,14 @@
 
 Pipeline de segmentação semântica de avarias em rochas ornamentais para controle de qualidade em linha de produção. TCC de Bacharelado em Sistemas de Informação — IFES Cachoeiro de Itapemirim.
 
+## Sobre o TCC
+
+ARIA é um **pipeline hierárquico *Teacher–Student*** para detecção automatizada de anomalias superficiais em chapas de rochas ornamentais. Uma classificação taxonômica prévia (Xception) identifica a litologia e restringe o domínio visual do segmentador; o SAM3, guiado por prompts calibrados por tipo de rocha, atua como Professor e gera as anotações (*pseudo-labels*) que treinam os modelos YOLO11-seg Alunos, otimizados para inferência em tempo real na linha de produção. A calibração por litologia é o mecanismo de injeção de conhecimento de domínio: converte um modelo de fundação genérico em um segmentador especializado, evitando que feições naturais (um veio mineral em granito) sejam tratadas como defeito comercial.
+
+O objeto da pesquisa é **medir o quanto essa especialização compensa**. O experimento central compara 45 modelos especialistas — um por litologia, treinado apenas com as anotações do seu tipo — contra um único modelo generalista treinado sobre todas as rochas, mantendo a mesma arquitetura YOLO11-seg nos dois lados. A hipótese (H1) é que o especialista, por conhecer a aparência normal da rocha que analisa, apresenta menor índice de falsos positivos que o generalista monolítico. A avaliação é quantitativa (mAP, IoU) e complementada por validação qualitativa de especialistas do setor.
+
+Detalhamento metodológico em [`docs/decisoes.md`](docs/decisoes.md) e [`docs/pontos-tcc.md`](docs/pontos-tcc.md).
+
 ## O que é ARIA
 
 **ARIA** (Análise e Reconhecimento Inteligente de Anomalias) é um pipeline hierárquico de IA:
