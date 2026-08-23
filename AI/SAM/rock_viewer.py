@@ -14,18 +14,51 @@ import argparse
 import json
 import shutil
 import sys
+from functools import lru_cache
 import tempfile
 import webbrowser
 from pathlib import Path
 
-DATASET_DIR = Path("../Dataset")
+DATASET_DIR = Path("../dataset")
 SELECT_ROCKS_DIR = Path("selectRocks")
 SPLITS = ("train", "val", "test")
 IMG_EXTS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff"}
 
 
+# Faixas de volume de dados. A ordem de calibracao segue a faixa: A primeiro.
+# Fonte: docs/decisoes.md D6 e D15, docs/dataset.md.
+FAIXAS = (("A", 1000), ("B", 500), ("C", 200), ("D", 0))
+
+
+@lru_cache(maxsize=None)
+def count_images(rock_name: str) -> int:
+    """Total de imagens da rocha somando train/val/test."""
+    total = 0
+    for split in SPLITS:
+        rock_dir = DATASET_DIR / split / rock_name
+        if rock_dir.exists():
+            total += sum(
+                1 for p in rock_dir.iterdir()
+                if p.is_file() and p.suffix.lower() in IMG_EXTS
+            )
+    return total
+
+
+def faixa_of(rock_name: str) -> str:
+    n = count_images(rock_name)
+    for nome, minimo in FAIXAS:
+        if n >= minimo:
+            return nome
+    return "D"
+
+
 def find_all_rocks() -> list[str]:
-    """Retorna lista ordenada de todas as rochas encontradas em qualquer split."""
+    """Todas as rochas, ordenadas por VOLUME DE DADOS (maior primeiro).
+
+    A ordem nao e alfabetica de proposito: ela e a prioridade de calibracao.
+    A faixa A (>=1000 imagens) vem antes de tudo, porque e a faixa do primeiro
+    marco entregavel do experimento -- ver docs/decisoes.md D6 e D15.
+    """
     rocks: set[str] = set()
     for split in SPLITS:
         split_dir = DATASET_DIR / split
@@ -33,7 +66,7 @@ def find_all_rocks() -> list[str]:
             for d in split_dir.iterdir():
                 if d.is_dir():
                     rocks.add(d.name)
-    return sorted(rocks)
+    return sorted(rocks, key=lambda r: (-count_images(r), r))
 
 
 def find_selected_rocks() -> set[str]:
@@ -365,7 +398,10 @@ def select_for_rock(rock_name: str, cols: int) -> bool:
         print(f"[ERRO] Nenhuma imagem encontrada para '{rock_name}' em {DATASET_DIR}/")
         return False
 
-    print(f"Rocha: {rock_name}  |  {len(images)} imagens (train/val/test)")
+    print(
+        f"Rocha: {rock_name}  |  faixa {faixa_of(rock_name)}  |  "
+        f"{len(images)} imagens (train/val/test)"
+    )
 
     html = build_html(rock_name, images, cols=cols)
     tmp = tempfile.NamedTemporaryFile(
@@ -458,7 +494,16 @@ def main() -> None:
 
         rock_name = find_next_rock()
         done = total - pending
-        print(f"\n── {done}/{total} selecionadas  |  próxima: {rock_name} ──")
+        faixa = faixa_of(rock_name)
+        pend_faixa = sum(
+            1 for r in find_all_rocks()
+            if faixa_of(r) == faixa and r.lower() not in find_selected_rocks()
+        )
+        print(
+            f"\n── {done}/{total} selecionadas  |  próxima: {rock_name} "
+            f"(faixa {faixa}, {count_images(rock_name)} imgs)  |  "
+            f"{pend_faixa} pendentes na faixa {faixa} ──"
+        )
 
         select_for_rock(rock_name, args.cols)
 

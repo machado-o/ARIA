@@ -38,15 +38,39 @@ CLASS_COLORS: Dict[str, Tuple[int, int, int]] = {
     "Stain": (0, 165, 255),
     "Dark patches": (0, 0, 0),
     "light spot": (255, 255, 0),
+    "scratch": (255, 0, 255),
 }
 
+# Registro de sondas conhecidas. Uma sonda fora deste mapa nao pode virar rotulo --
+# ver validate_prompts() abaixo e docs/decisoes.md D8.
 CLASS_ID_MAP: Dict[str, int] = {
     "vein": 0,
     "crack": 1,
     "Stain": 2,
     "Dark patches": 3,
     "light spot": 4,
+    "scratch": 5,
 }
+
+
+def validate_prompts(rock_prompts: Dict[str, Dict[str, float]]) -> None:
+    # Aborta antes de tocar a GPU se alguma rocha usa sonda fora do CLASS_ID_MAP.
+    # Antes, uma sonda nao registrada caia em class_id=-1 e gerava um .txt invalido
+    # para treino -- em silencio, sem excecao e sem aviso.
+    offenders: Dict[str, List[str]] = {}
+    for rock, prompts in rock_prompts.items():
+        unknown = [p for p in prompts if p not in CLASS_ID_MAP]
+        if unknown:
+            offenders[rock] = unknown
+    if offenders:
+        lines = "\n".join(f"  - {rock}: {', '.join(ps)}" for rock, ps in offenders.items())
+        raise SystemExit(
+            "[ERRO] Sondas nao registradas em CLASS_ID_MAP:\n"
+            f"{lines}\n"
+            f"Sondas conhecidas: {', '.join(CLASS_ID_MAP)}\n"
+            "Registre a sonda no CLASS_ID_MAP (inference.py e calibrator.py) ou remova-a "
+            "de rock_prompts.json. Ver docs/decisoes.md D8."
+        )
 
 def load_rock_prompts(config_path: Path) -> Dict[str, Dict[str, float]]:
     """Load per-rock prompt configurations from JSON. Falls back to empty dict on error."""
@@ -143,7 +167,7 @@ def process_image(
         if result.masks is None:
             continue
 
-        write_polygons(txt_path, result.masks.xyn, CLASS_ID_MAP.get(prompt, -1))
+        write_polygons(txt_path, result.masks.xyn, CLASS_ID_MAP[prompt])
 
         color = CLASS_COLORS.get(prompt, (255, 255, 255))
         masks = result.masks.data.cpu().numpy()
@@ -167,6 +191,7 @@ def main() -> None:
         )
 
     rock_prompts = load_rock_prompts(PROMPTS_CONFIG_PATH)
+    validate_prompts(rock_prompts)
     predictor = SAM3SemanticPredictor(overrides=OVERRIDES)
 
     for img in images:

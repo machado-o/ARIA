@@ -32,7 +32,7 @@ SAM_DIR         = Path(__file__).parent
 SELECT_ROCKS    = SAM_DIR / "selectRocks"
 RESULTS_DIR     = SAM_DIR / "results"
 PROMPTS_CONFIG  = SAM_DIR / "rock_prompts.json"
-DATASET_DIR     = SAM_DIR / "../Dataset"
+DATASET_DIR     = SAM_DIR / "../dataset"
 IMG_EXTS        = {".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".webp"}
 SPLITS          = ("train", "val", "test")
 
@@ -61,9 +61,13 @@ CLASS_COLORS: dict[str, tuple[int, int, int]] = {
     "Stain": (0, 165, 255),
     "Dark patches": (30, 30, 30),
     "light spot": (255, 255, 0),
+    "scratch": (255, 0, 255),
 }
+# Registro de sondas conhecidas. Uma sonda fora deste mapa NAO pode virar rotulo:
+# gravar um class_id invalido corrompe o .txt de treino em silencio. Ver decisoes.md D8.
 CLASS_ID_MAP: dict[str, int] = {
     "vein": 0, "crack": 1, "Stain": 2, "Dark patches": 3, "light spot": 4,
+    "scratch": 5,
 }
 
 def _bgr_to_hex(bgr: tuple[int, int, int]) -> str:
@@ -250,12 +254,21 @@ def run_sam(rock: str, active: dict[str, float], colors: dict[str, tuple[int, in
             color = colors.get(prompt, (180, 180, 180))
             masks = result.masks.data.cpu().numpy()
             annotator.masks(masks, [color] * len(masks))
-            cid = CLASS_ID_MAP.get(prompt, -1)
-            with txt.open("a") as f:
-                for poly in result.masks.xyn:
-                    if len(poly) > 2:
-                        pts = " ".join(f"{x:.6f} {y:.6f}" for x, y in poly)
-                        f.write(f"{cid} {pts}\n")
+            cid = CLASS_ID_MAP.get(prompt)
+            if cid is None:
+                # Sonda exploratoria: a mascara aparece no preview, mas NAO entra no .txt.
+                # Para promove-la a rotulo, registre-a no CLASS_ID_MAP (aqui e em inference.py).
+                st.warning(
+                    f"Sonda `{prompt}` nao esta no CLASS_ID_MAP: a mascara e exibida, mas os "
+                    "poligonos nao foram gravados no .txt (evitando class_id invalido). "
+                    "Registre a sonda no CLASS_ID_MAP para inclui-la no treino."
+                )
+            else:
+                with txt.open("a") as f:
+                    for poly in result.masks.xyn:
+                        if len(poly) > 2:
+                            pts = " ".join(f"{x:.6f} {y:.6f}" for x, y in poly)
+                            f.write(f"{cid} {pts}\n")
 
     combined = rock_dir / f"{img_path.stem}_combined.jpg"
     cv2.imwrite(str(combined), annotator.result())

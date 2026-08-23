@@ -1,97 +1,105 @@
-# Hartheus.AI — ARIA Pipeline (`ARIA`)
+# ARIA — Análise e Reconhecimento Inteligente de Anomalias
 
-Pipeline de segmentação semântica de avarias em rochas ornamentais para controle de qualidade em linha de produção. TCC de Bacharelado em Sistemas de Informação — IFES Cachoeiro de Itapemirim.
+Pipeline hierárquico de visão computacional para marcação automatizada de anomalias superficiais
+em chapas de rochas ornamentais. TCC de Bacharelado em Sistemas de Informação — IFES Cachoeiro de
+Itapemirim.
 
-## Sobre o TCC
+## O problema
 
-ARIA é um **pipeline hierárquico *Teacher–Student*** para detecção automatizada de anomalias superficiais em chapas de rochas ornamentais. Uma classificação taxonômica prévia (Xception) identifica a litologia e restringe o domínio visual do segmentador; o SAM3, guiado por prompts calibrados por tipo de rocha, atua como Professor e gera as anotações (*pseudo-labels*) que treinam os modelos YOLO11-seg Alunos, otimizados para inferência em tempo real na linha de produção. A calibração por litologia é o mecanismo de injeção de conhecimento de domínio: converte um modelo de fundação genérico em um segmentador especializado, evitando que feições naturais (um veio mineral em granito) sejam tratadas como defeito comercial.
+A inspeção de anomalias em chapas de rocha é manual e, sobretudo, **arbitrária**. A fronteira
+entre *feição natural* e *defeito comercial* depende da rocha, do cliente, do lote — e, hoje, do
+inspetor. Esse critério vive implícito na cabeça de cada operador, e por isso muda de pessoa para
+pessoa e de turno para turno.
 
-O objeto da pesquisa é **medir o quanto essa especialização compensa**. O experimento central compara 45 modelos especialistas — um por litologia, treinado apenas com as anotações do seu tipo — contra um único modelo generalista treinado sobre todas as rochas, mantendo a mesma arquitetura YOLO11-seg nos dois lados. A hipótese (H1) é que o especialista, por conhecer a aparência normal da rocha que analisa, apresenta menor índice de falsos positivos que o generalista monolítico. A avaliação é quantitativa (mAP, IoU) e complementada por validação qualitativa de especialistas do setor.
+**A proposta do ARIA não é eliminar essa arbitrariedade — é torná-la explícita.** O critério sai
+da cabeça do inspetor e vira um conjunto de sondas e limiares por litologia, gravado em arquivo:
+algo que pode ser auditado, discutido, versionado e aplicado de forma idêntica mil vezes.
 
-Detalhamento metodológico em [`docs/decisoes.md`](docs/decisoes.md) e [`docs/pontos-tcc.md`](docs/pontos-tcc.md).
-
-## O que é ARIA
-
-**ARIA** (Análise e Reconhecimento Inteligente de Anomalias) é um pipeline hierárquico de IA:
+## Como funciona
 
 ```
-Imagem de rocha
+Imagem da chapa
       ↓
-Classificador Xception  →  identifica o tipo de rocha
+Xception            →  identifica a litologia e roteia
       ↓
-SAM3 (professor)        →  gera anotações poligonais por tipo, guiado por prompts calibrados
+SAM3 (Professor)    →  offline, em lote: gera os polígonos de anomalia,
+                       guiado por sondas calibradas para aquela litologia
       ↓
-Labels YOLO (.txt)      →  formato de segmentação, prontos para treino
+Labels YOLO (.txt)  →  formato de segmentação, sem conversão intermediária
       ↓
-YOLO (aluno)            →  45 modelos especialistas (1 por tipo de rocha); inferência rápida em produção
+YOLO11-seg (Aluno)  →  online: inferência rápida na linha de produção
 ```
 
-Esta branch cobre a fase do **SAM3 como professor**: calibrar prompts e limiares de confiança por tipo de rocha para gerar anotações de alta qualidade que depois treinam o YOLO.
+O modelo de fundação é caro, então roda **uma vez**, fora da linha, só para produzir o conjunto de
+treino. Quem roda em produção é o Aluno.
+
+### As sondas não são rótulos
+
+As palavras usadas como prompt (`crack`, `vein`, `Stain`, `Dark patches`, `light spot`) não
+afirmam o que a região é — são chaves lexicais escolhidas por fazerem o CLIP+SAM3 responder a
+certas assinaturas visuais. O objetivo é **maximizar cobertura**, não classificar. Por isso todas
+as regiões recebem `class_id = 0` no treino: dizer que a região marcada por `"crack"` *é* uma
+fissura seria uma afirmação que este trabalho não valida.
+
+## O experimento
+
+**Experimento 1 — o critério explícito funciona?**
+Professor com sondas calibradas por litologia × Professor com configuração única global. Sem
+treinamento nenhum, avaliado contra um conjunto-ouro anotado às cegas e por preferência pareada
+cega de um especialista do setor.
+
+**Experimento 2 — a especialização compensa, e a partir de quantos dados?**
+Alunos especialistas (um por litologia) × Aluno generalista × Aluno de controle (único, treinado
+com anotações calibradas — separa o efeito do número de modelos do efeito da qualidade da
+anotação).
+
+O segundo experimento roda **estratificado por volume de dados** e reporta resultado por faixa —
+o que transforma o desbalanceamento do dataset de limitação em variável medida, e responde a uma
+pergunta que o referencial não responde: *quantas imagens uma litologia precisa para que a
+especialização compense?*
 
 ## Dataset
 
-45 tipos de rocha em `AI/Dataset/{train,val,test}/<rock_name>/`.
+**34.630 imagens · 45 litologias · conjunto público (Kaggle)**, dividido em train/val/test.
+O desbalanceamento é natural e não foi equalizado.
 
-| Prontidão | Quantidade | Status |
-|-----------|-----------|--------|
-| 500+ imagens | 17 tipos | Prontos para treino YOLO |
-| 200–500 imagens | ~12 tipos | Borderline, monitorar overfitting |
-| <200 imagens | 7 tipos | SAM-only por enquanto |
+| Faixa | Critério | Litologias |
+|---|---|---|
+| A | ≥ 1000 imagens | 11 |
+| B | 500 – 999 | 6 |
+| C | 200 – 499 | 14 |
+| D | < 200 | 14 |
 
-## Workflow
+Da maior (`siena_white`, 4.588) à menor (`white_samoa` e `quartzito_verde_sauipe`, 106).
+Detalhamento em [`docs/dataset.md`](docs/dataset.md).
 
-### 1. Selecionar imagem representativa
-
-```bash
-cd AI/SAM
-python rock_viewer.py              # próxima rocha sem seleção
-python rock_viewer.py <rock_name>  # rocha específica
-python rock_viewer.py --cols 6     # grade mais larga
-```
-
-Abre contact sheet HTML no browser. Clique na imagem para abrir lightbox (←→ navegam, Enter seleciona). Digitar o número no terminal copia a imagem para `selectRocks/<rock_name>.EXT`.
-
-**Regra:** a seleção é sempre manual — usar o modelo para escolher a imagem de calibração é raciocínio circular.
-
-### 2. Calibrar prompts
+## Uso
 
 ```bash
 cd AI/SAM
-.venv\Scripts\python.exe -m streamlit run calibrator.py
+python rock_viewer.py                                     # escolher a imagem representativa
+.venv\Scripts\python.exe -m streamlit run calibrator.py   # calibrar sondas e limiares
+python inference.py                                       # rodar o Professor
 ```
 
-UI interativa para ativar prompts, ajustar limiares de confiança, visualizar as máscaras geradas e salvar em `rock_prompts.json`. Alternativa manual: editar `rock_prompts.json` diretamente (`{ "prompt_label": conf_float }`).
-
-**Dica:** rochas com fundo escuro (nevada_black, sao_gabriel_black) usam `light spot` em vez de `Dark patches` nos prompts.
-
-### 3. Rodar inferência
-
-```bash
-cd AI/SAM
-python inference.py   # lê selectRocks/, grava máscaras em results/
-```
-
-**Gotcha:** `inference.py` aplica um monkey-patch em `clip.simple_tokenizer.SimpleTokenizer` para compatibilidade com Ultralytics SAM3. Não remover o bloco `try/except` no topo do arquivo.
+A seleção da imagem de calibração é **sempre manual** — usar o próprio modelo para escolhê-la
+seria raciocínio circular.
 
 ## Estrutura
 
 ```
 AI/
-├── Dataset/                # train/ val/ test/ — compartilhado entre modelos
-├── models/                 # pesos dos modelos — compartilhado
-├── SAM/                    # fase do professor
-│   ├── inference.py        # inferência em lote
-│   ├── rock_viewer.py      # seletor de imagem representativa
-│   ├── rock_prompts.json   # prompts e confs por tipo (gitignored)
-│   ├── selectRocks/        # imagem representativa por tipo
-│   ├── results/            # máscaras .jpg + labels .txt (YOLO format)
-│   └── samples/            # exemplos de resultado para documentação
-├── Xception/               # classificador de tipo de rocha (futuro)
-└── YOLO/                   # fase do aluno (futuro)
-docs/                       # base de conhecimento e governança (.md): decisões, diretrizes, roadmap, pendencias
-Hartheus.md                 # contexto da plataforma Hartheus e branches
+├── dataset/       # train/ val/ test/ — somente leitura, fora do git
+├── models/        # pesos (fora do git)
+├── SAM/           # fase do Professor: seleção, calibração e inferência
+├── Xception/      # classificador de litologia (a integrar)
+└── YOLO/          # fase do Aluno (a implementar)
+docs/              # fonte de verdade do projeto
+Overleaf/          # monografia e artigo — saída desatualizada, ver docs/decisoes.md D13
 ```
 
-## Relação com outras branches
+## Documentação
 
-Ver [`Hartheus.md`](Hartheus.md) para o contexto da plataforma Hartheus e o plano de integração futura.
+A verdade do projeto está em [`docs/`](docs/) — começando por
+[`decisoes.md`](docs/decisoes.md) (o que está fechado e por quê) e
+[`roadmap.md`](docs/roadmap.md) (onde o desenvolvimento realmente está).

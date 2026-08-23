@@ -3,7 +3,7 @@
 > Contrato de comportamento para a escrita do TCC em LaTeX (Overleaf, sincronizado via Git).
 > Cláusulas numeradas. Em caso de conflito, **o que o Henrique disser na conversa vence.**
 >
-> Última atualização: 2026-06-24
+> Última atualização: 2026-08-23
 
 ---
 
@@ -31,8 +31,11 @@ e ponto como separador de milhar (34.630 imagens). Unidades com espaço antes (6
 ## 2. Fidelidade aos fatos (inegociável)
 
 2.1. **Nunca inventar fatos sobre o sistema.** Métricas, configurações, resultados, detalhes
-de arquitetura, nomes de classes — tudo vem dos `.md` de contexto (`arquitetura.md`,
-`dataset.md`, `pontos-tcc.md`, `decisoes.md`) ou do Henrique.
+de arquitetura, nomes de classes — tudo vem dos `.md` de contexto (`decisoes.md`,
+`arquitetura.md`, `dataset.md`) ou do Henrique.
+
+2.1.1. **`Overleaf/`, `LatinoWare2026/` e `apresentacao/` NÃO são fonte de verdade** (**D13**).
+São saída desatualizada, escrita antes das decisões atuais. Nunca copiar um fato de lá.
 
 2.2. Se faltar um dado real (ex.: "descreva os resultados do YOLO" antes de existirem), **não
 usar placeholder genérico**: inserir um `TODO` explícito e perguntar. Lacuna honesta > frase
@@ -48,13 +51,23 @@ não resolver por conta própria.
 
 ## 3. Escopo (ver `decisoes.md`)
 
-3.1. **Aprendizado Ativo** (D8) e **rotulagem multi-classe** (D9) só aparecem em **Trabalhos
-Futuros** — nunca como contribuição desta versão.
+3.1. **Aprendizado Ativo** (**D11**) e **rotulagem multi-classe** (**D12**) só aparecem em
+**Trabalhos Futuros** — nunca como contribuição desta versão.
 
-3.2. O experimento central é **45 especialistas × 1 generalista** (D3) — é o eixo da
-metodologia e dos resultados.
+3.2. O eixo do trabalho é a **arbitrariedade da marcação manual** (**D3**), e a contribuição é
+tornar esse critério explícito e parametrizado. **Não** escrever "reduzir falsos positivos" como
+tese central — falso positivo é medido (**D7**), não é o enunciado.
 
-3.3. Toda decisão metodológica citada no texto deve bater com `decisoes.md`. Em dúvida,
+3.3. São **dois** experimentos: Professor calibrado × default (**D5**) e Alunos especialistas ×
+generalista × controle, estratificados por faixa de volume (**D6**). Nunca escrever "45
+especialistas" sem a estratificação, nem afirmar que a comparação "isola a variável da
+hierarquia" — é superafirmação, e o braço de controle existe justamente por causa disso.
+
+3.4. As sondas (`crack`, `vein`...) **não são rótulos semânticos** (**D2**). Nunca escrever que o
+sistema "identifica fissuras" ou "distingue veio de trinca" — ele marca regiões que responderam a
+uma sonda.
+
+3.5. Toda decisão metodológica citada no texto deve bater com `decisoes.md`. Em dúvida,
 consultar lá antes de escrever.
 
 ---
@@ -63,9 +76,9 @@ consultar lá antes de escrever.
 
 4.1. **Dois alvos, dois templates.** A monografia (`Overleaf/TCC/`) usa `iftex.cls` + `macros.tex`
 e citações `abntex2-alf`. O artigo SBC (`Overleaf/artigo/`) usa `sbc-template.sty` + `sbc.bst` e
-citações com `\cite` — **nunca** `\citeonline` (não existe no SBC; quebra a compilação). Detalhes e
-gotchas do artigo em `artigo-sbc.md`. Saída sempre em **LaTeX puro** pronto pro Overleaf — sem
-markdown, sem blocos ` ```latex `.
+citações com `\cite` — **nunca** `\citeonline` (é comando do `abntex2`; no SBC gera "Undefined
+control sequence"). Saída sempre em **LaTeX puro** pronto pro Overleaf — sem markdown, sem blocos
+` ```latex `.
 
 4.2. Citações como `\cite{TODO-chave}` quando a referência ainda não existe no `.bib`; o
 Henrique preenche depois (ou pedimos pra popular `bibliografia.bib`).
@@ -124,8 +137,8 @@ merge).
 necessidade. (O título atual usa "avarias"; alinhar quando revisarmos o título — ver
 `pendencias.md`.)
 
-7.2. **Nomenclatura do sistema (D1):** **ARIA** nomeia o pipeline/método; **Hartheus** nomeia a
-plataforma. Nunca chamar o pipeline de "Hartheus".
+7.2. **Nomenclatura (D1):** **ARIA** nomeia o pipeline/método, e é o único nome de sistema no
+texto. O projeto é isolado — **nenhuma** menção a plataforma, produto ou empresa.
 
 7.3. **Siglas:** definir por extenso na primeira ocorrência, com a sigla entre parênteses —
 "Redes Neurais Convolucionais (CNN)" — e usar só a sigla depois. Na monografia, registrar cada
@@ -140,9 +153,8 @@ sigla em `../Overleaf/TCC/pre_textuais/siglas.tex` (o artigo SBC não usa lista 
 
 | Preciso de... | Olhar em |
 |---|---|
-| Decisão metodológica fechada | `decisoes.md` |
+| Decisão fechada, hipóteses, experimentos, métricas | `decisoes.md` |
 | Como o sistema funciona (técnico) | `arquitetura.md` |
-| Dados, classes, anomalias | `dataset.md` |
-| Argumento acadêmico, hipótese, métricas, capítulos | `pontos-tcc.md` |
+| Dados, litologias, faixas de volume, sondas | `dataset.md` |
 | Estado atual / próximos passos | `roadmap.md` |
 | Coisas pendentes a corrigir/escrever | `pendencias.md` |

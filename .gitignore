@@ -1,4 +1,8 @@
 # --- AI / Python ---
+# A pasta real e' AI/dataset/ (minuscula). As duas grafias ficam listadas
+# porque o Linux diferencia maiuscula e o Windows nao — sem as duas, o dataset
+# de 34.630 imagens deixa de ser ignorado ao trocar de maquina.
+AI/dataset/
 AI/Dataset/
 *.pt
 *.pth

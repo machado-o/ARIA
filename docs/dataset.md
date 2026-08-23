@@ -1,144 +1,135 @@
 # Dataset — ARIA
 
-## Visão Geral
+## Visão geral
 
 | Característica | Valor |
 |---|---|
-| Total de imagens | ~34.630 |
-| Classes de rocha | 45 |
-| Splits | train / val / test |
-| Origem | Imagens industriais reais de chapas de rochas ornamentais |
-| Desbalanceamento | Natural — sem equalização artificial |
-| Variabilidade | Alta — texturas, cores e padrões muito distintos entre e dentro de classes |
+| Total de imagens | **34.630** (train 24.263 · val 5.214 · test 5.153) |
+| Litologias | 45 |
+| Origem | **Conjunto público, obtido no Kaggle** — imagens industriais reais de chapas |
+| Constituição | O autor **não** constituiu o banco: selecionou, caracterizou e pré-processou um conjunto existente (**D9**) |
+| Desbalanceamento | Natural, não equalizado — e tratado como **variável do experimento** (**D6**) |
+
+- [ ] **TODO:** preencher URL, nome e autoria do dataset no Kaggle. Sem isso a fonte não pode ser
+  citada (ver `pendencias.md`).
 
 ---
 
-## Classes (45 tipos de rocha)
+## Faixas de volume — a estratificação do Experimento 2
 
-### Brancas / Claras
+O experimento central roda **por faixa**, da maior para a menor, e reporta resultado **por faixa**
+(**D6**). Contagens reais em disco (train + val + test), verificadas em 2026-08-23.
 
-| Nome | Grupo |
-|---|---|
-| white_bellukha | Branca |
-| white_ceara | Branca |
-| white_cintilante | Branca |
-| white_everest | Branca |
-| white_extreme | Branca |
-| white_himalaya | Branca |
-| white_liberdade | Branca |
-| white_mirage | Branca |
-| white_olympus | Branca |
-| white_samoa | Branca |
-| white_sea | Branca |
-| white_serenata | Branca |
-| white_superiore | Branca |
-| itaunas_white | Branca |
-| shadow_white | Branca/Clara |
-| siena_white | Branca/Clara |
-| vitoria_white | Branca/Clara |
-| naica | Clara |
+### Faixa A — ≥ 1000 imagens · 11 litologias
 
-### Amarelas / Bege
+| Litologia | Imagens | | Litologia | Imagens |
+|---|---:|---|---|---:|
+| siena_white | 4.588 | | santa_cecilia | 1.446 |
+| nevada_black | 3.806 | | san_francisco_green | 1.404 |
+| ubatuba_green | 2.965 | | white_mirage | 1.219 |
+| ipanema_beige | 2.894 | | golden_storm | 1.185 |
+| shadow_white | 1.922 | | white_olympus | 1.153 |
+| itaunas_white | 1.546 | | | |
 
-| Nome | Grupo |
-|---|---|
-| giallo_fiorito | Amarela |
-| giallo_maracana | Amarela |
-| golden_storm | Dourada |
-| icarai_yellow | Amarela |
-| maracuja_yellow | Amarela |
-| solarius | Dourada |
-| splendor_gold | Dourada |
-| santa_cecilia | Bege/Amarela |
-| santa_cecilia_light | Bege/Amarela |
-| ipanema_beige | Bege |
+### Faixa B — 500 a 999 · 6 litologias
 
-### Verdes / Quartzitos
+| Litologia | Imagens | | Litologia | Imagens |
+|---|---:|---|---|---:|
+| naica | 727 | | sao_gabriel_black | 610 |
+| kalahari | 665 | | new_caledonia | 556 |
+| vitoria_white | 619 | | perla_venato | 508 |
 
-| Nome | Grupo |
-|---|---|
-| quartzito_green_da_vinci | Quartzito |
-| quartzito_thannos | Quartzito |
-| quartzito_venom | Quartzito |
-| quartzito_verde_sauipe | Quartzito |
-| san_francisco_green | Verde |
-| new_caledonia | Verde |
-| ubatuba_green | Verde |
+### Faixa C — 200 a 499 · 14 litologias
 
-### Escuras
+| Litologia | Imagens | | Litologia | Imagens |
+|---|---:|---|---|---:|
+| solarius | 470 | | giallo_maracana | 339 |
+| white_ceara | 453 | | white_everest | 295 |
+| quartzito_venom | 434 | | icarai_yellow | 292 |
+| santa_cecilia_light | 390 | | xango_red | 280 |
+| white_extreme | 388 | | ornamental | 251 |
+| white_himalaya | 360 | | white_superiore | 246 |
+| tabaco_red | 346 | | olympios | 209 |
 
-| Nome | Grupo |
-|---|---|
-| nevada_black | Preta |
-| sao_gabriel_black | Preta |
+### Faixa D — < 200 · 14 litologias
 
-### Coloridas / Especiais
+| Litologia | Imagens | | Litologia | Imagens |
+|---|---:|---|---|---:|
+| white_liberdade | 196 | | splendor_gold | 171 |
+| rocky_mountain | 191 | | quartzito_thannos | 130 |
+| white_cintilante | 183 | | white_bellukha | 122 |
+| giallo_fiorito | 181 | | **ice_leke** | **113** |
+| quartzito_green_da_vinci | 174 | | white_serenata | 109 |
+| maracuja_yellow | 174 | | white_sea | 108 |
+| | | | white_samoa | 106 |
+| | | | quartzito_verde_sauipe | 106 |
 
-| Nome | Grupo |
-|---|---|
-| xango_red | Vermelha |
-| tabaco_red | Vermelha |
-| kalahari | Especial |
-| perla_venato | Especial |
-| ornamental | Especial |
-| rocky_mountain | Especial |
-| olympios | Especial |
-| ice_leke | Especial |
+> ⚠️ A **`ice_leke`**, litologia usada como demonstração em todo o material escrito, está na
+> **faixa D** — é uma das mais pobres do conjunto (113 imagens). Vale saber disso antes de a
+> banca perguntar.
 
 ---
 
-## Tipos de Anomalia / Feature
+## Agrupamento cromático
 
-O dataset contém múltiplos tipos de irregularidades superficiais. A categorização exata é um ponto em aberto (ver abaixo).
+Agrupamento **provisório** (**D15**), usado pela configuração atual de sondas em
+`rock_prompts.json`. Se a calibração final será por litologia ou por grupo ainda **não está
+decidido** — só depois que a faixa A estiver calibrada de fato.
 
-**Features utilizadas na calibração SAM:**
+| Grupo | Litologias |
+|---|---|
+| Brancas / claras | white_bellukha, white_ceara, white_cintilante, white_everest, white_extreme, white_himalaya, white_liberdade, white_mirage, white_olympus, white_samoa, white_sea, white_serenata, white_superiore, itaunas_white, shadow_white, siena_white, vitoria_white, naica |
+| Amarelas / bege / douradas | giallo_fiorito, giallo_maracana, golden_storm, icarai_yellow, maracuja_yellow, solarius, splendor_gold, santa_cecilia, santa_cecilia_light, ipanema_beige |
+| Verdes / quartzitos | quartzito_green_da_vinci, quartzito_thannos, quartzito_venom, quartzito_verde_sauipe, san_francisco_green, new_caledonia, ubatuba_green |
+| Escuras | nevada_black, sao_gabriel_black |
+| Vermelhas | xango_red, tabaco_red |
+| Especiais | kalahari, perla_venato, ornamental, rocky_mountain, olympios, ice_leke |
 
-| Feature | Descrição | Escopo |
+---
+
+## Sondas de detecção
+
+**Não são rótulos.** São chaves lexicais escolhidas por fazerem o CLIP+SAM3 responder a certas
+assinaturas visuais; o objetivo do conjunto é **maximizar cobertura**, não classificar (**D2**).
+
+| Sonda | Assinatura visual que costuma disparar | Escopo típico |
 |---|---|---|
-| `crack` | Fissuras, trincas na superfície | Principal anomalia |
-| `vein` | Veios minerais / estrias naturais | Pode ser anomalia ou característica |
-| `Stain` | Manchas, descoloração | Anomalia |
-| `Dark patches` | Áreas escuras em rochas claras | Anomalia / oxidação |
-| `light spot` | Pontos claros em rochas escuras | Anomalia |
+| `crack` | descontinuidades lineares finas e escuras | todas |
+| `vein` | estrias e faixas contrastantes | todas |
+| `Stain` | variação de cor em mancha difusa | todas |
+| `Dark patches` | regiões escuras sobre fundo claro | rochas claras |
+| `light spot` | regiões claras sobre fundo escuro | rochas escuras |
+| `scratch` | riscos superficiais finos | pontual (`giallo_maracana`) |
 
-**Nota:** O SAM demonstrou capacidade de segmentar anomalias mesmo com nomes de prompt distantes da terminologia técnica geológica. Os nomes em inglês são linguagem natural para o CLIP, não rótulos técnicos. O conjunto atual é o de trabalho desta versão — novos tipos de anomalia podem ser adicionados ao `rock_prompts.json` futuramente sem quebrar o pipeline. As anomalias não são rotuladas no treinamento YOLO (decisão binária desta versão).
-
----
-
-## Rotulagem de Classes de Anomalia
-
-A rotulagem é **binária** (`class_id = 0`) nesta versão; multi-classe é trabalho futuro. A decisão completa — justificativa (confiabilidade dos embeddings CLIP) e impacto na metodologia — é fonte única em `decisoes.md` (**D2** e **D9**).
+Por isso todas as regiões recebem `class_id = 0` no treino: o projeto **não afirma** que uma
+região marcada por `"crack"` é uma fissura (**D2**). Multi-classe → trabalho futuro (**D12**).
 
 ---
 
-## Desafios do Dataset
+## Desafios
 
-1. **Desbalanceamento natural:** Algumas classes têm muito mais imagens que outras. Reflexo real da indústria.
-2. **Variabilidade intra-classe:** Mesmo tipo de rocha pode ter aparência muito diferente (lote, iluminação, acabamento).
-3. **Subjetividade das anomalias:** O que é defeito em uma rocha pode ser característica estética em outra.
-4. **Ausência de ground truth padronizado:** Não há anotações humanas preexistentes — o SAM está gerando as primeiras anotações.
-5. **Rochas exóticas:** Algumas classes (kalahari, ice_leke, quartzito_venom) têm texturas muito fora do padrão, dificultando a generalização.
-
----
-
-## Calibração — processo
-
-Para cada tipo de rocha: (1) selecionar imagem representativa via `rock_viewer.py` → `selectRocks/`; (2) rodar `inference.py` e ajustar prompts/limiares em `rock_prompts.json` até o resultado ser satisfatório; (3) salvar resultado validado em `samples/`.
-
-**`samples/`** — pasta de demonstração, contém apenas o resultado do `ice_leke`. Não é o destino dos resultados de calibração; todos os outputs do `inference.py` vão para `results/`.
-
-A calibração completa (45/45) é pré-requisito para gerar as anotações SAM do pipeline especialista e executar a comparação com o baseline.
-
-> Status vivo (quais rochas já calibradas) → `roadmap.md`.
+1. **Desbalanceamento** — de 106 a 4.588 imagens por litologia. Reflete a realidade industrial e,
+   neste trabalho, virou variável medida (**D6**), não limitação.
+2. **Variabilidade intra-classe** — mesma rocha muda de aparência conforme lote, iluminação e
+   acabamento.
+3. **Fronteira arbitrária** — o que é defeito numa rocha é estética em outra. É o problema central
+   do TCC (**D3**), não um ruído a contornar.
+4. **Ausência de ground truth** — não há anotação humana preexistente. Daí o conjunto-ouro
+   anotado às cegas (**D7**).
+5. **Texturas fora do padrão** — kalahari, ice_leke e quartzito_venom dificultam a generalização.
 
 ---
 
-## Formato das Anotações (Output SAM → Input YOLO)
+## Formato de anotação (saída do Professor → entrada do Aluno)
 
 ```
 <class_id> <x1> <y1> <x2> <y2> ... <xN> <yN>
 ```
 
-- Coordenadas normalizadas (0–1 em relação às dimensões da imagem)
-- Um polígono por linha
-- Compatível com formato de segmentação de instâncias do YOLO
+Coordenadas normalizadas (0–1), um polígono por linha, formato de segmentação de instâncias do
+YOLO — sem conversão intermediária.
+
+> **Atenção ao volume:** no único exemplo existente (`AI/SAM/samples/ice_leke.txt`) são **107
+> polígonos numa única imagem**, com até 1.742 pontos cada. O pós-processamento do Professor
+> (área mínima, teto de instâncias, simplificação) é etapa obrigatória antes do treino — ver
+> `roadmap.md` → Fase 3.0.

@@ -1,88 +1,139 @@
 # Pendências — ARIA
 
-> Caixa de entrada de coisas a fazer/corrigir que **não** são marcos grandes do
-> desenvolvimento (esses ficam no `roadmap.md`). Itens soltos de escrita, template, docs e
-> código. Marcar `[x]` ao concluir; remover quando virar irrelevante.
+> Caixa de entrada de itens soltos. Marcos de desenvolvimento ficam no
+> [`roadmap.md`](roadmap.md); decisões fechadas, em [`decisoes.md`](decisoes.md).
 >
-> Abra a sessão lendo `CLAUDE.md` + este arquivo.
+> Consolida o que antes estava espalhado em `auditoria.md`, `revisao-artigo.md` e
+> `artigo-sbc.md` (os três foram removidos em 2026-08-23).
 >
-> Última atualização: 2026-06-24
+> Última atualização: 2026-08-23
 
 ---
 
-## 📰 Artigo SBC (entrega PD1) — `Overleaf/artigo/`
+## 🔴 Bloqueadores — dependem do Henrique
 
-Entrega do Projeto de Diplomação I: artigo científico completo no template SBC (10–12
-páginas). Estrutura, status e gotchas do template → **[`artigo-sbc.md`](artigo-sbc.md)**.
-O `Overleaf/` tem duas pastas: **`TCC/`** (monografia) e **`artigo/`** (SBC). O artigo está
-completo, em conformidade com o SBC e compilando (~11 páginas); segue só refino de texto.
+- [ ] **URL e autoria do dataset no Kaggle** (D9). Sem isso não dá para citar a fonte, e o
+  objetivo específico nº 1 continua factualmente errado.
+- [ ] **Confirmar a data real de entrega/defesa com o Rafael.** Hoje o plano assume 01/10 como
+  entrega final (cenário mais apertado). Se for só a prévia, a Fase 2 ganha fôlego.
+- [ ] **Confirmar se o DeepStoneAI usou este mesmo dataset.** Se sim, vira citação obrigatória.
+- [ ] **Contato do especialista do setor** para a preferência pareada cega (D7). Precisa de ~30
+  minutos dele, não mais.
+- [ ] **Versão final submetida ao Latinoware** — o `main.tex` do repo diverge do que foi enviado
+  ao JEMS. Henrique envia quando sair o resultado (14/09).
 
-- [x] **Main document re-apontado / sync resolvido** — conflito Overleaf↔GitHub resolvido; projeto
-  compila a partir de `artigo/main.tex`.
-- [x] **Compila no Overleaf** (~11 páginas); `subfig`, `sbc-template` e bibliografia fecham.
-- [x] **Autoria** — Henrique Machado de Oliveira; orientador Everson Scherrer Borges; e-mails
-  pessoais dos dois no cabeçalho (decisão: sem institucional).
-- [x] **Diagrama da arquitetura** — feito em TikZ (vetorial) em `\label{fig:arquitetura}`.
-- [x] **Bibliografia** (`referencias.bib`) — consolidada das `.bib` do grupo + canônicas; 32 refs,
-  todas citadas (1:1). `.bib` temporários da raiz já apagados.
-- [ ] **Refino de texto** — leitura parágrafo a parágrafo com o Henrique (em andamento).
-- [ ] **🎤 Apresentação final** — a entrega de PD1 inclui uma apresentação (proposta, metodologia,
-  desenvolvimento, resultados) e é **critério de nota**. Ainda não iniciada — só o artigo foi feito.
-- [ ] **Conferir contagem final** após as últimas adições (problema, calibração, contribuição):
-  artigo ≤ 12 páginas; abstract e resumo ≤ 10 linhas cada.
-- [ ] **Validar refs canônicas** que o Claude inseriu (ano/venue de SAM, CLIP, KD, pseudo-label).
-
-## ✍️ Escrita / `.tex` — alinhar com as decisões
-
-Correções no `Overleaf/TCC/textuais/Texto Inicial.tex` (rascunho real do TCC), pendentes desde o
-diagnóstico de 2026-06-10:
-
-- [X] **Remover o Aprendizado Ativo do corpo do texto** (ref. teórico + passo 5 da metodologia).
-  Removido. ⚠️ **Falta** adicioná-lo à seção de Trabalhos Futuros (que ainda é stub em
-  `conclusao.tex`). Ver `decisoes.md` D8.
-- [X] **Remover a menção a Docker** — removido das Ferramentas. Ver `decisoes.md`.
-- [X] **Alinhar nomes ARIA × Hartheus** — "sistema Hartheus" → "sistema ARIA"; Hartheus
-  apresentado como a plataforma no Tema Delimitado. Ver `decisoes.md` D1.
-- [X] **Inserir o experimento central 45 × 1** — nova subseção "Protocolo Experimental" na
-  metodologia. Ver `decisoes.md` D3.
-- [X] **Documentar a rotulagem binária** (`class_id=0`) — adicionada ao passo de calibração do
-  Professor. Ver `decisoes.md` D2.
-- [X] **Trocar "Label Studio"** por validação qualitativa por especialistas. Ver `decisoes.md` D5.
-
-> Pendente relacionado: escrever a seção de **Trabalhos Futuros** (em `conclusao.tex`) contemplando
-> Aprendizado Ativo (D8), rotulagem multiclasse (D9) e integração com a plataforma Hartheus.
-
-## 📄 Template / LaTeX da monografia (`Overleaf/TCC/`)
-
-- [ ] Corrigir typo do título: **"Convulacionais" → "Convolucionais"**.
-- [ ] Decidir/fixar o título definitivo (há 4 alternativas comentadas em `macros.tex`).
-- [ ] Ficha catalográfica com dados-dummy do template (tags de Criptografia/IoT; cita "Borges,
-  Everson Scherrer" como orientador). Orientador real: **Rafael Silva Guimarães**.
-- [ ] Preencher `palavraschave` / `keywords` (hoje "Palavra Chave 1...").
-- [ ] Escrever o **resumo** real (PT) e o **abstract** (EN) — hoje são o texto-instrução do
-  template.
-- [ ] Substituir os stubs `introducao.tex`, `ref_teorico.tex`, `conclusao.tex` (boilerplate do
-  template) pelo conteúdo real — ou consolidar a estrutura a partir do `Texto Inicial.tex`.
-- [ ] Deletar `Overleaf/textuais/testes.tex` (demo do template) quando não for mais útil.
-- [ ] Inserir a figura da arquitetura do pipeline (placeholder em `\label{fig:arquitetura_hartheus}`).
-
-## 📚 Bibliografia da monografia (`Overleaf/TCC/`)
-
-> O artigo SBC já tem sua bibliografia pronta (`Overleaf/artigo/referencias.bib`). Os itens abaixo
-> são da **monografia**.
-
-- [ ] `Overleaf/TCC/bibliografia.bib` está **vazio**; só `bibliografiaTeste.bib` tem entradas (genéricas).
-- [ ] Adicionar referências do domínio: **SAM, YOLO, Xception, CLIP, Teacher-Student/Knowledge
-  Distillation, Indústria 4.0, TAM, Difusão de Inovações, inspeção visual automatizada (AVI)**.
+---
 
 ## 🧩 Código
 
-- [ ] (sem itens soltos no momento — marcos de desenvolvimento estão no `roadmap.md`)
+> ✅ Os três bugs de desbloqueio (**Fase 0**) foram corrigidos e verificados em 2026-08-23.
 
-## 📁 Docs
+- [ ] **Recalibrar do zero, começando pela faixa A** (**D15**). O `rock_prompts.json` e as 14
+  imagens de `selectRocks/` atuais são provisórios. **Faltam 7 das 11 litologias da faixa A:**
+  `siena_white`, `ubatuba_green`, `shadow_white`, `santa_cecilia`, `san_francisco_green`,
+  `white_mirage`, `white_olympus`. O `rock_viewer.py` já entrega elas na ordem certa.
 
-- [ ] 🔔 **Atualizar o `Hartheus.md`** (ex-`PROJETO.md`) com os arquivos do Hartheus que o Henrique
-  vai passar. O contexto mudou: a branch **`feat/matheus` não existe mais**. Ao atualizar, purgar as
-  referências restantes a `feat/matheus` no `Hartheus.md` (seções de branches/comparação).
-  → **Claude: lembrar o Henrique de te passar os arquivos ao retomar a sessão.**
-- [ ] (manter este arquivo e os `.md` de contexto sem informação duplicada — princípio DRY)
+---
+
+## ✍️ Escrita — aplicar quando revisarmos `Overleaf/` (D13)
+
+> ⚠️ Nada aqui é urgente **agora**. `Overleaf/`, `LatinoWare2026/` e `apresentacao/` só serão
+> revisados depois que `docs/` estiver estável. Esta lista existe para não perder o que já foi
+> diagnosticado.
+
+### Erros factuais
+
+- [ ] **Orientador errado no artigo SBC** — `Overleaf/artigo/main.tex:17` e `:22` ainda listam
+  Everson Scherrer Borges. Rafael Silva Guimarães orienta a pesquisa. Diagnosticado em 01/07.
+- [ ] **Ficha catalográfica contradiz o próprio arquivo** — `Overleaf/TCC/macros.tex:43` cita
+  "Borges, Everson Scherrer" enquanto o `\orientador` na linha 17 já é Rafael. E as tags são do
+  template (Criptografia, IoT, Nuvem).
+- [ ] **"Constituir e pré-processar um banco de imagens"** — o autor não constituiu o banco
+  (D9). Trocar por "selecionar, caracterizar e pré-processar um conjunto público".
+- [ ] **O artigo nunca diz "SAM3"** — 25 ocorrências de "SAM", zero de "SAM3", citando o paper do
+  SAM v1 (2023), que é outro modelo. O short paper do Latinoware **já está correto**; é portar de
+  volta. Mesma correção nos slides 5, 6, 7 e 10.
+- [ ] **Typo no título** — "Redes Neurais **Convulacionais**" (`macros.tex:3`) → Convolucionais.
+- [ ] **`\approvaldate{01}{Agosto}{2026}`** já passou. `\local{Cachoeiro de itapemirim}` em
+  minúscula. `\palavraschave` ainda é "Palavra Chave 1".
+
+### Alinhar com as decisões novas
+
+- [ ] **O argumento do veio natural sai** (D3) — o texto diz que o ARIA existe para evitar que um
+  veio vire defeito, o que contradiz o código (a sonda `vein` está ativa em tudo). O eixo passa a
+  ser a arbitrariedade da marcação manual.
+- [ ] **"45 especialistas" vira estratificação por faixa** (D6), e "a comparação isola exatamente
+  a variável da hierarquia" sai — é superafirmação (o braço de controle é a correção).
+- [ ] **Purgar todas as menções ao Hartheus** (D1) nas três pastas.
+- [ ] **A justificativa do colapso binário muda** (D2) — de "os embeddings do CLIP não são
+  confiáveis" para "as sondas são chaves de recall, não rótulos semânticos".
+- [ ] **Arrancar TAM / Difusão de Inovações / Teoria Sociotécnica** (**D16**) da monografia
+  (subseção "Automação e Sistemas de Informação no Setor de Rochas") e do artigo (subseção
+  "Adoção Tecnológica e Indústria 4.0").
+- [ ] **Nenhum texto pode afirmar "calibração por litologia" nem "por grupo cromático"** enquanto
+  a D15 não for fechada.
+- [ ] **mAP "sobre N classes" contradiz a rotulagem binária.** Com uma classe, mAP = AP.
+  Esclarecer o que é N.
+
+### Refino de texto (baixa prioridade)
+
+- [ ] Abstract (EN) cita "the *ice leke* lithotype"; o resumo (PT) omite. Devem ser fiéis.
+- [ ] Caixa inconsistente: "Stain"/"stain", "Dark patches"/"dark patches", nas três pastas.
+- [ ] "aproximadamente 34.630 imagens" — ou "~34.600", ou o número exato sem "aproximadamente".
+- [ ] Tabela 1 lista 5 sondas, a Figura 3 mostra 4. Falta explicar: `ice_leke` é rocha clara, e
+  rochas claras usam `Dark patches`, não `light spot`.
+- [ ] Dizer **por que `ice_leke`**: é textura fora do padrão (`dataset.md`), o que transforma a
+  demo em teste de estresse deliberado em vez de escolha arbitrária. Vale registrar também que
+  ela está na **faixa D** (113 imagens) — é uma das mais pobres do dataset.
+- [ ] Mencionar o split train/val/test — um protocolo experimental precisa dizer como particiona.
+- [ ] Mencionar `rock_viewer.py` e `calibrator.py`: dá concretude ao "calibrar iterativamente".
+- [ ] Atribuir ao paper do CLIP o achado de que prompts contextuais superam palavras isoladas —
+  hoje aparece como hipótese dos autores.
+- [ ] Mostrar **um** caso em que a segmentação falhou. Seção de resultados só com acertos reduz
+  credibilidade.
+- [ ] Título usa "avarias"; o termo canônico do projeto é "anomalia" (`diretrizes-escrita.md`
+  §7.1). Há 4 títulos alternativos comentados em `macros.tex`.
+
+### Monografia — estrutura
+
+- [ ] **`Overleaf/TCC/main.tex` está com quase tudo comentado**: capa, ficha, resumo, sumário,
+  introdução, referencial e conclusão. Só entra `Texto Inicial.tex`.
+- [ ] **`introducao.tex`, `ref_teorico.tex` e `conclusao.tex` ainda contêm o texto-instrução do
+  template** ("Na introdução deve-se fazer a contextualização...").
+- [ ] **`bibliografia.bib` tem 0 bytes** e é o arquivo que o `main.tex` carrega — nenhuma
+  referência compila. As 32 referências reais estão em `Overleaf/artigo/referencias.bib`.
+- [ ] Escrever resumo (PT) e abstract (EN) reais — hoje são o texto do template.
+- [ ] Escrever Trabalhos Futuros contemplando D11 e D12.
+- [ ] Deletar `Overleaf/TCC/textuais/testes.tex` (demo do template).
+- [ ] Inserir a figura de arquitetura (placeholder em `\label{fig:arquitetura_hartheus}` — o
+  próprio nome do label precisa mudar, D1).
+
+---
+
+## 📁 Organização do repo
+
+- [ ] **`LatinoWare2026/artigo-overleaf.zip`** — 5,8 MB de binário versionado duplicando o que já
+  está extraído ao lado. Zip não tem diff útil e infla o histórico.
+- [ ] **`LatinoWare2026/Exemplo_do_IEEE_adaptado_para_o_Latin_Science_2026 (1)/`** — o `" (1)"` é
+  marca de download repetido. É template de referência; renomear ou remover.
+- [ ] **Três pastas chamadas "artigo"** sem distinção no nome (SBC, IEEE, template cru).
+- [ ] Convenção de nomes inconsistente no topo: `AI`, `docs`, `Overleaf`, `apresentacao`,
+  `LatinoWare2026`.
+
+---
+
+## ✅ Resolvido em 2026-08-23
+
+- Hartheus removido do repositório (D1); `Hartheus.md` deletado.
+- `pontos-tcc.md` fundido em `decisoes.md`; `diretrizes-implementacao.md` fundido no `CLAUDE.md`;
+  `auditoria.md`, `revisao-artigo.md` e `artigo-sbc.md` consolidados aqui.
+- `CLAUDE.md` corrigido: afirmava que `rock_prompts.json` e `selectRocks/` eram gitignored (não
+  são, estão versionados) e citava um typo `whte_liberdade` que não existe mais.
+- Contagem do dataset corrigida em `dataset.md`: são **14** litologias com <200 imagens, não 7.
+- `apresentacao/roteiro.md` já estava com o orientador correto — o item estava desatualizado nas
+  listas antigas.
+- Ausência de definição operacional de falso positivo → resolvida por **D7**.
+- "A calibração nunca foi demonstrada" → vira o **Experimento 1** (D5).
+- "45×1 confunde duas variáveis" → resolvido pelo braço de controle (**D6**).
+- "Suficiência de dados por especialista não é discutida" → virou **variável do experimento** (D6).
+- Falta de statement de reprodutibilidade → resolvida por dataset público (**D9**).

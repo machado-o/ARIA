@@ -1,77 +1,139 @@
-# Roadmap — ARIA Pipeline
+# Roadmap — ARIA
 
-Próximos passos do desenvolvimento, em ordem cronológica de execução.
+Estado vivo do desenvolvimento e ordem de execução. As decisões que justificam esta ordem estão
+em [`decisoes.md`](decisoes.md).
 
----
-
-## 1. ~~Reconstruir `calibrator.py`~~ ✅
-
-UI interativa de calibração de prompts via Streamlit — concluída.
+> Última atualização: 2026-08-23
+> Prazo-alvo de trabalho: **01/10/2026** (a confirmar com o orientador — ver `pendencias.md`)
 
 ---
 
-## 2. Completar seleção de imagens representativas (31 rochas)
+## Onde o projeto realmente está
 
-Selecionar uma imagem representativa por rocha via `rock_viewer.py` para as 31 rochas ainda sem seleção em `selectRocks/`.
+| Componente | Estado |
+|---|---|
+| `rock_viewer.py` — seleção manual de imagem | ✅ funciona |
+| `calibrator.py` — UI de calibração | ✅ funciona |
+| `inference.py` — inferência sobre `selectRocks/` | ✅ funciona (1 imagem por rocha) |
+| `rock_prompts.json` | 🟡 **provisório** (**D15**) — 46 entradas, mas só 13 configurações distintas |
+| `selectRocks/` | 🟡 **provisório** (**D15**) — 14 de 45, e a seleção será refeita |
+| Inferência em lote sobre o dataset | ❌ **não existe** |
+| Conjunto-ouro anotado | ❌ não existe |
+| Avaliação (IoU / mAP / falso positivo) | ❌ não existe |
+| Treino e avaliação YOLO | ❌ não existe (`AI/YOLO/` está vazio) |
+| Integração Xception | 🟡 modelo já testado neste dataset com bom resultado; falta o código de roteamento |
 
-Estado atual:
-- `ice_leke` — calibrado e validado
-- `giallo_fiorito`, `giallo_maracana`, `golden_storm`, `icarai_yellow`, `ipanema_beige`, `itaunas_white`, `kalahari`, `maracuja_yellow`, `naica`, `nevada_black`, `new_caledonia`, `olympios`, `ornamental` — imagem selecionada, calibração pendente
-- 31 rochas — sem imagem selecionada
-
----
-
-## 3. Completar calibração de prompts (45 rochas)
-
-Calibrar prompts e limiares de confiança em `rock_prompts.json` para cada tipo de rocha. Rodar `inference.py` e validar os resultados em `results/` até o resultado ser satisfatório.
-
----
-
-## 4. Rodar inferência SAM em batch (45 rochas)
-
-Com todos os prompts calibrados, rodar `inference.py` uma vez para gerar as anotações finais de todas as 45 rochas. Os `.txt` gerados em `results/` (formato YOLO segmentation) são o input direto do treinamento YOLO — sem conversão de formato.
+**O buraco estrutural:** `inference.py` lê de `selectRocks/`, que tem **uma imagem por rocha**.
+Não existe caminho do Professor para um conjunto de treino do Aluno. É a primeira coisa a
+resolver na Fase 3.
 
 ---
 
-## 5. Validação qualitativa por especialistas
+## ~~Fase 0 — Desbloqueio~~ ✅ 2026-08-23
 
-Coletar amostras dos resultados SAM de cada tipo litológico e submetê-las à avaliação de especialistas do setor de rochas ornamentais. O objetivo é confirmar que as segmentações identificam anomalias reais do ponto de vista industrial, complementando as métricas quantitativas.
-
----
-
-## 6. Implementar YOLO — treinamento
-
-Implementar `YOLO/train.py` consumindo os `.txt` de `results/` como dataset de treinamento.
-
-Treinar dois pipelines em paralelo para o experimento central do TCC:
-- **45 modelos especialistas** — um por tipo de rocha, cada um treinando exclusivamente nas anotações SAM do seu litótipo
-- **1 modelo generalista** (baseline) — treinando em anotações de todas as rochas com config genérica de prompts (`default`)
-
----
-
-## 7. Avaliar e comparar pipelines
-
-Avaliar os dois pipelines (especialista × generalista) com as métricas do TCC:
-- mAP e IoU nos conjuntos de validação e teste
-- FPS (viabilidade para linha de produção em tempo real)
-- Análise qualitativa comparada com a validação dos especialistas
+1. ✅ **Casing de path.** `.gitignore` agora lista `AI/dataset/` **e** `AI/Dataset/`;
+   `calibrator.py` e `rock_viewer.py` apontam para `../dataset`. Antes, numa máquina Linux, o
+   `.gitignore` não protegia as 34.630 imagens.
+2. ✅ **`class_id = -1` silencioso eliminado.** `validate_prompts()` roda **antes** de carregar o
+   modelo e aborta nomeando a rocha e a sonda. Verificado: apontou `giallo_maracana: scratch`.
+3. ✅ **Sonda exploratória não corrompe mais o `.txt`.** No `calibrator.py`, sonda fora do
+   `CLASS_ID_MAP` aparece no preview mas não grava polígono, com aviso na tela.
+4. ✅ **`scratch` registrado como id 5** (**D8**) nos dois arquivos.
+5. ✅ **`rock_viewer.py` ordena por faixa de volume** (**D15**), não em ordem alfabética — a
+   ordem em que ele entrega as rochas **é** a prioridade de trabalho.
 
 ---
 
-## 8. Integrar Xception ao pipeline
+## Fase 1 — Recalibração pela faixa A
 
-O classificador Xception (DeepStoneAI) já foi treinado e validado em projeto anterior nas 45 classes. Integrar como primeiro estágio do pipeline ARIA: recebe a imagem → identifica o tipo litológico → seleciona os prompts calibrados correspondentes em `rock_prompts.json` → roteia para o modelo YOLO especialista.
+Ver **D15**. O `rock_prompts.json` e as 14 imagens de `selectRocks/` atuais são **provisórios** —
+não são calibração validada. A recalibração recomeça do zero, pela ordem que o `rock_viewer.py`
+já entrega.
+
+**Faltam 7 das 11 litologias da faixa A:** `siena_white` (4.588), `ubatuba_green` (2.965),
+`shadow_white` (1.922), `santa_cecilia` (1.446), `san_francisco_green` (1.404), `white_mirage`
+(1.219), `white_olympus` (1.153).
+
+```bash
+cd AI/SAM
+python rock_viewer.py    # entrega siena_white primeiro e informa a faixa
+```
+
+Para cada litologia: selecionar a imagem representativa → calibrar sondas e limiares no
+`calibrator.py` → validar olhando a máscara. As 4 já selecionadas da faixa A
+(`nevada_black`, `ipanema_beige`, `itaunas_white`, `golden_storm`) devem ser **revistas**, não
+assumidas como prontas.
 
 ---
 
-## 9. Testar pipeline end-to-end
+## Fase 2 — Experimento 1: SAM calibrado × SAM default
 
-Validar o pipeline completo: Xception → SAM (prompts calibrados por tipo) → YOLO especialista → saída de polígonos. Primeiro teste integrado dos três estágios.
+Ver **D5** e **D7**. Não exige treino nenhum — é o caminho mais curto até um resultado real.
+
+1. **Montar o conjunto-ouro (~50 imagens).**
+   10 litologias da faixa A × 5 imagens cada, **retiradas do split `test/`** para nunca
+   contaminarem treino algum.
+2. **Anotar às cegas — antes de rodar qualquer inferência sobre essas imagens.**
+   A ordem é a metodologia: anotar depois de ver a máscara do modelo destrói a independência da
+   anotação. Ferramenta externa (LabelMe/CVAT), exportando polígono.
+3. **Rodar o Professor duas vezes por imagem** — configuração calibrada e configuração `default`.
+4. **Avaliar contra o ouro:** IoU, precisão, recall e taxa de falso positivo (D7), por braço e
+   por litologia.
+5. **Preferência pareada cega com especialista** (D7): máscara A × B embaralhadas, sem
+   identificação. Produz a estatística de preferência.
+6. **Escrever o resultado.** Inclui o par de figuras *default × calibrado* na mesma chapa — a
+   evidência que hoje falta em todo o material escrito.
+
+**Entregável:** H1 respondida, com número e com figura. Fecha como contribuição mesmo se a Fase 2
+não terminar.
 
 ---
 
-## Fora do escopo desta versão
+## Fase 3 — Experimento 2: especialistas × generalista, por faixa
 
-- **API FastAPI** — expor o pipeline como serviço `POST /segment` para integração com o frontend Hartheus. Trabalho futuro pós-TCC.
-- **Loop de aprendizado ativo** — SAM refinando predições de baixa confiança do YOLO em produção. Trabalho futuro.
-- **Rotulagem multi-classe** — treinar YOLO com class_ids distintos por tipo de anomalia. Extensão planejada se houver tempo; requer validação humana das anotações SAM.
+Ver **D6**. Executa faixa por faixa. **Cada faixa é escrita antes de a seguinte começar.**
+
+### 3.0 — Construir o que não existe
+
+- **`sam_batch.py`** — roda o Professor sobre uma **amostra** de N imagens por litologia (não
+  sobre as 34.630: são ~4 sondas por imagem, o custo é proibitivo e desnecessário), grava labels
+  e monta a estrutura `images/` + `labels/` + `data.yaml` que o Ultralytics exige.
+- **Pós-processamento do Professor** — área mínima, teto de instâncias por imagem, simplificação
+  de polígono. No único exemplo existente (`samples/ice_leke.txt`) são **107 polígonos numa
+  imagem**, com até 1.742 pontos. Um Aluno treinado nisso aprende a marcar tudo. Isso é etapa
+  metodológica documentada, não gambiarra.
+- **`train.py` / `eval.py`** — treino dos Alunos e avaliação contra o conjunto-ouro da Fase 1.
+
+### 3.1 — Faixa A (≥1000 imagens · 11 litologias)
+
+Treinar os três braços (especialista, generalista, controle calibrado — D6), avaliar contra o
+ouro, **escrever**.
+
+### 3.2 — Faixa B (500–999 · 6 litologias)
+### 3.3 — Faixa C (200–499 · 14 litologias)
+### 3.4 — Faixa D (<200 · 14 litologias)
+
+Cada uma repete o ciclo: treinar → avaliar → escrever. O gráfico final — desempenho da
+especialização **em função do volume de dados** — é o resultado que responde à segunda metade de
+H2 e que nenhum trabalho do referencial responde.
+
+---
+
+## Fase 4 — Integração e fechamento
+
+1. **Xception como roteador.** O modelo já foi testado neste dataset com bom resultado; falta o
+   código que recebe a imagem, identifica a litologia e seleciona a configuração de sondas +
+   o Aluno correspondente.
+2. **Teste end-to-end** dos três estágios.
+3. **FPS** — medir de fato, ou reduzir o discurso de tempo real no texto. Hoje o material escrito
+   vende velocidade em várias seções e nunca mede.
+
+---
+
+## Fora do escopo (trabalhos futuros declarados)
+
+- Loop de aprendizado ativo (**D11**)
+- Rotulagem multi-classe (**D12**)
+- Faixas não alcançadas do Experimento 2 (**D6**)
+- Generalização além das 45 litologias
+- API de serviço e integração com sistemas de chão de fábrica
