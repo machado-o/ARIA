@@ -6,12 +6,15 @@
 |---|---|
 | Total de imagens | **34.630** (train 24.263 · val 5.214 · test 5.153) |
 | Litologias | 45 |
-| Origem | **Conjunto público, obtido no Kaggle** — imagens industriais reais de chapas |
+| Origem | **Conjunto público no Kaggle:** *Chapas polidas de rochas ornamentais*, de `joovictorcostaaraujo` — [kaggle.com/datasets/joovictorcostaaraujo/chapas-polidas-de-rochas-ornametais](https://www.kaggle.com/datasets/joovictorcostaaraujo/chapas-polidas-de-rochas-ornametais) |
 | Constituição | O autor **não** constituiu o banco: selecionou, caracterizou e pré-processou um conjunto existente (**D9**) |
 | Desbalanceamento | Natural, não equalizado — e tratado como **variável do experimento** (**D6**) |
 
-- [ ] **TODO:** preencher URL, nome e autoria do dataset no Kaggle. Sem isso a fonte não pode ser
-  citada (ver `pendencias.md`).
+> ⚠️ O `.EXT` do slug no Kaggle tem um typo de origem (`ornametais`, sem o "n"). Ao citar, usar a
+> URL exata acima — encurtá-la ou "corrigi-la" quebra o link.
+
+- [ ] **TODO:** confirmar se o DeepStoneAI usou este mesmo conjunto. Se sim, vira citação
+  obrigatória (ver `pendencias.md`).
 
 ---
 

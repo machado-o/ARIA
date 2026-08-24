@@ -194,8 +194,11 @@ não grava polígonos de sonda não registrada.
 
 ## D9 — Dataset: público, não constituído pelo autor
 
-**Decisão:** o conjunto de imagens é **público, obtido no Kaggle**. O autor **não constituiu** o
-banco — selecionou, caracterizou e pré-processou um conjunto existente.
+**Decisão:** o conjunto de imagens é **público, obtido no Kaggle** — *Chapas polidas de rochas
+ornamentais*, de `joovictorcostaaraujo`. O autor **não constituiu** o banco: selecionou,
+caracterizou e pré-processou um conjunto existente.
+
+<https://www.kaggle.com/datasets/joovictorcostaaraujo/chapas-polidas-de-rochas-ornametais>
 
 **Consequência obrigatória na escrita:** o objetivo específico que hoje diz *"Constituir e
 pré-processar um banco de imagens industriais"* é **factualmente falso** e precisa virar
@@ -204,7 +207,6 @@ pré-processar um banco de imagens industriais"* é **factualmente falso** e pre
 **Benefício:** dataset público resolve de graça o statement de reprodutibilidade e elimina
 qualquer necessidade de citar empresa ou parceiro.
 
-- [ ] **TODO:** URL do Kaggle, nome do dataset e autoria → preencher em `dataset.md`.
 - [ ] **TODO:** confirmar se o DeepStoneAI usou este mesmo conjunto (se sim, vira citação obrigatória).
 
 ---
@@ -287,3 +289,78 @@ afirmação do trabalho — não há capítulo de análise organizacional, nem c
 **Consequência:** remover a subseção "Automação e Sistemas de Informação no Setor de Rochas" da
 monografia e a subseção "Adoção Tecnológica e Indústria 4.0" do artigo. O contexto de Indústria
 4.0 pode ficar, em uma ou duas frases, como motivação — sem as três teorias.
+
+---
+
+## D17 — Protocolo de calibração: 1 imagem de descoberta + 3 de limiar
+
+**O problema:** uma única imagem por litologia estava resolvendo **dois problemas diferentes** ao
+mesmo tempo, e o ideal de imagem para cada um é oposto:
+
+| Tarefa | Pergunta | A imagem precisa |
+|---|---|---|
+| **Descoberta de sonda** | a sonda faz o modelo responder a algo presente nesta litologia? | **conter** o máximo de fenômenos |
+| **Escolha do limiar** | onde corto o score para marcar o que quero? | **representar** a variação típica |
+
+As duas estratégias intuitivas são enviesadas em direções opostas. A chapa mais rica em anomalias
+foi escolhida *porque* as feições eram visíveis — há efeito de seleção por visibilidade, e o
+limiar sai **alto demais**, perdendo o defeito sutil das outras chapas. A chapa mais sutil produz
+o inverso: limiar baixo demais, e enxurrada de marcações na chapa típica (provável origem dos
+**107 polígonos** numa única imagem de `ice_leke`, 70 deles `vein`).
+
+**Decisão — por litologia:**
+
+- **1 imagem de descoberta** — a mais rica em anomalias. Define **quais sondas** entram.
+- **3 imagens de limiar** — uma sutil, uma típica, uma forte. O limiar é escolhido para funcionar
+  **no conjunto**, não perfeitamente em nenhuma. A pergunta deixa de ser "qual limiar acerta esta
+  imagem" (que não tem resposta) e vira "qual limiar menos erra nas três" (que tem).
+
+**Origem das imagens: somente `train/`.** O conjunto-ouro sai do `test/` (**D7**); calibrar sobre
+uma imagem de `test/` seria ajustar o limiar em cima da própria prova. O `val/` fica reservado
+para a validação do Aluno. O `rock_viewer.py` já restringe a seleção ao `train/`; a flag `--all`
+mostra os outros splits apenas para estudo, sem permitir seleção.
+
+Isso não custa cobertura: o split do dataset é **aleatório estratificado 70/15/15 em todas as 45
+classes** (verificado), então `val/` e `test/` são amostras da mesma distribuição — não há
+fenômeno que apareça sistematicamente só neles. E para a faixa A o `train/` tem de 700 a 3.200
+imagens por litologia: o que limita a cobertura é a varredura do autor, não o split.
+
+**Para que lado errar:** a literatura de pseudo-rotulagem tende a limiar **alto** / viés de
+precisão — o *Soft Teacher* reporta melhor resultado em 0,9 de score, notando que limiar maior dá
+mais precisão e menos recall, e a literatura de ruído de rótulo registra que redes de alta
+capacidade **memorizam** rótulo errado. ⚠️ **Não copiar o número:** aquilo são scores calibrados
+de um detector; os do SAM3 com prompt de texto operam entre 0,007 e 0,3. O que transfere é a
+direção — **na dúvida, cortar mais apertado.**
+
+**O critério tem de ser escrito.** Escolher limiar "no olho" é exatamente o que a **D3** acusa o
+inspetor humano de fazer. A regra do projeto deve ser enunciável e reprodutível — algo como *"o
+maior limiar que ainda marca ao menos X% das feições anotadas manualmente nas 3 imagens de
+limiar"*. Enunciada assim, deixa de ser dúvida e vira parágrafo de metodologia.
+
+- [ ] **TODO:** fixar o valor de X e a redação final da regra, depois da primeira litologia da
+  faixa A calibrada com o protocolo novo.
+
+---
+
+## D18 — Calibração por varredura offline (cache de máscaras + scores)
+
+**Decisão:** a calibração roda o SAM3 **uma vez por (imagem, sonda)** com `conf` no piso
+(≈0,001), guarda as máscaras e seus scores, e depois varre qualquer limiar **offline**, sem GPU.
+
+**Justificativa — verificada na fonte do `ultralytics 8.4.61`** (`SAM3SemanticPredictor.postprocess`):
+
+```python
+pred_scores = (pred_logits.sigmoid() * presence_score).squeeze(-1)
+keep = pred_scores > self.args.conf          # filtro puro, depois do modelo
+keep = torchvision.ops.nms(boxes, scores, self.args.iou)
+```
+
+O modelo produz máscaras e scores **sem conhecer o `conf`**; o `conf` apenas descarta. O NMS roda
+depois do filtro, mas processa em ordem decrescente de score e só remove usando um sobrevivente de
+score **maior** — então incluir máscaras de score baixo não pode derrubar uma de score alto. As
+decisões sobre as máscaras acima de qualquer limiar são idênticas com ou sem as abaixo dele.
+
+**Consequência: a varredura offline é exatamente equivalente a rodar de novo em cada limiar** —
+não é aproximação. O ciclo de calibração deixa de ser "escolho conf → rodo o SAM → olho → ajusto →
+rodo de novo" (minutos por iteração) e vira "rodo uma vez → arrasto o slider → vejo o efeito nas 4
+imagens simultaneamente". É o que torna o protocolo da D17 viável em tempo humano.

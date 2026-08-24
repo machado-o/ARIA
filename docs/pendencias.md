@@ -12,8 +12,6 @@
 
 ## 🔴 Bloqueadores — dependem do Henrique
 
-- [ ] **URL e autoria do dataset no Kaggle** (D9). Sem isso não dá para citar a fonte, e o
-  objetivo específico nº 1 continua factualmente errado.
 - [ ] **Confirmar a data real de entrega/defesa com o Rafael.** Hoje o plano assume 01/10 como
   entrega final (cenário mais apertado). Se for só a prévia, a Fase 2 ganha fôlego.
 - [ ] **Confirmar se o DeepStoneAI usou este mesmo dataset.** Se sim, vira citação obrigatória.
@@ -74,6 +72,18 @@
   a D15 não for fechada.
 - [ ] **mAP "sobre N classes" contradiz a rotulagem binária.** Com uma classe, mAP = AP.
   Esclarecer o que é N.
+
+### Trabalhos Relacionados — lacuna a reposicionar
+
+- [ ] **Citar e se posicionar contra `Boxes2Pixels: Learning Defect Segmentation from Noisy SAM
+  Masks`** (Lendering, Akdag e Bondarev — arXiv:2604.11162). Faz exatamente SAM → pseudo-rótulos →
+  Aluno para segmentação de defeitos industriais, com estratégias de tratamento de ruído de
+  máscara. **Não** faz condicionamento de prompt por litologia e **não** é no domínio de rochas
+  ornamentais — a contribuição do ARIA sobrevive, mas fica mais estreita. A afirmação de "lacuna
+  na literatura" precisa ser reescrita para não ser derrubada pela banca.
+- [ ] Ancorar a discussão de limiar em literatura de pseudo-rotulagem (Soft Teacher, Unbiased
+  Teacher): o consenso é limiar **alto** / viés de precisão, porque a rede memoriza rótulo errado.
+  Ver `decisoes.md` D17.
 
 ### Refino de texto (baixa prioridade)
 

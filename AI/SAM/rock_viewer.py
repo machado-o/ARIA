@@ -22,6 +22,11 @@ from pathlib import Path
 DATASET_DIR = Path("../dataset")
 SELECT_ROCKS_DIR = Path("selectRocks")
 SPLITS = ("train", "val", "test")
+
+# Imagem de calibracao SO pode sair do train/. O conjunto-ouro sai do test/ (decisoes.md D7):
+# calibrar num arquivo de test/ seria ajustar o limiar em cima da propria prova. O val/ fica
+# reservado para a validacao do Aluno. Ver decisoes.md D17.
+SPLIT_CALIBRACAO = "train"
 IMG_EXTS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff"}
 
 
@@ -32,7 +37,7 @@ FAIXAS = (("A", 1000), ("B", 500), ("C", 200), ("D", 0))
 
 @lru_cache(maxsize=None)
 def count_images(rock_name: str) -> int:
-    """Total de imagens da rocha somando train/val/test."""
+    """Total de imagens da rocha somando train/val/test (define a faixa -- D6)."""
     total = 0
     for split in SPLITS:
         rock_dir = DATASET_DIR / split / rock_name
@@ -89,10 +94,16 @@ def find_next_rock() -> str | None:
     return None
 
 
-def collect_images(rock_name: str) -> list[tuple[str, Path]]:
-    """Coleta imagens de train/val/test com label de origem."""
+def collect_images(rock_name: str, todos_os_splits: bool = False) -> list[tuple[str, Path]]:
+    """Coleta imagens da rocha, com label de split.
+
+    Por padrao devolve so o train/ -- e de la que a imagem de calibracao pode sair (D17).
+    Com todos_os_splits=True devolve tudo, para estudar a variabilidade da rocha; as imagens
+    fora do train/ aparecem, mas nao podem ser selecionadas.
+    """
+    splits = SPLITS if todos_os_splits else (SPLIT_CALIBRACAO,)
     images = []
-    for split in SPLITS:
+    for split in splits:
         rock_dir = DATASET_DIR / split / rock_name
         if rock_dir.exists():
             for p in sorted(rock_dir.iterdir()):
@@ -391,17 +402,23 @@ def count_pending() -> int:
     return sum(1 for r in find_all_rocks() if r.lower() not in selected)
 
 
-def select_for_rock(rock_name: str, cols: int) -> bool:
+def select_for_rock(rock_name: str, cols: int, todos_os_splits: bool = False) -> bool:
     """Abre o visualizador para uma rocha e aguarda seleção. Retorna True se selecionou."""
-    images = collect_images(rock_name)
+    images = collect_images(rock_name, todos_os_splits=todos_os_splits)
     if not images:
         print(f"[ERRO] Nenhuma imagem encontrada para '{rock_name}' em {DATASET_DIR}/")
         return False
 
+    escopo = "train/val/test" if todos_os_splits else f"{SPLIT_CALIBRACAO}/"
     print(
         f"Rocha: {rock_name}  |  faixa {faixa_of(rock_name)}  |  "
-        f"{len(images)} imagens (train/val/test)"
+        f"{len(images)} imagens ({escopo})"
     )
+    if todos_os_splits:
+        print(
+            f"  [--all] Mostrando os 3 splits para estudo. Só imagens de "
+            f"{SPLIT_CALIBRACAO}/ podem ser selecionadas (D17)."
+        )
 
     html = build_html(rock_name, images, cols=cols)
     tmp = tempfile.NamedTemporaryFile(
@@ -440,6 +457,16 @@ def select_for_rock(rock_name: str, cols: int) -> bool:
             continue
 
         split, chosen = images[idx]
+
+        if split != SPLIT_CALIBRACAO:
+            print(
+                f"  [BLOQUEADO] {split}/{chosen.name} não pode ser imagem de calibração.\n"
+                f"  O conjunto-ouro sai do test/ e o val/ valida o Aluno — calibrar fora do\n"
+                f"  {SPLIT_CALIBRACAO}/ contamina a avaliação. Ver docs/decisoes.md D17.\n"
+                f"  Escolha uma imagem marcada como {SPLIT_CALIBRACAO}."
+            )
+            continue
+
         print(f"\n  Escolhido: {split}/{chosen.name}")
 
         SELECT_ROCKS_DIR.mkdir(exist_ok=True)
@@ -476,10 +503,15 @@ def main() -> None:
         "--cols", type=int, default=8,
         help="Colunas na grade (padrão: 8)"
     )
+    parser.add_argument(
+        "--all", dest="todos_os_splits", action="store_true",
+        help="Mostra val/ e test/ além do train/, para estudar a variabilidade da rocha. "
+             "Só imagens de train/ continuam selecionáveis (docs/decisoes.md D17)."
+    )
     args = parser.parse_args()
 
     if args.rock is not None:
-        select_for_rock(args.rock, args.cols)
+        select_for_rock(args.rock, args.cols, args.todos_os_splits)
         return
 
     # Modo loop — itera pelas rochas pendentes
@@ -505,7 +537,7 @@ def main() -> None:
             f"{pend_faixa} pendentes na faixa {faixa} ──"
         )
 
-        select_for_rock(rock_name, args.cols)
+        select_for_rock(rock_name, args.cols, args.todos_os_splits)
 
         remaining = count_pending()
         if remaining == 0:
