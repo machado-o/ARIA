@@ -349,12 +349,35 @@ de um detector; os do SAM3 com prompt de texto operam entre 0,007 e 0,3. O que t
 direção — **na dúvida, cortar mais apertado.**
 
 **O critério tem de ser escrito.** Escolher limiar "no olho" é exatamente o que a **D3** acusa o
-inspetor humano de fazer. A regra do projeto deve ser enunciável e reprodutível — algo como *"o
-maior limiar que ainda marca ao menos X% das feições anotadas manualmente nas 3 imagens de
-limiar"*. Enunciada assim, deixa de ser dúvida e vira parágrafo de metodologia.
+inspetor humano de fazer.
 
-- [ ] **TODO:** fixar o valor de X e a redação final da regra, depois da primeira litologia da
-  faixa A calibrada com o protocolo novo.
+Distinção que importa e é fácil de confundir:
+
+| | Muda por litologia? |
+|---|---|
+| **O valor do limiar** (`crack: 0.08`) | **Sim** — é o objetivo da calibração |
+| **A regra que produz o valor** | **Não** — é a mesma para as 45 |
+
+Uma litologia não define o limiar das outras. Ela serve para **calibrar a régua**: o parâmetro da
+regra (aqui chamado de X) não é escolhível no abstrato, só se descobre a faixa utilizável vendo o
+efeito uma vez em dados reais. Depois disso o X **congela** — se fosse reajustado a cada rocha,
+voltaria a ser escolha no olho e a regra deixaria de ser regra.
+
+**Verificação ao fim da faixa A:** conferir se a mesma regra se sustentou nas 11 litologias. Se
+não, o X passa a ser definido por grupo cromático — e isso é **resultado a reportar**, não falha.
+
+**Forma da regra — decisão em aberto.** Duas candidatas:
+
+- **(a) Baseada em anotação:** *"o maior limiar que ainda marca ao menos X% das feições anotadas
+  manualmente nas 3 imagens de limiar"*. Mais rigorosa, mas custa **135 imagens anotadas**
+  (3 × 45) — quase três vezes o conjunto-ouro inteiro. Custo alto para o prazo.
+- **(b) Joelho da curva, validado pelo ouro:** o limiar sai do "joelho" da curva *detecções ×
+  limiar* (`sam_cache.curva_de_limiar()` já calcula), e as ~50 imagens do conjunto-ouro (**D7**),
+  que serão anotadas de qualquer forma, testam se a regra produz bons limiares. **Zero anotação
+  adicional** e o gabarito faz dois trabalhos.
+
+- [ ] **TODO:** escolher entre (a) e (b), fixar o parâmetro e a redação final — depois da primeira
+  litologia da faixa A calibrada com o protocolo novo.
 
 ---
 
