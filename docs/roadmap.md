@@ -12,11 +12,12 @@ em [`decisoes.md`](decisoes.md).
 
 | Componente | Estado |
 |---|---|
-| `rock_viewer.py` — seleção manual de imagem | ✅ funciona |
-| `calibrator.py` — UI de calibração | ✅ funciona |
-| `inference.py` — inferência sobre `selectRocks/` | ✅ funciona (1 imagem por rocha) |
+| `rock_viewer.py` — seleção das 4 vagas | ✅ reescrito para o protocolo D17 |
+| `calibrator.py` — UI de calibração | 🟡 lê o layout novo; falta a interface das 4 vagas |
+| `inference.py` — inferência sobre `selectRocks/` | ✅ funciona; já aceita o layout em pasta |
+| `sam_cache.py` — varredura offline de limiar | ✅ núcleo pronto e testado (D18) |
 | `rock_prompts.json` | 🟡 **provisório** (**D15**) — 46 entradas, mas só 13 configurações distintas |
-| `selectRocks/` | 🟡 **provisório** (**D15**) — 14 de 45, e a seleção será refeita |
+| `selectRocks/` | 🔴 **zerado** — 0 de 180 vagas (45 litologias × 4, D17) |
 | Inferência em lote sobre o dataset | ❌ **não existe** |
 | Conjunto-ouro anotado | ❌ não existe |
 | Avaliação (IoU / mAP / falso positivo) | ❌ não existe |
@@ -46,23 +47,26 @@ resolver na Fase 3.
 
 ## Fase 1 — Recalibração pela faixa A
 
-Ver **D15**. O `rock_prompts.json` e as 14 imagens de `selectRocks/` atuais são **provisórios** —
-não são calibração validada. A recalibração recomeça do zero, pela ordem que o `rock_viewer.py`
-já entrega.
+Ver **D15** e **D17**. O `selectRocks/` foi **zerado em 2026-08-23**: as 14 imagens antigas foram
+apagadas e a seleção recomeça com o protocolo de 4 vagas.
 
-**Faltam 7 das 11 litologias da faixa A:** `siena_white` (4.588), `ubatuba_green` (2.965),
-`shadow_white` (1.922), `santa_cecilia` (1.446), `san_francisco_green` (1.404), `white_mirage`
-(1.219), `white_olympus` (1.153).
+**Estado: 0 de 180 vagas** (45 litologias × 4). A faixa A são as 11 primeiras — **44 vagas**.
 
 ```bash
 cd AI/SAM
-python rock_viewer.py    # entrega siena_white primeiro e informa a faixa
+python rock_viewer.py          # entrega siena_white / descoberta, e segue em ordem de faixa
+python rock_viewer.py --all    # mostra val/ e test/ para estudo (não selecionáveis)
 ```
 
-Para cada litologia: selecionar a imagem representativa → calibrar sondas e limiares no
-`calibrator.py` → validar olhando a máscara. As 4 já selecionadas da faixa A
-(`nevada_black`, `ipanema_beige`, `itaunas_white`, `golden_storm`) devem ser **revistas**, não
-assumidas como prontas.
+A ferramenta conduz vaga por vaga, dizendo o que procurar em cada uma. Ela só oferece imagens do
+`train/` e recusa qualquer outra (**D17**).
+
+Depois de a **primeira litologia** estar completa (4/4), o próximo passo é terminar o
+`calibrator.py`: exibir as 4 imagens lado a lado e escolher o limiar que melhor serve ao
+**conjunto**. O núcleo já existe em `sam_cache.py` (**D18**) — falta a interface.
+
+> ⚠️ **Ainda em aberto (TODO da D17):** o valor de X na regra *"o maior limiar que ainda marca ao
+> menos X% das feições anotadas"*. Só dá para fixar depois da primeira litologia calibrada.
 
 ---
 

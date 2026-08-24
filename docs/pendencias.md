@@ -26,10 +26,12 @@
 
 > ✅ Os três bugs de desbloqueio (**Fase 0**) foram corrigidos e verificados em 2026-08-23.
 
-- [ ] **Recalibrar do zero, começando pela faixa A** (**D15**). O `rock_prompts.json` e as 14
-  imagens de `selectRocks/` atuais são provisórios. **Faltam 7 das 11 litologias da faixa A:**
-  `siena_white`, `ubatuba_green`, `shadow_white`, `santa_cecilia`, `san_francisco_green`,
-  `white_mirage`, `white_olympus`. O `rock_viewer.py` já entrega elas na ordem certa.
+- [ ] **Selecionar as 4 imagens da faixa A** (**D17**). `selectRocks/` foi zerado: **0 de 180
+  vagas**, sendo 44 da faixa A. `python rock_viewer.py` conduz na ordem certa.
+- [ ] **Terminar o `calibrator.py`** — mostrar as 4 vagas lado a lado e escolher o limiar pelo
+  conjunto. Núcleo pronto e testado em `sam_cache.py`; falta a interface. Fazer **depois** da
+  primeira litologia completa, para construir contra dados reais.
+- [ ] **Fixar o X da regra de limiar** (TODO da **D17**) depois da primeira litologia.
 
 ---
 

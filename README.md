@@ -77,13 +77,18 @@ Detalhamento em [`docs/dataset.md`](docs/dataset.md).
 
 ```bash
 cd AI/SAM
-python rock_viewer.py                                     # escolher a imagem representativa
+python rock_viewer.py                                     # preencher as 4 vagas da litologia
 .venv\Scripts\python.exe -m streamlit run calibrator.py   # calibrar sondas e limiares
 python inference.py                                       # rodar o Professor
 ```
 
-A seleção da imagem de calibração é **sempre manual** — usar o próprio modelo para escolhê-la
-seria raciocínio circular.
+Cada litologia tem **quatro** imagens de calibração, com papéis distintos: uma de *descoberta*
+(define quais sondas entram) e três de *limiar* — sutil, típica e forte — que juntas definem o
+limiar de confiança. Uma imagem só não serve: a mais rica em anomalias enviesa o limiar para
+cima, a mais sutil enviesa para baixo.
+
+A seleção é **sempre manual** (usar o próprio modelo para escolher seria raciocínio circular) e
+sai **apenas do split `train/`**, para não contaminar a avaliação.
 
 ## Estrutura
 

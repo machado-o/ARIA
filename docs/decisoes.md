@@ -263,9 +263,9 @@ distintas**, com 18 litologias compartilhando o mesmo conjunto — é **provisó
 resultado de calibração validada e **não deve ser tratado como tal** por ninguém, em nenhum
 documento.
 
-O mesmo vale para as 14 imagens em `selectRocks/`: a compreensão do autor sobre marcações e sobre
-rochas amadureceu desde que foram escolhidas, e **a seleção de imagem será refeita do zero**,
-junto com a escolha de sondas de cada litologia.
+O mesmo valia para as imagens de `selectRocks/`: a compreensão do autor sobre marcações e sobre
+rochas amadureceu desde que foram escolhidas. **A pasta foi zerada em 2026-08-23** e a seleção
+recomeçou do zero com o protocolo de 4 vagas (**D17**), junto com a escolha de sondas.
 
 **Ordem de trabalho:** a recalibração segue a **faixa de volume de dados** (**D6**) — faixa A
 primeiro. O `rock_viewer.py` já ordena as litologias por volume decrescente e mostra a faixa e o
@@ -314,6 +314,22 @@ o inverso: limiar baixo demais, e enxurrada de marcações na chapa típica (pro
 - **3 imagens de limiar** — uma sutil, uma típica, uma forte. O limiar é escolhido para funcionar
   **no conjunto**, não perfeitamente em nenhuma. A pergunta deixa de ser "qual limiar acerta esta
   imagem" (que não tem resposta) e vira "qual limiar menos erra nas três" (que tem).
+
+**Layout em disco** — o papel de cada imagem é o próprio nome do arquivo, então nunca há dúvida
+sobre qual serve para quê:
+
+```
+selectRocks/<litologia>/
+├── descoberta.JPG      define QUAIS sondas entram
+├── limiar_sutil.JPG    \
+├── limiar_tipica.JPG    } definem o LIMIAR de confiança
+├── limiar_forte.JPG    /
+└── meta.json           split e arquivo de origem de cada uma
+```
+
+O `meta.json` registra de onde veio cada imagem (`train/1234.JPG`) e quando foi escolhida — é o
+material do statement de reprodutibilidade do TCC. O `inference.py` já lê esse layout sem
+alteração.
 
 **Origem das imagens: somente `train/`.** O conjunto-ouro sai do `test/` (**D7**); calibrar sobre
 uma imagem de `test/` seria ajustar o limiar em cima da própria prova. O `val/` fica reservado

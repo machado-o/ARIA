@@ -95,15 +95,18 @@ Fallback: chave `"default"`. Se ela também faltar, `inference.py` usa
 
 ### Fluxo de `inference.py`
 
-1. Lê imagens de `selectRocks/` (**uma por litologia**).
+1. Lê imagens de `selectRocks/<litologia>/` (**4 por litologia** — D17).
 2. Carrega as sondas da litologia em `rock_prompts.json`.
 3. Roda o SAM3 uma vez por sonda, com o limiar configurado.
 4. Grava o resultado individual por sonda e a imagem combinada em `results/<litologia>/`.
 5. Grava os polígonos em `.txt` (YOLO, coords normalizadas 0–1).
 
-> ⚠️ **Este script não produz conjunto de treino.** Ele processa uma imagem por litologia — é
+> ⚠️ **Este script não produz conjunto de treino.** Ele processa só as imagens de calibração — é
 > ferramenta de **calibração**, não de produção de dataset. O `sam_batch.py` que roda sobre uma
 > amostra do dataset **ainda não existe** (`roadmap.md` → Fase 3.0).
+>
+> Para calibrar, a varredura de limiar não passa mais por aqui: `sam_cache.py` roda o SAM uma vez
+> com `conf` no piso e filtra offline (**D18**).
 
 ### Formato de saída
 

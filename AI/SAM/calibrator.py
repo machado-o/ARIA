@@ -19,6 +19,8 @@ from typing import Optional
 import cv2
 import streamlit as st
 
+import sam_cache  # noqa: F401  # D18 -- varredura offline de limiar (em integracao)
+
 # ── Page config (must be first Streamlit call) ────────────────────────────────
 st.set_page_config(
     page_title="ARIA Calibrator",
@@ -121,13 +123,43 @@ def find_all_rocks() -> list[str]:
     return sorted(rocks)
 
 
+# As 4 vagas por litologia (docs/decisoes.md D17). A ordem importa: "descoberta"
+# decide QUAIS sondas entram; as tres de "limiar" decidem o conf.
+PAPEIS = ("descoberta", "limiar_sutil", "limiar_tipica", "limiar_forte")
+PAPEL_ROTULO = {
+    "descoberta": "Descoberta",
+    "limiar_sutil": "Limiar - sutil",
+    "limiar_tipica": "Limiar - tipica",
+    "limiar_forte": "Limiar - forte",
+}
+
+
+def get_slot_images(rock: str) -> dict[str, Path]:
+    """Vagas preenchidas da litologia: {papel: caminho}.
+
+    Layout novo (D17): selectRocks/<rock>/<papel>.<ext>
+    """
+    d = SELECT_ROCKS / rock
+    if not d.exists():
+        return {}
+    achados: dict[str, Path] = {}
+    for f in sorted(d.iterdir()):
+        if f.is_file() and f.suffix.lower() in IMG_EXTS and f.stem in PAPEIS:
+            achados[f.stem] = f
+    return achados
+
+
 def get_select_image(rock: str) -> Optional[Path]:
-    if not SELECT_ROCKS.exists():
+    """Imagem principal da litologia — a de descoberta.
+
+    TODO(D18): o calibrador ainda trabalha com UMA imagem. O proximo passo e
+    exibir as 4 lado a lado e escolher o limiar que melhor serve ao CONJUNTO,
+    e nao a uma imagem so -- ver get_slot_images() e sam_cache.py.
+    """
+    vagas = get_slot_images(rock)
+    if not vagas:
         return None
-    for f in SELECT_ROCKS.iterdir():
-        if f.stem.lower() == rock.lower() and f.suffix.lower() in IMG_EXTS:
-            return f
-    return None
+    return vagas.get("descoberta") or next(iter(vagas.values()))
 
 
 def rock_status(rock: str) -> str:

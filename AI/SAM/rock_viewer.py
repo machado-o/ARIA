@@ -1,43 +1,95 @@
-"""
-rock_viewer.py — Visualizador de contact sheet para seleção de imagens representativas.
+"""rock_viewer — seleção manual das imagens de calibração.
 
-Gera uma grade HTML com todas as imagens de um tipo de rocha (train/val/test),
-abre no navegador para visualização, e copia a imagem escolhida para selectRocks/.
+Protocolo D17 (docs/decisoes.md): cada litologia tem 4 vagas com papéis distintos.
 
-USO:
-    python rock_viewer.py              # abre a próxima rocha sem seleção
-    python rock_viewer.py ice_leke
-    python rock_viewer.py ice_leke --cols 6
+    selectRocks/<litologia>/
+    ├── descoberta.JPG      define QUAIS sondas entram
+    ├── limiar_sutil.JPG    \
+    ├── limiar_tipica.JPG    } definem o LIMIAR de confiança
+    └── limiar_forte.JPG    /
+    └── meta.json           de onde veio cada uma (reprodutibilidade)
+
+A seleção é sempre manual: usar o próprio SAM para escolher a imagem de
+calibração seria raciocínio circular.
+
+As litologias são entregues em ordem de VOLUME DE DADOS (faixa A primeiro),
+não em ordem alfabética — a ordem é a prioridade de trabalho (D6, D15).
+
+Uso:
+    python rock_viewer.py                 # próxima vaga pendente, em ordem de faixa
+    python rock_viewer.py <litologia>     # completa as vagas de uma litologia
+    python rock_viewer.py --cols 6        # grade mais larga
+    python rock_viewer.py --all           # mostra val/ e test/ para estudo (não selecionáveis)
 """
 
 import argparse
 import json
 import shutil
-import sys
-from functools import lru_cache
 import tempfile
 import webbrowser
+from datetime import datetime
+from functools import lru_cache
 from pathlib import Path
 
 DATASET_DIR = Path("../dataset")
 SELECT_ROCKS_DIR = Path("selectRocks")
 SPLITS = ("train", "val", "test")
-
-# Imagem de calibracao SO pode sair do train/. O conjunto-ouro sai do test/ (decisoes.md D7):
-# calibrar num arquivo de test/ seria ajustar o limiar em cima da propria prova. O val/ fica
-# reservado para a validacao do Aluno. Ver decisoes.md D17.
-SPLIT_CALIBRACAO = "train"
 IMG_EXTS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff"}
 
+# Imagem de calibração SÓ pode sair do train/. O conjunto-ouro sai do test/ (D7):
+# calibrar num arquivo de test/ seria ajustar o limiar em cima da própria prova.
+# O val/ fica reservado para a validação do Aluno. Ver docs/decisoes.md D17.
+SPLIT_CALIBRACAO = "train"
 
-# Faixas de volume de dados. A ordem de calibracao segue a faixa: A primeiro.
-# Fonte: docs/decisoes.md D6 e D15, docs/dataset.md.
+META_NAME = "meta.json"
+
+# Faixas de volume de dados — a ordem de trabalho segue a faixa (D6).
 FAIXAS = (("A", 1000), ("B", 500), ("C", 200), ("D", 0))
 
+# As 4 vagas, na ordem em que são preenchidas.
+# (chave, rótulo, o que procurar, cor de destaque)
+PAPEIS = (
+    (
+        "descoberta",
+        "Descoberta",
+        "A chapa com o MAIOR número de tipos diferentes de feição. "
+        "Esta imagem decide QUAIS sondas entram para esta litologia — "
+        "o que não aparecer aqui, você não vai descobrir.",
+        "#a78bfa",
+    ),
+    (
+        "limiar_sutil",
+        "Limiar · sutil",
+        "Feições fracas, de baixo contraste, daquelas que quase passam batido. "
+        "É o caso difícil: define até onde o limiar precisa descer.",
+        "#60a5fa",
+    ),
+    (
+        "limiar_tipica",
+        "Limiar · típica",
+        "A chapa mais comum desta rocha — o que você mais vê. "
+        "Nem a mais limpa, nem a mais problemática. É o caso médio.",
+        "#4ade80",
+    ),
+    (
+        "limiar_forte",
+        "Limiar · forte",
+        "Feições marcantes, de alto contraste. "
+        "Define até onde o limiar pode subir sem perder o óbvio.",
+        "#fbbf24",
+    ),
+)
+PAPEL_INFO = {chave: (rotulo, dica, cor) for chave, rotulo, dica, cor in PAPEIS}
+PAPEL_CHAVES = tuple(chave for chave, *_ in PAPEIS)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Dataset
+# ─────────────────────────────────────────────────────────────────────────────
 
 @lru_cache(maxsize=None)
 def count_images(rock_name: str) -> int:
-    """Total de imagens da rocha somando train/val/test (define a faixa -- D6)."""
+    """Total de imagens da litologia somando train/val/test (define a faixa — D6)."""
     total = 0
     for split in SPLITS:
         rock_dir = DATASET_DIR / split / rock_name
@@ -58,11 +110,11 @@ def faixa_of(rock_name: str) -> str:
 
 
 def find_all_rocks() -> list[str]:
-    """Todas as rochas, ordenadas por VOLUME DE DADOS (maior primeiro).
+    """Litologias ordenadas por VOLUME DE DADOS (maior primeiro).
 
-    A ordem nao e alfabetica de proposito: ela e a prioridade de calibracao.
-    A faixa A (>=1000 imagens) vem antes de tudo, porque e a faixa do primeiro
-    marco entregavel do experimento -- ver docs/decisoes.md D6 e D15.
+    A ordem não é alfabética de propósito: ela é a prioridade de calibração.
+    A faixa A (>=1000 imagens) vem antes de tudo, porque é a faixa do primeiro
+    marco entregável do experimento — ver docs/decisoes.md D6 e D15.
     """
     rocks: set[str] = set()
     for split in SPLITS:
@@ -74,32 +126,12 @@ def find_all_rocks() -> list[str]:
     return sorted(rocks, key=lambda r: (-count_images(r), r))
 
 
-def find_selected_rocks() -> set[str]:
-    """Retorna nomes (sem extensão) das rochas já em selectRocks/."""
-    if not SELECT_ROCKS_DIR.exists():
-        return set()
-    return {
-        f.stem.lower()
-        for f in SELECT_ROCKS_DIR.iterdir()
-        if f.is_file() and f.suffix.lower() in IMG_EXTS
-    }
-
-
-def find_next_rock() -> str | None:
-    """Retorna a primeira rocha que ainda não tem imagem selecionada."""
-    selected = find_selected_rocks()
-    for rock in find_all_rocks():
-        if rock.lower() not in selected:
-            return rock
-    return None
-
-
 def collect_images(rock_name: str, todos_os_splits: bool = False) -> list[tuple[str, Path]]:
-    """Coleta imagens da rocha, com label de split.
+    """Imagens da litologia, com label de split.
 
-    Por padrao devolve so o train/ -- e de la que a imagem de calibracao pode sair (D17).
-    Com todos_os_splits=True devolve tudo, para estudar a variabilidade da rocha; as imagens
-    fora do train/ aparecem, mas nao podem ser selecionadas.
+    Por padrão devolve só o train/ — é de lá que a imagem de calibração pode sair (D17).
+    Com todos_os_splits=True devolve tudo, para estudar a variabilidade da rocha; as
+    imagens fora do train/ aparecem, mas não podem ser selecionadas.
     """
     splits = SPLITS if todos_os_splits else (SPLIT_CALIBRACAO,)
     images = []
@@ -112,441 +144,495 @@ def collect_images(rock_name: str, todos_os_splits: bool = False) -> list[tuple[
     return images
 
 
-def build_html(rock_name: str, images: list[tuple[str, Path]], cols: int) -> str:
-    cards = []
-    img_srcs = []
-    img_labels = []
-    for i, (split, path) in enumerate(images):
-        abs_path = path.resolve().as_posix()
-        img_srcs.append(f"file:///{abs_path}")
-        img_labels.append(f"{split}/{path.name}")
-        cards.append(
-            f'<div class="card split-{split}" onclick="openLightbox({i})">'
-            f'<div class="num">#{i}</div>'
-            f'<img src="file:///{abs_path}" loading="lazy" alt="{path.name}">'
-            f'<div class="label">{split}/{path.name}</div>'
-            f'</div>'
-        )
+# ─────────────────────────────────────────────────────────────────────────────
+# Vagas (slots)
+# ─────────────────────────────────────────────────────────────────────────────
 
-    cards_html = "\n".join(cards)
-    srcs_js = json.dumps(img_srcs)
-    labels_js = json.dumps(img_labels)
+def rock_slot_dir(rock_name: str) -> Path:
+    return SELECT_ROCKS_DIR / rock_name
 
-    return f"""<!DOCTYPE html>
+
+def slot_path(rock_name: str, papel: str) -> Path | None:
+    """Arquivo já gravado nesta vaga, se houver (qualquer extensão de imagem)."""
+    d = rock_slot_dir(rock_name)
+    if not d.exists():
+        return None
+    for p in sorted(d.iterdir()):
+        if p.is_file() and p.stem == papel and p.suffix.lower() in IMG_EXTS:
+            return p
+    return None
+
+
+def slots_preenchidos(rock_name: str) -> dict[str, Path]:
+    return {
+        papel: p
+        for papel in PAPEL_CHAVES
+        if (p := slot_path(rock_name, papel)) is not None
+    }
+
+
+def proximo_papel(rock_name: str) -> str | None:
+    """Primeira vaga ainda vazia desta litologia, na ordem dos papéis."""
+    preenchidos = slots_preenchidos(rock_name)
+    for papel in PAPEL_CHAVES:
+        if papel not in preenchidos:
+            return papel
+    return None
+
+
+def find_next_rock() -> str | None:
+    """Primeira litologia com vaga pendente, em ordem de faixa."""
+    for rock in find_all_rocks():
+        if proximo_papel(rock) is not None:
+            return rock
+    return None
+
+
+def contar_progresso() -> tuple[int, int]:
+    """(vagas preenchidas, vagas totais) em todo o dataset."""
+    rocks = find_all_rocks()
+    feitas = sum(len(slots_preenchidos(r)) for r in rocks)
+    return feitas, len(rocks) * len(PAPEL_CHAVES)
+
+
+def ler_meta(rock_name: str) -> dict:
+    f = rock_slot_dir(rock_name) / META_NAME
+    if f.exists():
+        try:
+            return json.loads(f.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            pass
+    return {"rock": rock_name, "slots": {}}
+
+
+def gravar_meta(rock_name: str, papel: str, split: str, origem: Path, destino: Path) -> None:
+    """Registra de onde veio cada imagem — material de reprodutibilidade para o TCC."""
+    meta = ler_meta(rock_name)
+    meta["rock"] = rock_name
+    meta["faixa"] = faixa_of(rock_name)
+    meta["total_imagens_litologia"] = count_images(rock_name)
+    meta.setdefault("slots", {})[papel] = {
+        "arquivo": destino.name,
+        "origem": f"{split}/{origem.name}",
+        "selecionado_em": datetime.now().isoformat(timespec="seconds"),
+    }
+    d = rock_slot_dir(rock_name)
+    d.mkdir(parents=True, exist_ok=True)
+    (d / META_NAME).write_text(
+        json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# HTML
+# ─────────────────────────────────────────────────────────────────────────────
+
+_TEMPLATE = """<!DOCTYPE html>
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>rock_viewer — {rock_name}</title>
+<title>__ROCK__ · __PAPEL_ROTULO__</title>
 <style>
-  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-  body {{ background: #111; color: #eee; font-family: monospace; }}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  header {{
+  :root {
+    --bg:      #0d0f12;
+    --surface: #16191f;
+    --line:    #262b34;
+    --text:    #e6e9ef;
+    --muted:   #8b93a3;
+    --accent:  __COR__;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font: 14px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    padding-bottom: 40px;
+  }
+
+  header {
     position: sticky; top: 0; z-index: 100;
-    background: #1a1a1a; border-bottom: 1px solid #333;
-    padding: 10px 20px;
-    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
-  }}
-  header h1 {{ font-size: 1rem; color: #aaa; }}
-  header strong {{ color: #fff; font-size: 1.1rem; }}
-  #badge {{ background: #333; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; }}
+    background: rgba(13, 15, 18, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
 
-  #selected-bar {{
-    background: #0d3a0d; border: 1px solid #2a6a2a; border-radius: 6px;
-    padding: 6px 14px; font-size: 0.9rem; display: none;
-  }}
-  #selected-bar.active {{ display: block; color: #8bc34a; }}
+  .bar {
+    display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+    padding: 14px 22px 10px;
+  }
+  .rock {
+    font-size: 1.15rem; font-weight: 650; letter-spacing: -0.01em;
+    font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  }
+  .chip {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 3px 9px; border-radius: 999px;
+    background: var(--surface); border: 1px solid var(--line); color: var(--muted);
+  }
+  .chip.faixa { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); }
+  .spacer { flex: 1; }
+  .count { color: var(--muted); font-size: 0.82rem; }
 
-  .grid {{
+  /* vagas */
+  .slots { display: flex; gap: 8px; padding: 0 22px 12px; flex-wrap: wrap; }
+  .slot {
+    display: flex; align-items: center; gap: 7px;
+    padding: 5px 11px 5px 7px; border-radius: 8px;
+    background: var(--surface); border: 1px solid var(--line);
+    font-size: 0.78rem; color: var(--muted);
+  }
+  .slot .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--line); flex: none;
+  }
+  .slot.feito .dot  { background: #3fb950; }
+  .slot.feito       { color: #7d8590; }
+  .slot.atual {
+    border-color: var(--accent); color: var(--text);
+    box-shadow: 0 0 0 1px var(--accent) inset;
+  }
+  .slot.atual .dot  { background: var(--accent); animation: pulse 1.8s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: 0.35 } }
+  .slot img { width: 22px; height: 22px; object-fit: cover; border-radius: 4px; }
+
+  /* instrução do papel */
+  .brief {
+    margin: 0 22px 14px; padding: 13px 16px;
+    border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0;
+    background: color-mix(in srgb, var(--accent) 7%, var(--surface));
+  }
+  .brief h2 {
+    font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--accent); margin-bottom: 5px; font-weight: 600;
+  }
+  .brief p { color: var(--text); max-width: 78ch; }
+  .brief .hint { color: var(--muted); font-size: 0.82rem; margin-top: 7px; }
+
+  /* grade */
+  .grid {
     display: grid;
-    grid-template-columns: repeat({cols}, 1fr);
-    gap: 6px;
-    padding: 12px;
-  }}
+    grid-template-columns: repeat(__COLS__, minmax(0, 1fr));
+    gap: 8px; padding: 0 16px;
+  }
+  .card {
+    position: relative; background: var(--surface);
+    border: 1px solid var(--line); border-radius: 9px;
+    overflow: hidden; cursor: pointer;
+    transition: border-color .14s, transform .1s;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card.sel   { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+  .card img   { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
+  .card .n {
+    position: absolute; top: 6px; left: 6px;
+    background: rgba(0,0,0,.72); color: #fff;
+    font: 600 0.7rem ui-monospace, monospace;
+    padding: 2px 6px; border-radius: 5px;
+  }
+  .card .lbl {
+    padding: 5px 7px; font: 0.68rem ui-monospace, monospace;
+    color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .card.bloq { opacity: .38; cursor: not-allowed; }
+  .card.bloq:hover { border-color: #f85149; transform: none; }
+  .card.bloq .lbl { color: #f85149; }
 
-  .card {{
-    background: #1e1e1e;
-    border: 2px solid transparent;
-    border-radius: 6px;
-    cursor: pointer;
-    overflow: hidden;
-    transition: border-color 0.15s, transform 0.1s;
-  }}
-  .card:hover {{ border-color: #555; transform: scale(1.01); }}
-  .card.selected {{ border-color: #4caf50 !important; }}
+  /* lightbox */
+  #lb {
+    position: fixed; inset: 0; z-index: 500; display: none;
+    background: rgba(6,7,9,.96); align-items: center; justify-content: center;
+    flex-direction: column; gap: 14px; padding: 26px;
+  }
+  #lb.on { display: flex; }
+  #lb img { max-width: 92vw; max-height: 78vh; object-fit: contain; border-radius: 8px; }
+  #lb .meta { color: var(--muted); font: 0.85rem ui-monospace, monospace; }
+  #lb .nav { display: flex; gap: 10px; align-items: center; }
+  #lb button {
+    background: var(--surface); color: var(--text);
+    border: 1px solid var(--line); border-radius: 7px;
+    padding: 7px 15px; cursor: pointer; font-size: 0.85rem;
+  }
+  #lb button:hover { border-color: var(--accent); }
+  #lb button.go { background: var(--accent); color: #0d0f12; font-weight: 650; border-color: var(--accent); }
 
-  .card .num {{
-    background: #111;
-    color: #888;
-    font-size: 0.75rem;
-    padding: 3px 6px;
-  }}
-  .card.selected .num {{ color: #4caf50; font-weight: bold; }}
-
-  .card img {{
-    width: 100%;
-    display: block;
-    object-fit: cover;
-    aspect-ratio: 1;
-  }}
-
-  .card .label {{
-    font-size: 0.65rem;
-    color: #666;
-    padding: 3px 6px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }}
-  .card.selected .label {{ color: #8bc34a; }}
-
-  .split-train {{ border-color: #1a3a5c; }}
-  .split-val   {{ border-color: #3a2a0a; }}
-  .split-test  {{ border-color: #3a0a0a; }}
-
-  .split-train .num::after {{ content: " [train]"; color: #4a9edd; }}
-  .split-val   .num::after {{ content: " [val]";   color: #e0a050; }}
-  .split-test  .num::after {{ content: " [test]";  color: #cc6666; }}
-
-  /* ── Lightbox ── */
-  #lightbox {{
-    display: none;
-    position: fixed; inset: 0; z-index: 200;
-    background: rgba(0,0,0,0.92);
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }}
-  #lightbox.open {{ display: flex; }}
-
-  #lb-img {{
-    max-width: 92vw;
-    max-height: 82vh;
-    object-fit: contain;
-    border-radius: 4px;
-    box-shadow: 0 0 40px rgba(0,0,0,0.8);
-    user-select: none;
-  }}
-
-  #lb-footer {{
-    margin-top: 12px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }}
-
-  #lb-label {{
-    font-size: 0.85rem;
-    color: #aaa;
-    min-width: 200px;
-    text-align: center;
-  }}
-
-  .lb-btn {{
-    background: #2a2a2a;
-    border: 1px solid #444;
-    color: #eee;
-    font-family: monospace;
-    font-size: 0.85rem;
-    padding: 6px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.15s, border-color 0.15s;
-  }}
-  .lb-btn:hover {{ background: #3a3a3a; border-color: #666; }}
-  .lb-btn:active {{ background: #1a1a1a; }}
-
-  #lb-select-btn {{
-    background: #1a4a1a;
-    border-color: #2a7a2a;
-    color: #8bc34a;
-    font-weight: bold;
-  }}
-  #lb-select-btn:hover {{ background: #2a5a2a; border-color: #4a9a4a; }}
-  #lb-select-btn.done {{ background: #0d3a0d; border-color: #4caf50; color: #4caf50; }}
-
-  #lb-nav-prev, #lb-nav-next {{
-    font-size: 1.4rem;
-    padding: 6px 18px;
-  }}
-
-  #lb-close {{
-    position: fixed;
-    top: 16px; right: 20px;
-    font-size: 1.5rem;
-    background: none;
-    border: none;
-    color: #888;
-    cursor: pointer;
-    line-height: 1;
-  }}
-  #lb-close:hover {{ color: #eee; }}
-
-  #lb-counter {{
-    font-size: 0.75rem;
-    color: #555;
-    min-width: 70px;
-    text-align: center;
-  }}
+  kbd {
+    background: var(--surface); border: 1px solid var(--line);
+    border-bottom-width: 2px; border-radius: 4px;
+    padding: 1px 5px; font: 0.75rem ui-monospace, monospace; color: var(--muted);
+  }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>rock_viewer /</h1>
-  <strong>{rock_name}</strong>
-  <span id="badge">{len(images)} imagens</span>
-  <div id="selected-bar">
-    Selecionado: <span id="sel-text">—</span>
-    &nbsp;|&nbsp; Cole o número no terminal e pressione Enter
+  <div class="bar">
+    <span class="rock">__ROCK__</span>
+    <span class="chip faixa">faixa __FAIXA__</span>
+    <span class="chip">__TOTAL_IMGS__ imagens</span>
+    <span class="spacer"></span>
+    <span class="count">__ESCOPO__ · __N_IMGS__ selecionáveis</span>
+  </div>
+  <div class="slots">__SLOTS__</div>
+  <div class="brief">
+    <h2>Vaga __IDX_PAPEL__ de 4 · __PAPEL_ROTULO__</h2>
+    <p>__PAPEL_DICA__</p>
+    <p class="hint">Clique para ampliar · <kbd>←</kbd> <kbd>→</kbd> navegam · <kbd>Esc</kbd> fecha ·
+       o número escolhido vai no terminal.</p>
   </div>
 </header>
 
-<div class="grid">
-{cards_html}
-</div>
+<div class="grid">__CARDS__</div>
 
-<!-- Lightbox -->
-<div id="lightbox">
-  <button id="lb-close" onclick="closeLightbox()">✕</button>
-  <img id="lb-img" src="" alt="">
-  <div id="lb-footer">
-    <button class="lb-btn" id="lb-nav-prev" onclick="lbNav(-1)">&#8592;</button>
-    <span id="lb-counter"></span>
-    <button class="lb-btn" id="lb-select-btn" onclick="lbSelect()">Selecionar esta</button>
-    <span id="lb-label"></span>
-    <button class="lb-btn" id="lb-nav-next" onclick="lbNav(+1)">&#8594;</button>
+<div id="lb" onclick="if(event.target.id==='lb')fechar()">
+  <img id="lbimg" alt="">
+  <div class="meta" id="lbmeta"></div>
+  <div class="nav">
+    <button onclick="mover(-1)">← anterior</button>
+    <button class="go" onclick="marcar()">marcar esta (#<span id="lbn"></span>)</button>
+    <button onclick="mover(1)">próxima →</button>
   </div>
 </div>
 
 <script>
-  const SRCS   = {srcs_js};
-  const LABELS = {labels_js};
-  const TOTAL  = SRCS.length;
+const SRCS   = __SRCS__;
+const LABELS = __LABELS__;
+const BLOQ   = __BLOQ__;
+let idx = 0, sel = null;
 
-  let selected = null;
-  let lbIndex  = null;
-
-  // ── Grid selection ──────────────────────────────────────────
-  function markSelected(i) {{
-    if (selected !== null) {{
-      document.querySelectorAll('.card')[selected].classList.remove('selected');
-    }}
-    selected = i;
-    const card = document.querySelectorAll('.card')[i];
-    card.classList.add('selected');
-    card.scrollIntoView({{ behavior: 'smooth', block: 'center' }});
-    document.getElementById('sel-text').textContent = '#' + i + '  ' + LABELS[i];
-    document.getElementById('selected-bar').classList.add('active');
-  }}
-
-  // ── Lightbox ─────────────────────────────────────────────────
-  function openLightbox(i) {{
-    lbIndex = i;
-    lbRender();
-    document.getElementById('lightbox').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }}
-
-  function closeLightbox() {{
-    document.getElementById('lightbox').classList.remove('open');
-    document.body.style.overflow = '';
-  }}
-
-  function lbRender() {{
-    document.getElementById('lb-img').src = SRCS[lbIndex];
-    document.getElementById('lb-label').textContent = LABELS[lbIndex];
-    document.getElementById('lb-counter').textContent = (lbIndex + 1) + ' / ' + TOTAL;
-
-    const btn = document.getElementById('lb-select-btn');
-    if (lbIndex === selected) {{
-      btn.textContent = '✓ Selecionada';
-      btn.classList.add('done');
-    }} else {{
-      btn.textContent = 'Selecionar esta';
-      btn.classList.remove('done');
-    }}
-  }}
-
-  function lbNav(dir) {{
-    lbIndex = (lbIndex + dir + TOTAL) % TOTAL;
-    lbRender();
-  }}
-
-  function lbSelect() {{
-    markSelected(lbIndex);
-    lbRender();
-  }}
-
-  // Keyboard navigation
-  document.addEventListener('keydown', (e) => {{
-    if (!document.getElementById('lightbox').classList.contains('open')) return;
-    if (e.key === 'Escape')      closeLightbox();
-    if (e.key === 'ArrowLeft')   lbNav(-1);
-    if (e.key === 'ArrowRight')  lbNav(+1);
-    if (e.key === 'Enter')       lbSelect();
-  }});
-
-  // Click outside image closes lightbox
-  document.getElementById('lightbox').addEventListener('click', (e) => {{
-    if (e.target === document.getElementById('lightbox')) closeLightbox();
-  }});
+function abrir(i) {
+  idx = i;
+  document.getElementById('lbimg').src = SRCS[i];
+  document.getElementById('lbmeta').textContent = '#' + i + '  ' + LABELS[i]
+    + (BLOQ[i] ? '   ⛔ fora do train/ — não pode ser calibração' : '');
+  document.getElementById('lbn').textContent = i;
+  document.getElementById('lb').classList.add('on');
+}
+function fechar() { document.getElementById('lb').classList.remove('on'); }
+function mover(d) {
+  let n = idx + d;
+  if (n >= 0 && n < SRCS.length) abrir(n);
+}
+function marcar() {
+  if (BLOQ[idx]) { alert('Esta imagem está fora do train/ e não pode ser usada na calibração (D17).'); return; }
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('sel'));
+  document.querySelectorAll('.card')[idx].classList.add('sel');
+  sel = idx;
+  fechar();
+  document.querySelectorAll('.card')[idx].scrollIntoView({ block: 'center', behavior: 'smooth' });
+}
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lb').classList.contains('on')) return;
+  if (e.key === 'Escape')     fechar();
+  if (e.key === 'ArrowLeft')  mover(-1);
+  if (e.key === 'ArrowRight') mover(1);
+  if (e.key === 'Enter')      marcar();
+});
 </script>
 </body>
 </html>
 """
 
 
-def count_pending() -> int:
-    selected = find_selected_rocks()
-    return sum(1 for r in find_all_rocks() if r.lower() not in selected)
+def build_html(
+    rock_name: str,
+    images: list[tuple[str, Path]],
+    cols: int,
+    papel: str,
+    preenchidos: dict[str, Path],
+    todos_os_splits: bool,
+) -> str:
+    rotulo, dica, cor = PAPEL_INFO[papel]
 
-
-def select_for_rock(rock_name: str, cols: int, todos_os_splits: bool = False) -> bool:
-    """Abre o visualizador para uma rocha e aguarda seleção. Retorna True se selecionou."""
-    images = collect_images(rock_name, todos_os_splits=todos_os_splits)
-    if not images:
-        print(f"[ERRO] Nenhuma imagem encontrada para '{rock_name}' em {DATASET_DIR}/")
-        return False
-
-    escopo = "train/val/test" if todos_os_splits else f"{SPLIT_CALIBRACAO}/"
-    print(
-        f"Rocha: {rock_name}  |  faixa {faixa_of(rock_name)}  |  "
-        f"{len(images)} imagens ({escopo})"
-    )
-    if todos_os_splits:
-        print(
-            f"  [--all] Mostrando os 3 splits para estudo. Só imagens de "
-            f"{SPLIT_CALIBRACAO}/ podem ser selecionadas (D17)."
+    cards, srcs, labels, bloq = [], [], [], []
+    for i, (split, path) in enumerate(images):
+        uri = "file:///" + path.resolve().as_posix()
+        travada = split != SPLIT_CALIBRACAO
+        srcs.append(uri)
+        labels.append(f"{split}/{path.name}")
+        bloq.append(travada)
+        cards.append(
+            f'<div class="card{" bloq" if travada else ""}" onclick="abrir({i})">'
+            f'<div class="n">{i}</div>'
+            f'<img src="{uri}" loading="lazy" alt="">'
+            f'<div class="lbl">{split}/{path.name}</div>'
+            f"</div>"
         )
 
-    html = build_html(rock_name, images, cols=cols)
+    slots_html = []
+    for j, chave in enumerate(PAPEL_CHAVES):
+        rot = PAPEL_INFO[chave][0]
+        if chave == papel:
+            classe = "slot atual"
+            thumb = ""
+        elif chave in preenchidos:
+            classe = "slot feito"
+            thumb = f'<img src="file:///{preenchidos[chave].resolve().as_posix()}" alt="">'
+        else:
+            classe = "slot"
+            thumb = ""
+        slots_html.append(f'<div class="{classe}"><span class="dot"></span>{thumb}{rot}</div>')
+
+    n_selecionaveis = sum(1 for s, _ in images if s == SPLIT_CALIBRACAO)
+    escopo = "train + val + test (estudo)" if todos_os_splits else "somente train/"
+
+    subs = {
+        "__ROCK__": rock_name,
+        "__FAIXA__": faixa_of(rock_name),
+        "__TOTAL_IMGS__": f"{count_images(rock_name):,}".replace(",", "."),
+        "__ESCOPO__": escopo,
+        "__N_IMGS__": str(n_selecionaveis),
+        "__COLS__": str(cols),
+        "__COR__": cor,
+        "__PAPEL_ROTULO__": rotulo,
+        "__PAPEL_DICA__": dica,
+        "__IDX_PAPEL__": str(PAPEL_CHAVES.index(papel) + 1),
+        "__SLOTS__": "\n".join(slots_html),
+        "__CARDS__": "\n".join(cards),
+        "__SRCS__": json.dumps(srcs),
+        "__LABELS__": json.dumps(labels),
+        "__BLOQ__": json.dumps(bloq),
+    }
+    html = _TEMPLATE
+    for k, v in subs.items():
+        html = html.replace(k, v)
+    return html
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Seleção
+# ─────────────────────────────────────────────────────────────────────────────
+
+def preencher_vaga(
+    rock_name: str, papel: str, cols: int, todos_os_splits: bool = False
+) -> bool:
+    """Abre o visualizador para uma vaga e aguarda a escolha. True se preencheu."""
+    images = collect_images(rock_name, todos_os_splits=todos_os_splits)
+    if not images:
+        print(f"[ERRO] Nenhuma imagem para '{rock_name}' em {DATASET_DIR}/")
+        return False
+
+    rotulo, dica, _ = PAPEL_INFO[papel]
+    n = PAPEL_CHAVES.index(papel) + 1
+    preenchidos = slots_preenchidos(rock_name)
+
+    print(f"\n  {rock_name}  ·  faixa {faixa_of(rock_name)}  ·  vaga {n}/4 — {rotulo}")
+    print(f"  → {dica}")
+    if preenchidos:
+        ja = ", ".join(PAPEL_INFO[k][0] for k in PAPEL_CHAVES if k in preenchidos)
+        print(f"  (já preenchidas: {ja})")
+    if todos_os_splits:
+        print(f"  [--all] val/ e test/ aparecem para estudo, mas não são selecionáveis (D17).")
+
+    html = build_html(rock_name, images, cols, papel, preenchidos, todos_os_splits)
     tmp = tempfile.NamedTemporaryFile(
         suffix=".html", delete=False, mode="w", encoding="utf-8",
-        prefix=f"rock_viewer_{rock_name}_"
+        prefix=f"rock_viewer_{rock_name}_{papel}_",
     )
     tmp.write(html)
     tmp.flush()
     tmp_path = Path(tmp.name)
     tmp.close()
-
-    print(f"Abrindo visualizador no navegador... ({tmp_path.name})")
     webbrowser.open(tmp_path.as_uri())
 
-    print("\nVeja a grade no navegador.")
-    print("  - Clique em qualquer imagem para abrir em tela cheia")
-    print("  - Use ← → (ou botões) para navegar, Enter para selecionar, Esc para fechar")
-    print("\nDigite o número (#) da imagem escolhida e pressione Enter.")
-    print("(Deixe em branco e Enter para pular esta rocha)\n")
-
-    selected = False
     while True:
-        raw = input("Número da imagem: ").strip()
+        raw = input(f"  número da imagem [{rotulo}] (Enter pula): ").strip()
         if raw == "":
-            print("Pulado.")
-            break
-
+            print("  pulada.")
+            return False
         try:
             idx = int(raw)
         except ValueError:
-            print("  Digite apenas o número.")
+            print("  digite apenas o número.")
             continue
-
-        if idx < 0 or idx >= len(images):
-            print(f"  Número inválido. Escolha entre 0 e {len(images) - 1}.")
+        if not 0 <= idx < len(images):
+            print(f"  fora do intervalo (0 a {len(images) - 1}).")
             continue
 
         split, chosen = images[idx]
-
         if split != SPLIT_CALIBRACAO:
             print(
-                f"  [BLOQUEADO] {split}/{chosen.name} não pode ser imagem de calibração.\n"
+                f"  [BLOQUEADO] {split}/{chosen.name} não serve como imagem de calibração.\n"
                 f"  O conjunto-ouro sai do test/ e o val/ valida o Aluno — calibrar fora do\n"
-                f"  {SPLIT_CALIBRACAO}/ contamina a avaliação. Ver docs/decisoes.md D17.\n"
-                f"  Escolha uma imagem marcada como {SPLIT_CALIBRACAO}."
+                f"  {SPLIT_CALIBRACAO}/ contamina a avaliação (docs/decisoes.md D17)."
             )
             continue
 
-        print(f"\n  Escolhido: {split}/{chosen.name}")
+        destino_dir = rock_slot_dir(rock_name)
+        destino_dir.mkdir(parents=True, exist_ok=True)
+        destino = destino_dir / f"{papel}{chosen.suffix.upper()}"
 
-        SELECT_ROCKS_DIR.mkdir(exist_ok=True)
-        dest = SELECT_ROCKS_DIR / f"{rock_name}{chosen.suffix.upper()}"
+        anterior = slot_path(rock_name, papel)
+        if anterior is not None and anterior != destino:
+            anterior.unlink()
 
-        if dest.exists():
-            confirm = input(f"  [AVISO] Já existe {dest.name} em selectRocks/. Sobrescrever? (s/n): ").strip().lower()
-            if confirm != "s":
-                print("  Não sobrescrito.")
-                continue
+        shutil.copy2(chosen, destino)
+        gravar_meta(rock_name, papel, split, chosen, destino)
+        print(f"  ✓ {split}/{chosen.name}  →  {destino.relative_to(SELECT_ROCKS_DIR.parent)}")
+        return True
 
-        shutil.copy2(chosen, dest)
-        print(f"  [OK] Copiado para selectRocks/{dest.name}")
-        selected = True
-        break
 
-    try:
-        tmp_path.unlink()
-    except Exception:
-        pass
-
-    return selected
+def completar_rocha(rock_name: str, cols: int, todos_os_splits: bool) -> bool:
+    """Preenche todas as vagas pendentes de uma litologia. False se o usuário parou."""
+    while (papel := proximo_papel(rock_name)) is not None:
+        if not preencher_vaga(rock_name, papel, cols, todos_os_splits):
+            return False
+    print(f"\n  ✓ {rock_name} completa — 4/4 vagas.")
+    return True
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Visualizador de contact sheet para seleção de imagens de rocha."
+        description="Seleção manual das 4 imagens de calibração por litologia (D17)."
     )
     parser.add_argument(
         "rock", nargs="?", default=None,
-        help="Nome da rocha (ex: ice_leke). Omita para iterar pelas pendentes."
+        help="Litologia (ex: siena_white). Omita para seguir a ordem de faixa.",
     )
-    parser.add_argument(
-        "--cols", type=int, default=8,
-        help="Colunas na grade (padrão: 8)"
-    )
+    parser.add_argument("--cols", type=int, default=8, help="Colunas na grade (padrão: 8)")
     parser.add_argument(
         "--all", dest="todos_os_splits", action="store_true",
-        help="Mostra val/ e test/ além do train/, para estudar a variabilidade da rocha. "
-             "Só imagens de train/ continuam selecionáveis (docs/decisoes.md D17)."
+        help="Mostra val/ e test/ além do train/, para estudar a variabilidade. "
+             "Só imagens de train/ continuam selecionáveis (docs/decisoes.md D17).",
     )
     args = parser.parse_args()
 
+    if not DATASET_DIR.exists():
+        raise SystemExit(f"[ERRO] Dataset não encontrado em {DATASET_DIR.resolve()}")
+
     if args.rock is not None:
-        select_for_rock(args.rock, args.cols, args.todos_os_splits)
+        if proximo_papel(args.rock) is None:
+            print(f"{args.rock} já tem as 4 vagas preenchidas.")
+            return
+        completar_rocha(args.rock, args.cols, args.todos_os_splits)
         return
 
-    # Modo loop — itera pelas rochas pendentes
-    all_rocks = find_all_rocks()
-    total = len(all_rocks)
-
     while True:
-        pending = count_pending()
-        if pending == 0:
-            print("\n[OK] Todas as rochas já foram selecionadas.")
+        feitas, total = contar_progresso()
+        rock_name = find_next_rock()
+        if rock_name is None:
+            print(f"\n[OK] Todas as {total} vagas preenchidas.")
             break
 
-        rock_name = find_next_rock()
-        done = total - pending
         faixa = faixa_of(rock_name)
         pend_faixa = sum(
             1 for r in find_all_rocks()
-            if faixa_of(r) == faixa and r.lower() not in find_selected_rocks()
+            if faixa_of(r) == faixa and proximo_papel(r) is not None
         )
         print(
-            f"\n── {done}/{total} selecionadas  |  próxima: {rock_name} "
-            f"(faixa {faixa}, {count_images(rock_name)} imgs)  |  "
-            f"{pend_faixa} pendentes na faixa {faixa} ──"
+            f"\n── {feitas}/{total} vagas  ·  próxima: {rock_name} "
+            f"(faixa {faixa})  ·  {pend_faixa} litologias pendentes na faixa {faixa} ──"
         )
 
-        select_for_rock(rock_name, args.cols, args.todos_os_splits)
-
-        remaining = count_pending()
-        if remaining == 0:
-            print("\n[OK] Todas as rochas selecionadas!")
+        if not completar_rocha(rock_name, args.cols, args.todos_os_splits):
+            feitas, total = contar_progresso()
+            print(f"\n  Saindo. {total - feitas} vagas pendentes.")
             break
 
-        cont = input(f"\n  {remaining} pendentes. Continuar? [Enter] ou [q] para sair: ").strip().lower()
-        if cont == "q":
-            print(f"  Saindo. {remaining} rochas ainda pendentes.")
+        if input("\n  [Enter] próxima litologia · [q] sair: ").strip().lower() == "q":
+            feitas, total = contar_progresso()
+            print(f"  Saindo. {total - feitas} vagas pendentes.")
             break
 
 

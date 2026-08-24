@@ -71,8 +71,12 @@ python inference.py                   # inferência SAM: lê selectRocks/, grava
 ## Fluxo de dados
 
 ```
-selectRocks/<rock>.EXT          ← imagem representativa por litologia (seleção MANUAL)
-rock_prompts.json               ← { litologia: { sonda: limiar } }
+selectRocks/<rock>/descoberta.EXT      ← define QUAIS sondas entram   \
+selectRocks/<rock>/limiar_sutil.EXT    ←                               } seleção MANUAL (D17)
+selectRocks/<rock>/limiar_tipica.EXT   ←  definem o LIMIAR             /
+selectRocks/<rock>/limiar_forte.EXT    ←                              /
+selectRocks/<rock>/meta.json           ← de onde veio cada uma (reprodutibilidade)
+rock_prompts.json                      ← { litologia: { sonda: limiar } }
         ↓
 inference.py (SAM3SemanticPredictor)
         ↓
@@ -81,9 +85,12 @@ results/<rock>/<stem>/<stem>_combined.jpg          ← sobreposição
 results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
 ```
 
-> **Isto é o fluxo de calibração, não de produção de dataset.** `inference.py` processa **uma
-> imagem por litologia**. O script de lote sobre o dataset (`sam_batch.py`) ainda não existe —
+> **Isto é o fluxo de calibração, não de produção de dataset.** `inference.py` processa as
+> imagens de `selectRocks/`, não o dataset. O script de lote (`sam_batch.py`) ainda não existe —
 > ver `docs/roadmap.md` → Fase 3.0.
+>
+> `inference.py` já aceita o layout em pasta sem alteração: `get_rock_name()` devolve o nome da
+> pasta quando a imagem está aninhada (verificado).
 
 ---
 
@@ -104,6 +111,11 @@ results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
 - **Sonda fora do `CLASS_ID_MAP` não vira rótulo.** `inference.py` valida toda a configuração e
   aborta **antes de carregar o modelo**; o `calibrator.py` mostra a máscara mas não grava. Para
   usar uma sonda nova, registre-a no `CLASS_ID_MAP` dos dois arquivos (**D8**).
-- **`rock_prompts.json` e `selectRocks/` são PROVISÓRIOS** (**D15**) — não tratar como calibração
-  feita. O `rock_viewer.py` ordena as litologias por volume de dados (faixa A primeiro), não em
-  ordem alfabética: a ordem **é** a prioridade de trabalho.
+- **`rock_prompts.json` é PROVISÓRIO** (**D15**) — não tratar como calibração feita. O
+  `selectRocks/` foi **zerado** em 2026-08-23: a seleção recomeça do zero com o protocolo de 4
+  vagas (**D17**). Estado: **0 de 180 vagas**.
+- **`rock_viewer.py` ordena por volume de dados** (faixa A primeiro), não em ordem alfabética: a
+  ordem **é** a prioridade de trabalho. Cada litologia tem 4 vagas nomeadas pelo papel.
+- **`sam_cache.py`** implementa a varredura offline de limiar (**D18**): roda o SAM uma vez com
+  `conf` no piso, guarda scores + polígonos, e filtra sem GPU. Provado equivalente a rodar de
+  novo em cada limiar.
