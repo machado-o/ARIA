@@ -315,6 +315,12 @@ o inverso: limiar baixo demais, e enxurrada de marcações na chapa típica (pro
   **no conjunto**, não perfeitamente em nenhuma. A pergunta deixa de ser "qual limiar acerta esta
   imagem" (que não tem resposta) e vira "qual limiar menos erra nas três" (que tem).
 
+> ⚠️ **As 3 imagens não produzem 3 limiares para tirar média.** É **um** limiar testado contra
+> **três casos** — elas são júri, não medições. Média seria pior que qualquer uma delas: a sutil
+> pediria ~0,03, a forte ~0,15, e a média ~0,09 é um valor que nunca foi conferido em imagem
+> nenhuma e pode estar ruim nas duas pontas. Média de ótimos não é ótimo. Daí a interface do
+> calibrador ser **um slider e quatro previews simultâneos** (D18).
+
 **Layout em disco** — o papel de cada imagem é o próprio nome do arquivo, então nunca há dúvida
 sobre qual serve para quê:
 
