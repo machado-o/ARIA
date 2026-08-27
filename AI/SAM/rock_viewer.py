@@ -25,11 +25,21 @@ Uso:
 import argparse
 import json
 import shutil
+import sys
 import tempfile
 import webbrowser
 from datetime import datetime
 from functools import lru_cache
 from pathlib import Path
+
+# O console do Windows abre em cp1252 e o script morre com UnicodeEncodeError no
+# primeiro "->" ou "check" das dicas de vaga. Forca UTF-8 na saida; se o terminal
+# nao aceitar, degrada o caractere em vez de derrubar a selecao no meio.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
 
 DATASET_DIR = Path("../dataset")
 SELECT_ROCKS_DIR = Path("selectRocks")
