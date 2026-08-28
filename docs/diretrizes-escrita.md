@@ -74,8 +74,8 @@ consultar lá antes de escrever.
 
 ## 4. Formato LaTeX
 
-4.1. **Dois alvos, dois templates.** A monografia (`Overleaf/TCC/`) usa `iftex.cls` + `macros.tex`
-e citações `abntex2-alf`. O artigo SBC (`Overleaf/artigo/`) usa `sbc-template.sty` + `sbc.bst` e
+4.1. **Dois alvos, dois templates.** A monografia (`Formas de Apresentar/Overleaf/TCC/`) usa
+`iftex.cls` + `macros.tex` e citações `abntex2-alf`. O artigo SBC (`Formas de Apresentar/Overleaf/artigo/`) usa `sbc-template.sty` + `sbc.bst` e
 citações com `\cite` — **nunca** `\citeonline` (é comando do `abntex2`; no SBC gera "Undefined
 control sequence"). Saída sempre em **LaTeX puro** pronto pro Overleaf — sem markdown, sem blocos
 ` ```latex `.
@@ -86,8 +86,8 @@ Henrique preenche depois (ou pedimos pra popular `bibliografia.bib`).
 4.3. Fórmulas e métricas (mAP, IoU, FPS) viram `\begin{equation}` formal.
 
 4.4. Antes de escrever uma seção nova, conferir o trecho correspondente da entrega
-(`Overleaf/TCC/textuais/`, `Overleaf/TCC/pre_textuais/`, ou `Overleaf/artigo/main.tex`) para casar
-com a estrutura existente.
+(`Formas de Apresentar/Overleaf/TCC/textuais/`, `Formas de Apresentar/Overleaf/TCC/pre_textuais/`,
+ou `Formas de Apresentar/Overleaf/artigo/main.tex`) para casar com a estrutura existente.
 
 4.5. **Mecânica de citação na monografia (abntex2-alf, autor-data):** usar `\citeonline{chave}` quando o autor
 é sujeito da frase ("segundo \citeonline{...}, ...") e `\cite{chave}` para citação parentética
@@ -142,7 +142,8 @@ texto. O projeto é isolado — **nenhuma** menção a plataforma, produto ou em
 
 7.3. **Siglas:** definir por extenso na primeira ocorrência, com a sigla entre parênteses —
 "Redes Neurais Convolucionais (CNN)" — e usar só a sigla depois. Na monografia, registrar cada
-sigla em `../Overleaf/TCC/pre_textuais/siglas.tex` (o artigo SBC não usa lista de siglas).
+sigla em `../Formas de Apresentar/Overleaf/TCC/pre_textuais/siglas.tex` (o artigo SBC não usa
+lista de siglas).
 
 7.4. **Estrangeirismos:** termos em língua estrangeira sempre em itálico (`\textit{}`) —
 \textit{Deep Learning}, \textit{pseudo-labels}, \textit{crack}, \textit{Edge Computing}.

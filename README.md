@@ -100,7 +100,7 @@ AI/
 ├── Xception/      # classificador de litologia (a integrar)
 └── YOLO/          # fase do Aluno (a implementar)
 docs/              # fonte de verdade do projeto
-Overleaf/          # monografia e artigo — saída desatualizada, ver docs/decisoes.md D13
+Formas de Apresentar/  # monografia, artigo, apresentação — saída desatualizada, ver docs/decisoes.md D13
 ```
 
 ## Documentação

@@ -51,11 +51,15 @@ Cada fato mora em **um** lugar só (DRY). Antes de escrever ou codar, consultar 
 ## Setup
 
 ```bash
-cd AI/SAM
+cd AI
 python -m venv .venv
-.venv\Scripts\pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+.venv\Scripts\pip install torch torchvision --index-url https://download.pytorch.org/whl/cu130
 .venv\Scripts\pip install ultralytics openai-clip opencv-python streamlit
 ```
+
+> O `.venv` vive em `AI/.venv` (não em `AI/SAM/.venv`) — os scripts em `AI/SAM/` são chamados de lá,
+> mas o Python é o do venv um nível acima. O índice CUDA (`cuXXX`) depende do driver instalado —
+> hoje é `cu130` (driver com CUDA 13.2); confira com `nvidia-smi` se mudar de máquina.
 
 ## Comandos
 

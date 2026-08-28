@@ -154,7 +154,7 @@ O desenho experimental que testa se essa hierarquia compensa está em **D5** (Ex
 
 | Componente | Tecnologia |
 |---|---|
-| Linguagem | Python 3.11 |
+| Linguagem | Python 3.13 |
 | Deep learning | PyTorch + CUDA |
 | Classificador | Xception |
 | Professor | SAM3 via Ultralytics |

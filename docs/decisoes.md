@@ -392,7 +392,8 @@ não, o X passa a ser definido por grupo cromático — e isso é **resultado a 
 **Decisão:** a calibração roda o SAM3 **uma vez por (imagem, sonda)** com `conf` no piso
 (≈0,001), guarda as máscaras e seus scores, e depois varre qualquer limiar **offline**, sem GPU.
 
-**Justificativa — verificada na fonte do `ultralytics 8.4.61`** (`SAM3SemanticPredictor.postprocess`):
+**Justificativa — verificada na fonte do `ultralytics 8.4.52`** (`SAM3SemanticPredictor.postprocess`,
+versão instalada no venv em 2026-08-28):
 
 ```python
 pred_scores = (pred_logits.sigmoid() * presence_score).squeeze(-1)
