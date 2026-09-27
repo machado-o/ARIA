@@ -1,10 +1,11 @@
 % RESUMO - PT
 \begin{resumo}
   \vspace{-15pt}
-  
-  É a apresentação concisa e abreviada do conteúdo de um texto, do qual destacam-se as informações essenciais e os elementos de maior relevância. Em um resumo, o texto deve ser significativo, explicando o tema principal do documento, o objetivo, a metodologia, os resultados e as conclusões do trabalho. Resumir um texto consiste em fazer a exposição sucinta de um assunto, tendo em vista permitir ao leitor conhecer as informações mais importantes sobre este para, então,poder decidir sobre a conveniência de consultar ou não o texto integralmente (ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS, 2003a).
 
-  \textbf{De 150 a 500 palavras – os resumos de trabalhos acadêmicos (teses, dissertações e outros) e relatórios técnico-científicos}
+  A inspeção de anomalias superficiais em chapas de rochas ornamentais é feita visualmente por operadores, e o critério que separa uma feição natural de um defeito comercial não está escrito em lugar nenhum: ele varia com a rocha, o cliente, o lote e o inspetor. Este trabalho parte da premissa de que esse critério é arbitrário por natureza e de que a contribuição possível não é eliminá-lo, mas torná-lo explícito, parametrizado e auditável. Propõe-se o ARIA (Análise e Reconhecimento Inteligente de Anomalias), um \textit{pipeline} hierárquico de visão computacional em que um classificador identifica a litologia da chapa, um modelo de fundação guiado por texto atua como Professor gerando polígonos de anomalia sem anotação humana, e uma rede de segmentação em tempo real atua como Aluno na linha de produção. O critério de marcação é materializado em um conjunto de sondas textuais e limiares de confiança por litologia, gravado em arquivo versionável. A calibração segue um protocolo de quatro imagens por litologia --- uma para descobrir quais sondas respondem e três para submeter um único limiar a casos sutil, típico e forte --- e o limiar é produzido por uma regra idêntica para todas as litologias. Demonstra-se que o limiar de confiança do Professor é um filtro aplicado após a inferência, o que torna a varredura de limiares fora de linha exatamente equivalente a reexecutar o modelo em cada valor; a equivalência foi verificada experimentalmente. Dois experimentos avaliam a proposta: o primeiro compara a mesma regra aplicada por litologia e ao conjunto reunido; o segundo compara modelos Aluno especialistas e generalista, estratificados por volume de dados disponível por litologia. A avaliação usa um conjunto de referência anotado antes de qualquer inferência sobre as mesmas imagens.
+  % TODO: acrescentar uma a duas frases de RESULTADOS e CONCLUSÃO quando os
+  % experimentos rodarem. A ABNT pede resumo informativo (objetivo, método,
+  % resultados, conclusão) -- hoje só os dois primeiros existem de fato.
 
   Palavras-chave: \palavraschaveemlinha
 \end{resumo}
@@ -13,10 +14,11 @@
 % RESUMO - EN
 \begin{resumo}[Abstract]
   \vspace{-15pt}
-  
+
   \begin{otherlanguage*}{english}
-  Enter the abstract here!
-  
+  Surface anomaly inspection of polished dimension stone slabs is performed visually by human operators, and the criterion separating a natural feature from a commercial defect is nowhere written down: it varies with the stone, the customer, the batch and the inspector. This work takes that criterion to be arbitrary by nature and argues that the available contribution is not to eliminate it, but to make it explicit, parameterised and auditable. We propose ARIA, a hierarchical computer vision pipeline in which a classifier identifies the slab lithology, a text-prompted foundation model acts as a Teacher producing anomaly polygons without human annotation, and a real-time segmentation network acts as a Student on the production line. The marking criterion is materialised as a set of textual probes and confidence thresholds per lithology, stored in a versionable file. Calibration follows a four-image protocol per lithology --- one image to discover which probes respond, and three to subject a single threshold to a subtle, a typical and a strong case --- with the threshold produced by a rule that is identical across all lithologies. We show that the Teacher's confidence threshold is a filter applied after inference, which makes an offline threshold sweep exactly equivalent to re-running the model at each value; the equivalence was verified experimentally. Two experiments evaluate the proposal: the first compares the same rule applied per lithology against the pooled material; the second compares specialist and generalist Student models, stratified by the data volume available per lithology. Evaluation uses a reference set annotated before any inference was run on those same images.
+  % TODO: mirror the RESULTS/CONCLUSION sentences added to the Portuguese abstract.
+
   Keywords: \inlinekeywords
 \end{otherlanguage*}
 \end{resumo}

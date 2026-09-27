@@ -24,44 +24,49 @@
   % CAPAS                                               %
   % --------------------------------------------------- %
   % CAPA E FOLHA DE ROSTO
-  %%%\capas
-  %%%\imprimircapa
-  %%%\imprimirfolhaderosto
-  %%%\imprimirfichacatalografica
+  \capas
+  \imprimircapa
+  \imprimirfolhaderosto
+  \imprimirfichacatalografica
+  % Quando a biblioteca devolver a ficha oficial em PDF, troque a linha acima por:
   % \includepdf[pages=-]{pre_textuais/ficha.pdf}
 
   % --------------------------------------------------- %
   % ELEMENTOS PRÉ-TEXTUAIS                              %
   % --------------------------------------------------- %
   % APROVAÇÃO, DEDICATÓRIA, AGRADECIMENTOS, EPÍGRAFE
-  %%%\pretextual
+  \pretextual
+  % TODO: os examinadores em macros.tex ainda são "Fulana/Cicrano de Tal".
+  % Descomente a aprovação quando a banca estiver definida.
   %%%\imprimiraprovacao
   % \includepdf[pages=-]{pre_textuais/aprovacao.pdf}
+  % TODO: dedicatória, agradecimentos e epígrafe ainda são texto do template.
   %%%\imprimirdedicatoria
   %%%\imprimiragradecimentos
   %%%\imprimirepigrafe
   
   % RESUMO - PT/EN
-  %%%\input{pre_textuais/resumo}
+  \input{pre_textuais/resumo}
   
   % LISTAS E SUMÁRIO
-  %%%\imprimirlistafiguras
-  %%%\imprimirlistatabelas
-  %%%\imprimirlistaquadros
-  %%%\imprimirlistasiglas
+  \imprimirlistafiguras
+  \imprimirlistatabelas
+  \imprimirlistaquadros
+  \imprimirlistasiglas
+  % Sem lista de símbolos: o trabalho não usa notação simbólica própria.
   %%%\imprimirlistasimbolos
-  %%%\imprimirsumario
+  \imprimirsumario
 
   % --------------------------------------------------- %
   % ELEMENTOS TEXTUAIS                                  %
   % --------------------------------------------------- %
   \textual
   \graphicspath{{figuras/}}   
-  %%%\input{textuais/introducao}
-  %%%\input{textuais/ref_teorico}
-  %%%\input{textuais/conclusao}
-  \input{textuais/Texto Inicial}
-  %%%\input{textuais/testes} % Deletar arquivo textuais/testes.tex
+  \input{textuais/introducao}
+  \input{textuais/ref_teorico}
+  \input{textuais/metodologia}
+  \input{textuais/resultados}
+  \input{textuais/conclusao}
     
   % --------------------------------------------------- %
   % ELEMENTOS POS-TEXTUAIS %

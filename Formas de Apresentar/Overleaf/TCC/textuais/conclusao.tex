@@ -1,3 +1,51 @@
-\chapter[Conclusão]{Conclusão}
+\chapter[CONSIDERAÇÕES FINAIS]{CONSIDERAÇÕES FINAIS}
 
-É a constatação da pesquisa, elucidando se foi ou não alcançado o objetivo proposto. Sugere-se que sejam feitas recomendações finais para implementação do assunto enfocado e, também, a realização de pesquisas adicionais. 
+\section{Síntese}
+
+Este trabalho partiu de uma constatação sobre a inspeção de chapas de rochas ornamentais: o critério que separa uma feição natural de um defeito comercial não existe por escrito. Ele é real, é aplicado milhares de vezes por dia e determina o preço das peças --- mas vive implícito na experiência de cada operador, onde não pode ser consultado, comparado entre turnos nem auditado por um cliente que conteste uma classificação.
+
+A proposta do ARIA não foi eliminar a arbitrariedade dessa fronteira, o que seria promessa que nenhum sistema pode cumprir, dado que a fronteira depende de convenção comercial e não de propriedade física. A proposta foi \textbf{deslocá-la}: retirá-la da cabeça do inspetor e materializá-la em um conjunto de sondas textuais e limiares de confiança por litologia, gravado em arquivo versionável, produzido por uma regra idêntica para todas as litologias e acompanhado do registro de cada divergência entre a regra e o julgamento do autor.
+
+% TODO: acrescentar aqui, quando os experimentos rodarem, dois a três parágrafos
+% sintetizando os resultados de H1 e H2 -- inclusive se o resultado for negativo.
+% Resultado negativo em H1 (critério calibrado equivalente ao critério único) é
+% achado legítimo e deve ser reportado como tal, não omitido: o desenho descrito
+% na Seção 3.8 foi construído justamente para admitir essa possibilidade.
+
+Independentemente do desfecho dos experimentos, dois resultados já se firmaram. O primeiro é a demonstração de que o limiar de confiança do Professor é um filtro aplicado após a inferência, o que torna a varredura de limiares fora de linha exatamente equivalente a reexecutar o modelo --- propriedade verificada experimentalmente, sem tolerância numérica, e que reduz o ciclo de calibração de minutos para milissegundos. O segundo é o próprio protocolo de calibração: a separação entre a imagem que descobre \textit{quais} sondas entram e as três que submetem um \textit{único} limiar a casos sutil, típico e forte, com a distinção explícita entre o valor do limiar, que varia por litologia, e a regra que o produz, que não varia.
+
+\section{Limitações}
+
+O trabalho reconhece as seguintes limitações.
+
+\begin{description}
+
+  \item[Independência parcial da referência] O conjunto de referência foi anotado antes de qualquer inferência sobre as mesmas imagens, o que impede que a anotação seja cópia da máscara do modelo. Isso não equivale a neutralidade: o autor desenvolveu o protocolo observando saídas do Professor, e essa exposição molda sua noção de anomalia. A referência é independente da predição, não do processo que a gerou.
+
+  \item[As sondas não identificam o tipo da anomalia] O sistema marca regiões que responderam a determinada chave lexical. Ele não afirma, e este trabalho não valida, que a região marcada por \textit{crack} seja uma fissura. Toda a rotulagem é binária, e qualquer leitura semântica das sondas extrapola o que foi verificado.
+
+  \item[Efeito líquido, não isolado, da especialização] No Experimento 2, cada modelo especialista é treinado com uma fração dos dados vistos pelo generalista. A comparação mede o efeito conjunto da especialização e do volume de dados por modelo, e é a estratificação por faixa que torna esse efeito interpretável --- não um controle que o isole.
+
+  \item[A equivalência da varredura é propriedade da implementação] A verificação reportada vale para a versão da biblioteca utilizada. Alterações na ordem entre filtragem e supressão de não-máximos invalidariam a conclusão, razão pela qual o procedimento de verificação foi mantido no repositório.
+
+  \item[Integração entre estágios não demonstrada de ponta a ponta] O classificador de litologias é modelo já treinado e avaliado em trabalho anterior do grupo \cite{deepstoneai_moreira2025}, mas o roteamento automático que o conecta ao segundo estágio não é demonstrado nesta versão. O desempenho em quadros por segundo do estágio Aluno, igualmente, não é medido --- e por isso nenhuma afirmação de operação em tempo real é feita com base em medição própria.
+
+  \item[Cobertura parcial das faixas de volume] O desenho do Experimento 2 prevê execução faixa a faixa. As faixas não alcançadas dentro do prazo do trabalho são declaradas explicitamente, e não silenciadas por agregação dos resultados.
+
+\end{description}
+
+\section{Trabalhos Futuros}
+
+\begin{description}
+
+  \item[Rotulagem multiclasse] Preservar a distinção entre sondas no treinamento do Aluno exigiria validar que cada sonda de fato identifica o fenômeno que seu nome sugere --- validação que este trabalho deliberadamente não faz. Como os identificadores por sonda já são gravados nos arquivos de anotação, a extensão não exigiria reprocessar o conjunto de dados.
+
+  \item[Aprendizado ativo] O arranjo Professor--Aluno admite um ciclo em que o Professor reexamina, fora de linha, as predições de baixa confiança do Aluno em produção, realimentando o conjunto de treinamento. O ciclo não integra esta versão e não é reivindicado como contribuição.
+
+  \item[Faixas de volume remanescentes] A execução das faixas não alcançadas completa a curva que relaciona o ganho da especialização ao volume de dados por litologia, que é a resposta à segunda metade de H2.
+
+  \item[Sensibilidade a \textit{prompts} contextuais] O trabalho que originou as representações multimodais empregadas reporta que \textit{prompts} contextuais superam palavras isoladas em tarefas \textit{zero-shot} \cite{clip_radford2021}. Como as sondas aqui adotadas são majoritariamente palavras isoladas, e algumas são lexicalmente ambíguas, uma análise de sensibilidade comparando as duas formulações é extensão natural e de baixo custo --- bastaria alterar o arquivo de configuração.
+
+  \item[Integração de ponta a ponta e medição de latência] Implementar o roteamento automático entre os três estágios e medir a latência real do sistema completo, substituindo afirmações qualitativas de velocidade por números.
+
+\end{description}

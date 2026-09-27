@@ -1,3 +1,57 @@
-\chapter[Introdução]{Introdução}
+\chapter[INTRODUÇÃO]{INTRODUÇÃO}
 
-Na introdução deve-se fazer a contextualização da pesquisa,apresentando o tema, o problema a ser abordado, a(s) hipótese(s) ou pressupostos e a justificativa. O tema é uma delimitação do assunto da pesquisa, a qual pode ser relacionada à realidade do pesquisador tendo em vista sua intenção de conhecer melhor um assunto, investigá-lo ou realizar algo de maneira mais eficiente em relação ao mesmo. A justificativa reflete o “porquê” da realização da pesquisa, buscando identificar os motivos da preferência pelo tema escolhido e sua importância em comparação a outros temas. O conteúdo de uma justificativa deve ser constituído de dois aspectos: relevância (social,científica ou acadêmica) do tema e abrangência do assunto.
+\section{Contextualização}
+
+O Espírito Santo responde pela maior parte da produção e da exportação brasileira de rochas ornamentais, atividade que sustenta uma cadeia industrial extensa, da lavra ao beneficiamento \cite{stone_economy_bahiense2023}. Ao fim dessa cadeia, cada chapa polida passa por uma etapa de inspeção visual em que um operador decide se a peça segue para o cliente, é reclassificada ou é descartada. Essa decisão determina o preço da chapa e, agregada, uma fração relevante da margem da empresa \cite{stone_inspection_vidal2013}.
+
+A inspeção é feita a olho nu, sob iluminação variável e em ritmo de produção. O operador avalia a superfície da chapa procurando trincas, manchas, oxidações e descontinuidades que comprometam o uso comercial da peça. O problema não está na acuidade visual de quem inspeciona, mas em algo anterior: \textbf{não existe um critério escrito que separe uma feição natural da rocha de um defeito comercial}. A fronteira entre as duas categorias depende da litologia, do cliente, do lote e do acabamento contratado --- e, na prática, depende do inspetor \cite{stone_subjectivity_castro2018}.
+
+Essa ausência tem uma consequência que costuma passar despercebida: o critério existe, mas vive implícito na experiência de cada operador. Ele não pode ser consultado, discutido, comparado entre turnos nem auditado por um cliente que conteste uma reclassificação. Duas chapas equivalentes podem receber destinos diferentes sem que haja registro de qual regra produziu cada decisão.
+
+A visão computacional é uma resposta natural a esse tipo de problema, e o setor já registra tentativas de automação da inspeção de superfícies pétreas \cite{stone_tereso2020, stone_lopez2010}. A dificuldade é que as abordagens supervisionadas convencionais exigem grandes volumes de imagens anotadas manualmente, e anotar anomalias sutis em chapas de rocha é caro, lento e --- pelo mesmo motivo descrito acima --- subjetivo. Anotar milhares de imagens apenas transfere a arbitrariedade do chão de fábrica para o conjunto de treinamento.
+
+\section{Problema de Pesquisa}
+
+O problema que este trabalho ataca não é a dificuldade técnica de detectar anomalias, e sim a \textbf{arbitrariedade não registrada do critério de marcação}. Não existe uma resposta absolutamente correta a ser descoberta: o que é defeito em uma litologia pode ser exatamente o padrão estético valorizado em outra. Admitir isso muda o que se pode legitimamente prometer. Um sistema automatizado não elimina a arbitrariedade da fronteira; o que ele pode fazer é retirá-la da cabeça do inspetor e colocá-la em um parâmetro inspecionável.
+
+Formula-se, assim, a seguinte pergunta de pesquisa: \textit{é possível materializar o critério de marcação de anomalias em chapas de rochas ornamentais como um conjunto de parâmetros explícito, versionável e específico por litologia --- e esse critério parametrizado produz marcações mais alinhadas a uma referência anotada do que um critério único aplicado a todas as rochas?}
+
+\section{Hipóteses}
+
+Duas hipóteses orientam o trabalho:
+
+\begin{description}
+  \item[H1] Um critério de marcação parametrizado por litologia produz segmentações mais alinhadas ao critério de referência anotado do que um critério único e global.
+  \item[H2] Modelos de segmentação especialistas --- um por litologia --- alinham-se melhor à referência do que um único modelo generalista, e esse ganho é função do volume de dados disponível por litologia.
+\end{description}
+
+A segunda metade de H2 é uma pergunta de pesquisa por direito próprio: \textit{quantas imagens uma litologia precisa ter para que a especialização compense o custo de manter um modelo dedicado?} O conjunto de dados utilizado apresenta desbalanceamento acentuado entre litologias, o que permite tratar o volume de dados como variável do experimento em vez de limitação a ser contornada.
+
+\section{Objetivos}
+
+\subsection{Objetivo Geral}
+
+Desenvolver e avaliar o ARIA (Análise e Reconhecimento Inteligente de Anomalias), um \textit{pipeline} hierárquico de visão computacional que materializa o critério de marcação de anomalias superficiais em chapas de rochas ornamentais como um conjunto explícito e versionável de parâmetros por litologia, e verificar se essa parametrização produz marcações mais alinhadas a uma referência anotada do que um critério único global.
+
+\subsection{Objetivos Específicos}
+
+\begin{enumerate}
+  \item Selecionar, caracterizar e pré-processar um conjunto de dados público de imagens de chapas polidas de rochas ornamentais, descrevendo sua composição, o desbalanceamento entre litologias e o particionamento adotado.
+  \item Definir um protocolo reprodutível de calibração que determine, para cada litologia, quais sondas textuais entram no conjunto e qual limiar de confiança cada uma recebe, de modo que a regra que produz o limiar seja a mesma para todas as litologias.
+  \item Implementar o estágio Professor com um modelo de fundação guiado por texto, capaz de gerar polígonos de anomalia sem anotação humana prévia.
+  \item Construir um conjunto de referência anotado independentemente das saídas do modelo, para servir de gabarito quantitativo da avaliação.
+  \item Avaliar experimentalmente a hipótese H1, comparando o critério parametrizado por litologia ao mesmo critério derivado do conjunto reunido de litologias.
+  \item Especificar o desenho experimental que avalia a hipótese H2, treinando modelos Aluno especialistas e generalista estratificados por faixa de volume de dados.
+\end{enumerate}
+
+\section{Justificativa}
+
+Do ponto de vista industrial, tornar explícito o critério de marcação tem valor independente da acurácia alcançada. Um arquivo de parâmetros pode ser versionado, comparado entre unidades produtivas, negociado com um cliente e auditado quando uma classificação é contestada --- coisas que um critério que vive na experiência de um operador não permite. A automação da marcação é consequência; a contribuição central é a explicitação.
+
+Do ponto de vista acadêmico, o trabalho se situa no encontro de duas linhas ativas. A primeira é o uso de modelos de fundação como geradores de rótulos para domínios sem \textit{ground truth}, o que dispensa a anotação manual em larga escala. A segunda é o aprendizado a partir de rótulos ruidosos, campo que estuda justamente o que acontece quando a supervisão vem de um modelo e não de um humano. O trabalho contribui com um elemento pouco explorado nessa interseção: o \textbf{condicionamento do \textit{prompt} por classe do domínio} --- aqui, por litologia --- como forma de controlar a qualidade do rótulo gerado, e o registro desse condicionamento como artefato auditável.
+
+Por fim, o uso de um conjunto de dados público \cite{dataset_araujo2023} garante que todo o protocolo possa ser reproduzido por terceiros sem acordo com nenhuma empresa, o que é incomum em trabalhos de inspeção industrial.
+
+\section{Organização do Trabalho}
+
+O restante deste documento está organizado da seguinte forma. O Capítulo 2 apresenta a fundamentação teórica, cobrindo a inspeção de qualidade no setor de rochas ornamentais, redes neurais convolucionais aplicadas à classificação de litologias, modelos de fundação com segmentação guiada por texto, a arquitetura Professor--Aluno com pseudo-rotulagem, segmentação em tempo real, e os trabalhos relacionados contra os quais a contribuição se posiciona. O Capítulo 3 detalha a metodologia: o conjunto de dados, a arquitetura do \textit{pipeline}, o protocolo de calibração, a regra que produz o limiar, a estratégia de varredura de limiares fora de linha, a referência de avaliação e o desenho dos dois experimentos. O Capítulo 4 apresenta os resultados obtidos. O Capítulo 5 traz as considerações finais, as limitações reconhecidas e os desdobramentos deixados como trabalho futuro.

@@ -1,0 +1,257 @@
+\chapter[METODOLOGIA]{METODOLOGIA}
+
+Este capítulo descreve o conjunto de dados, a arquitetura do \textit{pipeline}, o protocolo de calibração, a regra que produz os limiares, a referência adotada para avaliação e o desenho dos dois experimentos.
+
+\section{Caracterização da Pesquisa}
+
+O trabalho classifica-se como pesquisa aplicada, de natureza experimental e abordagem predominantemente quantitativa. É aplicada porque endereça um problema concreto da indústria de rochas ornamentais. É experimental porque manipula variáveis controladas --- o escopo sobre o qual a regra de calibração é aplicada e a quantidade de modelos treinados --- e observa seu efeito sobre métricas de sobreposição com uma referência anotada.
+
+\section{Conjunto de Dados}
+
+O conjunto de imagens é público, obtido na plataforma Kaggle \cite{dataset_araujo2023}. O autor deste trabalho \textbf{não constituiu} o banco: selecionou, caracterizou e pré-processou um conjunto existente. Essa escolha tem uma consequência metodológica favorável --- todo o protocolo pode ser reproduzido por terceiros sem acordo com nenhuma empresa.
+
+O conjunto reúne 34.630 imagens de chapas polidas, distribuídas em 45 litologias. O particionamento é aleatório estratificado nas proporções de 70\%, 15\% e 15\%, aplicado a todas as classes, resultando em 24.263 imagens de treinamento, 5.214 de validação e 5.153 de teste.
+
+A distribuição entre litologias é fortemente desbalanceada, variando de 106 a 4.588 imagens. Em vez de equalizar artificialmente essa distribuição, o trabalho a converte em variável do experimento, agrupando as litologias em quatro faixas de volume, conforme o Quadro \ref{quad:faixas}.
+
+\begin{quadro}[ht]
+  \caption{Faixas de volume de dados e respectivo número de litologias.}
+  \label{quad:faixas}
+  \centering
+  \begin{tabularx}{\textwidth}{clcX}
+    \hline
+    \bfseries Faixa & \bfseries Critério & \bfseries Litologias & \bfseries Observação \\
+    \hline
+    A & $\geq$ 1.000 imagens & 11 & Faixa de execução prioritária \\
+    B & 500 a 999 imagens & 6 & \\
+    C & 200 a 499 imagens & 14 & \\
+    D & $<$ 200 imagens & 14 & Inclui as litologias de textura atípica \\
+    \hline
+  \end{tabularx}
+  \legend{Fonte: elaborado pelo autor.}
+\end{quadro}
+
+A ordem de execução dos experimentos segue as faixas, da maior para a menor, e cada faixa constitui um marco entregável: ela é executada, avaliada e redigida antes que a seguinte comece. Em qualquer ponto de interrupção existe, assim, um resultado completo e reportável, e as faixas não alcançadas são declaradas como trabalho futuro.
+
+\section{Arquitetura do \textit{Pipeline}}
+
+O ARIA organiza-se em três estágios, descritos no Quadro \ref{quad:estagios}. O primeiro identifica a litologia da chapa e roteia; o segundo gera os polígonos de anomalia fora da linha de produção; o terceiro executa a inferência rápida em produção.
+
+\begin{quadro}[ht]
+  \caption{Estágios do \textit{pipeline} ARIA.}
+  \label{quad:estagios}
+  \centering
+  \begin{tabularx}{\textwidth}{llX}
+    \hline
+    \bfseries Estágio & \bfseries Modelo & \bfseries Papel \\
+    \hline
+    1 --- Classificador & Xception (DeepStoneAI) & Identifica a litologia e seleciona a configuração de sondas e o modelo Aluno correspondente \\
+    2 --- Professor & Modelo de fundação guiado por texto & Gera polígonos de anomalia sem anotação humana, processando o conjunto fora de linha \\
+    3 --- Aluno & YOLO11-seg & Executa a inferência em produção, treinado sobre os polígonos do Professor \\
+    \hline
+  \end{tabularx}
+  \legend{Fonte: elaborado pelo autor.}
+\end{quadro}
+
+A separação entre Professor e Aluno é o que torna o arranjo viável industrialmente: o custo de inferência do modelo de fundação é pago uma única vez, na geração do conjunto de treinamento, e não a cada chapa inspecionada.
+
+% TODO: inserir a figura do pipeline quando o arquivo estiver em figuras/.
+% O bloco abaixo está comentado de propósito: \includegraphics de um arquivo
+% inexistente interrompe a compilação.
+% \begin{figure}[ht]
+%   \caption{Fluxo de processamento do \textit{pipeline} ARIA.}
+%   \label{fig:arquitetura}
+%   \centering
+%   \includegraphics[width=0.9\textwidth]{arquitetura_aria.png}
+%   \legend{Fonte: elaborado pelo autor.}
+% \end{figure}
+
+\section{Sondas de Recall, não Rótulos Semânticos}
+\label{sec:sondas}
+
+O Professor é guiado por um conjunto de palavras em inglês, aqui denominadas \textbf{sondas}. O Quadro \ref{quad:sondas} lista o conjunto de trabalho e a assinatura visual que cada sonda costuma ativar.
+
+\begin{quadro}[ht]
+  \caption{Sondas textuais, identificadores e assinatura visual associada.}
+  \label{quad:sondas}
+  \centering
+  \begin{tabularx}{\textwidth}{llX}
+    \hline
+    \bfseries Sonda & \bfseries \textit{id} & \bfseries Assinatura visual que costuma ativar \\
+    \hline
+    \textit{vein}         & 0 & Estrias e faixas contrastantes \\
+    \textit{crack}        & 1 & Descontinuidades lineares finas e escuras \\
+    \textit{Stain}        & 2 & Variação de cor em mancha difusa \\
+    \textit{Dark patches} & 3 & Regiões escuras sobre fundo claro \\
+    \textit{light spot}   & 4 & Regiões claras sobre fundo escuro \\
+    \textit{scratch}      & 5 & Riscos superficiais finos \\
+    \hline
+  \end{tabularx}
+  \legend{Fonte: elaborado pelo autor.}
+\end{quadro}
+
+É necessário ser explícito quanto ao estatuto dessas palavras. Elas \textbf{não são afirmações sobre a natureza do que foi encontrado}: são chaves lexicais escolhidas por fazerem o modelo responder a certas assinaturas visuais. Afirmar que a região marcada pela sonda \textit{crack} \textit{é} uma fissura exigiria ter validado que o modelo distingue fissura de veio --- validação que este trabalho não realiza e, portanto, não pode alegar.
+
+Dessa decisão decorre a \textbf{rotulagem binária}: todas as regiões marcadas recebem o mesmo identificador de classe no treinamento do Aluno. Os identificadores por sonda listados no Quadro \ref{quad:sondas} são preservados nos arquivos de anotação, para não perder o registro de qual sonda disparou cada região, mas são colapsados em uma única classe antes do treino. O objetivo do conjunto de sondas é maximizar a \textbf{cobertura} de regiões anômalas, não classificá-las. A rotulagem multiclasse fica registrada como trabalho futuro.
+
+\section{Protocolo de Calibração}
+
+Calibrar uma litologia significa responder a duas perguntas distintas: \textit{quais} sondas entram no conjunto, e com \textit{qual} limiar de confiança cada uma opera. A imagem ideal para responder a cada uma é oposta, e confundi-las é a origem de um viés concreto.
+
+Para \textbf{descobrir} quais sondas respondem, a imagem deve conter o máximo de fenômenos --- quanto mais rica, melhor. Para \textbf{escolher} o limiar, a imagem deve representar a variação típica da litologia. Usar a chapa mais rica para as duas tarefas produz um efeito de seleção por visibilidade: as feições foram escolhidas justamente por serem visíveis, e o limiar resultante sai alto demais, perdendo o defeito sutil das demais chapas. Usar a chapa mais sutil produz o erro oposto --- limiar baixo e enxurrada de marcações na chapa comum.
+
+O protocolo adotado separa as duas tarefas em quatro imagens por litologia, descritas no Quadro \ref{quad:vagas}.
+
+\begin{quadro}[ht]
+  \caption{As quatro imagens de calibração por litologia e o papel de cada uma.}
+  \label{quad:vagas}
+  \centering
+  \begin{tabularx}{\textwidth}{llX}
+    \hline
+    \bfseries Imagem & \bfseries Decide & \bfseries Critério de seleção \\
+    \hline
+    \textit{descoberta}    & Quais sondas entram & A chapa com o maior número de tipos distintos de feição \\
+    \textit{limiar sutil}  & O limiar & Feições fracas, de baixo contraste \\
+    \textit{limiar típica} & O limiar & A chapa mais comum da litologia \\
+    \textit{limiar forte}  & O limiar & Feições marcantes, de alto contraste \\
+    \hline
+  \end{tabularx}
+  \legend{Fonte: elaborado pelo autor.}
+\end{quadro}
+
+Três observações completam o protocolo.
+
+Primeiro, as três imagens de limiar \textbf{não produzem três limiares a serem promediados}. Trata-se de um único limiar submetido a três casos. A média de três ótimos não é um ótimo: o caso sutil pediria um valor baixo, o caso forte um valor alto, e a média seria um número nunca verificado em imagem alguma, possivelmente ruim nas duas pontas. A pergunta deixa de ser "qual limiar acerta esta imagem", que não tem resposta, e passa a ser "qual limiar menos erra nas três", que tem.
+
+Segundo, a seleção das quatro imagens é \textbf{manual}. Usar o próprio Professor para escolher as imagens de calibração seria raciocínio circular.
+
+Terceiro, as quatro imagens saem exclusivamente da partição de \textbf{treinamento}. O conjunto de referência da avaliação sai da partição de teste, e calibrar sobre uma imagem de teste equivaleria a ajustar o limiar sobre a própria prova. Como o particionamento é aleatório estratificado, as partições são amostras da mesma distribuição, de modo que a restrição não custa cobertura de fenômenos.
+
+A origem de cada imagem selecionada --- partição e arquivo --- é registrada em um arquivo de metadados por litologia, compondo o material de reprodutibilidade do trabalho.
+
+\section{A Regra que Produz o Limiar}
+\label{sec:regra}
+
+A escolha do limiar precisa ser governada por uma regra escrita. Selecionar o valor "no olho", ainda que por um observador experiente, reproduziria exatamente a prática que o Capítulo 1 aponta como problema --- com a diferença de que o observador passaria a ser o autor, em vez do inspetor.
+
+Estabelece-se, portanto, a seguinte distinção, que é o núcleo do desenho:
+
+\begin{description}
+  \item[O valor do limiar] \textbf{muda} por litologia. É o objetivo da calibração.
+  \item[A regra que produz o valor] \textbf{não muda}. É idêntica para todas as 45 litologias.
+\end{description}
+
+A regra adotada é a seguinte. Para cada sonda, constrói-se a curva que relaciona o limiar ao número de regiões marcadas, somando as três imagens de limiar da litologia. O limiar escolhido é o \textbf{joelho} dessa curva, definido como o ponto de máxima distância à corda que liga seus dois extremos, após normalização dos eixos \cite{kneedle_satopaa2011}.
+
+Três aspectos da regra são fixados deliberadamente. A imagem de \textit{descoberta} \textbf{não} entra no cálculo: escolhida por ser a mais rica em feições, ela puxaria o limiar para cima, reintroduzindo o viés de seleção por visibilidade que o protocolo existe para evitar. O eixo do limiar é tomado em escala \textbf{logarítmica}, porque os escores concentram-se na década baixa --- medidos entre 0,011 e 0,770 em uma litologia de referência, com mediana entre 0,040 e 0,080 --- e, em escala linear, o joelho recairia sistematicamente sobre o primeiro ponto da curva. Por fim, a regra \textbf{não possui parâmetro livre}: não há constante a ser fixada por inspeção, o que elimina a possibilidade de ajustá-la para favorecer um resultado.
+
+A regra é aplicada mecanicamente. Reconhece-se, porém, que uma curva pode enganar em casos particulares, e o autor pode divergir do valor produzido. Para que essa divergência não se torne invisível, a ferramenta de calibração registra \textbf{ambos} os valores --- o produzido pela regra e o adotado pelo autor --- junto de uma justificativa textual obrigatória. Os experimentos comparam sempre os valores da regra, de modo a preservar uma única variável manipulada; a taxa de concordância entre regra e autor é reportada como resultado à parte, e constitui evidência sobre a adequação da própria regra.
+
+\section{Varredura de Limiares Fora de Linha}
+\label{sec:varredura}
+
+Calibrar exige comparar muitos limiares. Feito de modo ingênuo --- escolher um valor, executar o Professor, observar, ajustar e reexecutar --- cada iteração custa minutos de processamento em GPU, o que inviabiliza o protocolo da seção anterior em tempo humano.
+
+A inspeção do código do arcabouço utilizado mostra que o limiar de confiança é aplicado como \textbf{filtro posterior} à inferência. O modelo produz máscaras e escores sem conhecimento do limiar; este apenas descarta as detecções cujo escore não o ultrapassa. A supressão de não-máximos ocorre depois do filtro, mas processa as detecções em ordem decrescente de escore e só remove uma detecção usando outra de escore \textbf{maior} --- de onde se conclui que incluir detecções de escore baixo não altera as decisões tomadas sobre as de escore alto.
+
+Segue-se que executar o Professor uma única vez com o limiar no piso, armazenar escores e polígonos, e filtrar esse material posteriormente é \textbf{exatamente equivalente} a reexecutar o modelo em cada limiar --- não se trata de aproximação. O ciclo de calibração passa de minutos por iteração a milissegundos, e é o que torna viável exibir simultaneamente o efeito de um mesmo limiar sobre as quatro imagens da litologia.
+
+A equivalência não foi assumida: ela é verificada experimentalmente, e o procedimento de verificação é descrito na Seção \ref{sec:verificacao} e seu resultado reportado no Capítulo 4.
+
+\section{Referência de Avaliação}
+\label{sec:referencia}
+
+Toda métrica quantitativa de segmentação exige uma referência. Usar a saída do próprio Professor como referência mediria fidelidade de cópia, não acerto, e tornaria a comparação entre braços experimentais destituída de sentido --- cada braço teria um gabarito diferente. Adotam-se, portanto, duas fontes de referência complementares.
+
+\subsection{Conjunto de referência anotado}
+
+Constitui-se um conjunto de aproximadamente 50 imagens, retiradas da partição de \textbf{teste} e distribuídas entre litologias da faixa A. Essas imagens são anotadas manualmente pelo autor \textbf{antes} de qualquer inferência ser executada sobre elas. A ordem é parte da metodologia: anotar depois de ver a máscara do modelo ancora o anotador nela, e a anotação deixa de ser independente.
+
+É preciso delimitar o que essa precaução garante e o que não garante. Ela garante que a anotação não é cópia da máscara do modelo. Ela \textbf{não} garante neutralidade: o autor desenvolveu o protocolo de calibração observando saídas do Professor durante meses, e essa exposição molda sua noção do que constitui uma anomalia. A independência é parcial, e o trabalho a declara como limitação em vez de apresentá-la como garantia de imparcialidade.
+
+Sobre esse gabarito calculam-se IoU, precisão, \textit{recall} e taxa de falso positivo, definido operacionalmente como \textbf{região marcada pelo modelo sem qualquer sobreposição} --- IoU igual a zero --- com região alguma do conjunto de referência.
+
+\subsection{Preferência pareada cega}
+
+A segunda fonte é qualitativa e envolve um profissional do setor. A mesma chapa é apresentada com a marcação de dois braços experimentais, embaralhadas e sem identificação, e o profissional indica qual representa melhor o que trataria como defeito. O procedimento produz estatística de preferência, e não IoU.
+
+Registra-se explicitamente que essa fonte é \textbf{complementar}: as hipóteses H1 e H2 são enunciadas contra o conjunto de referência anotado, e não contra o julgamento do profissional. Caso a preferência pareada seja realizada, ela reforça as conclusões; sua ausência não invalida as hipóteses.
+
+\section{Experimento 1 --- Critério por Litologia \textit{versus} Critério Único}
+
+O primeiro experimento avalia H1 e não envolve treinamento algum: compara duas configurações do Professor sobre as mesmas imagens, no mesmo modelo e no mesmo equipamento.
+
+O ponto delicado do desenho é a definição do braço de controle. Uma configuração única escolhida arbitrariamente tornaria a comparação vazia, pois o resultado dependeria dessa escolha. O braço de controle é, portanto, \textbf{derivado por regra}, e não selecionado: aplica-se a \textbf{mesma regra} da Seção \ref{sec:regra}, alterando-se uma única coisa --- o escopo do material sobre o qual ela é calculada, conforme a Tabela \ref{tab:bracos_exp1}.
+
+\begin{table}[ht]
+  \caption{Braços do Experimento 1. A regra é a mesma; muda apenas seu escopo.}
+  \label{tab:bracos_exp1}
+  \centering
+  \begin{tabular}{ll}
+    \hline
+    \bfseries Braço & \bfseries Escopo da curva que produz o limiar \\
+    \hline
+    Calibrado & As três imagens de limiar \textbf{daquela} litologia \\
+    Único     & As três imagens de limiar de \textbf{todas} as litologias reunidas \\
+    \hline
+  \end{tabular}
+  \legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+Sonda por sonda, reúnem-se os escores de todas as litologias em um único conjunto, aplica-se a regra e obtém-se um limiar global por sonda. O conjunto de sondas do braço único é aquele que a mesma regra de descoberta admite sobre o material reunido.
+
+Cabe justificar por que o braço único não é definido como a mediana dos limiares calibrados, alternativa aparentemente natural. Se o fosse, o resultado seria quase aritmético: o valor ótimo de cada litologia supera a mediana dos valores ótimos \textbf{nos dados dessa mesma litologia} por construção, o que caracteriza regressão à média e não achado experimental --- além de tornar o controle uma função do tratamento. A regra aplicada ao material reunido é o contrafactual honesto: \textit{e se todas as litologias tivessem sido tratadas como uma só?}, que é precisamente o que H1 pergunta. Esse desenho admite resultado negativo, e é isso que torna a hipótese falseável.
+
+A avaliação de ambos os braços é feita contra o conjunto de referência da Seção \ref{sec:referencia}, reportando-se IoU, precisão, \textit{recall} e taxa de falso positivo, por braço e por litologia.
+
+\section{Experimento 2 --- Especialistas \textit{versus} Generalista}
+
+O segundo experimento avalia H2 e compara modelos Aluno treinados sobre as anotações do Professor, em três braços, descritos no Quadro \ref{quad:bracos_exp2}.
+
+\begin{quadro}[ht]
+  \caption{Braços do Experimento 2.}
+  \label{quad:bracos_exp2}
+  \centering
+  \begin{tabularx}{\textwidth}{lX}
+    \hline
+    \bfseries Braço & \bfseries Descrição \\
+    \hline
+    Especialista & Um modelo por litologia, treinado apenas com as anotações daquela litologia \\
+    Generalista  & Um único modelo, treinado com as anotações de todas as litologias \\
+    Controle     & Um único modelo, treinado com anotações calibradas por litologia \\
+    \hline
+  \end{tabularx}
+  \legend{Fonte: elaborado pelo autor.}
+\end{quadro}
+
+O braço de controle existe por necessidade de desenho: sem ele, a comparação entre especialistas e generalista alteraria simultaneamente duas variáveis --- a quantidade de modelos e a especificidade das anotações --- e nenhum resultado seria atribuível a uma delas.
+
+Os resultados são reportados \textbf{por faixa} de volume, e não agregados, o que responde à segunda metade de H2.
+
+Reconhece-se uma limitação de interpretação: cada modelo especialista é treinado com uma fração dos dados vistos pelo generalista, de modo que a comparação mede o efeito \textbf{líquido} da especialização em cada volume de dados, e não um efeito causal isolado do número de modelos. A estratificação por faixa é justamente o que torna esse efeito líquido interpretável.
+
+\section{Ambiente Experimental e Reprodutibilidade}
+\label{sec:verificacao}
+
+Os experimentos são executados no ambiente descrito no Quadro \ref{quad:ambiente}.
+
+\begin{quadro}[ht]
+  \caption{Ambiente de execução dos experimentos.}
+  \label{quad:ambiente}
+  \centering
+  \begin{tabularx}{\textwidth}{lX}
+    \hline
+    \bfseries Componente & \bfseries Versão \\
+    \hline
+    Linguagem            & Python 3.14 \\
+    Arcabouço            & PyTorch 2.11 \cite{pytorch_paszke2019} com CUDA 12.8 \\
+    Biblioteca de modelos& Ultralytics 8.4.61 \\
+    Processador gráfico  & NVIDIA GeForce RTX 5060 Ti, 16 GB \\
+    \hline
+  \end{tabularx}
+  \legend{Fonte: elaborado pelo autor.}
+\end{quadro}
+
+A equivalência da varredura fora de linha, afirmada na Seção \ref{sec:varredura}, é verificada por um procedimento automatizado: para cada sonda e para uma amostra de limiares, compara-se o resultado de executar o Professor com aquele limiar ao resultado de filtrar o material armazenado no mesmo valor. A comparação é feita sobre o número de detecções, sobre os escores e sobre os vértices dos polígonos, \textbf{sem tolerância numérica}. O procedimento é parte do repositório do trabalho e deve ser reexecutado sempre que a versão da biblioteca de modelos mudar, uma vez que a equivalência é propriedade da implementação e não do método.
+
+Todos os artefatos de configuração --- o conjunto de sondas e limiares por litologia, os metadados de origem das imagens de calibração e o registro de calibração com a justificativa textual --- são versionados junto do código.

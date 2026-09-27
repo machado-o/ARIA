@@ -1,0 +1,85 @@
+\chapter[RESULTADOS]{RESULTADOS}
+
+Este capítulo reporta os resultados obtidos até o momento. Ele começa pelas verificações que sustentam o método descrito no Capítulo 3 --- e que são pré-requisito para que os experimentos façam sentido --- e prossegue para os resultados dos experimentos propriamente ditos.
+
+% =====================================================================
+% TODO (estrutura): este capítulo está completo apenas nas seções 4.1 a 4.3.
+% As seções do Experimento 1 e do Experimento 2 aguardam execução. Ver
+% docs/roadmap.md no repositório para o estado corrente.
+% =====================================================================
+
+\section{Verificação da Equivalência da Varredura Fora de Linha}
+
+A Seção \ref{sec:varredura} afirma que executar o Professor uma única vez com o limiar no piso e filtrar o material armazenado é exatamente equivalente a reexecutar o modelo em cada limiar. Como todo o protocolo de calibração depende dessa afirmação, ela foi verificada por execução, e não apenas por inspeção do código.
+
+O procedimento fixou uma imagem e, para cada uma de quatro sondas, comparou duas grandezas em oito limiares distribuídos entre 0,005 e 0,500: o resultado de executar o Professor com aquele limiar e o resultado de filtrar, naquele mesmo valor, o material capturado com o limiar no piso de 0,001. A comparação abrangeu o número de detecções, os escores e os vértices dos polígonos, \textbf{sem tolerância numérica}.
+
+As 32 comparações resultaram idênticas em todas as três grandezas. Não houve divergência em nenhum limiar, nem no número de regiões, nem em qualquer coordenada de polígono. A Tabela \ref{tab:d18} resume o número de detecções sobreviventes em cada configuração --- valor que, por ser idêntico nos dois métodos, é reportado em coluna única.
+
+\begin{table}[ht]
+  \caption{Detecções sobreviventes por limiar, idênticas entre execução real e varredura fora de linha.}
+  \label{tab:d18}
+  \centering
+  \begin{tabular}{lrrrrrrrr}
+    \hline
+    \bfseries Sonda & \bfseries 0,005 & \bfseries 0,02 & \bfseries 0,05 & \bfseries 0,08 & \bfseries 0,12 & \bfseries 0,20 & \bfseries 0,35 & \bfseries 0,50 \\
+    \hline
+    \textit{crack}        & 168 & 165 & 118 & 76 & 41 & 20 & 9 & 4 \\
+    \textit{vein}         & 164 & 149 & 71  & 34 & 21 & 11 & 7 & 4 \\
+    \textit{Stain}        & 195 & 186 & 132 & 94 & 74 & 48 & 15 & 7 \\
+    \textit{Dark patches} & 194 & 175 & 120 & 73 & 52 & 25 & 9 & 6 \\
+    \hline
+  \end{tabular}
+  \legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+O resultado tem duas consequências. A primeira é prática: o ciclo de calibração deixa de custar minutos de GPU por iteração e passa a custar milissegundos, o que é o que viabiliza submeter um mesmo limiar às quatro imagens da litologia simultaneamente. A segunda é metodológica: a varredura fora de linha não introduz aproximação alguma, de modo que nenhum resultado obtido por ela precisa ser qualificado como estimativa.
+
+Ressalva necessária: a equivalência é propriedade da \textbf{implementação} verificada, não do método em abstrato. Uma versão futura da biblioteca que aplicasse o limiar antes da supressão de não-máximos, ou que o incorporasse ao próprio modelo, invalidaria a conclusão. Por isso o procedimento de verificação integra o repositório e deve ser reexecutado a cada atualização de versão.
+
+\section{Caracterização dos Escores do Professor}
+
+A escolha da escala logarítmica na regra de limiar (Seção \ref{sec:regra}) decorre da distribuição observada dos escores, medida sobre a imagem de descoberta de uma litologia da faixa A e reportada na Tabela \ref{tab:escores}.
+
+\begin{table}[ht]
+  \caption{Distribuição dos escores do Professor por sonda, com o limiar no piso.}
+  \label{tab:escores}
+  \centering
+  \begin{tabular}{lrrrr}
+    \hline
+    \bfseries Sonda & \bfseries Detecções & \bfseries Mínimo & \bfseries Mediana & \bfseries Máximo \\
+    \hline
+    \textit{crack}        & 168 & 0,016 & 0,074 & 0,699 \\
+    \textit{vein}         & 164 & 0,013 & 0,045 & 0,694 \\
+    \textit{Stain}        & 195 & 0,012 & 0,076 & 0,683 \\
+    \textit{Dark patches} & 194 & 0,011 & 0,061 & 0,766 \\
+    \hline
+  \end{tabular}
+  \legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+Os escores percorrem quase duas ordens de grandeza, de 0,011 a 0,766, mas a mediana situa-se entre 0,045 e 0,076 em todas as sondas: a massa da distribuição concentra-se na década baixa e a cauda superior é rala. Em uma grade linear de limiares, portanto, a quase totalidade dos pontos cairia em região sem detecção alguma, e o joelho da curva recairia sistematicamente sobre seu primeiro ponto --- daí a normalização logarítmica do eixo.
+
+O dado também recomenda cautela na transposição de valores da literatura de pseudo-rotulagem. Os limiares elevados ali reportados referem-se a escores de detectores supervisionados calibrados, cuja escala não corresponde à observada aqui. O que se transporta daquela literatura é a direção do compromisso --- privilegiar precisão --- e não a magnitude do corte.
+
+\section{Geometria dos Polígonos Produzidos pelo Professor}
+
+A conversão das máscaras do Professor em polígonos no formato de anotação apresenta uma particularidade com consequência sobre a qualidade do rótulo. Quando a máscara de uma detecção possui mais de um contorno desconexo, a implementação utilizada funde todos eles em uma única poligonal, ligando-os por trajetos de ida e volta.
+
+A medição sobre a imagem de descoberta de uma litologia da faixa A, com a sonda \textit{crack} no limiar de 0,08, encontrou 45 detecções com mais de um contorno em um total de 76. Como os trajetos de ligação têm área praticamente nula, o efeito agregado é pequeno: a área total dos polígonos supera a das máscaras em 2,4\%, e a sobreposição entre a união das máscaras e a união dos polígonos atinge IoU de 0,928. O caso individual, porém, não é igualmente benigno: em uma detecção composta por 18 contornos, a área do polígono alcançou 2,5 vezes a da máscara correspondente.
+
+A implicação é que o efeito é desprezível quando se avalia a cobertura agregada, mas não quando uma detecção fragmentada é tomada isoladamente como instância de treinamento. O tratamento dessa geometria --- seja pela retenção do maior contorno, seja pela separação dos contornos em instâncias distintas --- integra o pós-processamento do Professor e é registrado como etapa metodológica a definir, e não como limitação incidental.
+
+\section{Experimento 1 --- Critério por Litologia \textit{versus} Critério Único}
+
+% TODO: executar e redigir. Depende da calibração das litologias da faixa A e da
+% anotação do conjunto de referência (Seção \ref{sec:referencia}).
+% Reportar, por braço e por litologia: IoU, precisão, recall e taxa de falso
+% positivo; incluir o par de figuras "critério único x critério calibrado" sobre
+% a mesma chapa; e reportar a taxa de concordância entre a regra e o autor.
+
+\section{Experimento 2 --- Especialistas \textit{versus} Generalista}
+
+% TODO: executar e redigir, faixa por faixa. Depende da geração do conjunto de
+% treinamento pelo Professor, do pós-processamento discutido na Seção 4.3 e do
+% treinamento dos três braços descritos no Quadro \ref{quad:bracos_exp2}.

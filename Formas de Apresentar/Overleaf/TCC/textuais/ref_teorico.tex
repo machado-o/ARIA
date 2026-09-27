@@ -1,3 +1,63 @@
-\chapter[Referencial Teórico]{Referencial Teórico}
+\chapter[FUNDAMENTAÇÃO TEÓRICA]{FUNDAMENTAÇÃO TEÓRICA}
 
-Refere-se a um levantamento da literatura já publicada sobre o assunto na área de interesse da pesquisa, o qual servirá de embasamento teórico para o desenvolvimento do trabalho proposto.
+Este capítulo reúne os fundamentos que sustentam o ARIA. Parte da natureza do problema de inspeção no setor de rochas ornamentais, percorre as arquiteturas de visão computacional empregadas em cada estágio do \textit{pipeline}, e detém-se no ponto que mais condiciona o desenho do trabalho: o que a literatura sabe sobre treinar uma rede a partir de rótulos que não foram produzidos por um humano.
+
+\section{Inspeção de Qualidade em Rochas Ornamentais}
+
+A inspeção de chapas polidas é uma etapa de classificação comercial, não de detecção de falhas no sentido estrito. Uma mesma feição --- um veio mineral marcante, uma variação de tonalidade --- pode ser o atributo que valoriza uma chapa e o que desqualifica outra, conforme a litologia e o mercado de destino \cite{stone_inspection_vidal2013}. Por isso a inspeção depende de julgamento acumulado, e não da aplicação de uma norma objetiva.
+
+Trabalhos que documentam a prática do setor registram a variabilidade dessa decisão entre inspetores e entre turnos \cite{stone_subjectivity_castro2018}. Tentativas de automação por visão computacional existem há tempo e concentram-se na classificação da rocha ou na detecção de descontinuidades específicas \cite{stone_lopez2010, stone_tereso2020}. O contexto mais amplo de digitalização da manufatura, associado à Indústria 4.0, fornece a motivação econômica para essa automação \cite{industry40_lee2014}.
+
+Em outros domínios industriais, a inspeção automática de superfícies é assunto consolidado, com aplicações em soldagem \cite{avi_welding_tsuzuki2022}, concreto \cite{avi_concrete_waqar2024}, têxteis \cite{avi_textile_sikka2024} e alimentos \cite{avi_food_chen2021}, e revisões recentes consolidam as abordagens de detecção de anomalias visuais \cite{avi_anomaly_li2025}. A diferença do caso das rochas ornamentais é que nesses domínios o defeito costuma ter definição física estável --- uma trinca em uma solda é uma trinca --- enquanto aqui a categoria "defeito" é, em parte, uma convenção comercial.
+
+\section{Redes Neurais Convolucionais e Classificação de Litologias}
+
+Redes neurais convolucionais aprendem hierarquias de representações diretamente dos pixels, dispensando a engenharia manual de descritores \cite{deeplearning_lecun2015}. A arquitetura Xception substitui as convoluções tradicionais por convoluções separáveis em profundidade, o que reduz o número de parâmetros sem perda de capacidade representacional \cite{xception_chollet2017}.
+
+A identificação automática de tipos de rocha a partir de imagens é tarefa estabelecida na literatura geológica computacional \cite{rocktyping_baraboshkin2020}. No domínio específico das rochas ornamentais brasileiras, trabalhos anteriores do mesmo grupo de pesquisa aplicaram redes convolucionais ao reconhecimento de litologias em chapas polidas \cite{deepstone_araujo2022}, resultando no classificador DeepStoneAI \cite{deepstoneai_moreira2025}, que é o modelo adotado como primeiro estágio deste trabalho.
+
+\section{Modelos de Fundação e Segmentação Guiada por Texto}
+
+Modelos de fundação são redes treinadas em conjuntos de dados de escala muito superior à de um domínio específico, capazes de executar tarefas para as quais não foram explicitamente treinadas --- a chamada capacidade \textit{zero-shot}. Em segmentação, o marco dessa mudança foi o \textit{Segment Anything Model}, que introduziu a segmentação condicionada por \textit{prompt}: em vez de aprender um conjunto fixo de classes, o modelo recebe uma indicação --- um ponto, uma caixa, um texto --- e devolve a máscara correspondente \cite{sam_kirillov2023}. Este trabalho emprega a terceira geração dessa família, que aceita \textit{prompt} textual de forma nativa \cite{TODO-sam3}.
+
+A ponte entre texto e imagem é feita por representações multimodais alinhadas, treinadas de modo contrastivo sobre pares imagem--legenda \cite{clip_radford2021}. É essa representação compartilhada que permite que uma palavra selecione uma região da imagem sem nenhum treinamento supervisionado no domínio de destino.
+
+Um achado relevante do trabalho original sobre essas representações é que \textit{prompts} contextuais superam consistentemente palavras isoladas em tarefas \textit{zero-shot}: o modelo responde melhor a \textit{a photo of a \{classe\}} do que a \textit{\{classe\}} \cite{clip_radford2021}. A observação é diretamente aplicável ao domínio deste trabalho, em que termos como \textit{vein} são lexicalmente ambíguos, e é registrada aqui como atribuição correta do achado --- não como hipótese original desta pesquisa.
+
+\section{Professor--Aluno e Pseudo-rotulagem}
+
+A transferência de conhecimento de um modelo grande para um modelo menor é ideia consolidada desde os trabalhos sobre destilação \cite{distill_hinton2015}. A pseudo-rotulagem é a variante em que o modelo grande não transfere distribuições de saída, mas produz \textbf{rótulos} para dados não anotados, que passam a servir de supervisão para o modelo menor \cite{pseudolabel_lee2013}.
+
+No arranjo adotado neste trabalho, o modelo de fundação atua como Professor, processando as imagens fora da linha de produção e gerando polígonos de anomalia; uma rede de segmentação compacta atua como Aluno, treinada sobre esses polígonos e responsável pela inferência em produção. A vantagem prática é econômica: o custo de inferência do modelo de fundação é pago uma única vez, na geração do conjunto de treinamento, e não a cada chapa inspecionada.
+
+\section{Aprendizado com Rótulos Ruidosos e a Escolha do Limiar}
+
+O rótulo produzido por um Professor é, por construção, ruidoso. Essa constatação define o problema central da calibração: \textbf{onde cortar o escore de confiança do Professor}.
+
+A literatura de detecção semissupervisionada converge em uma direção. \citeonline{softteacher_xu2021} reportam melhor desempenho com limiares de confiança altos, observando o compromisso esperado --- limiar mais alto aumenta a precisão do pseudo-rótulo e reduz o \textit{recall}. \citeonline{unbiasedteacher_liu2021} chegam a conclusão análoga ao tratar o viés de confirmação introduzido por pseudo-rótulos incorretos. A razão de fundo é conhecida: redes de alta capacidade \textbf{memorizam} rótulos errados quando expostas a eles repetidamente \cite{memorization_arpit2017}, de modo que um rótulo falso-positivo não é apenas ruído aleatório, mas um sinal que a rede efetivamente aprende.
+
+Duas ressalvas importam para a transposição desse consenso ao presente trabalho. A primeira é que os escores relatados naqueles trabalhos vêm de detectores supervisionados com saídas calibradas, e não são comparáveis em magnitude aos escores de um modelo de fundação guiado por texto --- razão pela qual este trabalho transporta a \textit{direção} da recomendação (na dúvida, cortar mais apertado) e não o valor numérico. A segunda é que o compromisso precisão--\textit{recall} do limiar não tem solução ótima única quando as imagens de uma mesma litologia variam em intensidade das feições; daí o protocolo de calibração descrito no Capítulo 3 submeter um mesmo limiar a três casos distintos em vez de otimizá-lo em uma imagem.
+
+Para converter uma curva de comportamento em um ponto de operação, este trabalho adota a detecção de joelho proposta por \citeonline{kneedle_satopaa2011}, que define o joelho como o ponto de máxima distância à corda que liga os extremos da curva normalizada.
+
+\section{Segmentação em Tempo Real}
+
+A segmentação semântica e de instâncias evoluiu de arquiteturas encoder--decoder \cite{unet_ronneberger2015} e de detectores em dois estágios estendidos para máscaras \cite{maskrcnn_he2017} até famílias de estágio único otimizadas para latência \cite{segsurvey_minaee2021}. A família YOLO consolidou a abordagem de predição em uma única passagem pela rede \cite{yolo_redmon2016}, e suas versões recentes incorporam cabeças de segmentação mantendo taxas de quadros compatíveis com inspeção em linha \cite{yolo11_khanam2024}. É essa característica --- inferência rápida em \textit{hardware} de custo moderado --- que justifica seu papel como Aluno no \textit{pipeline}.
+
+\section{Métricas de Avaliação}
+
+A sobreposição entre uma região predita e uma região de referência é medida pela \textit{Intersection over Union} (IoU), definida na Equação \ref{eq:iou} \cite{iou_mahmood2021}:
+
+\begin{equation}
+  \mathrm{IoU}(A, B) = \frac{|A \cap B|}{|A \cup B|}
+  \label{eq:iou}
+\end{equation}
+
+\noindent onde $A$ é a região predita e $B$ a região de referência. A precisão média (AP) agrega precisão e \textit{recall} ao longo dos limiares de decisão, e a \textit{mean Average Precision} (mAP) é sua média sobre as classes \cite{voc_everingham2010}. Como este trabalho adota rotulagem binária --- justificada na Seção~\ref{sec:sondas} ---, há uma única classe de interesse e a mAP degenera na própria AP; o texto usa AP para evitar a sugestão falsa de uma média sobre múltiplas classes.
+
+\section{Trabalhos Relacionados e Posicionamento}
+\label{sec:relacionados}
+
+O trabalho mais próximo do aqui proposto emprega máscaras de um modelo de fundação como pseudo-rótulos para treinar um segmentador de defeitos industriais, tratando explicitamente o ruído dessas máscaras \cite{boxes2pixels_lendering2026}. A coincidência de estrutura é considerável: mesmo arranjo Professor--Aluno, mesma origem de rótulo, mesmo domínio geral de inspeção industrial.
+
+Convém, portanto, enunciar o posicionamento deste trabalho sem recorrer à alegação de lacuna. A distinção não está em usar um modelo de fundação como Professor --- isso já foi feito ---, e sim em dois pontos: \textbf{(i)} o \textit{prompt} do Professor é condicionado à classe do domínio, de modo que cada litologia recebe seu próprio conjunto de sondas e seus próprios limiares, em vez de uma configuração única para todo o conjunto de dados; e \textbf{(ii)} essa configuração é tratada como o artefato central do trabalho --- a materialização auditável de um critério que, no processo manual, não existe por escrito. O domínio de rochas ornamentais, em que a fronteira entre feição natural e defeito é convenção comercial e não propriedade física, é o que torna o ponto (ii) mais do que uma conveniência de engenharia.
