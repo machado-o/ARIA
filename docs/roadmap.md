@@ -3,8 +3,10 @@
 Estado vivo do desenvolvimento e ordem de execução. As decisões que justificam esta ordem estão
 em [`decisoes.md`](decisoes.md).
 
-> Última atualização: 2026-08-23
-> Prazo-alvo de trabalho: **01/10/2026** (a confirmar com o orientador — ver `pendencias.md`)
+> Última atualização: 2026-09-26
+> Prazo-alvo de trabalho: **15/10/2026** — estimativa dada pelo Henrique em 26/09/2026
+> ("deve ser até dia 15"). **Ainda não confirmada com o Rafael** — ver `pendencias.md`.
+> São ~19 dias: o cronograma abaixo assume que só o **Experimento 1** (Fase 2) roda.
 
 ---
 
@@ -13,16 +15,25 @@ em [`decisoes.md`](decisoes.md).
 | Componente | Estado |
 |---|---|
 | `rock_viewer.py` — seleção das 4 vagas | ✅ reescrito para o protocolo D17 |
-| `calibrator.py` — UI de calibração | 🟡 lê o layout novo; falta a interface das 4 vagas |
+| `calibrator.py` — UI de calibração | ✅ **reescrito** (2026-09-26): 3 abas, um slider, 4 previews |
 | `inference.py` — inferência sobre `selectRocks/` | ✅ funciona; já aceita o layout em pasta |
-| `sam_cache.py` — varredura offline de limiar | ✅ núcleo pronto e testado (D18) |
+| `sam_cache.py` — varredura offline de limiar | ✅ núcleo pronto (D18) |
+| `verificar_d18.py` — prova empírica da D18 | ✅ **novo**: 32 comparações, nenhuma divergência |
 | `rock_prompts.json` | 🟡 **provisório** (**D15**) — 46 entradas, mas só 13 configurações distintas |
-| `selectRocks/` | 🔴 **zerado** — 0 de 180 vagas (45 litologias × 4, D17) |
+| `selectRocks/` | 🟡 **4 de 180 vagas** — `siena_white` 4/4; restam 40 na faixa A |
+| Litologias com `calibracao.json` | 🔴 **0 de 45** — `siena_white` é a próxima, e está pronta |
 | Inferência em lote sobre o dataset | ❌ **não existe** |
 | Conjunto-ouro anotado | ❌ não existe |
 | Avaliação (IoU / mAP / falso positivo) | ❌ não existe |
 | Treino e avaliação YOLO | ❌ não existe (`AI/YOLO/` está vazio) |
 | Integração Xception | 🟡 modelo já testado neste dataset com bom resultado; falta o código de roteamento |
+| **Monografia** (`Overleaf/TCC/`) | 🟡 **reestruturada em 26/09**: bibliografia (37 entradas), esqueleto, Introdução, Fundamentação, Metodologia e Conclusão escritas; Resultados só com o que já foi medido |
+| Artigo de PD1 e LatinoWare2026 | 🔴 intocados — continuam desalinhados (**D13**) |
+
+> ⚠️ A monografia **nunca foi compilada** depois da reestruturação: não há LaTeX na máquina de
+> desenvolvimento. `Overleaf/TCC/verificar_tex.py` faz a conferência estrutural possível
+> (citação sem entrada no `.bib`, `ef` sem `\label`, ambiente desbalanceado, figura ausente),
+> mas o veredito é do Overleaf.
 
 **O buraco estrutural:** `inference.py` lê de `selectRocks/`, que tem **uma imagem por rocha**.
 Não existe caminho do Professor para um conjunto de treino do Aluno. É a primeira coisa a
@@ -50,7 +61,10 @@ resolver na Fase 3.
 Ver **D15** e **D17**. O `selectRocks/` foi **zerado em 2026-08-23**: as 14 imagens antigas foram
 apagadas e a seleção recomeça com o protocolo de 4 vagas.
 
-**Estado: 0 de 180 vagas** (45 litologias × 4). A faixa A são as 11 primeiras — **44 vagas**.
+**Estado: 4 de 180 vagas.** A faixa A são as 11 primeiras — **44 vagas**, das quais 4 feitas
+(`siena_white`, em 08/09/2026) e **40 pendentes**. Ordem de trabalho da faixa A: `siena_white` ✅,
+`nevada_black`, `ubatuba_green`, `ipanema_beige`, `shadow_white`, `itaunas_white`,
+`santa_cecilia`, `san_francisco_green`, `white_mirage`, `golden_storm`, `white_olympus`.
 
 ```bash
 cd AI/SAM
@@ -61,12 +75,20 @@ python rock_viewer.py --all    # mostra val/ e test/ para estudo (não selecion�
 A ferramenta conduz vaga por vaga, dizendo o que procurar em cada uma. Ela só oferece imagens do
 `train/` e recusa qualquer outra (**D17**).
 
-Depois de a **primeira litologia** estar completa (4/4), o próximo passo é terminar o
-`calibrator.py`: exibir as 4 imagens lado a lado e escolher o limiar que melhor serve ao
-**conjunto**. O núcleo já existe em `sam_cache.py` (**D18**) — falta a interface.
+O `calibrator.py` **está pronto** (2026-09-26) e o cache de `siena_white` já está capturado
+(24 pares, 4 vagas × 6 sondas). Ele tem três abas:
 
-> ⚠️ **Ainda em aberto (TODO da D17):** o valor de X na regra *"o maior limiar que ainda marca ao
-> menos X% das feições anotadas"*. Só dá para fixar depois da primeira litologia calibrada.
+1. **Descoberta** — na chapa mais rica, quais sondas respondem a algo real;
+2. **Limiar** — um slider e as 4 previews simultâneas, mais a curva *limiar × marcações* das
+   três vagas de limiar, com o joelho marcado como **sugestão**;
+3. **Fechar** — a contagem por vaga, o **critério escrito** (obrigatório) e o salvamento.
+
+> **A próxima ação do Henrique é calibrar `siena_white` nessa interface.** É o gargalo de tudo:
+> ela é a primeira litologia calibrada de verdade e é dela que sai a resposta do TODO abaixo.
+
+> ⚠️ **Ainda em aberto (TODO da D17):** a forma da regra — (a) baseada em anotação × (b) joelho
+> validado pelo ouro — e o parâmetro dela. Só dá para fixar **depois** da primeira litologia
+> calibrada, e é por isso que o calibrador mostra o joelho mas nunca o aplica sozinho.
 
 ---
 
@@ -106,6 +128,15 @@ Ver **D6**. Executa faixa por faixa. **Cada faixa é escrita antes de a seguinte
   de polígono. No único exemplo existente (`samples/ice_leke.txt`) são **107 polígonos numa
   imagem**, com até 1.742 pontos. Um Aluno treinado nisso aprende a marcar tudo. Isso é etapa
   metodológica documentada, não gambiarra.
+- **Decidir o que fazer com a ponte entre contornos.** `masks.xyn` usa
+  `masks2segments(strategy="all")`: quando a máscara de uma detecção tem vários contornos, eles
+  são fundidos numa poligonal só, ligados por pontes de ida e volta — e é essa poligonal que o
+  `inference.py` grava no `.txt`. Medido em `siena_white/descoberta` (crack @0,08): **45 das 76**
+  detecções têm mais de um contorno; a ponte tem área ~zero, então no agregado o polígono infla
+  só **2,4%** sobre a máscara (IoU **0,93**), mas numa detecção com 18 contornos chegou a
+  **2,5×**. Três saídas possíveis: usar `strategy="largest"` (perde área real), quebrar cada
+  contorno em uma instância separada (mais fiel, muda a contagem de instâncias), ou aceitar e
+  declarar. **Decisão metodológica — do Henrique.**
 - **`train.py` / `eval.py`** — treino dos Alunos e avaliação contra o conjunto-ouro da Fase 1.
 
 ### 3.1 — Faixa A (≥1000 imagens · 11 litologias)

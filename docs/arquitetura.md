@@ -154,7 +154,7 @@ O desenho experimental que testa se essa hierarquia compensa está em **D5** (Ex
 
 | Componente | Tecnologia |
 |---|---|
-| Linguagem | Python 3.13 |
+| Linguagem | Python 3.14 |
 | Deep learning | PyTorch + CUDA |
 | Classificador | Xception |
 | Professor | SAM3 via Ultralytics |
@@ -162,6 +162,8 @@ O desenho experimental que testa se essa hierarquia compensa está em **D5** (Ex
 | Aluno | YOLO11-seg |
 | Visualização | OpenCV |
 | UI de calibração | Streamlit |
+
+> Versões verificadas em 2026-09-26: Python 3.14.2, torch 2.11.0+cu128, ultralytics 8.4.61, streamlit 1.58, numa RTX 5060 Ti de 16 GB.
 
 ---
 
