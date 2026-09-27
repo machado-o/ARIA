@@ -6,7 +6,7 @@
 > ⚠️ **A numeração foi refeita em 2026-08-23.** Referências a "D1…D10" em textos antigos
 > (`Overleaf/`, `LatinoWare2026/`, `apresentacao/`) apontam para a numeração velha e **não valem**.
 >
-> Última atualização: 2026-08-23
+> Última atualização: 2026-09-26
 
 ---
 
@@ -76,7 +76,16 @@ código (a sonda `vein` está ativa em todas as configurações) e que fica **de
 ## D4 — Hipóteses
 
 - **H1 (Experimento 1 — D5):** um critério de marcação **parametrizado por litologia** produz
-  segmentações mais alinhadas ao julgamento de especialistas do que um critério **único e global**.
+  segmentações mais alinhadas ao **critério de referência anotado** (**D7**) do que um critério
+  **único e global**.
+
+  > ⚠️ **Corrigido em 2026-09-26.** A redação anterior dizia "ao julgamento de especialistas",
+  > mas o gabarito quantitativo é anotado pelo **autor** (D7, fonte 1) — não por um especialista
+  > do setor. O especialista entra só na **preferência pareada cega** (D7, fonte 2), que produz
+  > estatística de preferência e não IoU, e cuja realização ainda depende de um contato em
+  > aberto. Prometer "especialista" na hipótese e medir com o gabarito do autor era um flanco
+  > gratuito: a hipótese passa a enunciar exatamente o que é medido. Se o especialista aparecer,
+  > ele **reforça** o resultado; ele não é mais requisito para a H1 existir.
 - **H2 (Experimento 2 — D6):** modelos Alunos **especialistas** (um por litologia) alinham-se
   melhor ao julgamento humano do que um único Aluno **generalista** — e esse ganho é **função do
   volume de dados** disponível por litologia.
@@ -97,6 +106,38 @@ treinamento nenhum:
 | **Default** | conjunto e limiares únicos para todas as rochas |
 
 Mesma imagem, mesmo modelo, mesma máquina — muda só a configuração.
+
+**Como o braço `default` é definido — regra fixada em 2026-09-26, antes de qualquer resultado:**
+
+O braço default **não é escolhido a dedo**. Ele aplica **a mesma regra de limiar** do braço
+calibrado (**D17**), mudando **uma única coisa**: o escopo dos dados sobre os quais a regra roda.
+
+| Braço | Escopo da curva que produz o limiar |
+|---|---|
+| **Calibrado** | as 3 vagas de limiar **daquela litologia** |
+| **Default** | as 3 vagas de limiar de **todas as litologias reunidas** |
+
+Sonda por sonda: reúnem-se os scores de todas as litologias num só conjunto, aplica-se a regra e
+obtém-se **um limiar global por sonda**. O conjunto de sondas do braço default é o que a mesma
+regra de descoberta admite sobre o material reunido.
+
+**Por que assim, e não pela mediana dos limiares calibrados:** se o default fosse a mediana das
+configurações calibradas, o resultado seria quase aritmético — o ótimo de cada litologia vence a
+mediana dos ótimos **nos dados dela** por construção. Isso é regressão à média, não achado, e o
+controle passaria a ser função do tratamento. A regra sobre o material reunido é o contrafactual
+honesto — *"e se tivéssemos tratado as 45 rochas como uma só?"*, que é o que a H1 pergunta — e
+**pode dar negativo**, o que é justamente o que torna a hipótese falseável.
+
+> ⚠️ **Consequência inegociável:** os dois braços têm de usar a **mesma regra mecânica**. Se o
+> calibrado fosse escolhido no olho e o default por fórmula, a comparação mudaria duas coisas ao
+> mesmo tempo — o escopo **e** quem escolhe — e nenhum resultado seria atribuível. É isto que
+> obriga a regra da D17 a ser mecânica.
+
+> ⚠️ **O `"default"` que existe hoje no `rock_prompts.json`** (`crack 0,1 · vein 0,007 ·
+> Stain 0,3`) **não serve** para este braço: foi escolhido no olho e a própria **D15** o declara
+> provisório. Medido na `siena_white`, o joelho da curva sugere `vein ≈ 0,145` contra os `0,007`
+> do arquivo — vinte vezes de diferença. Usá-lo seria montar um espantalho e perder o
+> experimento na arguição.
 
 **Justificativa:** é o experimento mais barato do projeto (não exige treino) e testa a **premissa
 de que todo o resto depende**. Hoje não existe nenhuma evidência no projeto de que calibrar muda
@@ -155,6 +196,12 @@ A mesma chapa é apresentada com a máscara do braço A e a do braço B, **embar
 identificação**. O especialista escolhe qual marcação representa melhor o que ele trataria como
 defeito. Produz estatística de preferência (ex.: *"o especialista preferiu o calibrado em 43 de
 50 pares"*), não IoU.
+
+> ⚠️ **O que "às cegas" garante, e o que não garante.** Garante que o autor anotou **antes de
+> rodar a inferência nestas imagens**, então a anotação não é cópia da máscara. **Não** garante
+> ingenuidade: o autor passou meses calibrando sondas e olhando saída do SAM, e isso molda a
+> noção do que ele considera anomalia. A independência é **parcial** e deve aparecer no texto
+> como limitação declarada — não como garantia de imparcialidade.
 
 **Justificativa:** toda métrica quantitativa de segmentação — IoU, mAP, taxa de falso positivo —
 exige uma referência. Usar a saída do próprio SAM como referência mede *fidelidade da cópia*, não
@@ -351,8 +398,12 @@ imagens por litologia: o que limita a cobertura é a varredura do autor, não o 
 precisão — o *Soft Teacher* reporta melhor resultado em 0,9 de score, notando que limiar maior dá
 mais precisão e menos recall, e a literatura de ruído de rótulo registra que redes de alta
 capacidade **memorizam** rótulo errado. ⚠️ **Não copiar o número:** aquilo são scores calibrados
-de um detector; os do SAM3 com prompt de texto operam entre 0,007 e 0,3. O que transfere é a
-direção — **na dúvida, cortar mais apertado.**
+de um detector; os do SAM3 com prompt de texto são de outra escala. Medido em
+`siena_white/descoberta` (2026-09-26, 4 sondas): os scores vão de **0,011 a 0,77**, com mediana
+entre 0,04 e 0,08 — ou seja, a massa vive na década baixa e a cauda alta é rala. (A faixa
+"0,007–0,3" que este parágrafo citava antes é a dos `conf` **escolhidos** no `rock_prompts.json`
+provisório, não a dos scores; eram coisas diferentes com o mesmo nome.) O que transfere da
+literatura é a direção, não o número — **na dúvida, cortar mais apertado.**
 
 **O critério tem de ser escrito.** Escolher limiar "no olho" é exatamente o que a **D3** acusa o
 inspetor humano de fazer.
@@ -372,18 +423,50 @@ voltaria a ser escolha no olho e a regra deixaria de ser regra.
 **Verificação ao fim da faixa A:** conferir se a mesma regra se sustentou nas 11 litologias. Se
 não, o X passa a ser definido por grupo cromático — e isso é **resultado a reportar**, não falha.
 
-**Forma da regra — decisão em aberto.** Duas candidatas:
+**Forma da regra — FECHADA em 2026-09-26: opção (b), o joelho da curva.**
 
-- **(a) Baseada em anotação:** *"o maior limiar que ainda marca ao menos X% das feições anotadas
-  manualmente nas 3 imagens de limiar"*. Mais rigorosa, mas custa **135 imagens anotadas**
-  (3 × 45) — quase três vezes o conjunto-ouro inteiro. Custo alto para o prazo.
-- **(b) Joelho da curva, validado pelo ouro:** o limiar sai do "joelho" da curva *detecções ×
-  limiar* (`sam_cache.curva_de_limiar()` já calcula), e as ~50 imagens do conjunto-ouro (**D7**),
-  que serão anotadas de qualquer forma, testam se a regra produz bons limiares. **Zero anotação
-  adicional** e o gabarito faz dois trabalhos.
+A alternativa (a) — *"o maior limiar que ainda marca ao menos X% das feições anotadas"* — foi
+**descartada por custo**: exigiria **135 imagens anotadas** (3 × 45), quase três vezes o
+conjunto-ouro inteiro, e não cabe no prazo.
 
-- [ ] **TODO:** escolher entre (a) e (b), fixar o parâmetro e a redação final — depois da primeira
-  litologia da faixa A calibrada com o protocolo novo.
+**A regra, enunciada:**
+
+> Para cada sonda, some as três vagas de limiar numa única curva *limiar × nº de marcações*. O
+> limiar é o **joelho** dessa curva: o ponto de maior distância à corda que liga as duas pontas,
+> com o eixo do limiar em escala **logarítmica** (método Kneedle). Implementação:
+> `sam_cache.joelho()`.
+
+Três coisas que a regra fixa de propósito:
+
+1. **A vaga `descoberta` fica de fora.** Ela foi escolhida por ser a mais rica em feições — entrar
+   na conta puxaria o limiar para cima, que é exatamente o viés de seleção por visibilidade que a
+   D17 existe para evitar.
+2. **Escala log.** Os scores se concentram na década baixa (medido: 0,011 a 0,77, mediana entre
+   0,04 e 0,08). Em escala linear o joelho cairia sempre no primeiro ponto.
+3. **A regra é idêntica nas 45.** Muda só o material sobre o qual ela roda — e é isso que produz
+   os dois braços do Experimento 1 (**D5**): por litologia → calibrado; sobre todas reunidas →
+   default.
+
+**Validação:** as ~50 imagens do conjunto-ouro (**D7**), que seriam anotadas de qualquer forma,
+testam se a regra produz bons limiares. Zero anotação adicional; o gabarito faz dois trabalhos.
+
+**Dois valores por sonda, com papéis distintos:**
+
+| | O que é | Onde é usado |
+|---|---|---|
+| **limiar da regra** | o joelho, puro, sem intervenção | **nos dois braços do Experimento 1** |
+| **limiar de trabalho** | a regra mais o ajuste do autor, se houver | `rock_prompts.json`, produção |
+
+O autor **pode discordar da regra**. Quando discorda, o calibrador grava os dois valores em
+`calibracao.json`, junto do critério escrito. Isso preserva o experimento (os braços comparam
+regra × regra, uma variável só) e ainda produz um resultado reportável: *"a regra foi aceita sem
+ajuste em N das 11 litologias; nas outras, o autor divergiu em média X"*. Concordância alta é
+evidência a favor da regra; divergência sistemática é achado sobre onde a curva engana — e nos
+dois casos é melhor que "escolhi no olho".
+
+- [x] ~~TODO: escolher entre (a) e (b)~~ — resolvido em 2026-09-26. O parâmetro que a antiga
+  redação chamava de "X" **deixou de existir**: o joelho não tem parâmetro livre, o que elimina o
+  problema de "congelar o X" depois da primeira litologia.
 
 ---
 
@@ -392,8 +475,8 @@ não, o X passa a ser definido por grupo cromático — e isso é **resultado a 
 **Decisão:** a calibração roda o SAM3 **uma vez por (imagem, sonda)** com `conf` no piso
 (≈0,001), guarda as máscaras e seus scores, e depois varre qualquer limiar **offline**, sem GPU.
 
-**Justificativa — verificada na fonte do `ultralytics 8.4.52`** (`SAM3SemanticPredictor.postprocess`,
-versão instalada no venv em 2026-08-28):
+**Justificativa — verificada na fonte do `ultralytics 8.4.61`** (`SAM3SemanticPredictor.postprocess`,
+versão instalada no venv, reconferida em 2026-09-26):
 
 ```python
 pred_scores = (pred_logits.sigmoid() * presence_score).squeeze(-1)
@@ -405,6 +488,12 @@ O modelo produz máscaras e scores **sem conhecer o `conf`**; o `conf` apenas de
 depois do filtro, mas processa em ordem decrescente de score e só remove usando um sobrevivente de
 score **maior** — então incluir máscaras de score baixo não pode derrubar uma de score alto. As
 decisões sobre as máscaras acima de qualquer limiar são idênticas com ou sem as abaixo dele.
+
+**Verificado também por execução, não só por leitura** (2026-09-26): `AI/SAM/verificar_d18.py`
+roda o SAM com `conf = t` e compara com a filtragem do cache do piso, para 4 sondas × 8 limiares
+(0,005 a 0,5) sobre `siena_white/descoberta`. **32 de 32 comparações idênticas** — mesmo número de
+detecções, mesmos scores e mesmos vértices de polígono, sem tolerância. O script fica no repo para
+ser rodado de novo quando a versão do ultralytics mudar; é ele que sustenta esta afirmação no TCC.
 
 **Consequência: a varredura offline é exatamente equivalente a rodar de novo em cada limiar** —
 não é aproximação. O ciclo de calibração deixa de ser "escolho conf → rodo o SAM → olho → ajusto →
