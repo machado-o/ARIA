@@ -149,3 +149,47 @@ def obter(
     scores, polys = capturar(predictor, imagem, sonda)
     salvar(alvo, scores, polys)
     return scores, polys
+
+
+def indices_validos(polys: list[np.ndarray]) -> list[int]:
+    """Índices das detecções que viram rótulo: polígono com 3 pontos ou mais.
+
+    Devolve índice, e não os polígonos, porque quem chama precisa filtrar os
+    scores pelos MESMOS itens — cache com scores e polígonos desalinhados é
+    exatamente o erro que `capturar()` já se dá ao trabalho de checar.
+
+    O SAM devolve detecção com polígono VAZIO quando a máscara não sobrevive à
+    interpolação para o tamanho original (`masks2segments` não acha contorno).
+    Medido em siena_white/descoberta: acontece de verdade. `inference.py` já as
+    descarta com `len(poly) > 2` na hora de gravar o .txt — então contar a
+    detecção como "marcação" no calibrador seria mostrar um número que o treino
+    não vê. Esta é a definição única de "marcação" para os dois lados.
+    """
+    return [i for i, p in enumerate(polys) if len(p) > 2]
+
+
+def joelho(curva: list[tuple[float, int]]) -> float | None:
+    """Limiar de maior curvatura da curva (limiar × marcações) — **SUGESTÃO**.
+
+    ⚠️ Isto NÃO é a regra de limiar do projeto. A forma da regra está em aberto
+    (TODO da **D17**: opção (a) baseada em anotação × (b) joelho validado pelo
+    ouro). A função existe para que o joelho seja *visível* enquanto a decisão é
+    tomada — nunca para aplicá-lo automaticamente.
+
+    Método (Kneedle): normaliza log(limiar) e contagem em [0,1] e devolve o ponto
+    de maior distância à corda que liga as duas pontas. Log no eixo x porque os
+    scores se concentram na década baixa — em escala linear o joelho cairia
+    sempre no primeiro ponto.
+    """
+    if len(curva) < 4:
+        return None
+    x = np.log(np.array([t for t, _ in curva], dtype=float))
+    y = np.array([n for _, n in curva], dtype=float)
+    if x.max() <= x.min() or y.max() <= y.min():
+        return None
+    xn = (x - x.min()) / (x.max() - x.min())
+    yn = (y - y.min()) / (y.max() - y.min())
+    # A curva é decrescente: as pontas normalizadas são (0,1) e (1,0), logo a
+    # corda é xn + yn - 1 = 0 e a distância perpendicular é |xn + yn - 1|/raiz(2).
+    dist = np.abs(xn + yn - 1.0) / np.sqrt(2.0)
+    return float(np.exp(x[int(np.argmax(dist))]))
