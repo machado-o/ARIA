@@ -4,7 +4,7 @@
 > **linkam** para cá em vez de repetir o teor. Se uma decisão mudar, muda-se **aqui** e só aqui.
 >
 > ⚠️ **A numeração foi refeita em 2026-08-23.** Referências a "D1…D10" em textos antigos
-> (`Overleaf/`, `LatinoWare2026/`, `apresentacao/`) apontam para a numeração velha e **não valem**.
+> (dentro de `apresentações/`) apontam para a numeração velha e **não valem**.
 >
 > Última atualização: 2026-09-26
 
@@ -24,7 +24,7 @@ motivação industrial se sustenta sozinha: o setor de rochas ornamentais do Esp
 polo produtor e exportador do país.
 
 **Consequência:** `Hartheus.md` foi removido do repositório. Qualquer menção remanescente em
-`Overleaf/`, `LatinoWare2026/` ou `apresentacao/` é texto desatualizado a corrigir (ver D13).
+`apresentações/` é texto desatualizado a corrigir (ver D13).
 
 ---
 
@@ -282,13 +282,14 @@ dataset.
 
 ---
 
-## D13 — `Overleaf/`, `LatinoWare2026/` e `apresentacao/` não são fonte de verdade
+## D13 — `apresentações/` não é fonte de verdade
 
-**Decisão:** essas três pastas contêm **saída desatualizada**, escrita antes das decisões acima.
-Enquanto não forem revisadas, **não** servem como referência para nada — nem para o Claude, nem
-para o Henrique.
+**Decisão:** a pasta `apresentações/` (que reúne `Overleaf/TCC`, `Overleaf/artigo de PD1`,
+`Overleaf/artigo LatinoWare2026` e `apresentacao de PD1`) contém **saída desatualizada**, escrita
+antes das decisões acima. Enquanto não for revisada, **não** serve como referência para nada —
+nem para o Claude, nem para o Henrique.
 
-A verdade do projeto é `docs/`. A correção dessas pastas é uma tarefa posterior, listada em
+A verdade do projeto é `docs/`. A correção dessa pasta é uma tarefa posterior, listada em
 `pendencias.md`, e acontece **depois** que `docs/` estiver estável.
 
 **Divergências já conhecidas:** menções ao Hartheus (D1); "SAM" onde é SAM3; orientador

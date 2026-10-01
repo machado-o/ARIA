@@ -48,7 +48,7 @@
 
 ## ✍️ Escrita
 
-> A **monografia** (`Formas de Apresentar/Overleaf/TCC/`) foi reestruturada em 2026-09-26 e já
+> A **monografia** (`apresentações/Overleaf/TCC/`) foi reestruturada em 2026-09-26 e já
 > nasce alinhada com as decisões. O **artigo de PD1** e o **LatinoWare2026** continuam sendo
 > saída desatualizada (**D13**) e ainda não foram tocados.
 

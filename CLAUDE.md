@@ -30,9 +30,9 @@ Cada fato mora em **um** lugar só (DRY). Antes de escrever ou codar, consultar 
 | Pendências soltas e bloqueadores | [`docs/pendencias.md`](docs/pendencias.md) |
 | Como escrever o TCC (cláusulas, estilo, LaTeX) | [`docs/diretrizes-escrita.md`](docs/diretrizes-escrita.md) |
 
-> ⚠️ **`Overleaf/`, `LatinoWare2026/` e `apresentacao/` NÃO são fonte de verdade** (**D13**).
-> São saída escrita antes das decisões atuais e ainda não revisada. Nunca copiar um fato de lá —
-> nem sobre metodologia, nem sobre números, nem sobre autoria.
+> ⚠️ **`apresentações/` (Overleaf do TCC, artigo LatinoWare2026, apresentação de PD1) NÃO é
+> fonte de verdade** (**D13**). É saída escrita antes das decisões atuais e ainda não revisada.
+> Nunca copiar um fato de lá — nem sobre metodologia, nem sobre números, nem sobre autoria.
 
 ---
 
