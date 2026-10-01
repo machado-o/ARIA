@@ -724,6 +724,35 @@ def _painel_conjunto(rocha: str, conjunto: list[str], vagas: dict, ncols: int) -
             preview(vagas[papel], camadas)
 
 
+def _painel_comparar(rocha: str, sonda: str, conf: float, vagas: dict) -> None:
+    """Uma vaga de cada vez, lado a lado: marcada à esquerda, crua à direita --
+    pra comparar o que a sonda pegou contra o que está mesmo na chapa, sem
+    precisar rolar a página."""
+    papel = st.radio(
+        "vaga", list(PAPEIS_LIMIAR), horizontal=True, key="rd_vaga_comparar",
+        format_func=lambda p: protocolo.PAPEL_INFO[p][0],
+    )
+    if papel not in vagas:
+        st.info(f"Falta a vaga `{papel}` — rode `python rock_viewer.py {rocha}`.")
+        return
+
+    rotulo, dica, _ = protocolo.PAPEL_INFO[papel]
+    dados = ler(rocha, papel, sonda)
+    if dados is None:
+        st.caption("sem cache")
+        return
+
+    n = int((dados[0] > conf).sum())
+    col_marcada, col_crua = st.columns(2)
+    with col_marcada:
+        st.markdown(f"**{rotulo}** · {n} marcações", help=dica)
+        _, vis = sam_cache.filtrar(dados[0], dados[1], conf)
+        preview(vagas[papel], [(vis, cor(sonda))])
+    with col_crua:
+        st.markdown("**sem marcação** · pra comparar")
+        preview(vagas[papel], [])
+
+
 def aba_limiar(rocha: str) -> None:
     conjunto = sondas_do_conjunto(rocha)
     if not conjunto:
@@ -741,8 +770,9 @@ def aba_limiar(rocha: str) -> None:
 
     modo = st.radio("modo", ["uma sonda", "conjunto completo"], horizontal=True,
                     key="rd_modo", label_visibility="collapsed")
-    largo = st.checkbox("ampliar (2 colunas)", key="ck_largo")
-    ncols = 2 if largo else 4
+    layout = st.radio("layout", ["4 colunas", "2 colunas", "comparar"], horizontal=True,
+                      key="rd_layout", label_visibility="collapsed")
+    ncols = 2 if layout == "2 colunas" else 4
 
     if modo == "conjunto completo":
         _painel_conjunto(rocha, conjunto, vagas, ncols)
@@ -773,6 +803,10 @@ def aba_limiar(rocha: str) -> None:
                         format=FORMATO, key=ni,
                         on_change=_sync(ni, sl, rocha, sonda))
     conf = limiar(rocha, sonda)
+
+    if layout == "comparar":
+        _painel_comparar(rocha, sonda, conf, vagas)
+        return
 
     # ── Os quatro previews simultâneos (D18) ──────────────────────────────────
     cols = st.columns(ncols)
