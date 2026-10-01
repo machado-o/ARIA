@@ -51,26 +51,27 @@ Cada fato mora em **um** lugar só (DRY). Antes de escrever ou codar, consultar 
 ## Setup
 
 ```bash
-cd AI/SAM
+cd AI
 python -m venv .venv
 .venv\Scripts\pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
 .venv\Scripts\pip install ultralytics openai-clip opencv-python streamlit altair pandas
 ```
 
-> O `.venv` vive em **`AI/SAM/.venv`**, ao lado dos scripts. O índice CUDA (`cuXXX`) depende do
+> O `.venv` vive em **`AI/.venv`**, um nível acima de `AI/SAM/`. Rodando os scripts a partir de
+> `AI/SAM/`, o interpretador é `..\.venv\Scripts\python.exe`. O índice CUDA (`cuXXX`) depende do
 > driver — a instalação de hoje é `torch 2.11.0+cu128` num driver 596.49 (RTX 5060 Ti); confira
 > com `nvidia-smi` se mudar de máquina. Versão do ultralytics em uso: **8.4.61**.
 
 ## Comandos
 
-Todos rodam a partir de `AI/SAM/`, com o Python do venv local.
+Todos rodam a partir de `AI/SAM/`, com o Python do venv em `AI/.venv` (`..\.venv\Scripts\`).
 
 ```bash
-python rock_viewer.py                 # seleção de imagem: próxima litologia pendente
-python rock_viewer.py <rock_name>     # litologia específica
-.venv\Scripts\python.exe -m streamlit run calibrator.py   # calibrador (sondas + limiar)
-python inference.py                   # inferência SAM: lê selectRocks/, grava em results/
-python verificar_d18.py               # prova que a varredura offline é exata (D18)
+..\.venv\Scripts\python.exe rock_viewer.py                 # seleção de imagem: próxima litologia pendente
+..\.venv\Scripts\python.exe rock_viewer.py <rock_name>     # litologia específica
+..\.venv\Scripts\python.exe -m streamlit run calibrator.py # calibrador (sondas + limiar)
+..\.venv\Scripts\python.exe inference.py                   # inferência SAM: lê selectRocks/, grava em results/
+..\.venv\Scripts\python.exe verificar_d18.py                # prova que a varredura offline é exata (D18)
 ```
 
 ## Fluxo de dados
