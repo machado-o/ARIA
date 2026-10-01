@@ -136,10 +136,9 @@
     "Dark patches": 0.1
   },
   "siena_white": {
-    "crack": 0.1,
-    "vein": 0.007,
-    "Stain": 0.3,
-    "Dark patches": 0.08
+    "vein": 0.3351,
+    "Stain": 0.4142,
+    "Dark patches": 0.3966
   },
   "vitoria_white": {
     "crack": 0.1,
