@@ -1,0 +1,27 @@
+{
+  "rock": "ubatuba_green",
+  "slots": {
+    "descoberta": {
+      "arquivo": "descoberta.JPG",
+      "origem": "train/1064.JPG",
+      "selecionado_em": "2026-10-03T12:07:58"
+    },
+    "limiar_sutil": {
+      "arquivo": "limiar_sutil.JPG",
+      "origem": "train/1054.JPG",
+      "selecionado_em": "2026-10-03T12:08:36"
+    },
+    "limiar_tipica": {
+      "arquivo": "limiar_tipica.JPG",
+      "origem": "train/2031.JPG",
+      "selecionado_em": "2026-10-03T15:45:48"
+    },
+    "limiar_forte": {
+      "arquivo": "limiar_forte.JPG",
+      "origem": "train/1527.JPG",
+      "selecionado_em": "2026-10-03T12:10:39"
+    }
+  },
+  "faixa": "A",
+  "total_imagens_litologia": 2965
+}

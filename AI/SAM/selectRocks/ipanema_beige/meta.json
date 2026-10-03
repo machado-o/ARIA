@@ -1,0 +1,27 @@
+{
+  "rock": "ipanema_beige",
+  "slots": {
+    "descoberta": {
+      "arquivo": "descoberta.JPG",
+      "origem": "train/1996.JPG",
+      "selecionado_em": "2026-10-03T12:30:55"
+    },
+    "limiar_sutil": {
+      "arquivo": "limiar_sutil.JPG",
+      "origem": "train/1245.JPG",
+      "selecionado_em": "2026-10-03T12:32:11"
+    },
+    "limiar_tipica": {
+      "arquivo": "limiar_tipica.JPG",
+      "origem": "train/1200.JPG",
+      "selecionado_em": "2026-10-03T12:32:25"
+    },
+    "limiar_forte": {
+      "arquivo": "limiar_forte.JPG",
+      "origem": "train/109.JPG",
+      "selecionado_em": "2026-10-03T12:32:35"
+    }
+  },
+  "faixa": "A",
+  "total_imagens_litologia": 2894
+}

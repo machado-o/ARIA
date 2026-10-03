@@ -39,8 +39,19 @@
   **D17** prevê (*"onde a curva engana"*) — e a direção bate com o "na dúvida, cortar mais
   apertado".
 - [ ] **➡️ PRÓXIMA AÇÃO — selecionar as 4 imagens das outras litologias da faixa A** (**D17**).
-  Estado: **8 de 180 vagas** — `siena_white` 4/4, `nevada_black` 4/4 (02/10, a calibrar);
-  `ubatuba_green` é a próxima; faltam **36 vagas** na faixa A. `rock_viewer.py` conduz na ordem certa.
+  Estado: **16 de 180 vagas** — `siena_white` 4/4, `nevada_black` 4/4 (02/10), `ubatuba_green`
+  4/4 e `ipanema_beige` 4/4 (03/10), as três últimas a calibrar; faltam **28 vagas** na faixa A.
+  **`shadow_white` foi pulada em 03/10**: é difícil julgar o que é defeito nela, e o Henrique vai
+  pedir ajuda na faculdade. Enquanto isso, a seleção segue em `itaunas_white` — o `rock_viewer.py`
+  sem argumento para sempre na `shadow_white`, então chamar pelo nome
+  (`rock_viewer.py itaunas_white`).
+- [x] ~~**Rever a vaga típica de `nevada_black`, `ubatuba_green` e `ipanema_beige`**~~ — revista
+  em 2026-10-03. A típica tinha sido escolhida, em algumas, como "chapa com defeito em quantidade
+  média"; a regra é a chapa **mais comum** da rocha, limpa se a rocha costuma ser limpa. É ela
+  que impede o limiar de descer demais, porque mostra se ele marca matriz limpa. Revisão: só a
+  `ubatuba_green` mudou (`train/175` → `train/2031`); nas outras duas a maioria das chapas tem
+  mesmo algum defeito, e a escolha já seguia a regra. Para refazer uma vaga: apagar o arquivo
+  dela e rodar `rock_viewer.py <rocha>`, que reabre só a vaga vazia.
 - [x] ~~**Terminar o `calibrator.py`**~~ — feito em 2026-09-26: 3 abas (descoberta / limiar /
   fechar), um slider com as 4 previews simultâneas sobre o cache do `sam_cache.py`, curva de
   limiar com o joelho marcado como sugestão, e critério de texto obrigatório para salvar.

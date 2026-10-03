@@ -20,7 +20,7 @@ em [`decisoes.md`](decisoes.md).
 | `sam_cache.py` — varredura offline de limiar | ✅ núcleo pronto (D18) |
 | `verificar_d18.py` — prova empírica da D18 | ✅ **novo**: 32 comparações, nenhuma divergência |
 | `rock_prompts.json` | 🟡 **provisório** (**D15**) — 46 entradas, mas só 13 configurações distintas |
-| `selectRocks/` | 🟡 **8 de 180 vagas** — `siena_white` 4/4, `nevada_black` 4/4; restam 36 na faixa A |
+| `selectRocks/` | 🟡 **16 de 180 vagas** — `siena_white`, `nevada_black`, `ubatuba_green`, `ipanema_beige` 4/4; restam 28 na faixa A (`shadow_white` pulada por ora) |
 | Litologias com `calibracao.json` | 🟡 **1 de 45** — `siena_white` (01/10/2026) |
 | Inferência em lote sobre o dataset | ❌ **não existe** |
 | Conjunto-ouro anotado | ❌ não existe |
@@ -61,10 +61,12 @@ resolver na Fase 3.
 Ver **D15** e **D17**. O `selectRocks/` foi **zerado em 2026-08-23**: as 14 imagens antigas foram
 apagadas e a seleção recomeça com o protocolo de 4 vagas.
 
-**Estado: 8 de 180 vagas; 1 de 45 litologias calibrada.** A faixa A são as 11 primeiras —
-**44 vagas**, das quais 8 feitas (`siena_white`, em 08/09/2026, calibrada em 01/10/2026;
-`nevada_black`, em 02/10/2026, a calibrar) e **36 pendentes**. Ordem de trabalho da faixa A:
-`siena_white` ✅, `nevada_black` ✅ (seleção), `ubatuba_green`, `ipanema_beige`, `shadow_white`, `itaunas_white`,
+**Estado: 16 de 180 vagas; 1 de 45 litologias calibrada.** A faixa A são as 11 primeiras —
+**44 vagas**, das quais 16 feitas (`siena_white`, em 08/09/2026, calibrada em 01/10/2026;
+`nevada_black`, em 02/10/2026; `ubatuba_green` e `ipanema_beige`, em 03/10/2026; as três a
+calibrar) e **28 pendentes**. A `shadow_white` foi pulada em 03/10 (difícil julgar o que é
+defeito; ajuda pedida na faculdade). Ordem de trabalho da faixa A:
+`siena_white` ✅, `nevada_black` ✅ (seleção), `ubatuba_green` ✅ (seleção), `ipanema_beige` ✅ (seleção), `shadow_white` ⏸️, `itaunas_white`,
 `santa_cecilia`, `san_francisco_green`, `white_mirage`, `golden_storm`, `white_olympus`.
 
 ```bash
