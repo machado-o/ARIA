@@ -54,13 +54,16 @@ Cada fato mora em **um** lugar só (DRY). Antes de escrever ou codar, consultar 
 cd AI
 python -m venv .venv
 .venv\Scripts\pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
-.venv\Scripts\pip install ultralytics openai-clip opencv-python streamlit altair pandas
+.venv\Scripts\pip install ultralytics openai-clip opencv-python streamlit altair pandas timm
 ```
 
 > O `.venv` vive em **`AI/.venv`**, um nível acima de `AI/SAM/`. Rodando os scripts a partir de
 > `AI/SAM/`, o interpretador é `..\.venv\Scripts\python.exe`. O índice CUDA (`cuXXX`) depende do
 > driver — a instalação de hoje é `torch 2.11.0+cu128` num driver 596.49 (RTX 5060 Ti); confira
 > com `nvidia-smi` se mudar de máquina. Versão do ultralytics em uso: **8.4.61**.
+>
+> ⚠️ **Neste PC o venv ainda está no lugar antigo, `AI/SAM/.venv`** (de lá, `.venv\Scripts\`).
+> Decidido em 02/10/2026 recriá-lo do zero em `AI/.venv` — mover quebra os `.exe` de `Scripts/`.
 
 ## Comandos
 
@@ -73,6 +76,18 @@ Todos rodam a partir de `AI/SAM/`, com o Python do venv em `AI/.venv` (`..\.venv
 ..\.venv\Scripts\python.exe inference.py                   # inferência SAM: lê selectRocks/, grava em results/
 ..\.venv\Scripts\python.exe verificar_d18.py                # prova que a varredura offline é exata (D18)
 ```
+
+Classificador de litologia (**D19**), a partir de `AI/Xception/`:
+
+```bash
+..\.venv\Scripts\python.exe train.py                  # treino → ../models/xception_480.pt + runs/xception_480/
+..\.venv\Scripts\python.exe evaluate.py --split val   # à vontade
+..\.venv\Scripts\python.exe evaluate.py               # test/, UMA vez — o script recusa repetir
+..\.venv\Scripts\python.exe roteador.py chapa.jpg     # litologia + confiança + top-3
+```
+
+> `runs/` (config, histórico, métricas em JSON) vai para o git; o `.pt` não. Para teste de
+> fumaça, `--limite N` e `--dir-runs/--dir-modelos` apontando para fora do repo.
 
 ## Fluxo de dados
 
@@ -127,7 +142,14 @@ results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
 - **`rock_prompts.json` é PROVISÓRIO** (**D15**) — não tratar como calibração feita. Calibração
   feita é a que tem **`calibracao.json`** ao lado das vagas (limiar + critério escrito); é isso
   que o calibrador usa para dizer "calibrada". Estado: **4 de 180 vagas** — `siena_white` 4/4
-  (08/09/2026), restam 40 vagas na faixa A. Nenhuma litologia calibrada ainda.
+  (08/09/2026), restam 40 vagas na faixa A. **1 de 45 litologias calibrada** — `siena_white`
+  (01/10/2026).
+- **Mais de uma máquina.** O Henrique alterna entre este PC e outro. O que precisa existir nos
+  dois vai para o **git**; `_cache/`, `results/`, o `.venv` e o `sam3.pt` não vão, e cada máquina
+  tem os seus. **A versão do ultralytics pode diferir entre elas** — cada `calibracao.json` grava
+  a versão usada (a `siena_white` foi calibrada na **8.4.52**; este PC tem a 8.4.61). A
+  equivalência da **D18** é verificada por versão: ao calibrar numa versão nova, rodar
+  `verificar_d18.py` nela antes.
 - **`cv2.imread` não abre caminho com acento no Windows** — e o caminho deste projeto tem cedilha
   (`…Software de Segmentação de Rochas…`). A armadilha é que **importar o ultralytics
   monkey-patcha `cv2.imread`** por uma versão que aceita Unicode: quem importa ultralytics antes

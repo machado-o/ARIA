@@ -6,7 +6,7 @@
 > Consolida o que antes estava espalhado em `auditoria.md`, `revisao-artigo.md` e
 > `artigo-sbc.md` (os três foram removidos em 2026-08-23).
 >
-> Última atualização: 2026-09-26
+> Última atualização: 2026-10-02
 
 ---
 
@@ -16,7 +16,8 @@
   **15/10/2026** como estimativa ("deve ser até dia 15"), e o plano passou a usar essa data. Ela
   **não veio do orientador** — enquanto não for confirmada, todo o cronograma está apoiado numa
   suposição. É a pendência mais barata de resolver e a que mais muda o plano: uma mensagem.
-- [ ] **Confirmar se o DeepStoneAI usou este mesmo dataset.** Se sim, vira citação obrigatória.
+- [x] ~~**Confirmar se o DeepStoneAI usou este mesmo dataset.**~~ — sim, confirmado em
+  2026-10-02 pelo artigo do SBAI (**D9**). Citação obrigatória.
 - [ ] **Contato do especialista do setor** para a preferência pareada cega (D7). Precisa de ~30
   minutos dele, não mais.
 - [ ] **Versão final submetida ao Latinoware** — o `main.tex` do repo diverge do que foi enviado
@@ -28,19 +29,23 @@
 
 > ✅ Os três bugs de desbloqueio (**Fase 0**) foram corrigidos e verificados em 2026-08-23.
 
-- [ ] **➡️ PRÓXIMA AÇÃO — calibrar `siena_white` no calibrador.** As 4 vagas estão selecionadas
-  e o cache das 6 sondas já está capturado; é só abrir e decidir. É o gargalo de tudo o que vem
-  depois: sem uma litologia calibrada de verdade não dá para fechar a regra de limiar, e sem a
-  regra não dá para calibrar as outras 44.
-  `cd AI/SAM && .venv\Scripts\python.exe -m streamlit run calibrator.py`
-- [ ] **Selecionar as 4 imagens das outras litologias da faixa A** (**D17**). Estado: **4 de 180
-  vagas** — `siena_white` 4/4, faltam **40 vagas** na faixa A. `python rock_viewer.py` conduz na
-  ordem certa.
+- [x] ~~**Calibrar `siena_white` no calibrador**~~ — feito em 2026-10-01 (`calibracao.json`).
+  Primeira litologia calibrada de fato: **1 de 45**. Entraram 3 sondas — `vein`, `Stain` e
+  `Dark patches`.
+- [ ] **Observar: o autor divergiu da regra nas 3 sondas da `siena_white`**, e sempre para cima
+  (limiar de trabalho ≈ 2× o joelho: `vein` 0,145 → 0,335; `Stain` 0,203 → 0,414;
+  `Dark patches` 0,235 → 0,397). Critério escrito: subir até a vaga típica parar de marcar matriz
+  limpa. Uma litologia não é padrão, mas se a divergência se repetir na faixa A é o achado que a
+  **D17** prevê (*"onde a curva engana"*) — e a direção bate com o "na dúvida, cortar mais
+  apertado".
+- [ ] **➡️ PRÓXIMA AÇÃO — selecionar as 4 imagens das outras litologias da faixa A** (**D17**).
+  Estado: **4 de 180 vagas** — `siena_white` 4/4, `nevada_black` é a próxima; faltam **40 vagas**
+  na faixa A. `rock_viewer.py` conduz na ordem certa.
 - [x] ~~**Terminar o `calibrator.py`**~~ — feito em 2026-09-26: 3 abas (descoberta / limiar /
   fechar), um slider com as 4 previews simultâneas sobre o cache do `sam_cache.py`, curva de
   limiar com o joelho marcado como sugestão, e critério de texto obrigatório para salvar.
-- [ ] **Fechar a regra de limiar** (TODO da **D17**): escolher entre (a) baseada em anotação e
-  (b) joelho validado pelo ouro, e fixar o parâmetro. Depende da `siena_white` calibrada.
+- [x] ~~**Fechar a regra de limiar**~~ — fechada em 2026-09-26 na **D17**: opção (b), joelho da
+  curva em escala log, sem parâmetro livre.
 - [ ] **Decidir o que fazer com a ponte entre contornos do `masks.xyn`** — medição e opções em
   `roadmap.md` → Fase 3.0. Decisão metodológica, não de código.
 
@@ -70,6 +75,15 @@
   (**D9**); mAP explicado como AP por causa da classe única (**D2**).
 
 ### 🟡 Monografia — em aberto
+
+- [ ] **Citar e posicionar o TCC do Pedro Lucas Brito Moreira** (IFES, 2025, *Redes Neurais
+  Convolucionais para Segmentação e Classificação de Rochas Ornamentais*, **mesmo orientador**).
+  É o trabalho mais próximo do ARIA: mesmo dataset, Xception (99,21%) + YOLO de segmentação de
+  defeitos com **anotação manual** e 4 classes semânticas, métricas modestas por ruído de
+  anotação. O ARIA responde exatamente a esse ponto — Professor (SAM3) no lugar da anotação
+  manual, critério parametrizado (**D3**), rótulo binário (**D2**). Material em
+  `Projects/ARIA - Análise e Reconhecimento Inteligente de Anomalias/DeepStoneAI/`; entrada do
+  `.bib` ainda não criada. Também citar o artigo do SBAI 2025 (**D9**).
 
 - [ ] **`\cite{TODO-sam3}`** em `ref_teorico.tex`: falta a referência do **SAM3**. É a única
   citação sem entrada no `.bib`.

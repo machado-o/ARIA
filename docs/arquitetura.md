@@ -40,8 +40,10 @@ fundação é pago uma vez, não por chapa.
 
 - **Tarefa:** identificar a litologia entre as 45 classes e **rotear** — escolhe tanto a
   configuração de sondas quanto o Aluno especialista correspondente.
-- **Estado:** modelo já treinado e testado neste mesmo dataset, com bom resultado. Falta o
-  **código de roteamento** que o conecta ao Estágio 2 (`roadmap.md` → Fase 3).
+- **Estado:** o original (DeepStoneAI) não tem pesos salvos; o classificador será **reproduzido**
+  em PyTorch + `timm`, 480 × 480, no split oficial (**D19**). Código pronto em `AI/Xception/`
+  (treino, avaliação, `roteador.py` com litologia + confiança + top-3); falta treinar e ligar o
+  roteador ao Estágio 2 (`roadmap.md` → Fase 4).
 - **Substituição possível:** EfficientNetV2, ConvNeXt — só se sobrar tempo.
 
 ---

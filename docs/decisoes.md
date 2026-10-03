@@ -6,7 +6,7 @@
 > ⚠️ **A numeração foi refeita em 2026-08-23.** Referências a "D1…D10" em textos antigos
 > (dentro de `apresentações/`) apontam para a numeração velha e **não valem**.
 >
-> Última atualização: 2026-09-26
+> Última atualização: 2026-10-02
 
 ---
 
@@ -254,7 +254,11 @@ pré-processar um banco de imagens industriais"* é **factualmente falso** e pre
 **Benefício:** dataset público resolve de graça o statement de reprodutibilidade e elimina
 qualquer necessidade de citar empresa ou parceiro.
 
-- [ ] **TODO:** confirmar se o DeepStoneAI usou este mesmo conjunto (se sim, vira citação obrigatória).
+- [x] ~~TODO: confirmar se o DeepStoneAI usou este mesmo conjunto~~ — **confirmado em
+  2026-10-02.** O artigo do SBAI 2025 descreve as mesmas 34.630 imagens em 45 classes e cita este
+  dataset (`chapas_polidas_rochas_2023`, Araujo, Kaggle). **Citar o DeepStoneAI é obrigatório.**
+  Ressalva: o DeepStoneAI fundiu `train/test/valid` e fez um split próprio, então o número dele
+  (Xception 99,21%) não é comparável ao teste do ARIA — ver `roadmap.md` → Fase 4.
 
 ---
 
@@ -468,6 +472,45 @@ dois casos é melhor que "escolhi no olho".
 - [x] ~~TODO: escolher entre (a) e (b)~~ — resolvido em 2026-09-26. O parâmetro que a antiga
   redação chamava de "X" **deixou de existir**: o joelho não tem parâmetro livre, o que elimina o
   problema de "congelar o X" depois da primeira litologia.
+
+---
+
+## D19 — Classificador: reproduzir o Xception do DeepStoneAI
+
+**Decisão (2026-10-02):** o Estágio 1 é uma **reprodução** do Xception do DeepStoneAI (SBAI
+2025; TCC de Pedro Lucas Brito Moreira, 2025), porque o material original não traz pesos
+salvos — só a receita, em notebooks Keras.
+
+**Mantido da receita original:** Xception com pesos do ImageNet (`timm`
+`legacy_xception.tf_in1k`, o mesmo modelo do Keras); 15 épocas com a base congelada (lr 1e-4) e
+fine-tuning das últimas 50 camadas (lr 1e-5); augmentation de flip, rotação, zoom e contraste;
+sem pesos por classe.
+
+**Mudado, e declarado no texto:**
+
+| | DeepStoneAI | ARIA |
+|---|---|---|
+| Framework | Keras / TensorFlow | PyTorch + `timm` (TensorFlow não usa GPU no Windows nas versões recentes) |
+| Split | `train/test/valid` fundidos e re-sorteados; `take/skip` sobre dataset embaralhado deixa validação e teste se sobreporem | **split oficial** `train/val/test` (70/15/15) — o mesmo da **D17**; o roteador nunca vê o `test/` do conjunto-ouro (**D7**) |
+| Resolução | carrega em 480, amplia para 1080 | **480 × 480, sem ampliar** |
+| Normalização | só divide por 255 → entrada em [0, 1] | **[-1, 1]**, a escala que os pesos do Xception esperam (`preprocess_input` do Keras) — o original alimentava os pesos do ImageNet fora da escala deles |
+
+**Fidelidade verificada no código (`AI/Xception/common.py`, 2026-10-02):**
+
+- as "últimas 50 camadas" do Keras foram mapeadas para os módulos do timm e conferidas por
+  contagem: **12.168.304** parâmetros treináveis na base, igual à conta feita sobre o Keras;
+- o BN fica em modo de inferência nas duas fases, como o `training=False` do notebook;
+- a cabeça (Dropout 0,5 + Dense) é montada à mão: o `legacy_xception` do timm 1.0.27 calcula o
+  dropout e **descarta o resultado** — com o `drop_rate` dele, o Dropout não existiria;
+- callbacks do Keras reimplementados com a semântica do Keras (o `ReduceLROnPlateau` do
+  PyTorch conta a paciência com um a mais).
+
+**Regra de recuo:** se a acurácia em 480 ficar claramente abaixo dos 99,21% do original, testar
+com ampliação — e reportar as duas. O 99,21% **não é diretamente comparável** (split diferente);
+é referência, não meta.
+
+**Avaliação:** no `test/`, uma única vez, ao final: acurácia, acurácia por classe, F1 macro e
+matriz de confusão. Pesos em `AI/models/` (fora do git); métricas em JSON no git.
 
 ---
 

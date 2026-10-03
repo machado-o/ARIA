@@ -3,7 +3,7 @@
 Estado vivo do desenvolvimento e ordem de execução. As decisões que justificam esta ordem estão
 em [`decisoes.md`](decisoes.md).
 
-> Última atualização: 2026-09-26
+> Última atualização: 2026-10-02
 > Prazo-alvo de trabalho: **15/10/2026** — estimativa dada pelo Henrique em 26/09/2026
 > ("deve ser até dia 15"). **Ainda não confirmada com o Rafael** — ver `pendencias.md`.
 > São ~19 dias: o cronograma abaixo assume que só o **Experimento 1** (Fase 2) roda.
@@ -21,12 +21,12 @@ em [`decisoes.md`](decisoes.md).
 | `verificar_d18.py` — prova empírica da D18 | ✅ **novo**: 32 comparações, nenhuma divergência |
 | `rock_prompts.json` | 🟡 **provisório** (**D15**) — 46 entradas, mas só 13 configurações distintas |
 | `selectRocks/` | 🟡 **4 de 180 vagas** — `siena_white` 4/4; restam 40 na faixa A |
-| Litologias com `calibracao.json` | 🔴 **0 de 45** — `siena_white` é a próxima, e está pronta |
+| Litologias com `calibracao.json` | 🟡 **1 de 45** — `siena_white` (01/10/2026) |
 | Inferência em lote sobre o dataset | ❌ **não existe** |
 | Conjunto-ouro anotado | ❌ não existe |
 | Avaliação (IoU / mAP / falso positivo) | ❌ não existe |
 | Treino e avaliação YOLO | ❌ não existe (`AI/YOLO/` está vazio) |
-| Integração Xception | 🟡 modelo já testado neste dataset com bom resultado; falta o código de roteamento |
+| Integração Xception | 🔴 **sem pesos** — o material do DeepStoneAI (02/10) tem a receita (`Xception.ipynb`, Keras) mas nenhum modelo salvo. Plano: **reproduzir** em PyTorch (**D19**) — ver Fase 4 |
 | **Monografia** (`Overleaf/TCC/`) | 🟡 **reestruturada em 26/09**: bibliografia (37 entradas), esqueleto, Introdução, Fundamentação, Metodologia e Conclusão escritas; Resultados só com o que já foi medido |
 | Artigo de PD1 e LatinoWare2026 | 🔴 intocados — continuam desalinhados (**D13**) |
 
@@ -61,8 +61,9 @@ resolver na Fase 3.
 Ver **D15** e **D17**. O `selectRocks/` foi **zerado em 2026-08-23**: as 14 imagens antigas foram
 apagadas e a seleção recomeça com o protocolo de 4 vagas.
 
-**Estado: 4 de 180 vagas.** A faixa A são as 11 primeiras — **44 vagas**, das quais 4 feitas
-(`siena_white`, em 08/09/2026) e **40 pendentes**. Ordem de trabalho da faixa A: `siena_white` ✅,
+**Estado: 4 de 180 vagas; 1 de 45 litologias calibrada.** A faixa A são as 11 primeiras —
+**44 vagas**, das quais 4 feitas (`siena_white`, em 08/09/2026, calibrada em 01/10/2026) e **40
+pendentes**. Ordem de trabalho da faixa A: `siena_white` ✅,
 `nevada_black`, `ubatuba_green`, `ipanema_beige`, `shadow_white`, `itaunas_white`,
 `santa_cecilia`, `san_francisco_green`, `white_mirage`, `golden_storm`, `white_olympus`.
 
@@ -75,20 +76,21 @@ python rock_viewer.py --all    # mostra val/ e test/ para estudo (não selecion�
 A ferramenta conduz vaga por vaga, dizendo o que procurar em cada uma. Ela só oferece imagens do
 `train/` e recusa qualquer outra (**D17**).
 
-O `calibrator.py` **está pronto** (2026-09-26) e o cache de `siena_white` já está capturado
-(24 pares, 4 vagas × 6 sondas). Ele tem três abas:
+O `calibrator.py` **está pronto** (2026-09-26) e já calibrou a primeira litologia. Ele tem três
+abas:
 
 1. **Descoberta** — na chapa mais rica, quais sondas respondem a algo real;
 2. **Limiar** — um slider e as 4 previews simultâneas, mais a curva *limiar × marcações* das
    três vagas de limiar, com o joelho marcado como **sugestão**;
 3. **Fechar** — a contagem por vaga, o **critério escrito** (obrigatório) e o salvamento.
 
-> **A próxima ação do Henrique é calibrar `siena_white` nessa interface.** É o gargalo de tudo:
-> ela é a primeira litologia calibrada de verdade e é dela que sai a resposta do TODO abaixo.
+> **A próxima ação do Henrique é selecionar as vagas do resto da faixa A** (`nevada_black` é a
+> próxima) e calibrar cada litologia ao fechar as 4 vagas dela.
 
-> ⚠️ **Ainda em aberto (TODO da D17):** a forma da regra — (a) baseada em anotação × (b) joelho
-> validado pelo ouro — e o parâmetro dela. Só dá para fixar **depois** da primeira litologia
-> calibrada, e é por isso que o calibrador mostra o joelho mas nunca o aplica sozinho.
+> **Primeira observação (`siena_white`, 01/10/2026):** o autor divergiu da regra nas 3 sondas
+> admitidas (`vein`, `Stain`, `Dark patches`), sempre para cima — limiar de trabalho ≈ 2× o joelho.
+> Uma litologia não é padrão; se repetir na faixa A, é o resultado previsto na **D17**
+> (*"onde a curva engana"*). A forma da regra já está fechada na D17 (joelho, sem parâmetro livre).
 
 ---
 
@@ -156,9 +158,18 @@ H2 e que nenhum trabalho do referencial responde.
 
 ## Fase 4 — Integração e fechamento
 
-1. **Xception como roteador.** O modelo já foi testado neste dataset com bom resultado; falta o
-   código que recebe a imagem, identifica a litologia e seleciona a configuração de sondas +
-   o Aluno correspondente.
+1. **Xception como roteador — reprodução do DeepStoneAI (D19).** Não depende de calibração nem
+   do SAM, então pode correr em paralelo às Fases 1–3. Ordem:
+   1. ✅ **estruturar** `AI/Xception/` (02/10) — `common.py`, `train.py`, `evaluate.py`,
+      `roteador.py`. Teste de fumaça passou (1.024 imagens, 2 + 2 épocas, de 39% para 60% de
+      acurácia na validação); a avaliação recusa reavaliar o `test/`;
+   2. ⏳ **treinar** em 480 × 480 — combinado para depois de 02/10, com a GPU livre (o
+      calibrador também usa GPU; selecionar imagens não). Medido: ~186 imagens/s → ~2,6 min por
+      época, **≤ ~1h10** no pior caso (25 épocas sem parada antecipada);
+   3. **avaliar** no `test/` uma vez; se ficar claramente abaixo do original, testar com
+      ampliação (regra de recuo da D19);
+   4. o **roteador**: recebe a imagem, identifica a litologia e seleciona a configuração de
+      sondas + o Aluno correspondente.
 2. **Teste end-to-end** dos três estágios.
 3. **FPS** — medir de fato, ou reduzir o discurso de tempo real no texto. Hoje o material escrito
    vende velocidade em várias seções e nunca mede.
