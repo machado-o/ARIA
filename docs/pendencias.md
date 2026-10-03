@@ -84,6 +84,13 @@
   manual, critério parametrizado (**D3**), rótulo binário (**D2**). Material em
   `Projects/ARIA - Análise e Reconhecimento Inteligente de Anomalias/DeepStoneAI/`; entrada do
   `.bib` ainda não criada. Também citar o artigo do SBAI 2025 (**D9**).
+  - **Números para a motivação (D3)** — vêm do **FracStoneAI** (a etapa YOLO desse trabalho,
+    com artigo na LatinoWare 2026; repo em `…/FracStoneAI-main/`): YOLO11-seg sobre anotação
+    manual de 4 classes em **1.088 imagens deste mesmo dataset** (conferido por hash) deu
+    **mask mAP50-95 de 0,04 a 0,21**; os próprios autores apontam ruído de rótulo e defeitos
+    omitidos na anotação. É o problema que o ARIA ataca, medido por um trabalho vizinho —
+    usar na introdução para responder de antemão *"por que não anotar à mão e treinar o
+    YOLO?"*. Fonte dos números: `docs/NEXT-STEPS.md` e `docs/Latinoware2026/Artigo/` do repo.
 
 - [ ] **`\cite{TODO-sam3}`** em `ref_teorico.tex`: falta a referência do **SAM3**. É a única
   citação sem entrada no `.bib`.
