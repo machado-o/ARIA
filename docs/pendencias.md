@@ -39,8 +39,8 @@
   **D17** prevê (*"onde a curva engana"*) — e a direção bate com o "na dúvida, cortar mais
   apertado".
 - [ ] **➡️ PRÓXIMA AÇÃO — selecionar as 4 imagens das outras litologias da faixa A** (**D17**).
-  Estado: **4 de 180 vagas** — `siena_white` 4/4, `nevada_black` é a próxima; faltam **40 vagas**
-  na faixa A. `rock_viewer.py` conduz na ordem certa.
+  Estado: **8 de 180 vagas** — `siena_white` 4/4, `nevada_black` 4/4 (02/10, a calibrar);
+  `ubatuba_green` é a próxima; faltam **36 vagas** na faixa A. `rock_viewer.py` conduz na ordem certa.
 - [x] ~~**Terminar o `calibrator.py`**~~ — feito em 2026-09-26: 3 abas (descoberta / limiar /
   fechar), um slider com as 4 previews simultâneas sobre o cache do `sam_cache.py`, curva de
   limiar com o joelho marcado como sugestão, e critério de texto obrigatório para salvar.

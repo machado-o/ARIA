@@ -1,0 +1,27 @@
+{
+  "rock": "nevada_black",
+  "slots": {
+    "descoberta": {
+      "arquivo": "descoberta.JPG",
+      "origem": "train/183.JPG",
+      "selecionado_em": "2026-10-02T22:10:39"
+    },
+    "limiar_sutil": {
+      "arquivo": "limiar_sutil.JPG",
+      "origem": "train/1380.JPG",
+      "selecionado_em": "2026-10-02T22:12:45"
+    },
+    "limiar_tipica": {
+      "arquivo": "limiar_tipica.JPG",
+      "origem": "train/1771.JPG",
+      "selecionado_em": "2026-10-02T22:14:58"
+    },
+    "limiar_forte": {
+      "arquivo": "limiar_forte.JPG",
+      "origem": "train/178.JPG",
+      "selecionado_em": "2026-10-02T22:17:37"
+    }
+  },
+  "faixa": "A",
+  "total_imagens_litologia": 3806
+}
