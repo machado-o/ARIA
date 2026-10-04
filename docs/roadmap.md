@@ -26,7 +26,7 @@ em [`decisoes.md`](decisoes.md).
 | Conjunto-ouro anotado | ❌ não existe |
 | Avaliação (IoU / mAP / falso positivo) | ❌ não existe |
 | Treino e avaliação YOLO | ❌ não existe (`AI/YOLO/` está vazio) |
-| Integração Xception | 🔴 **sem pesos** — o material do DeepStoneAI (02/10) tem a receita (`Xception.ipynb`, Keras) mas nenhum modelo salvo. Plano: **reproduzir** em PyTorch (**D19**) — ver Fase 4 |
+| Integração Xception | 🟡 **treinado** (03/10, D19): 96,72% no `test/` (98,71% no `val/`), abaixo dos 99,21% do original — erro concentrado em poucas classes, provável troca de lote no `test/`. Ver Fase 4 |
 | **Monografia** (`Overleaf/TCC/`) | 🟡 **reestruturada em 26/09**: bibliografia (37 entradas), esqueleto, Introdução, Fundamentação, Metodologia e Conclusão escritas; Resultados só com o que já foi medido |
 | Artigo de PD1 e LatinoWare2026 | 🔴 intocados — continuam desalinhados (**D13**) |
 
@@ -165,11 +165,17 @@ H2 e que nenhum trabalho do referencial responde.
    1. ✅ **estruturar** `AI/Xception/` (02/10) — `common.py`, `train.py`, `evaluate.py`,
       `roteador.py`. Teste de fumaça passou (1.024 imagens, 2 + 2 épocas, de 39% para 60% de
       acurácia na validação); a avaliação recusa reavaliar o `test/`;
-   2. ⏳ **treinar** em 480 × 480 — combinado para depois de 02/10, com a GPU livre (o
-      calibrador também usa GPU; selecionar imagens não). Medido: ~186 imagens/s → ~2,6 min por
-      época, **≤ ~1h10** no pior caso (25 épocas sem parada antecipada);
-   3. **avaliar** no `test/` uma vez; se ficar claramente abaixo do original, testar com
-      ampliação (regra de recuo da D19);
+   2. ✅ **treinar** em 480 × 480 (03/10) — 15 + 10 épocas, sem parada antecipada, ~1h10 no
+      venv novo (`AI/.venv`). Melhor checkpoint: fase finetune, época 7 (val_loss 0,034).
+      Histórico em `AI/Xception/runs/xception_480/`;
+   3. ✅ **avaliado no `test/`** (03/10, uma vez): **96,72%** de acurácia, 92,32% balanceada,
+      F1 macro 0,924. No `val/`: 98,71% / 97,71% / 0,976. Fica abaixo dos 99,21% do original, e
+      o `test/` já não pode ser reusado. **Achado, ainda não decidido:** os erros se concentram
+      em poucas classes (`white_superiore` 0/36, `white_himalaya` 0,28, `naica` 0,69), e as
+      chapas de `white_superiore` no `test/` parecem visualmente de **outro bloco/lote** que as
+      de `train/` e `val/`. Hipótese: o split do dataset separa o `test/` por lote mas mistura
+      chapas vizinhas entre `train/` e `val/`, o que deixa o val otimista. Ver
+      `docs/pendencias.md`;
    4. o **roteador**: recebe a imagem, identifica a litologia e seleciona a configuração de
       sondas + o Aluno correspondente.
 2. **Teste end-to-end** dos três estágios.

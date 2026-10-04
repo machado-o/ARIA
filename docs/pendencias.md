@@ -45,6 +45,16 @@
   pedir ajuda na faculdade. Enquanto isso, a seleção segue em `itaunas_white` — o `rock_viewer.py`
   sem argumento para sempre na `shadow_white`, então chamar pelo nome
   (`rock_viewer.py itaunas_white`).
+- [ ] **Decidir o que fazer com o resultado do Xception no `test/`** (**D19**, 03/10/2026).
+  96,72% contra 99,21% do DeepStoneAI. 169 erros, concentrados em poucos pares:
+  `naica → white_olympus` 33, `white_himalaya → white_liberdade` 31, `white_superiore →
+  kalahari` 21 e `→ white_olympus` 15. A `white_superiore` acertou 35/37 no `val/` e **0/36** no
+  `test/`. Olhando as imagens, as do `test/` são acinzentadas, com veios lineares e paralelos;
+  as do `train/` e `val/` são brancas, com veios ramificados. Parecem outro bloco. Se isso se
+  confirmar, a regra de recuo da D19 (ampliação) não ataca a causa. O problema é de split, não
+  de modelo. Antes de decidir: (a) conferir se o mesmo vale para `white_himalaya` e `naica`;
+  (b) ver como o DeepStoneAI dividiu os dados e onde mediu os 99,21%. O `test/` já foi usado e
+  não pode ser reavaliado.
 - [x] ~~**Rever a vaga típica de `nevada_black`, `ubatuba_green` e `ipanema_beige`**~~ — revista
   em 2026-10-03. A típica tinha sido escolhida, em algumas, como "chapa com defeito em quantidade
   média"; a regra é a chapa **mais comum** da rocha, limpa se a rocha costuma ser limpa. É ela
