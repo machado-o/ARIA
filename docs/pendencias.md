@@ -52,9 +52,22 @@
   `test/`. Olhando as imagens, as do `test/` são acinzentadas, com veios lineares e paralelos;
   as do `train/` e `val/` são brancas, com veios ramificados. Parecem outro bloco. Se isso se
   confirmar, a regra de recuo da D19 (ampliação) não ataca a causa. O problema é de split, não
-  de modelo. Antes de decidir: (a) conferir se o mesmo vale para `white_himalaya` e `naica`;
-  (b) ver como o DeepStoneAI dividiu os dados e onde mediu os 99,21%. O `test/` já foi usado e
-  não pode ser reavaliado.
+  de modelo. O `test/` já foi usado e não pode ser reavaliado.
+  **Como o DeepStoneAI dividiu (verificado em 04/10, `DeepStoneAI/OneDrive_2_02-10-2026/`):**
+  o `organize2.ipynb` **junta** `train/`, `valid/` e `test/` numa pasta por rocha; o
+  `Xception.ipynb` faz um split **aleatório por imagem** (`validation_split=0.3`, seed 123) e
+  corta a parte de validação ao meio, em val e test (15% cada; o artigo diz 25%). Como as
+  imagens em sequência são chapas vizinhas do mesmo bloco, com os mesmos veios (observação do
+  Henrique), os 99,21% foram medidos com vizinhas do treino dentro do teste. Provável agravante,
+  ainda não confirmado: `take`/`skip` sobre um dataset que reembaralha a cada passada faz val e
+  test se sobreporem. **Os dois números não medem a mesma coisa:** o `test/` do ARIA parece
+  separado por lote (chapa nova), o do DeepStoneAI não.
+  **Medido em 04/10** (`train.py --protocolo aleatorio`, run `xception_480_aleatorio`): mesmo
+  modelo e mesma receita, só trocando a divisão pelo sorteio por imagem do DeepStoneAI →
+  **99,92%** no teste (4 erros em 5.195; balanceada 99,91%). No `test/` original, 96,72%. A
+  diferença de ~3 pontos vem da divisão, não do modelo: o sorteio põe chapas vizinhas do treino
+  no teste. 70% do teste sorteado veio do `train/` original. **Falta decidir** como isso entra na
+  monografia, e a regra de split do Aluno (por sequência ou por sorteio), adiada pelo Henrique.
 - [x] ~~**Rever a vaga típica de `nevada_black`, `ubatuba_green` e `ipanema_beige`**~~ — revista
   em 2026-10-03. A típica tinha sido escolhida, em algumas, como "chapa com defeito em quantidade
   média"; a regra é a chapa **mais comum** da rocha, limpa se a rocha costuma ser limpa. É ela

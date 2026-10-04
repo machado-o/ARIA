@@ -109,6 +109,37 @@ def listar_amostras(split: str, classes: list[str],
     return amostras
 
 
+PROTOCOLOS = ("original", "aleatorio")
+FRACAO_TREINO_ALEATORIO = 0.7                   # notebook: validation_split=0.3
+
+
+def amostras_por_protocolo(protocolo: str, classes: list[str],
+                           dataset_dir: Path = DATASET_DIR
+                           ) -> dict[str, list[tuple[Path, int]]]:
+    """As amostras de train/val/test segundo o protocolo de divisão.
+
+    'original': os splits do jeito que vêm em AI/dataset/.
+
+    'aleatorio': o protocolo do DeepStoneAI, reproduzido para MEDIR o vazamento entre chapas
+    vizinhas (pendências, 04/10/2026). O organize2.ipynb junta train/valid/test numa pasta por
+    rocha, e o Xception.ipynb sorteia por imagem: 70% treino, e o resto cortado ao meio em val
+    e test. Sem estratificar, como o Keras. Aqui o sorteio é feito uma vez só, com a seed fixa,
+    sem o reembaralhamento que no notebook misturava val e test a cada passada. O dataset em
+    disco não é tocado.
+    """
+    if protocolo == "original":
+        return {s: listar_amostras(s, classes, dataset_dir) for s in SPLITS}
+    if protocolo != "aleatorio":
+        raise ValueError(f"protocolo desconhecido: {protocolo}")
+    todas = [a for s in SPLITS for a in listar_amostras(s, classes, dataset_dir)]
+    random.Random(SEED).shuffle(todas)
+    n_treino = round(len(todas) * FRACAO_TREINO_ALEATORIO)
+    n_val = (len(todas) - n_treino) // 2
+    return {"train": todas[:n_treino],
+            "val": todas[n_treino:n_treino + n_val],
+            "test": todas[n_treino + n_val:]}
+
+
 def abrir_imagem(caminho: Path, tamanho: int = TAMANHO) -> torch.Tensor:
     """Abre e redimensiona para tamanho × tamanho, sem preservar proporção.
 

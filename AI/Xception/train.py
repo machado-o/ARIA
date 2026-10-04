@@ -38,9 +38,9 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 
-from common import (DESVIO, MEDIA, MODELO_TIMM, MODELS_DIR, RUNS_DIR, SEED, TAMANHO,
-                    Rochas, contar_treinaveis, criar_modelo, definir_fase,
-                    dispositivo_padrao, duracao_para_texto, listar_amostras, listar_classes,
+from common import (DESVIO, MEDIA, MODELO_TIMM, MODELS_DIR, PROTOCOLOS, RUNS_DIR, SEED,
+                    TAMANHO, Rochas, amostras_por_protocolo, contar_treinaveis, criar_modelo,
+                    definir_fase, dispositivo_padrao, duracao_para_texto, listar_classes,
                     modo_treino, semear_worker)
 
 FASES = (
@@ -57,8 +57,12 @@ ADAM_EPS = 1e-7          # epsilon padrão do Adam no Keras (o do PyTorch é 1e-
 
 def argumentos() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    p.add_argument("--nome", default=f"xception_{TAMANHO}",
-                   help="nome do run: runs/<nome>/ e models/<nome>.pt")
+    p.add_argument("--nome", default=None,
+                   help="nome do run: runs/<nome>/ e models/<nome>.pt "
+                        "(padrão: xception_480, ou xception_480_aleatorio)")
+    p.add_argument("--protocolo", choices=PROTOCOLOS, default="original",
+                   help="divisão dos dados: 'original' (splits do dataset) ou 'aleatorio' "
+                        "(sorteio por imagem, como o DeepStoneAI — ver common.py)")
     p.add_argument("--fase1-epocas", type=int, default=FASES[0][2])
     p.add_argument("--fase2-epocas", type=int, default=FASES[1][2])
     p.add_argument("--lote", type=int, default=32)
@@ -137,9 +141,12 @@ def main() -> None:
     amp = dispositivo.type == "cuda" and not args.sem_amp
     torch.backends.cudnn.benchmark = True
 
+    if args.nome is None:
+        args.nome = f"xception_{TAMANHO}" + ("" if args.protocolo == "original"
+                                             else f"_{args.protocolo}")
     classes = listar_classes()
-    treino = listar_amostras("train", classes)
-    valid = listar_amostras("val", classes)
+    divisao = amostras_por_protocolo(args.protocolo, classes)
+    treino, valid = divisao["train"], divisao["val"]
     if args.limite:
         rng = random.Random(SEED)
         treino = rng.sample(treino, min(args.limite, len(treino)))
@@ -147,12 +154,13 @@ def main() -> None:
 
     dir_run = args.dir_runs / args.nome
     caminho_modelo = args.dir_modelos / f"{args.nome}.pt"
-    print(f"── {args.nome} · {len(classes)} classes · treino {len(treino)} · val {len(valid)}"
+    print(f"── {args.nome} · protocolo {args.protocolo} · {len(classes)} classes · "
+          f"treino {len(treino)} · val {len(valid)}"
           f" · {TAMANHO}×{TAMANHO} · lote {args.lote} · {dispositivo}"
           f"{' · bf16' if amp else ''} ──")
 
     config = {
-        "decisao": "D19",
+        "decisao": "D19", "protocolo": args.protocolo,
         "modelo_timm": MODELO_TIMM, "tamanho": TAMANHO, "media": MEDIA, "desvio": DESVIO,
         "lote": args.lote, "seed": SEED, "amp_bf16": amp, "limite": args.limite,
         "fases": [{"nome": n, "lr": lr, "epocas": e} for (n, lr, _), e in
@@ -197,7 +205,7 @@ def main() -> None:
             if salvou:
                 melhor_global = loss_va
                 salvar_checkpoint(caminho_modelo, modelo, classes, {
-                    "fase": fase, "epoca": epoca, "val_loss": loss_va, "val_acc": acc_va,
+                    "protocolo": args.protocolo, "fase": fase, "epoca": epoca, "val_loss": loss_va, "val_acc": acc_va,
                     "salvo_em": datetime.now().isoformat(timespec="seconds")})
 
             # EarlyStopping(restore_best_weights) — por fase

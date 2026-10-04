@@ -1,0 +1,100 @@
+{
+  "decisao": "D19",
+  "protocolo": "aleatorio",
+  "modelo_timm": "legacy_xception.tf_in1k",
+  "tamanho": 480,
+  "media": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "desvio": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "lote": 32,
+  "seed": 123,
+  "amp_bf16": true,
+  "limite": 0,
+  "fases": [
+    {
+      "nome": "congelada",
+      "lr": 0.0001,
+      "epocas": 15
+    },
+    {
+      "nome": "finetune",
+      "lr": 1e-05,
+      "epocas": 10
+    }
+  ],
+  "reduce_lr": {
+    "fator": 0.5,
+    "paciencia": 3,
+    "min_delta": 0.0001
+  },
+  "early_stopping": {
+    "paciencia": 5,
+    "restaura_melhor": true
+  },
+  "adam_eps": 1e-07,
+  "n_treino": 24241,
+  "n_val": 5194,
+  "classes": [
+    "giallo_fiorito",
+    "giallo_maracana",
+    "golden_storm",
+    "icarai_yellow",
+    "ice_leke",
+    "ipanema_beige",
+    "itaunas_white",
+    "kalahari",
+    "maracuja_yellow",
+    "naica",
+    "nevada_black",
+    "new_caledonia",
+    "olympios",
+    "ornamental",
+    "perla_venato",
+    "quartzito_green_da_vinci",
+    "quartzito_thannos",
+    "quartzito_venom",
+    "quartzito_verde_sauipe",
+    "rocky_mountain",
+    "san_francisco_green",
+    "santa_cecilia",
+    "santa_cecilia_light",
+    "sao_gabriel_black",
+    "shadow_white",
+    "siena_white",
+    "solarius",
+    "splendor_gold",
+    "tabaco_red",
+    "ubatuba_green",
+    "vitoria_white",
+    "white_bellukha",
+    "white_ceara",
+    "white_cintilante",
+    "white_everest",
+    "white_extreme",
+    "white_himalaya",
+    "white_liberdade",
+    "white_mirage",
+    "white_olympus",
+    "white_samoa",
+    "white_sea",
+    "white_serenata",
+    "white_superiore",
+    "xango_red"
+  ],
+  "versoes": {
+    "torch": "2.11.0+cu128",
+    "timm": "1.0.27"
+  },
+  "gpu": "NVIDIA GeForce RTX 5060 Ti",
+  "inicio": "2026-10-04T05:02:32",
+  "checkpoint": "C:\\Users\\Henrique\\Desktop\\Projects\\Hartheus - Software de Segmentação de Rochas\\ARIA\\AI\\models\\xception_480_aleatorio.pt",
+  "fim": "2026-10-04T06:09:59",
+  "melhor_val_loss": 0.0018985060798046407
+}

@@ -33,7 +33,7 @@ import torch
 from torch.utils.data import DataLoader
 
 from common import (DATASET_DIR, MODELS_DIR, RUNS_DIR, SEED, TAMANHO, Rochas,
-                    carregar_checkpoint, dispositivo_padrao, listar_amostras)
+                    amostras_por_protocolo, carregar_checkpoint, dispositivo_padrao)
 
 
 def argumentos() -> argparse.Namespace:
@@ -92,10 +92,13 @@ def main() -> None:
     dispositivo = dispositivo_padrao()
     modelo, ck = carregar_checkpoint(args.dir_modelos / f"{args.nome}.pt", dispositivo)
     classes = ck["classes"]
-    amostras = listar_amostras(args.split, classes)
+    # O protocolo vem do checkpoint, não de um argumento: avaliar com outra divisão que não a
+    # do treino misturaria imagens vistas no treino com as de teste.
+    protocolo = ck.get("protocolo", "original")
+    amostras = amostras_por_protocolo(protocolo, classes)[args.split]
     if args.limite:
         amostras = random.Random(SEED).sample(amostras, min(args.limite, len(amostras)))
-    print(f"── {args.nome} · {args.split}/ · {len(amostras)} imagens · checkpoint da fase "
+    print(f"── {args.nome} · protocolo {protocolo} · {args.split}/ · {len(amostras)} imagens · checkpoint da fase "
           f"{ck['fase']} época {ck['epoca']} (val_loss {ck['val_loss']:.4f}) ──")
 
     dados = DataLoader(Rochas(amostras, aumentar=False), batch_size=args.lote,
@@ -120,6 +123,7 @@ def main() -> None:
     ]
     resultado["checkpoint"] = {k: ck[k] for k in ("fase", "epoca", "val_loss", "val_acc",
                                                   "salvo_em")}
+    resultado["protocolo"] = protocolo
     resultado["split"] = args.split
     resultado["limite"] = args.limite
     resultado["avaliado_em"] = datetime.now().isoformat(timespec="seconds")
