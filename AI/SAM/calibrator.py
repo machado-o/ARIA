@@ -29,7 +29,7 @@ O que este programa grava:
 Ele NÃO gera as máscaras finais em `results/` — isso é papel do `inference.py`.
 
 Uso:
-    .venv\\Scripts\\python.exe -m streamlit run calibrator.py
+    ..\\.venv\\Scripts\\python.exe -m streamlit run calibrator.py
 """
 
 # ── Monkey-patch CLIP antes de qualquer import do SAM — ver inference.py ──────

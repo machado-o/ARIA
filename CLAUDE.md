@@ -60,10 +60,11 @@ python -m venv .venv
 > O `.venv` vive em **`AI/.venv`**, um nível acima de `AI/SAM/`. Rodando os scripts a partir de
 > `AI/SAM/`, o interpretador é `..\.venv\Scripts\python.exe`. O índice CUDA (`cuXXX`) depende do
 > driver — a instalação de hoje é `torch 2.11.0+cu128` num driver 596.49 (RTX 5060 Ti); confira
-> com `nvidia-smi` se mudar de máquina. Versão do ultralytics em uso: **8.4.61**.
+> com `nvidia-smi` se mudar de máquina. Versão do ultralytics em uso: **8.4.61**. Python 3.14.2.
 >
-> ⚠️ **Neste PC o venv ainda está no lugar antigo, `AI/SAM/.venv`** (de lá, `.venv\Scripts\`).
-> Decidido em 02/10/2026 recriá-lo do zero em `AI/.venv` — mover quebra os `.exe` de `Scripts/`.
+> Neste PC o venv foi recriado em `AI/.venv` em 03/10/2026, com o mesmo `pip freeze` do antigo
+> `AI/SAM/.venv` (apagado). Na outra máquina, se o venv ainda estiver em `AI/SAM/.venv`, recriar
+> do zero — mover quebra os `.exe` de `Scripts/`.
 
 ## Comandos
 

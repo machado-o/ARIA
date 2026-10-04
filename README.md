@@ -77,9 +77,9 @@ Detalhamento em [`docs/dataset.md`](docs/dataset.md).
 
 ```bash
 cd AI/SAM
-python rock_viewer.py                                     # preencher as 4 vagas da litologia
-.venv\Scripts\python.exe -m streamlit run calibrator.py   # calibrar sondas e limiares
-python inference.py                                       # rodar o Professor
+..\.venv\Scripts\python.exe rock_viewer.py                   # preencher as 4 vagas da litologia
+..\.venv\Scripts\python.exe -m streamlit run calibrator.py   # calibrar sondas e limiares
+..\.venv\Scripts\python.exe inference.py                     # rodar o Professor
 ```
 
 Cada litologia tem **quatro** imagens de calibração, com papéis distintos: uma de *descoberta*

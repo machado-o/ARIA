@@ -12,8 +12,8 @@ O teste: para cada limiar da amostra, compara
 em número de detecções, scores e vértices dos polígonos.
 
 Uso:
-    .venv\\Scripts\\python.exe verificar_d18.py
-    .venv\\Scripts\\python.exe verificar_d18.py --rocha siena_white --vaga descoberta
+    ..\\.venv\\Scripts\\python.exe verificar_d18.py
+    ..\\.venv\\Scripts\\python.exe verificar_d18.py --rocha siena_white --vaga descoberta
 """
 
 # Monkey-patch CLIP antes de qualquer import do SAM — ver inference.py.
