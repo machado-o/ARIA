@@ -1,0 +1,27 @@
+{
+  "rock": "itaunas_white",
+  "slots": {
+    "descoberta": {
+      "arquivo": "descoberta.JPG",
+      "origem": "train/587.JPG",
+      "selecionado_em": "2026-10-05T12:06:06"
+    },
+    "limiar_sutil": {
+      "arquivo": "limiar_sutil.JPG",
+      "origem": "train/106.JPG",
+      "selecionado_em": "2026-10-05T12:06:51"
+    },
+    "limiar_tipica": {
+      "arquivo": "limiar_tipica.JPG",
+      "origem": "train/575.JPG",
+      "selecionado_em": "2026-10-05T12:07:23"
+    },
+    "limiar_forte": {
+      "arquivo": "limiar_forte.JPG",
+      "origem": "train/4.JPG",
+      "selecionado_em": "2026-10-05T12:11:01"
+    }
+  },
+  "faixa": "A",
+  "total_imagens_litologia": 1546
+}

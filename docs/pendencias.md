@@ -84,7 +84,7 @@
   3. **Apresentar como exemplos ilustrativos, não como evidência.** Um par em que o calibrado
      ficou melhor não prova a **H1**, e a pergunta "foram escolhidos a dedo?" é previsível.
      Incluir também um caso de empate ou em que o calibrado piora.
-- **Escopo realista até 10/10:** a faixa A (faltam 28 vagas em 7 litologias e 10 calibrações;
+- **Escopo realista até 10/10:** a faixa A (faltam 24 vagas em 6 litologias e 10 calibrações;
   `shadow_white` segue pulada). As 45 não cabem.
 
 ---
@@ -103,12 +103,13 @@
   **D17** prevê (*"onde a curva engana"*) — e a direção bate com o "na dúvida, cortar mais
   apertado".
 - [ ] **➡️ PRÓXIMA AÇÃO — selecionar as 4 imagens das outras litologias da faixa A** (**D17**).
-  Estado: **16 de 180 vagas** — `siena_white` 4/4, `nevada_black` 4/4 (02/10), `ubatuba_green`
-  4/4 e `ipanema_beige` 4/4 (03/10), as três últimas a calibrar; faltam **28 vagas** na faixa A.
+  Estado: **20 de 180 vagas** — `siena_white` 4/4, `nevada_black` 4/4 (02/10), `ubatuba_green`
+  4/4 e `ipanema_beige` 4/4 (03/10), `itaunas_white` 4/4 (05/10), as quatro últimas a calibrar;
+  faltam **24 vagas** na faixa A.
   **`shadow_white` foi pulada em 03/10**: é difícil julgar o que é defeito nela, e o Henrique vai
-  pedir ajuda na faculdade. Enquanto isso, a seleção segue em `itaunas_white` — o `rock_viewer.py`
+  pedir ajuda na faculdade. Enquanto isso, a seleção segue em `santa_cecilia` — o `rock_viewer.py`
   sem argumento para sempre na `shadow_white`, então chamar pelo nome
-  (`rock_viewer.py itaunas_white`).
+  (`rock_viewer.py santa_cecilia`).
 - [ ] **Decidir o que fazer com o resultado do Xception no `test/`** (**D19**, 03/10/2026).
   96,72% contra 99,21% do DeepStoneAI. 169 erros, concentrados em poucos pares:
   `naica → white_olympus` 33, `white_himalaya → white_liberdade` 31, `white_superiore →
