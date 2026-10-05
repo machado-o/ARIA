@@ -6,7 +6,7 @@
 > Consolida o que antes estava espalhado em `auditoria.md`, `revisao-artigo.md` e
 > `artigo-sbc.md` (os três foram removidos em 2026-08-23).
 >
-> Última atualização: 2026-10-02
+> Última atualização: 2026-10-05
 
 ---
 
@@ -16,12 +16,76 @@
   **15/10/2026** como estimativa ("deve ser até dia 15"), e o plano passou a usar essa data. Ela
   **não veio do orientador** — enquanto não for confirmada, todo o cronograma está apoiado numa
   suposição. É a pendência mais barata de resolver e a que mais muda o plano: uma mensagem.
+- [ ] **Agenda de outubro tira ~9 dias do cronograma** (informado pelo Henrique em 05/10/2026).
+  **11 a 18/10:** Foz do Iguaçu, LatinoWare (publicação do artigo FracStoneAI). **20 a 23/10:**
+  Jacitec, onde ele apresenta uma prévia do TCC. O fim do dia 18 e o dia 19 vão para preparar a
+  apresentação e outras responsabilidades — **não contar com eles**. Janela útil antes da viagem:
+  **05 a 10/10**. O prazo-alvo de 15/10 do `roadmap.md` cai no meio da viagem: rever junto com a
+  confirmação da data acima.
 - [x] ~~**Confirmar se o DeepStoneAI usou este mesmo dataset.**~~ — sim, confirmado em
   2026-10-02 pelo artigo do SBAI (**D9**). Citação obrigatória.
 - [ ] **Contato do especialista do setor** para a preferência pareada cega (D7). Precisa de ~30
   minutos dele, não mais.
 - [ ] **Versão final submetida ao Latinoware** — o `main.tex` do repo diverge do que foi enviado
   ao JEMS. Henrique envia quando sair o resultado (14/09).
+
+---
+
+## 🧪 Avaliação — alternativas ao conjunto-ouro (decisão adiada)
+
+> Levantado em 05/10/2026. O Henrique não sabe se terá tempo de anotar as ~50 imagens, nem se a
+> anotação dele ficará boa o bastante como referência. **A D7 segue valendo como está** — o
+> conjunto-ouro continua sendo o plano principal. O que está abaixo é o cardápio de saídas, para
+> decidir mais à frente. Trocar qualquer coisa aqui é revisão da **D7** (e da redação da **H1**,
+> que hoje diz "critério de referência anotado") e vai para o `decisoes.md`.
+
+- [ ] **Decidir se o conjunto-ouro se mantém, encolhe ou é substituído.** Nenhuma das saídas
+  elimina o julgamento humano; muda o custo e o que dá para afirmar no fim.
+
+| Alternativa | Custo | O que mede | O que não mede |
+|---|---|---|---|
+| **Auditoria por amostragem** — sortear detecções do modelo e julgar cada uma certa/errada | baixo (um clique por detecção, sem desenhar polígono) | precisão, taxa de falso positivo | recall (não mostra o que o modelo deixou passar), qualidade da borda |
+| **Preferência pareada cega** — já é a fonte 2 da D7 | baixo, zero anotação | qual braço é melhor | número absoluto: diz "A melhor que B", não "A acerta X%" |
+| **Rótulo fraco** — só "tem/não tem anomalia" por imagem ou por célula de uma grade | médio | precisão e recall em nível de detecção | qualidade da máscara (IoU) |
+| **Anomalia sintética** — inserir trincas artificiais em chapas limpas | médio (código) | recall com gabarito exato | desempenho em defeito real; o realismo é questionável |
+| **Consistência sem rótulo** — chapa espelhada/girada/reescalada deve dar a mesma máscara | baixo, automático | robustez | acerto (dá para errar de forma consistente) |
+| **Corrigir a máscara do modelo** em vez de anotar do zero | médio | IoU, precisão, recall | — mas a anotação fica ancorada no modelo; a D7 rejeita isso de propósito |
+
+- **Se o ouro for inviável**, a combinação mais defensável é auditoria por amostragem +
+  preferência pareada: precisão absoluta e comparação entre braços, com recall declarado como
+  limitação. A H1 teria de ser reescrita.
+- **Aluno contra os rótulos do SAM** não entra na lista: mede fidelidade da cópia, não acerto
+  (D7). Serve como diagnóstico de treino.
+- **Em aberto, mesmo mantendo o ouro:** o plano do `roadmap.md` (Fase 2) é 10 litologias da
+  faixa A × 5 imagens — o resultado vale para a faixa A, não para as 45, e 5 imagens por litologia
+  dão intervalo largo no recorte por litologia. E IoU pune estrutura fina — em trinca e veio,
+  poucos pixels de deslocamento derrubam o número. Uma métrica com tolerância de borda seria
+  decisão nova.
+
+---
+
+## 🎤 Prévia na Jacitec (20 a 23/10/2026)
+
+> Plano do Henrique (05/10/2026): até a viagem, focar em terminar seleção e calibração; na
+> prévia, mostrar exemplos de imagens marcadas pelo SAM **default × calibrado**. A avaliação
+> quantitativa contra o conjunto-ouro (**D7**) entra como próxima etapa, já definida na
+> metodologia e ainda não executada.
+
+- [ ] **Gerar as figuras *default × calibrado* para a apresentação.** São três braços desde
+  05/10 (**D5**): default, calibrado pela regra e calibrado pelo autor. Três cuidados:
+  1. **Não usar o `"default"` atual do `rock_prompts.json` como baseline.** A **D5** o descarta:
+     foi escolhido no olho (`vein 0,007`, vinte vezes abaixo do joelho medido na `siena_white`).
+     O baseline é a regra da **D17** aplicada sobre as litologias reunidas, e só existe depois
+     que elas estiverem calibradas. Se só a faixa A estiver pronta, apresentar como default
+     **preliminar**, calculado sobre essas litologias e não sobre as 45.
+  2. **Tirar os exemplos de `train/` ou `val/`, nunca do `test/`.** O conjunto-ouro sai do
+     `test/` e é anotado antes de o SAM rodar naquelas imagens; gerar figura com candidata ao
+     ouro quebra o "às cegas" da **D7**.
+  3. **Apresentar como exemplos ilustrativos, não como evidência.** Um par em que o calibrado
+     ficou melhor não prova a **H1**, e a pergunta "foram escolhidos a dedo?" é previsível.
+     Incluir também um caso de empate ou em que o calibrado piora.
+- **Escopo realista até 10/10:** a faixa A (faltam 28 vagas em 7 litologias e 10 calibrações;
+  `shadow_white` segue pulada). As 45 não cabem.
 
 ---
 

@@ -169,12 +169,11 @@ def indices_validos(polys: list[np.ndarray]) -> list[int]:
 
 
 def joelho(curva: list[tuple[float, int]]) -> float | None:
-    """Limiar de maior curvatura da curva (limiar × marcações) — **SUGESTÃO**.
+    """Limiar de maior curvatura da curva (limiar × marcações) — a regra da **D17**.
 
-    ⚠️ Isto NÃO é a regra de limiar do projeto. A forma da regra está em aberto
-    (TODO da **D17**: opção (a) baseada em anotação × (b) joelho validado pelo
-    ouro). A função existe para que o joelho seja *visível* enquanto a decisão é
-    tomada — nunca para aplicá-lo automaticamente.
+    É o **limiar da regra** (fechada em 2026-09-26, opção (b)): sem parâmetro livre
+    e idêntico para as 45 litologias. O autor pode divergir dele no calibrador; o
+    valor ajustado é o limiar de trabalho, gravado ao lado deste em `calibracao.json`.
 
     Método (Kneedle): normaliza log(limiar) e contagem em [0,1] e devolve o ponto
     de maior distância à corda que liga as duas pontas. Log no eixo x porque os

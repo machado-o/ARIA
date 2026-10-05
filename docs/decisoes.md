@@ -121,6 +121,33 @@ Sonda por sonda: reúnem-se os scores de todas as litologias num só conjunto, a
 obtém-se **um limiar global por sonda**. O conjunto de sondas do braço default é o que a mesma
 regra de descoberta admite sobre o material reunido.
 
+> **Precisado em 2026-10-05:** "o que a descoberta admite sobre o material reunido" é a **união**
+> das sondas admitidas em pelo menos uma litologia calibrada. A descoberta é julgamento do autor
+> por litologia, não uma fórmula, então não há como "rodá-la" sobre as 45 juntas; a união é a
+> leitura mecânica e sem parâmetro livre. Na prática deve coincidir com todas as sondas do
+> `CLASS_ID_MAP` (**D8**), inclusive as que forem registradas durante a calibração — uma sonda
+> só fica de fora se não for admitida em nenhuma litologia.
+
+**Terceiro braço — acrescentado em 2026-10-05: o calibrado pelo autor.**
+
+| Braço | Limiar | Comparação que ele permite |
+|---|---|---|
+| **Default** | joelho sobre todas as litologias reunidas | — |
+| **Calibrado pela regra** | joelho daquela litologia (limiar da regra, **D17**) | × default: efeito do **escopo**, uma variável só. É o teste limpo da **H1** |
+| **Calibrado pelo autor** | limiar de trabalho daquela litologia (**D17**) | × calibrado pela regra: efeito do **ajuste humano** |
+
+Por quê: na `siena_white` o autor divergiu da regra nas três sondas, sempre para cima e por
+cerca do dobro. O limiar de trabalho é o que vai para o `rock_prompts.json` e rotula o conjunto
+do Aluno — deixá-lo fora do experimento mediria uma configuração que o sistema não usa. Com três
+braços, o conhecimento de domínio aparece decomposto: quanto vem de tratar cada litologia à
+parte, e quanto vem do olho de quem calibra. Custo: uma inferência a mais por imagem do
+conjunto-ouro, nenhuma anotação adicional.
+
+O que **não** muda: o default continua saindo da regra sobre o material reunido, nunca de média
+(simples ou ponderada) dos limiares de trabalho — vale o parágrafo abaixo. E *default × calibrado
+pelo autor* muda duas coisas ao mesmo tempo (escopo e quem escolhe): pode ser mostrado, mas não
+é a evidência da H1.
+
 **Por que assim, e não pela mediana dos limiares calibrados:** se o default fosse a mediana das
 configurações calibradas, o resultado seria quase aritmético — o ótimo de cada litologia vence a
 mediana dos ótimos **nos dados dela** por construção. Isso é regressão à média, não achado, e o
@@ -459,8 +486,8 @@ testam se a regra produz bons limiares. Zero anotação adicional; o gabarito fa
 
 | | O que é | Onde é usado |
 |---|---|---|
-| **limiar da regra** | o joelho, puro, sem intervenção | **nos dois braços do Experimento 1** |
-| **limiar de trabalho** | a regra mais o ajuste do autor, se houver | `rock_prompts.json`, produção |
+| **limiar da regra** | o joelho, puro, sem intervenção | braços **default** e **calibrado pela regra** do Experimento 1 |
+| **limiar de trabalho** | a regra mais o ajuste do autor, se houver | `rock_prompts.json`, produção, e o braço **calibrado pelo autor** (**D5**, 2026-10-05) |
 
 O autor **pode discordar da regra**. Quando discorda, o calibrador grava os dois valores em
 `calibracao.json`, junto do critério escrito. Isso preserva o experimento (os braços comparam
