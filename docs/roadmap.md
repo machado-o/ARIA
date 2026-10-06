@@ -28,7 +28,7 @@ em [`decisoes.md`](decisoes.md).
 | Conjunto-ouro anotado | ❌ não existe |
 | Avaliação (IoU / mAP / falso positivo) | ❌ não existe |
 | Treino e avaliação YOLO | ❌ não existe (`AI/YOLO/` está vazio) |
-| Integração Xception | 🟡 **treinado** (03/10, D19): 96,72% no `test/` (98,71% no `val/`), abaixo dos 99,21% do original. Com o sorteio por imagem do original, o mesmo modelo dá 99,92%: a diferença vem da divisão dos dados. Ver Fase 4 |
+| Integração Xception | 🟡 **treinado** (03/10, D19): 96,72% no `test/` (98,71% no `val/`), abaixo dos 99,21% do original. Com o sorteio por imagem do original, o mesmo modelo dá 99,92%: a diferença vem da divisão dos dados. Os dois números são reportados (D19, 06/10); falta só integrar o roteador. Ver Fase 4 |
 | **Monografia** (`Overleaf/TCC/`) | 🟡 **reestruturada em 26/09**: bibliografia (37 entradas), esqueleto, Introdução, Fundamentação, Metodologia e Conclusão escritas; Resultados só com o que já foi medido |
 | Artigo de PD1 e LatinoWare2026 | 🔴 intocados — continuam desalinhados (**D13**) |
 
@@ -179,7 +179,8 @@ H2 e que nenhum trabalho do referencial responde.
       de `train/` e `val/`. Hipótese: o split do dataset separa o `test/` por lote mas mistura
       chapas vizinhas entre `train/` e `val/`, o que deixa o val otimista. **Confirmado em
       04/10:** com o sorteio por imagem do DeepStoneAI, o mesmo modelo dá **99,92%** (run
-      `xception_480_aleatorio`). Ver `docs/pendencias.md`;
+      `xception_480_aleatorio`). **Decidido em 06/10 (D19):** os dois números vão para a
+      monografia, sem ampliação e sem mais treino;
    4. o **roteador**: recebe a imagem, identifica a litologia e seleciona a configuração de
       sondas + o Aluno correspondente.
 2. **Teste end-to-end** dos três estágios.

@@ -110,7 +110,11 @@
   pedir ajuda na faculdade. Enquanto isso, a seleção segue em `santa_cecilia` — o `rock_viewer.py`
   sem argumento para sempre na `shadow_white`, então chamar pelo nome
   (`rock_viewer.py santa_cecilia`).
-- [ ] **Decidir o que fazer com o resultado do Xception no `test/`** (**D19**, 03/10/2026).
+- [ ] **Decidir a regra de split do Aluno** (por sequência ou por sorteio), adiada pelo
+  Henrique. O que se sabe sobre sequência e blocos está no item do Xception, logo abaixo.
+- [x] ~~**Decidir o que fazer com o resultado do Xception no `test/`**~~ — decidido em
+  2026-10-06 (**D19**): reportar os dois números, 96,72% com a causa explicada e 99,92% com as
+  imagens embaralhadas; sem ampliação e sem mais treino. Histórico da investigação:
   96,72% contra 99,21% do DeepStoneAI. 169 erros, concentrados em poucos pares:
   `naica → white_olympus` 33, `white_himalaya → white_liberdade` 31, `white_superiore →
   kalahari` 21 e `→ white_olympus` 15. A `white_superiore` acertou 35/37 no `val/` e **0/36** no
@@ -133,6 +137,17 @@
   diferença de ~3 pontos vem da divisão, não do modelo: o sorteio põe chapas vizinhas do treino
   no teste. 70% do teste sorteado veio do `train/` original. **Falta decidir** como isso entra na
   monografia, e a regra de split do Aluno (por sequência ou por sorteio), adiada pelo Henrique.
+  **Decidido em 06/10:** a ampliação para 1080 não será rodada (registro na **D19**); melhoria
+  além da reprodução só depois de uma validação separada por sequência, tirada do `train/`.
+  **Sondagem de 06/10** (miniaturas 32 × 32, diferença absoluta média, 5 rochas; medida
+  grosseira, só de cor e brilho): a ordem numérica dos arquivos é mesmo uma sequência. No
+  `train/`, imagens consecutivas ficam a 4,0 uma da outra e pares sorteados a 12,5
+  (`white_superiore`); 4,0 contra 15,3 na `ipanema_beige`. O `test/` da `white_superiore` é mais
+  escuro (brilho 188, contra 213 no `train/` e 226 no `val/`) e fica mais longe do treino que o
+  `val/` (6,1 contra 3,0), o que apoia a hipótese de outro bloco. **Não vale para toda rocha:**
+  na `ipanema_beige` o `test/` está tão perto do treino quanto o `val/` (3,2 e 3,8), e na
+  `white_himalaya` o `val/` também está longe (35,6; `test/` 22,6). A validação por sequência
+  não chegou a ser montada: o Xception foi fechado com os dois números.
 - [x] ~~**Rever a vaga típica de `nevada_black`, `ubatuba_green` e `ipanema_beige`**~~ — revista
   em 2026-10-03. A típica tinha sido escolhida, em algumas, como "chapa com defeito em quantidade
   média"; a regra é a chapa **mais comum** da rocha, limpa se a rocha costuma ser limpa. É ela

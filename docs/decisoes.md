@@ -536,6 +536,24 @@ sem pesos por classe.
 com ampliação — e reportar as duas. O 99,21% **não é diretamente comparável** (split diferente);
 é referência, não meta.
 
+**Regra de recuo encerrada sem rodar a ampliação (2026-10-06).** A regra disparou ao pé da letra
+(96,72% no `test/`), mas supunha que a causa seria a resolução. A run `xception_480_aleatorio`
+(04/10) respondeu a pergunta: com a mesma receita em 480 e a divisão por sorteio do DeepStoneAI,
+o modelo dá **99,92%**, acima dos 99,21% do original. A resolução não é o gargalo; a diferença
+vem da divisão dos dados. O treino em 1080 não foi feito e o `test/` não foi reavaliado.
+Qualquer melhoria além da reprodução (augmentation fotométrica, pesos por classe) só será
+testada depois de existir uma validação separada por sequência, tirada do `train/`.
+
+**Como o resultado entra na monografia (2026-10-06).** Os dois números são reportados, nesta
+ordem: o resultado do classificador é **96,72%** no `test/` oficial, e o texto explica a causa
+(o `test/` de algumas rochas vem de outro bloco, que o treino não viu); em seguida, que com as
+imagens embaralhadas entre as divisões, como no DeepStoneAI, a mesma receita chega a **99,92%**.
+Leitura do Henrique: chapas do mesmo bloco em treino e teste fazem parte do problema real,
+porque os datasets do setor sempre terão chapas do mesmo bloco; os dois números descrevem dois
+cenários de uso (bloco já visto e bloco novo), e nenhum é tratado como erro do outro. O modelo
+do roteador continua sendo o `xception_480` (split oficial); o `xception_480_aleatorio` é só
+medição. Não há mais treino previsto para o classificador.
+
 **Avaliação:** no `test/`, uma única vez, ao final: acurácia, acurácia por classe, F1 macro e
 matriz de confusão. Pesos em `AI/models/` (fora do git); métricas em JSON no git.
 
