@@ -6,7 +6,9 @@ em [`decisoes.md`](decisoes.md).
 > Última atualização: 2026-10-05
 > Prazo-alvo de trabalho: **15/10/2026** — estimativa dada pelo Henrique em 26/09/2026
 > ("deve ser até dia 15"). **Ainda não confirmada com o Rafael** — ver `pendencias.md`.
-> São ~19 dias: o cronograma abaixo assume que só o **Experimento 1** (Fase 2) roda.
+> Eram ~19 dias em 26/09; em 05/10 a janela útil é **05 a 10/10**, porque a agenda de outubro
+> ocupa de 11 a 23/10 e o dia 15 cai no meio da viagem — ver `pendencias.md`. O cronograma
+> abaixo assume que só o **Experimento 1** (Fase 2) roda.
 
 ---
 
@@ -66,7 +68,7 @@ apagadas e a seleção recomeça com o protocolo de 4 vagas.
 `nevada_black`, em 02/10/2026; `ubatuba_green` e `ipanema_beige`, em 03/10/2026;
 `itaunas_white`, em 05/10/2026; as quatro a calibrar) e **24 pendentes**. A `shadow_white` foi pulada em 03/10 (difícil julgar o que é
 defeito; ajuda pedida na faculdade). Ordem de trabalho da faixa A:
-`siena_white` ✅, `nevada_black` ✅ (seleção), `ubatuba_green` ✅ (seleção), `ipanema_beige` ✅ (seleção), `shadow_white` ⏸️, `itaunas_white`,
+`siena_white` ✅, `nevada_black` ✅ (seleção), `ubatuba_green` ✅ (seleção), `ipanema_beige` ✅ (seleção), `shadow_white` ⏸️, `itaunas_white` ✅ (seleção),
 `santa_cecilia`, `san_francisco_green`, `white_mirage`, `golden_storm`, `white_olympus`.
 
 ```bash
