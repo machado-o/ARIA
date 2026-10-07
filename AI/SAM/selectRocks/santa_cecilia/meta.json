@@ -1,0 +1,27 @@
+{
+  "rock": "santa_cecilia",
+  "slots": {
+    "descoberta": {
+      "arquivo": "descoberta.JPG",
+      "origem": "train/852.JPG",
+      "selecionado_em": "2026-10-06T21:41:43"
+    },
+    "limiar_sutil": {
+      "arquivo": "limiar_sutil.JPG",
+      "origem": "train/619.JPG",
+      "selecionado_em": "2026-10-06T21:42:46"
+    },
+    "limiar_tipica": {
+      "arquivo": "limiar_tipica.JPG",
+      "origem": "train/817.JPG",
+      "selecionado_em": "2026-10-06T21:45:18"
+    },
+    "limiar_forte": {
+      "arquivo": "limiar_forte.JPG",
+      "origem": "train/854.JPG",
+      "selecionado_em": "2026-10-06T21:46:44"
+    }
+  },
+  "faixa": "A",
+  "total_imagens_litologia": 1446
+}

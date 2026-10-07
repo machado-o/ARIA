@@ -84,7 +84,7 @@
   3. **Apresentar como exemplos ilustrativos, não como evidência.** Um par em que o calibrado
      ficou melhor não prova a **H1**, e a pergunta "foram escolhidos a dedo?" é previsível.
      Incluir também um caso de empate ou em que o calibrado piora.
-- **Escopo realista até 10/10:** a faixa A (faltam 24 vagas em 6 litologias e 10 calibrações;
+- **Escopo realista até 10/10:** a faixa A (faltam 20 vagas em 5 litologias e 10 calibrações;
   `shadow_white` segue pulada). As 45 não cabem.
 
 ---
@@ -103,13 +103,13 @@
   **D17** prevê (*"onde a curva engana"*) — e a direção bate com o "na dúvida, cortar mais
   apertado".
 - [ ] **➡️ PRÓXIMA AÇÃO — selecionar as 4 imagens das outras litologias da faixa A** (**D17**).
-  Estado: **20 de 180 vagas** — `siena_white` 4/4, `nevada_black` 4/4 (02/10), `ubatuba_green`
-  4/4 e `ipanema_beige` 4/4 (03/10), `itaunas_white` 4/4 (05/10), as quatro últimas a calibrar;
-  faltam **24 vagas** na faixa A.
+  Estado: **24 de 180 vagas** — `siena_white` 4/4, `nevada_black` 4/4 (02/10), `ubatuba_green`
+  4/4 e `ipanema_beige` 4/4 (03/10), `itaunas_white` 4/4 (05/10), `santa_cecilia` 4/4 (06/10),
+  as cinco últimas a calibrar; faltam **20 vagas** na faixa A.
   **`shadow_white` foi pulada em 03/10**: é difícil julgar o que é defeito nela, e o Henrique vai
-  pedir ajuda na faculdade. Enquanto isso, a seleção segue em `santa_cecilia` — o `rock_viewer.py`
-  sem argumento para sempre na `shadow_white`, então chamar pelo nome
-  (`rock_viewer.py santa_cecilia`).
+  pedir ajuda na faculdade. Enquanto isso, a seleção segue em `san_francisco_green` — o
+  `rock_viewer.py` sem argumento para sempre na `shadow_white`, então chamar pelo nome
+  (`rock_viewer.py san_francisco_green`).
 - [ ] **Decidir a regra de split do Aluno** (por sequência ou por sorteio), adiada pelo
   Henrique. O que se sabe sobre sequência e blocos está no item do Xception, logo abaixo.
 - [x] ~~**Decidir o que fazer com o resultado do Xception no `test/`**~~ — decidido em
