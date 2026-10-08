@@ -311,7 +311,7 @@ def abrir_imagem(caminho: Path):
     """Lê a imagem sem passar o caminho para o OpenCV.
 
     ⚠️ `cv2.imread` NÃO abre caminho com caractere não-ASCII no Windows — e o
-    caminho deste projeto tem cedilha ("…Software de Segmentação de Rochas…").
+    caminho deste projeto tem acento ("…ARIA - Análise e Reconhecimento…").
     O erro é traiçoeiro porque o ultralytics, ao ser importado, monkey-patcha
     `cv2.imread` para uma versão que aceita Unicode: quem importa ultralytics
     antes não vê o bug. Este módulo só importa ultralytics quando vai capturar

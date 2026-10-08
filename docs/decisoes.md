@@ -6,7 +6,7 @@
 > ⚠️ **A numeração foi refeita em 2026-08-23.** Referências a "D1…D10" em textos antigos
 > (dentro de `apresentações/`) apontam para a numeração velha e **não valem**.
 >
-> Última atualização: 2026-10-02
+> Última atualização: 2026-10-07
 
 ---
 
@@ -588,3 +588,37 @@ ser rodado de novo quando a versão do ultralytics mudar; é ele que sustenta es
 não é aproximação. O ciclo de calibração deixa de ser "escolho conf → rodo o SAM → olho → ajusto →
 rodo de novo" (minutos por iteração) e vira "rodo uma vez → arrasto o slider → vejo o efeito nas 4
 imagens simultaneamente". É o que torna o protocolo da D17 viável em tempo humano.
+
+---
+
+## D20 — Litologias movimentadas: calibrar mesmo assim
+
+**Contexto:** na seleção da faixa A o autor encontrou rochas de padrão movimentado, em que é
+difícil dizer o que é defeito e o que é desenho da pedra, e pulou duas delas à espera de uma
+opinião da faculdade que ainda não veio. A lista, o porquê e a pesquisa sobre o termo estão em
+`dataset.md` → *Litologias movimentadas*.
+
+**Decisão 1 — calibrar (2026-10-07):** as litologias movimentadas **são calibradas como as
+demais**, pelo mesmo protocolo (**D17**). Elas não saem do experimento e a calibração não fica
+parada à espera de terceiros. A opinião externa continua sendo buscada **em paralelo**; se vier,
+entra na calibração dessas litologias.
+
+**Justificativa:** deixá-las de fora tiraria até 3 das 11 litologias da faixa A e exigiria um
+critério de exclusão que hoje não existe — a lista é impressão do autor. E a dificuldade de
+julgar não é um desvio do trabalho: é a arbitrariedade da **D3** no seu caso mais forte.
+
+**Decisão 2 — o termo (2026-10-07):** o trabalho diz **"movimentada"**, não "exótica", que foi
+como o autor as chamou primeiro. "Exótico" é categoria comercial do setor, definida por raridade,
+preço e tipo geológico; "movimentado", em oposição a "homogêneo", é o termo técnico para a rocha
+cuja estrutura forma desenho (bandamento, foliação). Fontes e ressalvas em `dataset.md`.
+
+> ⚠️ Adotar o termo **não** é afirmar que as três litologias da lista são petrograficamente
+> movimentadas — isso não foi verificado por fonte nem por especialista. Até ser, o texto diz
+> que o autor as *percebeu* como movimentadas.
+
+**Ainda em aberto:**
+
+- se os resultados das movimentadas são reportados num recorte à parte, e com que critério de
+  pertencimento;
+- como a opinião externa é registrada quando vier (o `calibracao.json` hoje supõe um critério
+  escrito só pelo autor, e a **D7** diz que o gabarito é do autor).

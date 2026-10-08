@@ -142,9 +142,9 @@ results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
   arquivos (**D8**).
 - **`rock_prompts.json` é PROVISÓRIO** (**D15**) — não tratar como calibração feita. Calibração
   feita é a que tem **`calibracao.json`** ao lado das vagas (limiar + critério escrito); é isso
-  que o calibrador usa para dizer "calibrada". Estado: **24 de 180 vagas** — `siena_white` 4/4
+  que o calibrador usa para dizer "calibrada". Estado: **28 de 180 vagas** — `siena_white` 4/4
   (08/09/2026), `nevada_black` 4/4 (02/10/2026), `ubatuba_green` e `ipanema_beige` 4/4
-  (03/10/2026), `itaunas_white` 4/4 (05/10/2026), `santa_cecilia` 4/4 (06/10/2026), restam 20 vagas na faixa A (`shadow_white` pulada por ora). **1 de 45 litologias calibrada** — `siena_white`
+  (03/10/2026), `itaunas_white` 4/4 (05/10/2026), `santa_cecilia` 4/4 (06/10/2026), `white_mirage` 4/4 (07/10/2026), restam 16 vagas na faixa A (`shadow_white` e `san_francisco_green` puladas por ora — rochas movimentadas, ver `docs/dataset.md` e **D20**). **1 de 45 litologias calibrada** — `siena_white`
   (01/10/2026).
 - **Mais de uma máquina.** O Henrique alterna entre este PC e outro. O que precisa existir nos
   dois vai para o **git**; `_cache/`, `results/`, o `.venv` e o `sam3.pt` não vão, e cada máquina
@@ -152,8 +152,8 @@ results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
   a versão usada (a `siena_white` foi calibrada na **8.4.52**; este PC tem a 8.4.61). A
   equivalência da **D18** é verificada por versão: ao calibrar numa versão nova, rodar
   `verificar_d18.py` nela antes.
-- **`cv2.imread` não abre caminho com acento no Windows** — e o caminho deste projeto tem cedilha
-  (`…Software de Segmentação de Rochas…`). A armadilha é que **importar o ultralytics
+- **`cv2.imread` não abre caminho com acento no Windows** — e o caminho deste projeto tem acento
+  (`…ARIA - Análise e Reconhecimento…`). A armadilha é que **importar o ultralytics
   monkey-patcha `cv2.imread`** por uma versão que aceita Unicode: quem importa ultralytics antes
   nunca vê o bug, quem não importa recebe `None` silencioso. Em código que não depende do
   ultralytics, use `np.fromfile` + `cv2.imdecode` (ver `calibrator.abrir_imagem`).

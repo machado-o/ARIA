@@ -6,7 +6,7 @@
 > Consolida o que antes estava espalhado em `auditoria.md`, `revisao-artigo.md` e
 > `artigo-sbc.md` (os três foram removidos em 2026-08-23).
 >
-> Última atualização: 2026-10-05
+> Última atualização: 2026-10-07
 
 ---
 
@@ -64,6 +64,34 @@
 
 ---
 
+## 🪨 Litologias movimentadas — dá para marcar de forma correta? (em aberto)
+
+> Levantado pelo Henrique em 07/10/2026, durante a seleção da faixa A, com o nome de
+> "exóticas"; o termo passou a "movimentadas" no mesmo dia (**D20**). O tópico, a lista das
+> litologias, onde ele encosta nas decisões e a pesquisa sobre o termo estão em `dataset.md` →
+> *Litologias movimentadas*. Aqui fica só o que está pendente.
+
+- [x] ~~**Decidir o que fazer com as movimentadas nos experimentos.**~~ — decidido em 07/10/2026
+  (**D20**): calibrar mesmo assim, com a opinião externa buscada em paralelo. Deixar de fora e
+  esperar a opinião foram as saídas descartadas.
+- [ ] **Conseguir a opinião de alguém da faculdade que conheça rocha** sobre `shadow_white` e
+  `san_francisco_green`. Pedida, ainda sem resposta em 07/10/2026. Pela **D20** ela **não
+  bloqueia mais** as 8 vagas das duas. Vale pedir também a classificação *homogênea ×
+  movimentada* das litologias da faixa A — é o critério técnico que a pesquisa encontrou.
+- [x] ~~**Decidir o termo.**~~ — decidido em 07/10/2026 (**D20**): "movimentada", não
+  "exótica", que é categoria comercial (raridade e preço).
+- [ ] **Decidir o critério de pertencimento.** Hoje a lista é impressão do autor. Para virar
+  recorte, precisa ser aplicável por outra pessoa: classificação petrográfica vinda de quem
+  conhece rocha, ou medida de imagem.
+- [ ] **Decidir se as movimentadas são reportadas num recorte à parte** (em aberto na **D20**).
+- [ ] **Ler antes de citar:** a dissertação de Meyer (2003), origem da definição *homogêneo ×
+  movimentado*, e o trabalho de Bolonha sobre caracterização estética de chapas — os dois só
+  foram vistos em segunda mão.
+- **`white_mirage` já foi selecionada** apesar de movimentada: é o primeiro caso para observar, na
+  calibração, se a dificuldade aparece em número (distância entre o limiar da regra e o do autor).
+
+---
+
 ## 🎤 Prévia na Jacitec (20 a 23/10/2026)
 
 > Plano do Henrique (05/10/2026): até a viagem, focar em terminar seleção e calibração; na
@@ -84,8 +112,8 @@
   3. **Apresentar como exemplos ilustrativos, não como evidência.** Um par em que o calibrado
      ficou melhor não prova a **H1**, e a pergunta "foram escolhidos a dedo?" é previsível.
      Incluir também um caso de empate ou em que o calibrado piora.
-- **Escopo realista até 10/10:** a faixa A (faltam 20 vagas em 5 litologias e 10 calibrações;
-  `shadow_white` segue pulada). As 45 não cabem.
+- **Escopo realista até 10/10:** a faixa A (faltam 16 vagas em 4 litologias e 10 calibrações;
+  `shadow_white` e `san_francisco_green` seguem puladas). As 45 não cabem.
 
 ---
 
@@ -103,13 +131,15 @@
   **D17** prevê (*"onde a curva engana"*) — e a direção bate com o "na dúvida, cortar mais
   apertado".
 - [ ] **➡️ PRÓXIMA AÇÃO — selecionar as 4 imagens das outras litologias da faixa A** (**D17**).
-  Estado: **24 de 180 vagas** — `siena_white` 4/4, `nevada_black` 4/4 (02/10), `ubatuba_green`
+  Estado: **28 de 180 vagas** — `siena_white` 4/4, `nevada_black` 4/4 (02/10), `ubatuba_green`
   4/4 e `ipanema_beige` 4/4 (03/10), `itaunas_white` 4/4 (05/10), `santa_cecilia` 4/4 (06/10),
-  as cinco últimas a calibrar; faltam **20 vagas** na faixa A.
+  `white_mirage` 4/4 (07/10), as seis últimas a calibrar; faltam **16 vagas** na faixa A.
   **`shadow_white` foi pulada em 03/10**: é difícil julgar o que é defeito nela, e o Henrique vai
-  pedir ajuda na faculdade. Enquanto isso, a seleção segue em `san_francisco_green` — o
-  `rock_viewer.py` sem argumento para sempre na `shadow_white`, então chamar pelo nome
-  (`rock_viewer.py san_francisco_green`).
+  pedir ajuda na faculdade. **`san_francisco_green` foi pulada em 07/10**, pelo mesmo motivo; a
+  ajuda ainda não veio. As duas são rochas movimentadas, e a `white_mirage` também — lista em
+  `dataset.md` → *Litologias movimentadas*. A seleção
+  segue em `golden_storm` — o `rock_viewer.py` sem argumento para sempre na `shadow_white`,
+  então chamar pelo nome (`rock_viewer.py golden_storm`).
 - [ ] **Decidir a regra de split do Aluno** (por sequência ou por sorteio), adiada pelo
   Henrique. O que se sabe sobre sequência e blocos está no item do Xception, logo abaixo.
 - [x] ~~**Decidir o que fazer com o resultado do Xception no `test/`**~~ — decidido em

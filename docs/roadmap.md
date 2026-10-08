@@ -22,7 +22,7 @@ em [`decisoes.md`](decisoes.md).
 | `sam_cache.py` — varredura offline de limiar | ✅ núcleo pronto (D18) |
 | `verificar_d18.py` — prova empírica da D18 | ✅ **novo**: 32 comparações, nenhuma divergência |
 | `rock_prompts.json` | 🟡 **provisório** (**D15**) — 46 entradas, mas só 13 configurações distintas |
-| `selectRocks/` | 🟡 **24 de 180 vagas** — `siena_white`, `nevada_black`, `ubatuba_green`, `ipanema_beige`, `itaunas_white`, `santa_cecilia` 4/4; restam 20 na faixa A (`shadow_white` pulada por ora) |
+| `selectRocks/` | 🟡 **28 de 180 vagas** — `siena_white`, `nevada_black`, `ubatuba_green`, `ipanema_beige`, `itaunas_white`, `santa_cecilia`, `white_mirage` 4/4; restam 16 na faixa A (`shadow_white` e `san_francisco_green` puladas por ora) |
 | Litologias com `calibracao.json` | 🟡 **1 de 45** — `siena_white` (01/10/2026) |
 | Inferência em lote sobre o dataset | ❌ **não existe** |
 | Conjunto-ouro anotado | ❌ não existe |
@@ -63,13 +63,14 @@ resolver na Fase 3.
 Ver **D15** e **D17**. O `selectRocks/` foi **zerado em 2026-08-23**: as 14 imagens antigas foram
 apagadas e a seleção recomeça com o protocolo de 4 vagas.
 
-**Estado: 24 de 180 vagas; 1 de 45 litologias calibrada.** A faixa A são as 11 primeiras —
-**44 vagas**, das quais 24 feitas (`siena_white`, em 08/09/2026, calibrada em 01/10/2026;
+**Estado: 28 de 180 vagas; 1 de 45 litologias calibrada.** A faixa A são as 11 primeiras —
+**44 vagas**, das quais 28 feitas (`siena_white`, em 08/09/2026, calibrada em 01/10/2026;
 `nevada_black`, em 02/10/2026; `ubatuba_green` e `ipanema_beige`, em 03/10/2026;
-`itaunas_white`, em 05/10/2026; `santa_cecilia`, em 06/10/2026; as cinco a calibrar) e **20 pendentes**. A `shadow_white` foi pulada em 03/10 (difícil julgar o que é
-defeito; ajuda pedida na faculdade). Ordem de trabalho da faixa A:
+`itaunas_white`, em 05/10/2026; `santa_cecilia`, em 06/10/2026; `white_mirage`, em 07/10/2026; as seis a calibrar) e **16 pendentes**. A `shadow_white` foi pulada em 03/10 (difícil julgar o que é
+defeito; ajuda pedida na faculdade) e a `san_francisco_green` em 07/10, pelo mesmo motivo — as duas, e a
+`white_mirage`, são rochas movimentadas (lista em `dataset.md` → *Litologias movimentadas*). Ordem de trabalho da faixa A:
 `siena_white` ✅, `nevada_black` ✅ (seleção), `ubatuba_green` ✅ (seleção), `ipanema_beige` ✅ (seleção), `shadow_white` ⏸️, `itaunas_white` ✅ (seleção),
-`santa_cecilia` ✅ (seleção), `san_francisco_green`, `white_mirage`, `golden_storm`, `white_olympus`.
+`santa_cecilia` ✅ (seleção), `san_francisco_green` ⏸️, `white_mirage` ✅ (seleção), `golden_storm`, `white_olympus`.
 
 ```bash
 cd AI/SAM
@@ -88,7 +89,7 @@ abas:
    três vagas de limiar, com o joelho marcado como **sugestão**;
 3. **Fechar** — a contagem por vaga, o **critério escrito** (obrigatório) e o salvamento.
 
-> **A próxima ação do Henrique é selecionar as vagas do resto da faixa A** (`ubatuba_green` é a
+> **A próxima ação do Henrique é selecionar as vagas do resto da faixa A** (`golden_storm` é a
 > próxima) e calibrar cada litologia ao fechar as 4 vagas dela.
 
 > **Primeira observação (`siena_white`, 01/10/2026):** o autor divergiu da regra nas 3 sondas
