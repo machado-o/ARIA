@@ -142,10 +142,14 @@ results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
   arquivos (**D8**).
 - **`rock_prompts.json` é PROVISÓRIO** (**D15**) — não tratar como calibração feita. Calibração
   feita é a que tem **`calibracao.json`** ao lado das vagas (limiar + critério escrito); é isso
-  que o calibrador usa para dizer "calibrada". Estado: **28 de 180 vagas** — `siena_white` 4/4
-  (08/09/2026), `nevada_black` 4/4 (02/10/2026), `ubatuba_green` e `ipanema_beige` 4/4
-  (03/10/2026), `itaunas_white` 4/4 (05/10/2026), `santa_cecilia` 4/4 (06/10/2026), `white_mirage` 4/4 (07/10/2026), restam 16 vagas na faixa A (`shadow_white` e `san_francisco_green` puladas por ora — rochas movimentadas, ver `docs/dataset.md` e **D20**). **1 de 45 litologias calibrada** — `siena_white`
-  (01/10/2026).
+  que o calibrador usa para dizer "calibrada". Estado: **44 de 180 vagas — a faixa A fechou em
+  08/10/2026**, as 11 litologias com 4/4: `siena_white` (08/09/2026), `nevada_black`
+  (02/10/2026), `ubatuba_green` e `ipanema_beige` (03/10/2026), `itaunas_white` (05/10/2026),
+  `santa_cecilia` (06/10/2026), `white_mirage` (07/10/2026), `golden_storm`, `white_olympus`,
+  `shadow_white` e `san_francisco_green` (08/10/2026). As duas últimas tinham sido puladas e
+  foram selecionadas sem a opinião de especialista; elas, a `white_mirage` e a `golden_storm` são
+  rochas movimentadas (ver `docs/dataset.md` e **D20**). **1 de 45 litologias calibrada** —
+  `siena_white` (01/10/2026); as outras 10 da faixa A esperam calibração.
 - **Mais de uma máquina.** O Henrique alterna entre este PC e outro. O que precisa existir nos
   dois vai para o **git**; `_cache/`, `results/`, o `.venv` e o `sam3.pt` não vão, e cada máquina
   tem os seus. **A versão do ultralytics pode diferir entre elas** — cada `calibracao.json` grava

@@ -75,9 +75,11 @@
   (**D20**): calibrar mesmo assim, com a opinião externa buscada em paralelo. Deixar de fora e
   esperar a opinião foram as saídas descartadas.
 - [ ] **Conseguir a opinião de alguém da faculdade que conheça rocha** sobre `shadow_white` e
-  `san_francisco_green`. Pedida, ainda sem resposta em 07/10/2026. Pela **D20** ela **não
-  bloqueia mais** as 8 vagas das duas. Vale pedir também a classificação *homogênea ×
-  movimentada* das litologias da faixa A — é o critério técnico que a pesquisa encontrou.
+  `san_francisco_green`. Pedida, sem resposta até 08/10/2026 — data em que as duas foram
+  **selecionadas sem ela** (a **D20** já dizia que não bloqueia). Continua valendo: serve para
+  conferir a marcação dessas quatro movimentadas depois do fato, e vale pedir também a
+  classificação *homogênea × movimentada* das litologias da faixa A — é o critério técnico que a
+  pesquisa encontrou.
 - [x] ~~**Decidir o termo.**~~ — decidido em 07/10/2026 (**D20**): "movimentada", não
   "exótica", que é categoria comercial (raridade e preço).
 - [ ] **Decidir o critério de pertencimento.** Hoje a lista é impressão do autor. Para virar
@@ -87,8 +89,11 @@
 - [ ] **Ler antes de citar:** a dissertação de Meyer (2003), origem da definição *homogêneo ×
   movimentado*, e o trabalho de Bolonha sobre caracterização estética de chapas — os dois só
   foram vistos em segunda mão.
-- **`white_mirage` já foi selecionada** apesar de movimentada: é o primeiro caso para observar, na
-  calibração, se a dificuldade aparece em número (distância entre o limiar da regra e o do autor).
+- **As quatro movimentadas estão selecionadas** — `white_mirage` (07/10), `golden_storm`,
+  `shadow_white` e `san_francisco_green` (08/10). São os casos para observar, na calibração, se a
+  dificuldade aparece em número (distância entre o limiar da regra e o do autor). O autor
+  registrou que a seleção das duas antes puladas **foi difícil**, e saiu sem conferência de
+  especialista — isso precisa estar no critério escrito do `calibracao.json` de cada uma.
 
 ---
 
@@ -130,16 +135,18 @@
   limpa. Uma litologia não é padrão, mas se a divergência se repetir na faixa A é o achado que a
   **D17** prevê (*"onde a curva engana"*) — e a direção bate com o "na dúvida, cortar mais
   apertado".
-- [ ] **➡️ PRÓXIMA AÇÃO — selecionar as 4 imagens das outras litologias da faixa A** (**D17**).
-  Estado: **28 de 180 vagas** — `siena_white` 4/4, `nevada_black` 4/4 (02/10), `ubatuba_green`
-  4/4 e `ipanema_beige` 4/4 (03/10), `itaunas_white` 4/4 (05/10), `santa_cecilia` 4/4 (06/10),
-  `white_mirage` 4/4 (07/10), as seis últimas a calibrar; faltam **16 vagas** na faixa A.
-  **`shadow_white` foi pulada em 03/10**: é difícil julgar o que é defeito nela, e o Henrique vai
-  pedir ajuda na faculdade. **`san_francisco_green` foi pulada em 07/10**, pelo mesmo motivo; a
-  ajuda ainda não veio. As duas são rochas movimentadas, e a `white_mirage` também — lista em
-  `dataset.md` → *Litologias movimentadas*. A seleção
-  segue em `golden_storm` — o `rock_viewer.py` sem argumento para sempre na `shadow_white`,
-  então chamar pelo nome (`rock_viewer.py golden_storm`).
+- [x] ~~**Selecionar as 4 imagens das litologias da faixa A**~~ (**D17**) — **a faixa A fechou em
+  08/10/2026**: **44 de 180 vagas**, as 11 litologias com 4/4. `siena_white`, `nevada_black`
+  (02/10), `ubatuba_green` e `ipanema_beige` (03/10), `itaunas_white` (05/10), `santa_cecilia`
+  (06/10), `white_mirage` (07/10), `golden_storm`, `white_olympus`, `shadow_white` e
+  `san_francisco_green` (08/10). As duas últimas tinham sido puladas (03/10 e 07/10) por ser
+  difícil julgar o que é defeito nelas, e foram feitas sem a opinião de especialista, que não
+  veio — as quatro movimentadas estão na lista em `dataset.md` → *Litologias movimentadas*.
+- [ ] **➡️ PRÓXIMA AÇÃO — calibrar as dez litologias com as 4 vagas fechadas** (`calibrator.py`):
+  `nevada_black`, `ubatuba_green`, `ipanema_beige`, `itaunas_white`, `santa_cecilia`,
+  `white_mirage`, `golden_storm`, `white_olympus`, `shadow_white` e `san_francisco_green`. Só a
+  `siena_white` tem `calibracao.json` (**D15**). Não há mais vaga de faixa A para selecionar;
+  avançar para a faixa B é decisão em aberto.
 - [ ] **Decidir a regra de split do Aluno** (por sequência ou por sorteio), adiada pelo
   Henrique. O que se sabe sobre sequência e blocos está no item do Xception, logo abaixo.
 - [x] ~~**Decidir o que fazer com o resultado do Xception no `test/`**~~ — decidido em
@@ -249,7 +256,8 @@
 - [ ] **Banca:** `macros.tex` ainda tem "Fulana/Cicrano de Tal"; a aprovação está comentada.
 - [ ] **Dedicatória, agradecimentos e epígrafe** continuam com texto do template, comentados.
 - [ ] **Compilar no Overleaf.** Não há LaTeX nesta máquina — a conferência feita aqui é
-  estrutural (`TCC/verificar_tex.py`: citação sem entrada, `ef` sem `\label`, ambiente
+  estrutural (`TCC/verificar_tex.py`: citação sem entrada, `
+ef` sem `\label`, ambiente
   desbalanceado, figura ausente), **não** é compilação.
 
 ### 🔴 Artigo de PD1 e LatinoWare2026 — nada feito

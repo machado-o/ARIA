@@ -77,7 +77,7 @@ O experimento central roda **por faixa**, da maior para a menor, e reporta resul
 
 Registro do autor, feito durante a seleção manual das vagas (**D17**): rochas de padrão
 movimentado, em que é mais difícil dizer o que é defeito e o que é desenho da pedra. A lista é
-**observação do autor** — nenhuma das três teve a classificação petrográfica confirmada (ver a
+**observação do autor** — nenhuma das quatro teve a classificação petrográfica confirmada (ver a
 pesquisa abaixo); o que se decidiu fazer com essas litologias está na **D20**.
 
 > **Sobre o termo.** O autor as chamou primeiro de "exóticas". Em 07/10/2026 o termo passou a
@@ -89,12 +89,17 @@ A lista cresce conforme a seleção avança, e por enquanto só cobre a faixa A.
 
 | Litologia | Faixa | Situação na seleção | Anotado em |
 |---|---|---|---|
-| shadow_white | A | ⏸️ pulada — difícil julgar o que é defeito | 03/10/2026 |
-| san_francisco_green | A | ⏸️ pulada — mesmo motivo | 07/10/2026 |
+| shadow_white | A | ✅ 4/4 — pulada em 03/10/2026, selecionada em 08/10/2026 | 03/10/2026 |
+| san_francisco_green | A | ✅ 4/4 — pulada em 07/10/2026, selecionada em 08/10/2026 | 07/10/2026 |
 | white_mirage | A | ✅ 4/4 selecionadas, mesmo sendo movimentada | 07/10/2026 |
+| golden_storm | A | ✅ 4/4 selecionadas, mesmo sendo movimentada | 08/10/2026 |
 
-As duas puladas esperam a opinião de alguém da faculdade que conheça mais de rocha. A ajuda foi
-pedida e, até 07/10/2026, **ainda não veio**.
+**As quatro estão selecionadas.** As duas que tinham sido puladas foram feitas em 08/10/2026
+**sem a opinião de especialista** — a ajuda foi pedida na faculdade e até essa data não veio, e a
+**D20** já havia decidido que ela não bloqueia a calibração. O autor registrou que a seleção
+dessas duas **foi difícil**. É isso que a calibração precisa medir: nas quatro movimentadas, o
+limiar escolhido pelo autor é o elo frouxo, e o critério escrito de cada `calibracao.json` deve
+dizer que a marcação saiu sem conferência de quem conhece rocha.
 
 ### Por que isto é um tópico, e não só um atraso
 

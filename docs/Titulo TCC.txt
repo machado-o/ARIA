@@ -1,0 +1,33 @@
+ARIA - Análise e Reconhecimento Inteligente de Anomalias
+
+Titulos:
+
+ARIA: Pipeline Hierárquico de Visão Computacional com abordagem Teacher-Student para Marcação Automatizada de Anomalias por Pseudo-Rotulagem em Chapas de Rochas Ornamentais com Critério Parametrizado por Litologia
+
+Todas as ideias estão certas, mas ficou longo demais: são 25 palavras. Também há sobreposição e uma ambiguidade.
+
+  O que pesa:
+
+  1. Teacher-Student e "Pseudo-Rotulagem" dizem a mesma coisa. Pseudo-rotulagem é justamente o que acontece numa abordagem Professor–Aluno: o
+     Professor gera os rótulos e o Aluno aprende com eles. Basta um dos dois.
+  2. "Pipeline Hierárquico de Visão Computacional" é genérico. Quase todo trabalho da área cabe nessa descrição, então são 6 palavras que não
+     distinguem o ARIA. A hierarquia (Xception → SAM3 → YOLO) se explica melhor no resumo.
+  3. Os conectores ficam ambíguos. No trecho "…em Chapas de Rochas Ornamentais com Critério Parametrizado…", dá para ler como se as chapas
+     tivessem o critério. Com "com", "para", "por", "em" e "com" encadeados, o leitor perde a referência.
+  4. Detalhes de forma: "abordagem" está em minúscula no meio de palavras capitalizadas, e Teacher-Student teria de ir em itálico (§7.4).
+
+  Versões enxutas que mantêm o que você quer:
+
+  - ARIA: Marcação Automatizada de Anomalias em Chapas de Rochas Ornamentais por Pseudo-Rotulagem com Critério Parametrizado por Litologia
+    (17 palavras)
+    Fica com pseudo-rotulagem, que é o termo da literatura (Soft Teacher, Unbiased Teacher), e deixa a abordagem Professor–Aluno para o
+    resumo.
+  - ARIA: Marcação Automatizada de Anomalias em Chapas de Rochas Ornamentais com Abordagem Professor–Aluno e Critério Parametrizado por
+    Litologia (18 palavras)
+    Fica com Professor–Aluno, em português e sem itálico.
+
+  As duas mantêm "ARIA", "marcação automatizada", o mecanismo e a tese (D3). Fica de fora só o "pipeline hierárquico de visão computacional",
+  que é o que menos diz sobre o trabalho.
+
+  Eu iria na primeira. As palavras-chave e o resumo cobrem "visão computacional", "Teacher-Student" e "pipeline hierárquico" sem pesar no
+  título. Quando escolher, aplico em macros.tex e registro a decisão em decisoes.md.
