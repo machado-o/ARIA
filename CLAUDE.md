@@ -73,6 +73,7 @@ Todos rodam a partir de `AI/SAM/`, com o Python do venv em `AI/.venv` (`..\.venv
 ```bash
 ..\.venv\Scripts\python.exe rock_viewer.py                 # seleção de imagem: próxima litologia pendente
 ..\.venv\Scripts\python.exe rock_viewer.py <rock_name>     # litologia específica
+..\.venv\Scripts\python.exe rock_viewer.py <rock_name>     # ...se já 4/4: abre em REVISÃO (ver/substituir)
 ..\.venv\Scripts\python.exe -m streamlit run calibrator.py # calibrador (sondas + limiar)
 ..\.venv\Scripts\python.exe inference.py                   # inferência SAM: lê selectRocks/, grava em results/
 ..\.venv\Scripts\python.exe verificar_d18.py                # prova que a varredura offline é exata (D18)
@@ -168,6 +169,13 @@ results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
   **2,5×**. Tratar no pós-processamento do Professor — `docs/roadmap.md` → Fase 3.0.
 - **`rock_viewer.py` ordena por volume de dados** (faixa A primeiro), não em ordem alfabética: a
   ordem **é** a prioridade de trabalho. Cada litologia tem 4 vagas nomeadas pelo papel.
+- **Litologia 4/4 abre em modo revisão**, não recusa. `rock_viewer.py <rocha>` numa litologia
+  completa mostra a grade com as 4 escolhas no topo (serve para só olhar as imagens — Enter sai
+  sem alterar nada) e oferece substituir uma vaga. Se há `calibracao.json`, a troca exige digitar
+  `SUBSTITUIR`, e a troca é registrada em `substituicoes` do `meta.json`. O calibrador lê esse
+  histórico: vaga trocada depois do `calibrado_em` faz a litologia aparecer como **⊘
+  desatualizada**, não como calibrada — o limiar continua escrito, mas não foi escolhido nas 4
+  imagens atuais. Quem grava `calibracao.json` continua sendo só o calibrador.
 - **`sam_cache.py`** implementa a varredura offline de limiar (**D18**): roda o SAM uma vez com
   `conf` no piso, guarda scores + polígonos, e filtra sem GPU. Equivalência provada no fonte do
   ultralytics **e verificada empiricamente** — `python verificar_d18.py` compara a filtragem do

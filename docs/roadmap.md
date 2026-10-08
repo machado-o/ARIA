@@ -16,7 +16,7 @@ em [`decisoes.md`](decisoes.md).
 
 | Componente | Estado |
 |---|---|
-| `rock_viewer.py` — seleção das 4 vagas | ✅ reescrito para o protocolo D17 |
+| `rock_viewer.py` — seleção das 4 vagas | ✅ reescrito para o protocolo D17; **modo revisão** (2026-10-08) numa litologia 4/4 |
 | `calibrator.py` — UI de calibração | ✅ **reescrito** (2026-09-26): 3 abas, um slider, 4 previews |
 | `inference.py` — inferência sobre `selectRocks/` | ✅ funciona; já aceita o layout em pasta |
 | `sam_cache.py` — varredura offline de limiar | ✅ núcleo pronto (D18) |
@@ -81,7 +81,8 @@ especialista**, que não veio. Elas, a `white_mirage` e a `golden_storm` são ro
 
 ```bash
 cd AI/SAM
-python rock_viewer.py          # entrega siena_white / descoberta, e segue em ordem de faixa
+python rock_viewer.py          # próxima vaga pendente, em ordem de faixa
+python rock_viewer.py <rocha>  # completa as vagas — ou, se já 4/4, abre em revisão
 python rock_viewer.py --all    # mostra val/ e test/ para estudo (não selecionáveis)
 ```
 

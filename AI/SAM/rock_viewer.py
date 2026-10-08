@@ -18,8 +18,14 @@ não em ordem alfabética — a ordem é a prioridade de trabalho (D6, D15).
 Uso:
     python rock_viewer.py                 # próxima vaga pendente, em ordem de faixa
     python rock_viewer.py <litologia>     # completa as vagas de uma litologia
+    python rock_viewer.py <litologia>     # ...ou, se ela já estiver 4/4, abre em REVISÃO
     python rock_viewer.py --cols 6        # grade mais larga
     python rock_viewer.py --all           # mostra val/ e test/ para estudo (não selecionáveis)
+
+Na revisão a grade abre com as 4 escolhas no topo e nada é alterado até você
+pedir: dá para só olhar as imagens da litologia. Substituir uma vaga de uma
+litologia que já tem `calibracao.json` exige confirmação digitada — o limiar
+gravado lá foi escolhido em cima das 4 imagens atuais.
 """
 
 import argparse
@@ -52,6 +58,10 @@ IMG_EXTS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff"}
 SPLIT_CALIBRACAO = "train"
 
 META_NAME = "meta.json"
+
+# Quem escreve este arquivo é o calibrador; aqui ele é só lido, para avisar
+# que substituir uma vaga desencontra o limiar das imagens que o produziram.
+CALIB_NAME = "calibracao.json"
 
 # Faixas de volume de dados — a ordem de trabalho segue a faixa (D6).
 FAIXAS = (("A", 1000), ("B", 500), ("C", 200), ("D", 0))
@@ -213,6 +223,51 @@ def ler_meta(rock_name: str) -> dict:
         except json.JSONDecodeError:
             pass
     return {"rock": rock_name, "slots": {}}
+
+
+def ler_calibracao(rock_name: str) -> dict | None:
+    """O `calibracao.json` desta litologia, se existir. Somente leitura."""
+    f = rock_slot_dir(rock_name) / CALIB_NAME
+    if not f.exists():
+        return None
+    try:
+        return json.loads(f.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+
+
+def origem_da_vaga(rock_name: str, papel: str) -> str | None:
+    """De onde saiu a imagem que está nesta vaga, segundo o meta.json."""
+    return ler_meta(rock_name).get("slots", {}).get(papel, {}).get("origem")
+
+
+def registrar_substituicao(
+    rock_name: str,
+    papel: str,
+    origem_anterior: str | None,
+    origem_nova: str | None,
+    havia_calibracao: bool,
+) -> None:
+    """Acrescenta a troca ao histórico do meta.json.
+
+    A vaga em si já foi reescrita por `gravar_meta`, que guarda só a escolha
+    atual. O histórico é o que permite dizer, depois, que o `calibracao.json`
+    de uma litologia não corresponde mais às imagens que o geraram — é assim
+    que o calibrador descobre que a calibração ficou desatualizada.
+    """
+    meta = ler_meta(rock_name)
+    meta.setdefault("substituicoes", []).append({
+        "vaga": papel,
+        "origem_anterior": origem_anterior,
+        "origem_nova": origem_nova,
+        "em": datetime.now().isoformat(timespec="seconds"),
+        "havia_calibracao": havia_calibracao,
+    })
+    d = rock_slot_dir(rock_name)
+    d.mkdir(parents=True, exist_ok=True)
+    (d / META_NAME).write_text(
+        json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
 
 
 def gravar_meta(rock_name: str, papel: str, split: str, origem: Path, destino: Path) -> None:
@@ -386,7 +441,7 @@ _TEMPLATE = """<!DOCTYPE html>
   </div>
   <div class="slots">__SLOTS__</div>
   <div class="brief">
-    <h2>Vaga __IDX_PAPEL__ de 4 · __PAPEL_ROTULO__</h2>
+    <h2>__CABECALHO__</h2>
     <p>__PAPEL_DICA__</p>
     <p class="hint">Clique para ampliar · <kbd>←</kbd> <kbd>→</kbd> navegam · <kbd>Esc</kbd> fecha ·
        o número escolhido vai no terminal.</p>
@@ -445,15 +500,26 @@ document.addEventListener('keydown', e => {
 """
 
 
+# Modo revisão: `papel=None`. Nenhuma vaga fica em destaque, as 4 aparecem com
+# miniatura e o texto diz que nada muda até o terminal pedir.
+REVISAO_INFO = (
+    "Revisão",
+    "As 4 vagas estão preenchidas. Confira as escolhas no topo — e, se for o "
+    "caso, escolha no terminal qual substituir. Sair não altera nada.",
+    "#94a3b8",
+)
+
+
 def build_html(
     rock_name: str,
     images: list[tuple[str, Path]],
     cols: int,
-    papel: str,
+    papel: str | None,
     preenchidos: dict[str, Path],
     todos_os_splits: bool,
 ) -> str:
-    rotulo, dica, cor = PAPEL_INFO[papel]
+    """Monta a grade. `papel=None` abre em revisão, sem vaga em destaque."""
+    rotulo, dica, cor = REVISAO_INFO if papel is None else PAPEL_INFO[papel]
 
     cards, srcs, labels, bloq = [], [], [], []
     for i, (split, path) in enumerate(images):
@@ -497,7 +563,11 @@ def build_html(
         "__COR__": cor,
         "__PAPEL_ROTULO__": rotulo,
         "__PAPEL_DICA__": dica,
-        "__IDX_PAPEL__": str(PAPEL_CHAVES.index(papel) + 1),
+        "__CABECALHO__": (
+            f"{len(preenchidos)} de {len(PAPEL_CHAVES)} vagas · {rotulo}"
+            if papel is None
+            else f"Vaga {PAPEL_CHAVES.index(papel) + 1} de {len(PAPEL_CHAVES)} · {rotulo}"
+        ),
         "__SLOTS__": "\n".join(slots_html),
         "__CARDS__": "\n".join(cards),
         "__SRCS__": json.dumps(srcs),
@@ -592,6 +662,93 @@ def completar_rocha(rock_name: str, cols: int, todos_os_splits: bool) -> bool:
     return True
 
 
+def _confirmar_troca_calibrada(rock_name: str, papel: str, calib: dict) -> bool:
+    """Avisa que a litologia está calibrada e exige confirmação digitada."""
+    rotulo = PAPEL_INFO[papel][0]
+    # O limiar é por sonda; mostrar os três primeiros basta para situar.
+    sondas = calib.get("sondas", {})
+    limiares = ", ".join(
+        f"{nome} {dados.get('limiar_trabalho', '?')}"
+        for nome, dados in list(sondas.items())[:3]
+    ) or "sem sonda registrada"
+    print()
+    print(f"  [ATENÇÃO] {rock_name} já tem {CALIB_NAME}.")
+    print(f"  Calibrada em {calib.get('calibrado_em', '?')}  ·  limiar de trabalho: {limiares}")
+    print(f"  Esse limiar foi escolhido olhando as 4 imagens que estão aí agora.")
+    print(f"  Trocar a vaga [{rotulo}] desencontra a calibração das imagens que a")
+    print(f"  produziram; o calibrador vai passar a mostrá-la como desatualizada.")
+    return input("  digite SUBSTITUIR para confirmar (qualquer outra coisa cancela): ").strip() == "SUBSTITUIR"
+
+
+def revisar_rocha(rock_name: str, cols: int, todos_os_splits: bool) -> None:
+    """Abre uma litologia já completa: mostra as escolhas e permite substituir.
+
+    Só olhar é o caminho barato — Enter sai sem tocar em nada.
+    """
+    while True:
+        preenchidos = slots_preenchidos(rock_name)
+        if len(preenchidos) < len(PAPEL_CHAVES):
+            # Uma vaga ficou vazia no meio da revisão (troca cancelada depois de
+            # apagar, por exemplo). Volta para o fluxo normal de preenchimento.
+            completar_rocha(rock_name, cols, todos_os_splits)
+            return
+
+        images = collect_images(rock_name, todos_os_splits=todos_os_splits)
+        if not images:
+            print(f"[ERRO] Nenhuma imagem para '{rock_name}' em {DATASET_DIR}/")
+            return
+
+        calib = ler_calibracao(rock_name)
+        print()
+        print(f"  {rock_name}  ·  faixa {faixa_of(rock_name)}  ·  4/4 vagas — revisão")
+        for i, chave in enumerate(PAPEL_CHAVES, start=1):
+            origem = origem_da_vaga(rock_name, chave) or "origem não registrada"
+            print(f"    {i}. {PAPEL_INFO[chave][0]:<16} {origem}")
+        if calib is not None:
+            print(f"  [{CALIB_NAME}] calibrada em {calib.get('calibrado_em', '?')}")
+        if todos_os_splits:
+            print("  [--all] val/ e test/ aparecem para estudo, mas não são selecionáveis (D17).")
+
+        html = build_html(rock_name, images, cols, None, preenchidos, todos_os_splits)
+        tmp = tempfile.NamedTemporaryFile(
+            suffix=".html", delete=False, mode="w", encoding="utf-8",
+            prefix=f"rock_viewer_{rock_name}_revisao_",
+        )
+        tmp.write(html)
+        tmp.flush()
+        tmp_path = Path(tmp.name)
+        tmp.close()
+        webbrowser.open(tmp_path.as_uri())
+
+        print()
+        raw = input("  vaga para substituir [1-4] (Enter sai): ").strip()
+        if raw == "":
+            print("  nada alterado.")
+            return
+        try:
+            n = int(raw)
+        except ValueError:
+            print("  digite apenas o número da vaga.")
+            continue
+        if not 1 <= n <= len(PAPEL_CHAVES):
+            print(f"  fora do intervalo (1 a {len(PAPEL_CHAVES)}).")
+            continue
+
+        papel = PAPEL_CHAVES[n - 1]
+        if calib is not None and not _confirmar_troca_calibrada(rock_name, papel, calib):
+            print("  cancelado — nada alterado.")
+            continue
+
+        origem_anterior = origem_da_vaga(rock_name, papel)
+        if preencher_vaga(rock_name, papel, cols, todos_os_splits):
+            registrar_substituicao(
+                rock_name, papel, origem_anterior,
+                origem_da_vaga(rock_name, papel),
+                havia_calibracao=calib is not None,
+            )
+            print(f"  histórico da troca gravado em {META_NAME}.")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Seleção manual das 4 imagens de calibração por litologia (D17)."
@@ -613,7 +770,9 @@ def main() -> None:
 
     if args.rock is not None:
         if proximo_papel(args.rock) is None:
-            print(f"{args.rock} já tem as 4 vagas preenchidas.")
+            # Completa: em vez de recusar, abre em revisão — dá para só olhar as
+            # imagens da litologia, e para substituir uma vaga se precisar.
+            revisar_rocha(args.rock, args.cols, args.todos_os_splits)
             return
         completar_rocha(args.rock, args.cols, args.todos_os_splits)
         return

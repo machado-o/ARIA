@@ -190,8 +190,9 @@
   média"; a regra é a chapa **mais comum** da rocha, limpa se a rocha costuma ser limpa. É ela
   que impede o limiar de descer demais, porque mostra se ele marca matriz limpa. Revisão: só a
   `ubatuba_green` mudou (`train/175` → `train/2031`); nas outras duas a maioria das chapas tem
-  mesmo algum defeito, e a escolha já seguia a regra. Para refazer uma vaga: apagar o arquivo
-  dela e rodar `rock_viewer.py <rocha>`, que reabre só a vaga vazia.
+  mesmo algum defeito, e a escolha já seguia a regra. Para refazer uma vaga, desde 08/10/2026
+  basta `rock_viewer.py <rocha>`: a litologia completa abre em revisão e oferece substituir a
+  vaga (não é mais preciso apagar o arquivo à mão).
 - [x] ~~**Terminar o `calibrator.py`**~~ — feito em 2026-09-26: 3 abas (descoberta / limiar /
   fechar), um slider com as 4 previews simultâneas sobre o cache do `sam_cache.py`, curva de
   limiar com o joelho marcado como sugestão, e critério de texto obrigatório para salvar.

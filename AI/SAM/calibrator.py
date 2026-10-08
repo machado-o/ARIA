@@ -215,17 +215,37 @@ def gravar_calib(rocha: str, sondas: dict[str, float], regra: dict[str, float | 
                  encoding="utf-8")
 
 
+def calibracao_desatualizada(rocha: str, calib: dict) -> bool:
+    """Alguma vaga foi substituída depois de a calibração ter sido salva?
+
+    O `rock_viewer` grava as trocas em `substituicoes` do `meta.json` (ele é o
+    dono daquele arquivo). Se uma troca é posterior ao `calibrado_em`, o limiar
+    gravado aqui não corresponde mais às imagens que o produziram.
+    """
+    calibrado_em = calib.get("calibrado_em")
+    if not calibrado_em:
+        return False
+    return any(
+        sub.get("em", "") > calibrado_em
+        for sub in protocolo.ler_meta(rocha).get("substituicoes", [])
+    )
+
+
 def estado_rocha(rocha: str) -> str:
-    """'sem_vagas' | 'vagas_parciais' | 'pronta' | 'calibrada'
+    """'sem_vagas' | 'vagas_parciais' | 'pronta' | 'calibrada' | 'desatualizada'
 
     "Calibrada" é ter `calibracao.json` — ou seja, limiar E critério escritos.
     Não basta o SAM ter rodado: `rock_prompts.json` é provisório (D15).
+
+    "Desatualizada" é ter `calibracao.json` cujas imagens mudaram depois: o
+    limiar continua escrito, mas não foi escolhido nas 4 vagas atuais, então
+    não conta como calibrada.
     """
     n = len(protocolo.slots_preenchidos(rocha))
     if n == 0:
         return "sem_vagas"
-    if ler_calib(rocha) is not None:
-        return "calibrada"
+    if (calib := ler_calib(rocha)) is not None:
+        return "desatualizada" if calibracao_desatualizada(rocha, calib) else "calibrada"
     return "pronta" if n == len(PAPEIS) else "vagas_parciais"
 
 
@@ -536,7 +556,8 @@ def curva(rocha: str, sonda: str, grade: list[float]) -> pd.DataFrame:
 # Barra lateral
 # ══════════════════════════════════════════════════════════════════════════════
 
-ICONE = {"sem_vagas": "·", "vagas_parciais": "◐", "pronta": "○", "calibrada": "●"}
+ICONE = {"sem_vagas": "·", "vagas_parciais": "◐", "pronta": "○", "calibrada": "●",
+         "desatualizada": "⊘"}
 
 
 def barra_lateral() -> None:
@@ -557,7 +578,7 @@ def barra_lateral() -> None:
         st.progress(feitas / total if total else 0.0)
 
         st.divider()
-        st.caption("● calibrada · ○ 4/4 pronta · ◐ incompleta · `·` sem vagas")
+        st.caption("● calibrada · ⊘ desatualizada · ○ 4/4 pronta · ◐ incompleta · `·` sem vagas")
         with st.container(height=260, border=False):
             for r in rochas:
                 e = estados[r]
@@ -978,7 +999,8 @@ def principal() -> None:
     meta = protocolo.ler_meta(rocha)
     n = len(protocolo.slots_preenchidos(rocha))
     e = estado_rocha(rocha)
-    selo = {"calibrada": "● calibrada", "pronta": "○ pronta",
+    selo = {"calibrada": "● calibrada", "desatualizada": "⊘ desatualizada",
+            "pronta": "○ pronta",
             "vagas_parciais": "◐ incompleta", "sem_vagas": "sem vagas"}[e]
 
     st.markdown(f"## `{rocha}`")
@@ -991,6 +1013,17 @@ def principal() -> None:
 
     if e == "calibrada":
         st.info("Esta litologia já tem `calibracao.json`. Salvar de novo sobrescreve.")
+    elif e == "desatualizada":
+        trocas = [
+            s_ for s_ in meta.get("substituicoes", [])
+            if s_.get("em", "") > (ler_calib(rocha) or {}).get("calibrado_em", "")
+        ]
+        quais = ", ".join(sorted({s_.get("vaga", "?") for s_ in trocas}))
+        st.warning(
+            f"**Calibração desatualizada.** O `calibracao.json` foi salvo antes de "
+            f"a(s) vaga(s) **{quais}** serem substituídas, então o limiar gravado "
+            f"não foi escolhido nas 4 imagens atuais. Recalibrar e salvar resolve."
+        )
 
     t1, t2, t3 = st.tabs(["1 · Descoberta", "2 · Limiar", "3 · Fechar"])
     with t1:
