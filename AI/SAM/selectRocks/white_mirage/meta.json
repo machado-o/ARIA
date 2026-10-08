@@ -1,0 +1,27 @@
+{
+  "rock": "white_mirage",
+  "slots": {
+    "descoberta": {
+      "arquivo": "descoberta.JPG",
+      "origem": "train/353.JPG",
+      "selecionado_em": "2026-10-07T21:51:22"
+    },
+    "limiar_sutil": {
+      "arquivo": "limiar_sutil.JPG",
+      "origem": "train/123.JPG",
+      "selecionado_em": "2026-10-07T21:51:39"
+    },
+    "limiar_tipica": {
+      "arquivo": "limiar_tipica.JPG",
+      "origem": "train/614.JPG",
+      "selecionado_em": "2026-10-07T21:52:14"
+    },
+    "limiar_forte": {
+      "arquivo": "limiar_forte.JPG",
+      "origem": "train/367.JPG",
+      "selecionado_em": "2026-10-07T21:52:49"
+    }
+  },
+  "faixa": "A",
+  "total_imagens_litologia": 1219
+}
