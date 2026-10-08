@@ -1,0 +1,27 @@
+{
+  "rock": "white_olympus",
+  "slots": {
+    "descoberta": {
+      "arquivo": "descoberta.JPG",
+      "origem": "train/721.JPG",
+      "selecionado_em": "2026-10-08T12:18:30"
+    },
+    "limiar_sutil": {
+      "arquivo": "limiar_sutil.JPG",
+      "origem": "train/253.JPG",
+      "selecionado_em": "2026-10-08T12:18:49"
+    },
+    "limiar_tipica": {
+      "arquivo": "limiar_tipica.JPG",
+      "origem": "train/21.JPG",
+      "selecionado_em": "2026-10-08T12:19:01"
+    },
+    "limiar_forte": {
+      "arquivo": "limiar_forte.JPG",
+      "origem": "train/369.JPG",
+      "selecionado_em": "2026-10-08T12:20:18"
+    }
+  },
+  "faixa": "A",
+  "total_imagens_litologia": 1153
+}

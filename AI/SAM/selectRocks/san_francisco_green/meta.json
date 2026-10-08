@@ -1,0 +1,27 @@
+{
+  "rock": "san_francisco_green",
+  "slots": {
+    "descoberta": {
+      "arquivo": "descoberta.JPG",
+      "origem": "train/152.JPG",
+      "selecionado_em": "2026-10-08T15:13:30"
+    },
+    "limiar_sutil": {
+      "arquivo": "limiar_sutil.JPG",
+      "origem": "train/16.JPG",
+      "selecionado_em": "2026-10-08T15:13:38"
+    },
+    "limiar_tipica": {
+      "arquivo": "limiar_tipica.JPG",
+      "origem": "train/51.JPG",
+      "selecionado_em": "2026-10-08T15:14:46"
+    },
+    "limiar_forte": {
+      "arquivo": "limiar_forte.JPG",
+      "origem": "train/426.JPG",
+      "selecionado_em": "2026-10-08T15:15:14"
+    }
+  },
+  "faixa": "A",
+  "total_imagens_litologia": 1404
+}

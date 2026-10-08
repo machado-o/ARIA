@@ -1,0 +1,27 @@
+{
+  "rock": "golden_storm",
+  "slots": {
+    "descoberta": {
+      "arquivo": "descoberta.JPG",
+      "origem": "train/477.JPG",
+      "selecionado_em": "2026-10-08T12:01:44"
+    },
+    "limiar_sutil": {
+      "arquivo": "limiar_sutil.JPG",
+      "origem": "train/615.JPG",
+      "selecionado_em": "2026-10-08T12:02:23"
+    },
+    "limiar_tipica": {
+      "arquivo": "limiar_tipica.JPG",
+      "origem": "train/180.JPG",
+      "selecionado_em": "2026-10-08T12:02:35"
+    },
+    "limiar_forte": {
+      "arquivo": "limiar_forte.JPG",
+      "origem": "train/469.JPG",
+      "selecionado_em": "2026-10-08T12:02:51"
+    }
+  },
+  "faixa": "A",
+  "total_imagens_litologia": 1185
+}
