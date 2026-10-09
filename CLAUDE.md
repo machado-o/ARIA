@@ -53,14 +53,33 @@ Cada fato mora em **um** lugar só (DRY). Antes de escrever ou codar, consultar 
 ```bash
 cd AI
 python -m venv .venv
-.venv\Scripts\pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
-.venv\Scripts\pip install ultralytics openai-clip opencv-python streamlit altair pandas timm
+.venv\Scripts\pip install torch torchvision --index-url https://download.pytorch.org/whl/cuXXX
+.venv\Scripts\pip install ultralytics openai-clip opencv-python-headless streamlit timm
 ```
+
+> `cuXXX` **depende do driver desta máquina** — veja em <https://pytorch.org/get-started/locally/>
+> qual índice serve para o driver que o `nvidia-smi` reportar. `opencv-python-headless` em vez de
+> `opencv-python` porque nenhum script abre janela do OpenCV. `altair` e `pandas` não precisam ser
+> pedidos: vêm com o streamlit.
 
 > O `.venv` vive em **`AI/.venv`**, um nível acima de `AI/SAM/`. Rodando os scripts a partir de
 > `AI/SAM/`, o interpretador é `..\.venv\Scripts\python.exe`. O índice CUDA (`cuXXX`) depende do
-> driver — a instalação de hoje é `torch 2.11.0+cu128` num driver 596.49 (RTX 5060 Ti); confira
-> com `nvidia-smi` se mudar de máquina. Versão do ultralytics em uso: **8.4.61**. Python 3.14.2.
+> driver, e o Henrique alterna entre **dois PCs com hardware diferente** — então GPU, driver,
+> torch, Python e ultralytics **são diferentes de propósito**, e não há nada a "acertar".
+>
+> **Regra: nenhum documento compartilhado guarda número de máquina.** Até 09/10/2026 este
+> parágrafo dizia RTX 5060 Ti / driver 596.49 / torch 2.11.0+cu128 / ultralytics 8.4.61 /
+> Python 3.14.2 — números da **outra** máquina, escritos como se fossem deste PC. Para saber onde
+> você está:
+>
+> ```bash
+> cd AI
+> .venv\Scripts\python.exe ambiente.py
+> ```
+>
+> Ele mostra máquina, GPU, driver, versões, quais pesos existem **nesta** máquina (`sam3.pt`,
+> `xception_480.pt` — nenhum vai para o git) e se a **D18** já foi verificada na versão do
+> ultralytics daqui.
 >
 > Neste PC o venv foi recriado em `AI/.venv` em 03/10/2026, com o mesmo `pip freeze` do antigo
 > `AI/SAM/.venv` (apagado). Na outra máquina, se o venv ainda estiver em `AI/SAM/.venv`, recriar
@@ -68,12 +87,17 @@ python -m venv .venv
 
 ## Comandos
 
-Todos rodam a partir de `AI/SAM/`, com o Python do venv em `AI/.venv` (`..\.venv\Scripts\`).
+Onde estou e o que esta máquina pode rodar, a partir de `AI/`:
+
+```bash
+.venv\Scripts\python.exe ambiente.py        # máquina, GPU, versões, pesos, estado da D18
+```
+
+Os demais rodam a partir de `AI/SAM/`, com o Python do venv em `AI/.venv` (`..\.venv\Scripts\`).
 
 ```bash
 ..\.venv\Scripts\python.exe rock_viewer.py                 # seleção de imagem: próxima litologia pendente
-..\.venv\Scripts\python.exe rock_viewer.py <rock_name>     # litologia específica
-..\.venv\Scripts\python.exe rock_viewer.py <rock_name>     # ...se já 4/4: abre em REVISÃO (ver/substituir)
+..\.venv\Scripts\python.exe rock_viewer.py <rock_name>     # litologia específica (se já 4/4, abre em REVISÃO)
 ..\.venv\Scripts\python.exe -m streamlit run calibrator.py # calibrador (sondas + limiar)
 ..\.venv\Scripts\python.exe inference.py                   # inferência SAM: lê selectRocks/, grava em results/
 ..\.venv\Scripts\python.exe verificar_d18.py                # prova que a varredura offline é exata (D18)
@@ -103,11 +127,12 @@ selectRocks/<rock>/meta.json           ← de onde veio cada uma (reprodutibilid
 calibrator.py  →  SAM uma vez por (imagem, sonda) no piso de conf  (D18)
 selectRocks/<rock>/_cache/<vaga>__<sonda>.npz   ← scores + polígonos (gitignored)
         ↓  varredura de limiar offline, sem GPU
-rock_prompts.json                      ← { litologia: { sonda: limiar } }
+rock_prompts.json                      ← { litologia: { sonda: limiar } }  — PROVISÓRIO (D15)
 selectRocks/<rock>/calibracao.json     ← limiar + contagem por vaga + CRITÉRIO escrito
-        ↓
+        ↓  o limiar do inference.py sai do calibracao.json, não do rock_prompts.json
 inference.py (SAM3SemanticPredictor)
         ↓
+results/<rock>/procedencia.json                    ← de onde veio cada limiar desta rodada
 results/<rock>/<stem>/<stem>_<sonda>_<conf>.jpg   ← máscara por sonda
 results/<rock>/<stem>/<stem>_combined.jpg          ← sobreposição
 results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
@@ -139,10 +164,24 @@ results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
   `AI/Dataset/` miscased) são ignorados. `samples/` é a demo commitada (só `ice_leke`).
 - **Sonda fora do `CLASS_ID_MAP` não vira rótulo.** `inference.py` valida toda a configuração e
   aborta **antes de carregar o modelo**; o `calibrator.py` deixa explorar a sonda mas não a salva
-  em `rock_prompts.json`. Para usar uma sonda nova, registre-a no `CLASS_ID_MAP` dos dois
-  arquivos (**D8**).
-- **`rock_prompts.json` é PROVISÓRIO** (**D15**) — não tratar como calibração feita. Calibração
-  feita é a que tem **`calibracao.json`** ao lado das vagas (limiar + critério escrito); é isso
+  em `rock_prompts.json`. O cadastro (id **e** cor) mora num lugar só, `AI/SAM/sondas.py`:
+  registre a sonda nova lá e só lá (**D8**). O id é posicional e vai para o `.txt` — sonda nova
+  entra no fim, nunca renumere uma já usada.
+- **O `inference.py` só roda sobre litologia calibrada.** O limiar sai do `calibracao.json`;
+  litologia sem calibração (ou com calibração desatualizada) é **recusada e listada**, antes de o
+  modelo carregar. Até 09/10/2026 ele tinha três redes de segurança encadeadas — arquivo ausente
+  virava config vazia, rocha sem config caía na entrada `"default"` do `rock_prompts.json`, e a
+  ausência dela caía em três limiares chumbados no código — então **nunca se recusava a rodar**:
+  gerava `.txt` com números inventados, idênticos por fora aos de uma rocha calibrada. Para
+  explorar com os limiares provisórios existe `--provisorio`, e aí o
+  `results/<rock>/procedencia.json` grava que foi provisório. Esse arquivo é a resposta para "de
+  onde veio este limiar?" — ele sai em toda rodada, junto das máscaras.
+- **`rock_prompts.json` agora só tem litologia calibrada.** Em 09/10/2026 os 45 valores
+  provisórios (e a entrada `"default"`) foram **apagados** — eram chutes de antes da **D17**,
+  copiados entre litologias, que a **D15** já declarava sem valor e que nada no código usava mais.
+  Sobrou a `siena_white`. Regra nova e simples: **quem não está no arquivo não foi calibrado.**
+  Quem escreve nele é o calibrador. Os valores antigos estão no histórico do git. Calibração feita
+  é a que tem **`calibracao.json`** ao lado das vagas (limiar + critério escrito); é isso
   que o calibrador usa para dizer "calibrada". Estado: **44 de 180 vagas — a faixa A fechou em
   08/10/2026**, as 11 litologias com 4/4: `siena_white` (08/09/2026), `nevada_black`
   (02/10/2026), `ubatuba_green` e `ipanema_beige` (03/10/2026), `itaunas_white` (05/10/2026),
@@ -154,9 +193,10 @@ results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
 - **Mais de uma máquina.** O Henrique alterna entre este PC e outro. O que precisa existir nos
   dois vai para o **git**; `_cache/`, `results/`, o `.venv` e o `sam3.pt` não vão, e cada máquina
   tem os seus. **A versão do ultralytics pode diferir entre elas** — cada `calibracao.json` grava
-  a versão usada (a `siena_white` foi calibrada na **8.4.52**; este PC tem a 8.4.61). A
-  equivalência da **D18** é verificada por versão: ao calibrar numa versão nova, rodar
-  `verificar_d18.py` nela antes.
+  a versão usada. A equivalência da **D18** depende dessa versão, não da máquina, então a
+  verificação agora **viaja no git**: o `verificar_d18.py`, ao passar, anota a versão em
+  `AI/SAM/d18_verificado.json`. Verificar numa máquina vale para a outra na mesma versão. Quem
+  responde "a versão daqui já está coberta?" é o `ambiente.py` — não a memória de ninguém.
 - **`cv2.imread` não abre caminho com acento no Windows** — e o caminho deste projeto tem acento
   (`…ARIA - Análise e Reconhecimento…`). A armadilha é que **importar o ultralytics
   monkey-patcha `cv2.imread`** por uma versão que aceita Unicode: quem importa ultralytics antes
@@ -172,10 +212,13 @@ results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
 - **Litologia 4/4 abre em modo revisão**, não recusa. `rock_viewer.py <rocha>` numa litologia
   completa mostra a grade com as 4 escolhas no topo (serve para só olhar as imagens — Enter sai
   sem alterar nada) e oferece substituir uma vaga. Se há `calibracao.json`, a troca exige digitar
-  `SUBSTITUIR`, e a troca é registrada em `substituicoes` do `meta.json`. O calibrador lê esse
-  histórico: vaga trocada depois do `calibrado_em` faz a litologia aparecer como **⊘
-  desatualizada**, não como calibrada — o limiar continua escrito, mas não foi escolhido nas 4
-  imagens atuais. Quem grava `calibracao.json` continua sendo só o calibrador.
+  `SUBSTITUIR`, e a troca é registrada em `substituicoes` do `meta.json`. Imagem nova na vaga
+  **apaga o `_cache/<vaga>__*.npz`** daquela vaga — o cache é indexado pela vaga, não pela
+  imagem, e reaproveitá-lo daria curva e polígonos da imagem antiga (reescolher a MESMA imagem
+  não apaga nada). O calibrador lê esse histórico: vaga trocada depois do `calibrado_em` faz a
+  litologia aparecer como **⊘ desatualizada**, não como calibrada — o limiar continua escrito,
+  mas não foi escolhido nas 4 imagens atuais. Quem grava `calibracao.json` continua sendo só
+  o calibrador.
 - **`sam_cache.py`** implementa a varredura offline de limiar (**D18**): roda o SAM uma vez com
   `conf` no piso, guarda scores + polígonos, e filtra sem GPU. Equivalência provada no fonte do
   ultralytics **e verificada empiricamente** — `python verificar_d18.py` compara a filtragem do

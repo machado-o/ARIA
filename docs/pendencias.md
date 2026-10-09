@@ -254,6 +254,12 @@
 - [ ] **Resumo e abstract:** acrescentar as frases de resultado e conclusão quando os
   experimentos rodarem.
 - [ ] **Conclusão §5.1:** sintetizar H1 e H2 — inclusive se o resultado for negativo.
+- [ ] **Escolher o título do TCC.** O `macros.tex` ainda tem o título antigo ("Redes Neurais
+  Convolucionais para o Controle de Qualidade de Rochas Ornamentais: Da Classificação à
+  Segmentação de Anomalias utilizando pipeline com abordagem *Teacher-Student*"), que não é
+  nenhuma das versões discutidas. As duas opções enxutas estão em `docs/Titulo TCC.txt`, um
+  arquivo que nenhum documento aponta — ele era a única cópia desta pendência. Quando escolher:
+  aplicar no `macros.tex` e fechar como decisão em `decisoes.md`.
 - [ ] **Banca:** `macros.tex` ainda tem "Fulana/Cicrano de Tal"; a aprovação está comentada.
 - [ ] **Dedicatória, agradecimentos e epígrafe** continuam com texto do template, comentados.
 - [ ] **Compilar no Overleaf.** Não há LaTeX nesta máquina — a conferência feita aqui é
@@ -293,6 +299,10 @@ ser portado para lá quando chegar a vez.
   `auditoria.md`, `revisao-artigo.md` e `artigo-sbc.md` consolidados aqui.
 - `CLAUDE.md` corrigido: afirmava que `rock_prompts.json` e `selectRocks/` eram gitignored (não
   são, estão versionados) e citava um typo `whte_liberdade` que não existe mais.
+  > ⚠️ **Esta segunda metade estava errada** (visto em 09/10/2026). O typo existia: a pasta do
+  > dataset era `whte_liberdade` e só o `rock_prompts.json` tinha sido corrigido, então a busca
+  > nunca casava e o `evaluate.py` quebrava. Resolvido de verdade em 09/10/2026 renomeando a
+  > pasta do dataset (**D9**).
 - Contagem do dataset corrigida em `dataset.md`: são **14** litologias com <200 imagens, não 7.
 - `apresentacao/roteiro.md` já estava com o orientador correto — o item estava desatualizado nas
   listas antigas.

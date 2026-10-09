@@ -30,8 +30,9 @@ polo produtor e exportador do país.
 
 ## D2 — Prompts são sondas de recall, não rótulos semânticos
 
-**Decisão:** As palavras usadas como prompt (`crack`, `vein`, `Stain`, `Dark patches`,
-`light spot`) **não são afirmações sobre a natureza do que foi encontrado**. São chaves lexicais
+**Decisão:** As palavras usadas como prompt (as seis da **D8**: `vein`, `crack`, `Stain`,
+`Dark patches`, `light spot`, `scratch`) **não são afirmações sobre a natureza do que foi
+encontrado**. São chaves lexicais
 escolhidas por fazerem o CLIP+SAM3 responder a certas assinaturas visuais. O objetivo do conjunto
 é **maximizar a cobertura de regiões anômalas**, não classificá-las.
 
@@ -160,11 +161,13 @@ honesto — *"e se tivéssemos tratado as 45 rochas como uma só?"*, que é o qu
 > mesmo tempo — o escopo **e** quem escolhe — e nenhum resultado seria atribuível. É isto que
 > obriga a regra da D17 a ser mecânica.
 
-> ⚠️ **O `"default"` que existe hoje no `rock_prompts.json`** (`crack 0,1 · vein 0,007 ·
-> Stain 0,3`) **não serve** para este braço: foi escolhido no olho e a própria **D15** o declara
+> ⚠️ **Havia um `"default"` no `rock_prompts.json`** (`crack 0,1 · vein 0,007 · Stain 0,3`) que
+> **não servia** para este braço: foi escolhido no olho e a própria **D15** o declarava
 > provisório. Medido na `siena_white`, o joelho da curva sugere `vein ≈ 0,145` contra os `0,007`
-> do arquivo — vinte vezes de diferença. Usá-lo seria montar um espantalho e perder o
-> experimento na arguição.
+> do arquivo — vinte vezes de diferença. Usá-lo seria montar um espantalho e perder o experimento
+> na arguição. **A entrada foi apagada em 09/10/2026** (**D15**), justamente para que ninguém a
+> pegue por engano; o braço default se constrói rodando a regra sobre o material reunido, como
+> descrito acima.
 
 **Justificativa:** é o experimento mais barato do projeto (não exige treino) e testa a **premissa
 de que todo o resto depende**. Hoje não existe nenhuma evidência no projeto de que calibrar muda
@@ -253,8 +256,15 @@ acerto, e torna a comparação entre braços sem sentido (cada braço teria um g
 | `scratch` | 5 |
 
 Novas sondas podem ser adicionadas ao `rock_prompts.json` **desde que registradas no
-`CLASS_ID_MAP`** de `inference.py` e `calibrator.py`. Como todos os IDs colapsam para 0 antes do
-treino (**D2**), registrar uma sonda a mais não altera o resultado — só amplia a cobertura.
+`CLASS_ID_MAP`**, que desde 09/10/2026 mora num lugar só: `AI/SAM/sondas.py`. Antes ele era
+duplicado em `inference.py` e `calibrator.py`, com um comentário pedindo que as duas cópias
+fossem mantidas iguais à mão — e a tabela de **cores** que acompanhava cada cópia já havia
+divergido (`Dark patches` saía preto puro no resultado final e magenta no calibrador). Como todos
+os IDs colapsam para 0 antes do treino (**D2**), registrar uma sonda a mais não altera o
+resultado — só amplia a cobertura.
+
+> O id é posicional e vai para o `.txt`: sonda nova entra **no fim**. Renumerar uma sonda já
+> usada faria os `.txt` já gravados passarem a dizer outra coisa, sem erro nenhum.
 
 `vein` **permanece** no conjunto. Pela D2 ela é uma sonda de recall, não uma afirmação de que a
 região é um veio mineral.
@@ -280,6 +290,16 @@ pré-processar um banco de imagens industriais"* é **factualmente falso** e pre
 
 **Benefício:** dataset público resolve de graça o statement de reprodutibilidade e elimina
 qualquer necessidade de citar empresa ou parceiro.
+
+**Uma pasta foi renomeada: `whte_liberdade` → `white_liberdade`** (09/10/2026, decisão do autor).
+O typo é do dataset original do Kaggle. É a **única** alteração feita no `AI/dataset/`, que fora
+isso continua somente-leitura, e precisa ser **refeita em toda máquina** — porque o índice de
+classe é a posição no nome ordenado, e `whte` cai depois de todos os `white_*`. Com o typo, sete
+classes (índices 37 a 43) ficavam em posições diferentes das do treino já salvo em
+`runs/xception_480/`, e nada avisava: dois treinos comparáveis por número passariam a falar de
+rochas diferentes. Conferido depois do rename: as 45 classes do disco batem exatamente com as do
+run salvo. Mencionar o rename no statement de reprodutibilidade, já que o dataset público tem a
+grafia antiga.
 
 - [x] ~~TODO: confirmar se o DeepStoneAI usou este mesmo conjunto~~ — **confirmado em
   2026-10-02.** O artigo do SBAI 2025 descreve as mesmas 34.630 imagens em 45 classes e cita este
@@ -337,10 +357,36 @@ o argumento do veio natural (D3).
 
 ## D15 — A calibração atual é PROVISÓRIA
 
-**Decisão:** o conteúdo atual do `rock_prompts.json` — 46 entradas, mas só **13 configurações
-distintas**, com 18 litologias compartilhando o mesmo conjunto — é **provisório e incerto**. Não é
-resultado de calibração validada e **não deve ser tratado como tal** por ninguém, em nenhum
-documento.
+**Decisão:** o conteúdo do `rock_prompts.json` escolhido antes do protocolo da **D17** é
+**provisório e incerto**. Não é resultado de calibração validada e **não deve ser tratado como
+tal** por ninguém, em nenhum documento.
+
+Medido em 23/08/2026, quando esta decisão foi escrita: 46 entradas, **13 configurações distintas**
+entre as 46, e **18 litologias** com o mesmo conjunto. Ou seja, o número era quase todo
+copiado — a configuração não era "da litologia", era de um grupo grande de litologias que ninguém
+havia olhado uma por uma.
+
+> ⚠️ Essa contagem **envelhece a cada calibração** e não deve ser reescrita a cada vez. Ela já
+> mudou uma vez por motivo legítimo: ao ser calibrada em 01/10/2026 a `siena_white` saiu do grupo
+> de 18 (que virou 17) e passou a ser uma configuração distinta a mais. Para contar de novo, não
+> confie neste parágrafo — conte:
+>
+> ```bash
+> cd AI/SAM && ..\.venv\Scripts\python.exe -c "import json,collections;d=json.load(open('rock_prompts.json',encoding='utf-8'));r={k:v for k,v in d.items() if not k.startswith('_')};a=collections.Counter(json.dumps(v,sort_keys=True) for v in r.values());print(len(r),'entradas',len(a),'distintas','maior grupo',a.most_common(1)[0][1])"
+> ```
+
+**Esvaziado em 09/10/2026 (decisão do autor).** Os valores provisórios **foram apagados do
+arquivo**; sobrou só a `siena_white`, a única calibrada de fato. O arquivo deixa de ser "chutes
+antigos que ninguém pode usar" e passa a ser o que o calibrador escreve quando uma litologia é
+calibrada: **quem não está nele não foi calibrado**. Os valores antigos continuam no histórico do
+git (commit anterior a esta data), então nada se perdeu.
+
+Por que foi seguro: nada no código dependia deles. O `inference.py` lê o `calibracao.json`
+(09/10/2026), e o calibrador, para litologia sem calibração, já semeava o limiar pela **regra**
+(`semear_da_regra`, o joelho da curva) e não pelo número do arquivo. O único efeito que o arquivo
+ainda tinha era deixar **sondas pré-marcadas** ao abrir uma litologia — o que contrariava a D17,
+em que é a imagem de **descoberta** que decide quais sondas entram. Esvaziar corrigiu isso de
+graça.
 
 O mesmo valia para as imagens de `selectRocks/`: a compreensão do autor sobre marcações e sobre
 rochas amadureceu desde que foram escolhidas. **A pasta foi zerada em 2026-08-23** e a seleção
@@ -496,9 +542,58 @@ ajuste em N das 11 litologias; nas outras, o autor divergiu em média X"*. Conco
 evidência a favor da regra; divergência sistemática é achado sobre onde a curva engana — e nos
 dois casos é melhor que "escolhi no olho".
 
+**A calibração vale pelas 4 imagens que a produziram** (2026-10-08). Trocar uma vaga depois de
+salvar o `calibracao.json` não apaga o limiar escrito, mas derruba a *afirmação* de que ele foi
+escolhido olhando aquelas imagens — e é a afirmação que o TCC reporta, não o número solto. Então
+a litologia volta a contar como **não calibrada** (⊘ *desatualizada* no calibrador) até alguém
+reconferir o limiar nas imagens novas e salvar de novo. Mecânica: o `rock_viewer.py` registra
+cada troca em `substituicoes` do `meta.json`; troca com data posterior ao `calibrado_em` derruba
+o selo. Reescolher a **mesma** imagem não é troca e não derruba nada. A troca também apaga o
+cache de máscaras daquela vaga (**D18**), que é indexado pela vaga e não pela imagem —
+reaproveitá-lo daria curva e polígonos da imagem antiga sob a imagem nova.
+
 - [x] ~~TODO: escolher entre (a) e (b)~~ — resolvido em 2026-09-26. O parâmetro que a antiga
   redação chamava de "X" **deixou de existir**: o joelho não tem parâmetro livre, o que elimina o
   problema de "congelar o X" depois da primeira litologia.
+
+---
+
+## D18 — Calibração por varredura offline (cache de máscaras + scores)
+
+**Decisão:** a calibração roda o SAM3 **uma vez por (imagem, sonda)** com `conf` no piso
+(≈0,001), guarda as máscaras e seus scores, e depois varre qualquer limiar **offline**, sem GPU.
+
+**Justificativa — verificada na fonte do `ultralytics`** (`SAM3SemanticPredictor.postprocess`,
+leitura feita em 2026-09-26):
+
+```python
+pred_scores = (pred_logits.sigmoid() * presence_score).squeeze(-1)
+keep = pred_scores > self.args.conf          # filtro puro, depois do modelo
+keep = torchvision.ops.nms(boxes, scores, self.args.iou)
+```
+
+O modelo produz máscaras e scores **sem conhecer o `conf`**; o `conf` apenas descarta. O NMS roda
+depois do filtro, mas processa em ordem decrescente de score e só remove usando um sobrevivente de
+score **maior** — então incluir máscaras de score baixo não pode derrubar uma de score alto. As
+decisões sobre as máscaras acima de qualquer limiar são idênticas com ou sem as abaixo dele.
+
+**Verificado também por execução, não só por leitura:** `AI/SAM/verificar_d18.py` roda o SAM com
+`conf = t` e compara com a filtragem do cache do piso, para 4 sondas × 8 limiares (0,005 a 0,5).
+**32 de 32 comparações idênticas** — mesmo número de detecções, mesmos scores e mesmos vértices de
+polígono, sem tolerância. É este script que sustenta a afirmação no TCC.
+
+> **A equivalência vale por versão do ultralytics, não por máquina** — o filtro vive no
+> `postprocess` dela. Por isso o número da versão **não fica escrito aqui**: o autor alterna entre
+> dois PCs e o parágrafo acima já esteve errado por isso (dizia `8.4.61` quando o venv tinha a
+> `8.4.52`). Ao passar, o script grava a versão verificada em **`AI/SAM/d18_verificado.json`**, que
+> vai para o git: verificar numa máquina vale para a outra na mesma versão. Quem responde "a versão
+> daqui já está coberta?" é o `AI/ambiente.py`. Primeiro registro: **8.4.52**, 32/32, em
+> 09/10/2026. Ao trocar de versão, rodar o script nela antes de calibrar.
+
+**Consequência: a varredura offline é exatamente equivalente a rodar de novo em cada limiar** —
+não é aproximação. O ciclo de calibração deixa de ser "escolho conf → rodo o SAM → olho → ajusto →
+rodo de novo" (minutos por iteração) e vira "rodo uma vez → arrasto o slider → vejo o efeito nas 4
+imagens simultaneamente". É o que torna o protocolo da D17 viável em tempo humano.
 
 ---
 
@@ -556,38 +651,6 @@ medição. Não há mais treino previsto para o classificador.
 
 **Avaliação:** no `test/`, uma única vez, ao final: acurácia, acurácia por classe, F1 macro e
 matriz de confusão. Pesos em `AI/models/` (fora do git); métricas em JSON no git.
-
----
-
-## D18 — Calibração por varredura offline (cache de máscaras + scores)
-
-**Decisão:** a calibração roda o SAM3 **uma vez por (imagem, sonda)** com `conf` no piso
-(≈0,001), guarda as máscaras e seus scores, e depois varre qualquer limiar **offline**, sem GPU.
-
-**Justificativa — verificada na fonte do `ultralytics 8.4.61`** (`SAM3SemanticPredictor.postprocess`,
-versão instalada no venv, reconferida em 2026-09-26):
-
-```python
-pred_scores = (pred_logits.sigmoid() * presence_score).squeeze(-1)
-keep = pred_scores > self.args.conf          # filtro puro, depois do modelo
-keep = torchvision.ops.nms(boxes, scores, self.args.iou)
-```
-
-O modelo produz máscaras e scores **sem conhecer o `conf`**; o `conf` apenas descarta. O NMS roda
-depois do filtro, mas processa em ordem decrescente de score e só remove usando um sobrevivente de
-score **maior** — então incluir máscaras de score baixo não pode derrubar uma de score alto. As
-decisões sobre as máscaras acima de qualquer limiar são idênticas com ou sem as abaixo dele.
-
-**Verificado também por execução, não só por leitura** (2026-09-26): `AI/SAM/verificar_d18.py`
-roda o SAM com `conf = t` e compara com a filtragem do cache do piso, para 4 sondas × 8 limiares
-(0,005 a 0,5) sobre `siena_white/descoberta`. **32 de 32 comparações idênticas** — mesmo número de
-detecções, mesmos scores e mesmos vértices de polígono, sem tolerância. O script fica no repo para
-ser rodado de novo quando a versão do ultralytics mudar; é ele que sustenta esta afirmação no TCC.
-
-**Consequência: a varredura offline é exatamente equivalente a rodar de novo em cada limiar** —
-não é aproximação. O ciclo de calibração deixa de ser "escolho conf → rodo o SAM → olho → ajusto →
-rodo de novo" (minutos por iteração) e vira "rodo uma vez → arrasto o slider → vejo o efeito nas 4
-imagens simultaneamente". É o que torna o protocolo da D17 viável em tempo humano.
 
 ---
 

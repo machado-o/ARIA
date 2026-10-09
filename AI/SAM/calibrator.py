@@ -69,7 +69,6 @@ SAM_DIR        = Path(__file__).parent.resolve()
 SELECT_ROCKS   = SAM_DIR / "selectRocks"
 PROMPTS_CONFIG = SAM_DIR / "rock_prompts.json"
 DATASET_DIR    = (SAM_DIR / ".." / "dataset").resolve()
-CALIB_NAME     = "calibracao.json"
 
 # O vocabulário do protocolo (as 4 vagas, as faixas de volume, a ordem de
 # trabalho) mora no rock_viewer: é ele que cria as vagas. Importar em vez de
@@ -87,23 +86,11 @@ PAPEIS = protocolo.PAPEL_CHAVES                 # descoberta -> sutil -> típica
 PAPEIS_LIMIAR = tuple(p for p in PAPEIS if p.startswith("limiar_"))
 
 # ── Sondas ────────────────────────────────────────────────────────────────────
-# Registro de sondas que podem virar rótulo. Sonda fora daqui não é salva:
-# class_id inválido corrompe o .txt de treino em silêncio (D8).
-# Precisa bater com o CLASS_ID_MAP do inference.py.
-CLASS_ID_MAP: dict[str, int] = {
-    "vein": 0, "crack": 1, "Stain": 2, "Dark patches": 3, "light spot": 4,
-    "scratch": 5,
-}
-
-CORES: dict[str, tuple[int, int, int]] = {     # BGR
-    "vein":         (255,  90,  40),
-    "crack":        ( 40,  70, 255),
-    "Stain":        (  0, 170, 255),
-    "Dark patches": (200,  40, 200),
-    "light spot":   ( 60, 230, 240),
-    "scratch":      (120, 255,  90),
-}
-COR_EXTRA = (170, 170, 170)
+# O cadastro de sondas (id de classe e cor) mora no `sondas.py`, um lugar só,
+# compartilhado com o `inference.py`: as duas cópias que existiam antes tinham
+# cores diferentes para a mesma sonda. Sonda fora do cadastro pode ser explorada
+# aqui, mas não é salva — class_id inválido corrompe o .txt em silêncio (D8).
+from sondas import CLASS_ID_MAP, cor  # noqa: E402
 
 # Sugestões para a fase de descoberta. Não é escopo fechado — o escopo é o
 # CLASS_ID_MAP (D8); estas são só ideias de sonda para experimentar.
@@ -161,18 +148,12 @@ def gravar_prompts(rocha: str, config: dict[str, float]) -> None:
         f.write("\n")
 
 
-def caminho_calib(rocha: str) -> Path:
-    return SELECT_ROCKS / rocha / CALIB_NAME
-
-
-def ler_calib(rocha: str) -> dict | None:
-    f = caminho_calib(rocha)
-    if not f.exists():
-        return None
-    try:
-        return json.loads(f.read_text(encoding="utf-8"))
-    except json.JSONDecodeError:
-        return None
+# O `calibracao.json` tem um leitor só, no protocolo. Este módulo é o único que
+# **escreve** o arquivo (`gravar_calib`), e o lê pelo mesmo caminho que o
+# `inference.py` usa — antes havia um leitor em cada arquivo, discordando sobre
+# o que fazer com JSON corrompido.
+caminho_calib = protocolo.caminho_calibracao
+ler_calib = protocolo.ler_calibracao
 
 
 def gravar_calib(rocha: str, sondas: dict[str, float], regra: dict[str, float | None],
@@ -215,20 +196,9 @@ def gravar_calib(rocha: str, sondas: dict[str, float], regra: dict[str, float | 
                  encoding="utf-8")
 
 
-def calibracao_desatualizada(rocha: str, calib: dict) -> bool:
-    """Alguma vaga foi substituída depois de a calibração ter sido salva?
-
-    O `rock_viewer` grava as trocas em `substituicoes` do `meta.json` (ele é o
-    dono daquele arquivo). Se uma troca é posterior ao `calibrado_em`, o limiar
-    gravado aqui não corresponde mais às imagens que o produziram.
-    """
-    calibrado_em = calib.get("calibrado_em")
-    if not calibrado_em:
-        return False
-    return any(
-        sub.get("em", "") > calibrado_em
-        for sub in protocolo.ler_meta(rocha).get("substituicoes", [])
-    )
+# Mora no protocolo junto com o leitor: o `inference.py` faz a mesma pergunta e
+# não pode importar uma interface Streamlit para isso.
+calibracao_desatualizada = protocolo.calibracao_desatualizada
 
 
 def estado_rocha(rocha: str) -> str:
@@ -393,10 +363,6 @@ def desenhar(base, camadas: list[tuple[list[np.ndarray], tuple[int, int, int]]],
         cv2.fillPoly(sobre, contornos, cor_bgr)
         out = cv2.addWeighted(sobre, alpha, out, 1.0 - alpha, 0)
     return cv2.cvtColor(out, cv2.COLOR_BGR2RGB)
-
-
-def cor(sonda: str) -> tuple[int, int, int]:
-    return CORES.get(sonda, COR_EXTRA)
 
 
 def _hex(bgr: tuple[int, int, int]) -> str:
@@ -956,7 +922,7 @@ def aba_fechar(rocha: str) -> None:
                   if s in CLASS_ID_MAP}
         gravar_prompts(rocha, salvar)
         gravar_calib(rocha, salvar, regra, contagens, criterio)
-        st.success(f"`rock_prompts.json` e `{CALIB_NAME}` gravados.")
+        st.success(f"`rock_prompts.json` e `{protocolo.CALIB_NAME}` gravados.")
         st.rerun()
     if not criterio.strip():
         st.caption(":gray[Escreva o critério para habilitar o salvamento.]")
@@ -1014,11 +980,7 @@ def principal() -> None:
     if e == "calibrada":
         st.info("Esta litologia já tem `calibracao.json`. Salvar de novo sobrescreve.")
     elif e == "desatualizada":
-        trocas = [
-            s_ for s_ in meta.get("substituicoes", [])
-            if s_.get("em", "") > (ler_calib(rocha) or {}).get("calibrado_em", "")
-        ]
-        quais = ", ".join(sorted({s_.get("vaga", "?") for s_ in trocas}))
+        quais = ", ".join(protocolo.vagas_trocadas_depois(rocha, ler_calib(rocha) or {}))
         st.warning(
             f"**Calibração desatualizada.** O `calibracao.json` foi salvo antes de "
             f"a(s) vaga(s) **{quais}** serem substituídas, então o limiar gravado "

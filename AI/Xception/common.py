@@ -13,7 +13,8 @@ Equivalências com o Keras que NÃO são óbvias — e por que estão como estã
        + os 4 últimos do block9 (sepconv3_act, sepconv3, sepconv3_bn, add)      = 50
    No timm o bloco N do Keras é o `blockN-1` (o block1 do Keras é o tronco conv1/conv2).
    Então: conv3/bn3/conv4/bn4, block12, block11, block10, block9 e o final de block8.
-   `contar_treinaveis()` confere isso contra a conta feita à mão (12.168.304 parâmetros).
+   `definir_fase()` confere isso contra a conta feita à mão (12.168.304 parâmetros)
+   e aborta se o mapeamento divergir.
 
 2. **BatchNorm sempre em modo de inferência.** O notebook chama `base_model(x,
    training=False)`; no Keras isso mantém o BN usando as médias do ImageNet mesmo quando a
@@ -272,6 +273,17 @@ def definir_fase(modelo: ClassificadorXception, fase: str) -> None:
         for m in _modulos_finetune(modelo):
             for p in m.parameters():
                 p.requires_grad = True
+        # A conta à mão sobre o Keras (ver docstring, item 1) é conferida AQUI, e não
+        # só escrita num comentário: um módulo a mais ou a menos em `_modulos_finetune`
+        # treina outro conjunto de camadas e não dá erro nenhum — só deixa de ser a
+        # reprodução do notebook original (D19). Pega num teste de fumaça, sem treinar.
+        treinaveis = sum(p.numel() for p in modelo.base.parameters() if p.requires_grad)
+        if treinaveis != TREINAVEIS_BASE_FINETUNE:
+            raise RuntimeError(
+                f"as 50 últimas camadas do Keras somam {TREINAVEIS_BASE_FINETUNE:,} "
+                f"parâmetros, mas `_modulos_finetune` liberou {treinaveis:,}. O "
+                f"mapeamento Keras→timm mudou e isto deixou de reproduzir o original."
+            )
 
 
 def contar_treinaveis(modelo: ClassificadorXception) -> tuple[int, int]:

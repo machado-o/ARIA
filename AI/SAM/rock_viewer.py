@@ -17,8 +17,7 @@ não em ordem alfabética — a ordem é a prioridade de trabalho (D6, D15).
 
 Uso:
     python rock_viewer.py                 # próxima vaga pendente, em ordem de faixa
-    python rock_viewer.py <litologia>     # completa as vagas de uma litologia
-    python rock_viewer.py <litologia>     # ...ou, se ela já estiver 4/4, abre em REVISÃO
+    python rock_viewer.py <litologia>     # completa as vagas (se já 4/4, abre em REVISÃO)
     python rock_viewer.py --cols 6        # grade mais larga
     python rock_viewer.py --all           # mostra val/ e test/ para estudo (não selecionáveis)
 
@@ -59,8 +58,10 @@ SPLIT_CALIBRACAO = "train"
 
 META_NAME = "meta.json"
 
-# Quem escreve este arquivo é o calibrador; aqui ele é só lido, para avisar
-# que substituir uma vaga desencontra o limiar das imagens que o produziram.
+# Quem **escreve** este arquivo é só o calibrador. Quem **lê** é este módulo, para
+# os três: o próprio calibrador, o `inference.py` e a revisão de vagas aqui. Antes
+# havia um leitor em cada lugar, com comportamentos diferentes para arquivo
+# corrompido — um dizia "não calibrada", o outro "calibrada sem data".
 CALIB_NAME = "calibracao.json"
 
 # Faixas de volume de dados — a ordem de trabalho segue a faixa (D6).
@@ -225,15 +226,62 @@ def ler_meta(rock_name: str) -> dict:
     return {"rock": rock_name, "slots": {}}
 
 
+def caminho_calibracao(rock_name: str) -> Path:
+    """Onde vive o `calibracao.json` desta litologia (exista ou não)."""
+    return rock_slot_dir(rock_name) / CALIB_NAME
+
+
 def ler_calibracao(rock_name: str) -> dict | None:
-    """O `calibracao.json` desta litologia, se existir. Somente leitura."""
-    f = rock_slot_dir(rock_name) / CALIB_NAME
+    """O `calibracao.json` desta litologia, ou None se ela não foi calibrada.
+
+    Arquivo corrompido **levanta erro** em vez de devolver None ou {}. Os dois
+    silêncios mentem: None faria o calibrador oferecer sobrescrever uma
+    calibração que talvez esteja lá, e {} faria a litologia contar como
+    calibrada sem que se saiba quando nem com que critério. Este arquivo é a
+    evidência do TCC — quando ele está ilegível, a resposta certa é reclamar.
+    """
+    f = caminho_calibracao(rock_name)
     if not f.exists():
         return None
     try:
         return json.loads(f.read_text(encoding="utf-8"))
-    except json.JSONDecodeError:
-        return {}
+    except json.JSONDecodeError as e:
+        raise SystemExit(
+            f"[ERRO] {f} está ilegível ({e}). Uma calibração corrompida não pode "
+            f"ser tratada como ausência de calibração nem como calibração válida: "
+            f"recupere o arquivo ou recalibre a litologia."
+        ) from e
+
+
+def calibracao_desatualizada(rock_name: str, calib: dict | None = None) -> bool:
+    """Alguma vaga foi substituída depois de a calibração ter sido salva?
+
+    Se foi, o limiar gravado continua escrito, mas não foi escolhido nas 4
+    imagens que estão lá agora — e é isso que o TCC reporta (D17). Mora aqui, e
+    não no calibrador, porque o `inference.py` precisa da mesma resposta e não
+    pode importar uma interface Streamlit só para fazer uma pergunta sobre JSON.
+    """
+    if calib is None:
+        calib = ler_calibracao(rock_name)
+    if not calib:
+        return False
+    calibrado_em = calib.get("calibrado_em")
+    if not calibrado_em:
+        return False
+    return any(
+        sub.get("em", "") > calibrado_em
+        for sub in ler_meta(rock_name).get("substituicoes", [])
+    )
+
+
+def vagas_trocadas_depois(rock_name: str, calib: dict) -> list[str]:
+    """Nomes das vagas substituídas depois do `calibrado_em`, sem repetir."""
+    calibrado_em = calib.get("calibrado_em", "")
+    return sorted({
+        sub.get("vaga", "?")
+        for sub in ler_meta(rock_name).get("substituicoes", [])
+        if sub.get("em", "") > calibrado_em
+    })
 
 
 def origem_da_vaga(rock_name: str, papel: str) -> str | None:
@@ -268,6 +316,33 @@ def registrar_substituicao(
     (d / META_NAME).write_text(
         json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8"
     )
+
+
+def invalidar_cache_da_vaga(rock_name: str, papel: str) -> int:
+    """Apaga o cache do SAM desta vaga. Devolve quantos arquivos foram apagados.
+
+    O `_cache/<vaga>__<sonda>.npz` é indexado pela VAGA, não pela imagem, e o
+    calibrador só checa se o arquivo existe (`pares_faltantes`). Trocar a imagem
+    sem apagar o cache faria o calibrador desenhar os polígonos da imagem antiga
+    sobre a nova e tirar a curva de limiar deles — errado e silencioso.
+
+    Comparar data de modificação não resolveria: `shutil.copy2` preserva o mtime
+    da origem, então a imagem nova chega ao destino mais *velha* que o .npz.
+    Apagar é barato — o calibrador recaptura em segundos.
+
+    O `import` é tardio de propósito: `sam_cache` traz numpy, e a seleção de
+    imagem não deve depender disso só para saber o nome de uma pasta.
+    """
+    import sam_cache
+
+    d = rock_slot_dir(rock_name) / sam_cache.CACHE_DIRNAME
+    if not d.is_dir():
+        return 0
+    apagados = 0
+    for f in sorted(d.glob(f"{papel}__*.npz")):
+        f.unlink()
+        apagados += 1
+    return apagados
 
 
 def gravar_meta(rock_name: str, papel: str, split: str, origem: Path, destino: Path) -> None:
@@ -603,7 +678,7 @@ def preencher_vaga(
         ja = ", ".join(PAPEL_INFO[k][0] for k in PAPEL_CHAVES if k in preenchidos)
         print(f"  (já preenchidas: {ja})")
     if todos_os_splits:
-        print(f"  [--all] val/ e test/ aparecem para estudo, mas não são selecionáveis (D17).")
+        print("  [--all] val/ e test/ aparecem para estudo, mas não são selecionáveis (D17).")
 
     html = build_html(rock_name, images, cols, papel, preenchidos, todos_os_splits)
     tmp = tempfile.NamedTemporaryFile(
@@ -643,6 +718,9 @@ def preencher_vaga(
         destino_dir.mkdir(parents=True, exist_ok=True)
         destino = destino_dir / f"{papel}{chosen.suffix.upper()}"
 
+        origem_nova = f"{split}/{chosen.name}"
+        trocou_a_imagem = origem_nova != origem_da_vaga(rock_name, papel)
+
         anterior = slot_path(rock_name, papel)
         if anterior is not None and anterior != destino:
             anterior.unlink()
@@ -650,6 +728,10 @@ def preencher_vaga(
         shutil.copy2(chosen, destino)
         gravar_meta(rock_name, papel, split, chosen, destino)
         print(f"  ✓ {split}/{chosen.name}  →  {destino.relative_to(SELECT_ROCKS_DIR.parent)}")
+        # Imagem nova na vaga invalida o cache do SAM daquela vaga. Reescolher a
+        # MESMA imagem não invalida nada: o cache continua sendo dela.
+        if trocou_a_imagem and (n_cache := invalidar_cache_da_vaga(rock_name, papel)):
+            print(f"  cache do SAM desta vaga apagado ({n_cache} arquivo(s)) — será recapturado.")
         return True
 
 
@@ -674,9 +756,9 @@ def _confirmar_troca_calibrada(rock_name: str, papel: str, calib: dict) -> bool:
     print()
     print(f"  [ATENÇÃO] {rock_name} já tem {CALIB_NAME}.")
     print(f"  Calibrada em {calib.get('calibrado_em', '?')}  ·  limiar de trabalho: {limiares}")
-    print(f"  Esse limiar foi escolhido olhando as 4 imagens que estão aí agora.")
+    print("  Esse limiar foi escolhido olhando as 4 imagens que estão aí agora.")
     print(f"  Trocar a vaga [{rotulo}] desencontra a calibração das imagens que a")
-    print(f"  produziram; o calibrador vai passar a mostrá-la como desatualizada.")
+    print("  produziram; o calibrador vai passar a mostrá-la como desatualizada.")
     return input("  digite SUBSTITUIR para confirmar (qualquer outra coisa cancela): ").strip() == "SUBSTITUIR"
 
 
@@ -741,12 +823,17 @@ def revisar_rocha(rock_name: str, cols: int, todos_os_splits: bool) -> None:
 
         origem_anterior = origem_da_vaga(rock_name, papel)
         if preencher_vaga(rock_name, papel, cols, todos_os_splits):
-            registrar_substituicao(
-                rock_name, papel, origem_anterior,
-                origem_da_vaga(rock_name, papel),
-                havia_calibracao=calib is not None,
-            )
-            print(f"  histórico da troca gravado em {META_NAME}.")
+            origem_nova = origem_da_vaga(rock_name, papel)
+            if origem_nova == origem_anterior:
+                # Reescolher a mesma imagem não é troca. Registrar faria a
+                # litologia aparecer como desatualizada sem nada ter mudado.
+                print("  mesma imagem de antes — nada registrado.")
+            else:
+                registrar_substituicao(
+                    rock_name, papel, origem_anterior, origem_nova,
+                    havia_calibracao=calib is not None,
+                )
+                print(f"  histórico da troca gravado em {META_NAME}.")
 
 
 def main() -> None:

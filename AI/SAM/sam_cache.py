@@ -1,6 +1,6 @@
 """sam_cache — roda o SAM3 uma vez e varre limiares offline (docs/decisoes.md D18).
 
-Por que isso funciona (verificado na fonte do ultralytics 8.4.61,
+Por que isso funciona (lido na fonte do ultralytics,
 `SAM3SemanticPredictor.postprocess`):
 
     pred_scores = (pred_logits.sigmoid() * presence_score).squeeze(-1)
@@ -15,6 +15,12 @@ as decisões sobre as de score alto.
 Consequência: rodar uma vez com o `conf` no piso e filtrar offline é **exatamente
 equivalente** a rodar de novo em cada limiar — não é aproximação. Isso troca um ciclo
 de calibração de minutos por um de milissegundos.
+
+A equivalência vale **por versão do ultralytics** (o filtro vive no `postprocess`
+dela), não por máquina. O número da versão não fica escrito aqui de propósito: o
+autor alterna entre dois PCs e esta docstring já esteve errada por isso. As versões
+verificadas estão em `d18_verificado.json`, que o `verificar_d18.py` grava e o
+`../ambiente.py` lê.
 
 O cache guarda POLÍGONOS (formato YOLO, coords normalizadas) e não máscaras densas:
 é o que acaba no .txt de treino, e evita guardar centenas de bitmaps em disco.
@@ -136,18 +142,6 @@ def capturar(predictor, imagem: Path, sonda: str) -> tuple[np.ndarray, list[np.n
             f"scores ({len(scores)}) e polígonos ({len(polys)}) divergem para "
             f"'{sonda}' em {imagem.name} — o cache seria inconsistente."
         )
-    return scores, polys
-
-
-def obter(
-    predictor, base_dir: Path, imagem: Path, sonda: str, forcar: bool = False
-) -> tuple[np.ndarray, list[np.ndarray]]:
-    """Cache-or-capture: lê do disco se existir, senão roda o SAM e grava."""
-    alvo = caminho_cache(base_dir, imagem.stem, sonda)
-    if alvo.exists() and not forcar:
-        return carregar(alvo)
-    scores, polys = capturar(predictor, imagem, sonda)
-    salvar(alvo, scores, polys)
     return scores, polys
 
 

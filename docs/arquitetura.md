@@ -120,7 +120,9 @@ IDs gravados: `0=vein, 1=crack, 2=Stain, 3=Dark patches, 4=light spot, 5=scratch
 no arquivo, **colapsados para 0** antes do treino (**D2**).
 
 > Sonda ausente do `CLASS_ID_MAP` costumava gravar `class_id = -1` em silêncio. Desde 2026-08-23,
-> `validate_prompts()` aborta antes de carregar o modelo, nomeando a rocha e a sonda (**D8**).
+> a validação aborta antes de carregar o modelo, nomeando a rocha e a sonda (**D8**). O cadastro
+> mora em `AI/SAM/sondas.py`, um lugar só, compartilhado pelo `inference.py` e pelo
+> `calibrator.py` (09/10/2026).
 
 ### Gotcha obrigatório
 
@@ -165,7 +167,9 @@ O desenho experimental que testa se essa hierarquia compensa está em **D5** (Ex
 | Visualização | OpenCV |
 | UI de calibração | Streamlit |
 
-> Versões verificadas em 2026-09-26: Python 3.14.2, torch 2.11.0+cu128, ultralytics 8.4.61, streamlit 1.58, numa RTX 5060 Ti de 16 GB.
+> As versões são **por máquina** (o autor alterna entre dois PCs) e por isso não ficam escritas
+> aqui — este parágrafo já esteve errado por isso. Rode `AI/ambiente.py` para ver as da máquina em
+> que estiver, e o estado da verificação da **D18** nela.
 
 ---
 

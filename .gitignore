@@ -28,5 +28,4 @@ Thumbs.db
 .claude
 
 results/
-AI/SAM/selectRocks/_cache/
 AI/SAM/**/_cache/

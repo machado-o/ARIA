@@ -11,6 +11,13 @@ O teste: para cada limiar da amostra, compara
   (b) `sam_cache.filtrar(cache_do_piso, t)`
 em número de detecções, scores e vértices dos polígonos.
 
+**Quando passa, o resultado é gravado em `d18_verificado.json`**, indexado pela
+versão do ultralytics e versionado no git. É assim que a verificação atravessa as
+duas máquinas do autor: a equivalência depende da versão do ultralytics, não da
+máquina, então basta ter sido verificada **uma vez** em cada versão, em qualquer
+PC. O `ambiente.py` lê esse arquivo e diz se a versão instalada aqui já está
+coberta — ninguém precisa lembrar.
+
 Uso:
     ..\\.venv\\Scripts\\python.exe verificar_d18.py
     ..\\.venv\\Scripts\\python.exe verificar_d18.py --rocha siena_white --vaga descoberta
@@ -35,6 +42,8 @@ from pathlib import Path
 import numpy as np
 
 import sam_cache
+
+REGISTRO = Path("d18_verificado.json")
 
 SELECT_ROCKS = Path("selectRocks")
 SONDAS_PADRAO = ("crack", "vein", "Stain", "Dark patches")
@@ -66,6 +75,45 @@ def comparar(a, b) -> tuple[bool, str]:
         if x.size and not np.array_equal(x, y):
             return False, f"polígono {i}: vértices diferem"
     return True, "idêntico"
+
+
+def registrar(comparacoes: int, imagem: Path, args) -> None:
+    """Anota no `d18_verificado.json` que esta versão do ultralytics foi verificada.
+
+    Indexado pela versão do ultralytics porque é dela que a equivalência depende
+    (o filtro `pred_scores > conf` vive no `postprocess` dela). O arquivo vai para
+    o git: verificar numa máquina vale para a outra, desde que a versão seja a
+    mesma. Guarda também em que máquina rodou — não porque importe para a prova,
+    mas para dar para rastrear depois.
+    """
+    import json
+    import platform
+    from datetime import datetime
+
+    import torch
+    import ultralytics
+
+    registro = {}
+    if REGISTRO.exists():
+        registro = json.loads(REGISTRO.read_text(encoding="utf-8"))
+    registro[ultralytics.__version__] = {
+        "resultado": "equivalente",
+        "comparacoes": comparacoes,
+        "sondas": list(args.sondas),
+        "limiares": list(LIMIARES),
+        "imagem": str(imagem).replace("\\", "/"),
+        "conf_piso": float(sam_cache.CONF_PISO),
+        "verificado_em": datetime.now().isoformat(timespec="seconds"),
+        "maquina": platform.node(),
+        "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else "cpu",
+        "torch": torch.__version__,
+        "python": platform.python_version(),
+    }
+    REGISTRO.write_text(
+        json.dumps(dict(sorted(registro.items())), ensure_ascii=False, indent=2)
+        + "\n",
+        encoding="utf-8")
+    print(f"       registrado em {REGISTRO} para o ultralytics {ultralytics.__version__}.")
 
 
 def main() -> int:
@@ -120,8 +168,10 @@ def main() -> int:
         print(f"[FALHOU] {falhas} limiar(es) divergiram — a D18 NÃO se sustenta "
               "nesta versão do ultralytics. Não usar o cache para calibrar.")
         return 1
-    print(f"[OK] {len(args.sondas) * len(LIMIARES)} comparações, nenhuma divergência: "
+    n = len(args.sondas) * len(LIMIARES)
+    print(f"[OK] {n} comparações, nenhuma divergência: "
           "filtrar o cache do piso é idêntico a rodar o SAM em cada limiar (D18).")
+    registrar(n, imagem, args)
     return 0
 
 

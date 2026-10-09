@@ -1,0 +1,29 @@
+{
+  "8.4.52": {
+    "resultado": "equivalente",
+    "comparacoes": 32,
+    "sondas": [
+      "crack",
+      "vein",
+      "Stain",
+      "Dark patches"
+    ],
+    "limiares": [
+      0.005,
+      0.02,
+      0.05,
+      0.08,
+      0.12,
+      0.2,
+      0.35,
+      0.5
+    ],
+    "imagem": "selectRocks/golden_storm/descoberta.JPG",
+    "conf_piso": 0.001,
+    "verificado_em": "2026-10-09T16:02:53",
+    "maquina": "DESKTOP-U087I2L",
+    "gpu": "NVIDIA GeForce RTX 4060",
+    "torch": "2.12.0+cu130",
+    "python": "3.13.14"
+  }
+}
