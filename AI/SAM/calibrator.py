@@ -235,12 +235,12 @@ def arquivo_cache(rocha: str, papel: str, sonda: str) -> Path:
 
 @st.cache_data(show_spinner=False)
 def _ler(rocha: str, papel: str, sonda: str, _assinatura: float):
-    """(scores, polígonos) de um par (vaga, sonda), já sem detecção degenerada.
+    """(scores, peças por detecção) de um par (vaga, sonda), já sem detecção degenerada.
 
-    Descarta os pares cujo polígono tem menos de 3 pontos: o SAM devolve
-    detecção com máscara vazia, e ela nunca vira rótulo (ver
-    `sam_cache.indices_validos`). Filtrar aqui, na entrada, mantém contagem,
-    curva e desenho contando exatamente a mesma coisa.
+    `polys[i]` é a lista de contornos da detecção `i` (ver `sam_cache`). Descarta
+    as detecções sem peça nenhuma: o SAM devolve detecção com máscara vazia, e
+    ela nunca vira rótulo (ver `sam_cache.indices_validos`). Filtrar aqui, na
+    entrada, mantém contagem, curva e desenho contando exatamente a mesma coisa.
     """
     scores, polys = sam_cache.carregar(arquivo_cache(rocha, papel, sonda))
     manter = sam_cache.indices_validos(polys)
@@ -249,7 +249,7 @@ def _ler(rocha: str, papel: str, sonda: str, _assinatura: float):
 
 def ler(rocha: str, papel: str, sonda: str):
     f = arquivo_cache(rocha, papel, sonda)
-    if not f.exists():
+    if not sam_cache.cache_atual(f):     # ausente ou de formato antigo
         return None
     return _ler(rocha, papel, sonda, f.stat().st_mtime)
 
@@ -260,7 +260,7 @@ def pares_faltantes(rocha: str, sondas: list[str]) -> list[tuple[str, Path, str]
         (papel, img, sonda)
         for papel, img in vagas.items()
         for sonda in sondas
-        if not arquivo_cache(rocha, papel, sonda).exists()
+        if not sam_cache.cache_atual(arquivo_cache(rocha, papel, sonda))
     ]
 
 
@@ -332,35 +332,34 @@ def imagem_base(caminho: Path):
     return _imagem_base(str(caminho), caminho.stat().st_mtime)
 
 
-def desenhar(base, camadas: list[tuple[list[np.ndarray], tuple[int, int, int]]],
+def desenhar(base, camadas: list[tuple[list[list[np.ndarray]], tuple[int, int, int]]],
              alpha: float = 0.50):
-    """Sobrepõe polígonos normalizados (xyn) na imagem. Devolve RGB para o st.image.
+    """Sobrepõe as detecções (peças normalizadas) na imagem. Devolve RGB para o st.image.
 
-    Preenche e **não** contorna, de propósito. `Masks.xyn` usa
-    `masks2segments(strategy="all")`, que funde os contornos disjuntos de uma
-    mesma detecção numa só poligonal, ligando-os por pontes de ida e volta.
-    Medido em `siena_white/descoberta` (crack @ 0,08): 45 das 76 detecções têm
-    mais de um contorno. A ponte tem área ~zero — no agregado o polígono infla
-    só 2,4% sobre a máscara (IoU 0,93) —, então o preenchimento é fiel; mas
-    traçada, ela vira uma reta atravessando a chapa e polui a imagem justamente
-    onde o autor precisa enxergar a feição. Preencher mostra o que de fato vira
-    rótulo.
+    Cada camada é uma lista de detecções, e cada detecção é a lista dos seus
+    contornos soltos (ver `sam_cache.pecas_por_deteccao`). Cada peça é preenchida
+    como polígono próprio — o mesmo que o `inference.py` grava no `.txt`.
 
-    ⚠️ O caso individual não é tão benigno quanto o agregado: numa detecção com
-    18 contornos o polígono chegou a 2,5x a área da máscara. Isso é ruído de
-    rótulo a tratar no pós-processamento do Professor (roadmap, Fase 3.0).
+    Até 2026-10-09 o desenho usava a poligonal do `Masks.xyn`, que funde os
+    contornos de uma detecção ligando-os por pontes de ida e volta. Preencher
+    em vez de contornar não bastava para escondê-las: o `fillPoly` pinta a
+    borda do polígono, e cada ponte virava uma reta de 1 px atravessando a
+    chapa, justamente onde o autor precisa enxergar a feição.
     """
     out = base.copy()
     h, w = out.shape[:2]
     for polys, cor_bgr in camadas:
         contornos = [
             np.round(np.asarray(p, dtype=np.float32) * (w, h)).astype(np.int32)
-            for p in polys if len(p) > 2
+            for pecas in polys for p in pecas if len(p) > 2
         ]
         if not contornos:
             continue
         sobre = out.copy()
-        cv2.fillPoly(sobre, contornos, cor_bgr)
+        # Um fillPoly por peça: numa chamada só ele usa a regra par-ímpar, e
+        # duas detecções sobrepostas se cancelam — a interseção fica sem cor.
+        for c in contornos:
+            cv2.fillPoly(sobre, [c], cor_bgr)
         out = cv2.addWeighted(sobre, alpha, out, 1.0 - alpha, 0)
     return cv2.cvtColor(out, cv2.COLOR_BGR2RGB)
 

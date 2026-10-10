@@ -55,6 +55,7 @@ from ultralytics.utils.plotting import (  # pyright: ignore[reportMissingImports
 )
 
 import rock_viewer as protocolo
+import sam_cache
 import sondas
 
 SAM_DIR = Path(__file__).parent.resolve()
@@ -194,13 +195,20 @@ def get_rock_name(image_path: Path, dataset_root: Path) -> str:
     return image_path.stem if image_path.parent == dataset_root else image_path.parent.name
 
 
-def write_polygons(txt_path: Path, polygons, class_id: int) -> None:
-    """Acrescenta os polígonos ao .txt no formato YOLO-seg."""
+def write_polygons(txt_path: Path, deteccoes, class_id: int) -> None:
+    """Acrescenta os polígonos ao .txt no formato YOLO-seg, uma linha por peça.
+
+    `deteccoes` é a saída de `sam_cache.pecas_por_deteccao`: cada detecção do
+    SAM é a lista dos seus contornos soltos, e cada contorno vira uma linha
+    própria. Não se usa `masks.xyn`, que os fundia numa poligonal só com pontes
+    de ida e volta entre eles.
+    """
     with txt_path.open("a", encoding="utf-8") as f:
-        for poly in polygons:
-            if len(poly) > 2:
-                pts = " ".join([f"{x:.6f} {y:.6f}" for x, y in poly])
-                f.write(f"{class_id} {pts}\n")
+        for pecas in deteccoes:
+            for poly in pecas:
+                if len(poly) > 2:
+                    pts = " ".join([f"{x:.6f} {y:.6f}" for x, y in poly])
+                    f.write(f"{class_id} {pts}\n")
 
 
 def process_image(
@@ -240,7 +248,8 @@ def process_image(
         if result.masks is None:
             continue
 
-        write_polygons(txt_path, result.masks.xyn, sondas.CLASS_ID_MAP[prompt])
+        write_polygons(txt_path, sam_cache.pecas_por_deteccao(result),
+                       sondas.CLASS_ID_MAP[prompt])
 
         color = sondas.cor(prompt)
         masks = result.masks.data.cpu().numpy()

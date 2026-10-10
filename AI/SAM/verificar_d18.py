@@ -60,7 +60,7 @@ def rodar_no_limiar(predictor, sonda: str, conf: float):
     if r.masks is None:
         return np.zeros(0, dtype=np.float32), []
     return (r.boxes.conf.cpu().numpy().astype(np.float32),
-            [np.asarray(p, dtype=np.float32) for p in r.masks.xyn])
+            sam_cache.pecas_por_deteccao(r))
 
 
 def comparar(a, b) -> tuple[bool, str]:
@@ -69,11 +69,14 @@ def comparar(a, b) -> tuple[bool, str]:
         return False, f"nº de detecções difere: {len(sa)} != {len(sb)}"
     if len(sa) and not np.array_equal(sa, sb):
         return False, f"scores diferem (máx |Δ| = {np.abs(sa - sb).max():.3e})"
-    for i, (x, y) in enumerate(zip(pa, pb)):
-        if x.shape != y.shape:
-            return False, f"polígono {i}: forma {x.shape} != {y.shape}"
-        if x.size and not np.array_equal(x, y):
-            return False, f"polígono {i}: vértices diferem"
+    for i, (pecas_a, pecas_b) in enumerate(zip(pa, pb)):
+        if len(pecas_a) != len(pecas_b):
+            return False, f"detecção {i}: {len(pecas_a)} peça(s) != {len(pecas_b)}"
+        for j, (x, y) in enumerate(zip(pecas_a, pecas_b)):
+            if x.shape != y.shape:
+                return False, f"detecção {i}, peça {j}: forma {x.shape} != {y.shape}"
+            if x.size and not np.array_equal(x, y):
+                return False, f"detecção {i}, peça {j}: vértices diferem"
     return True, "idêntico"
 
 
