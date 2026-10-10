@@ -43,13 +43,14 @@ import numpy as np
 
 import sam_cache
 
-REGISTRO = Path("d18_verificado.json")
+SAM_DIR = Path(__file__).parent.resolve()
+REGISTRO = SAM_DIR / "d18_verificado.json"
 
-SELECT_ROCKS = Path("selectRocks")
+SELECT_ROCKS = SAM_DIR / "selectRocks"
 SONDAS_PADRAO = ("crack", "vein", "Stain", "Dark patches")
 LIMIARES = (0.005, 0.02, 0.05, 0.08, 0.12, 0.2, 0.35, 0.5)
 
-OVERRIDES = dict(task="segment", mode="predict", model="../models/sam3.pt",
+OVERRIDES = dict(task="segment", mode="predict", model=str(SAM_DIR / ".." / "models" / "sam3.pt"),
                  imgsz=644, half=False, save=False)
 
 

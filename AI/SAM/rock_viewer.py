@@ -46,8 +46,12 @@ for _stream in (sys.stdout, sys.stderr):
     except (AttributeError, ValueError):
         pass
 
-DATASET_DIR = Path("../dataset")
-SELECT_ROCKS_DIR = Path("selectRocks")
+# Ancorados no próprio arquivo, não no diretório de trabalho: relativo ao CWD, o
+# script só funcionava rodado de dentro de AI/SAM/ — de qualquer outro lugar
+# morria com "Dataset não encontrado".
+SAM_DIR = Path(__file__).parent.resolve()
+DATASET_DIR = (SAM_DIR / ".." / "dataset").resolve()
+SELECT_ROCKS_DIR = SAM_DIR / "selectRocks"
 SPLITS = ("train", "val", "test")
 IMG_EXTS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff"}
 

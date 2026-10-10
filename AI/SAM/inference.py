@@ -63,11 +63,6 @@ SELECT_ROCKS_DIR = SAM_DIR / "selectRocks"
 RESULTS_DIR = SAM_DIR / "results"
 PROMPTS_CONFIG_PATH = SAM_DIR / "rock_prompts.json"
 
-# O protocolo resolve caminho relativo ao diretório de trabalho porque é sempre
-# chamado de AI/SAM/. Fixamos em absoluto antes da primeira chamada.
-protocolo.SELECT_ROCKS_DIR = SELECT_ROCKS_DIR
-protocolo.DATASET_DIR = (SAM_DIR / ".." / "dataset").resolve()
-
 IMG_EXTS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff"}
 
 DESENHAR_CAIXAS = False     # as caixas poluem a sobreposição; as máscaras bastam
@@ -75,7 +70,7 @@ DESENHAR_CAIXAS = False     # as caixas poluem a sobreposição; as máscaras ba
 OVERRIDES = dict(
     task="segment",
     mode="predict",
-    model="../models/sam3.pt",
+    model=str(SAM_DIR / ".." / "models" / "sam3.pt"),
     imgsz=644,
     half=False,
     save=False,

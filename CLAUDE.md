@@ -153,7 +153,14 @@ results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
   `SimpleTokenizer()` como função, mas ele não tem `__call__`. O patch injeta `__call__`
   delegando para `clip.tokenize`. **Não remover** — sem ele o modelo falha **silenciosamente**,
   sem exceção e sem saída.
-- **Path do modelo:** hardcoded como `../models/sam3.pt`, relativo a `AI/SAM/`.
+- **Caminhos são ancorados no arquivo, não no CWD.** Os scripts de `AI/SAM/` montam
+  `selectRocks/`, `../dataset/` e `../models/sam3.pt` a partir de `Path(__file__).parent` —
+  rodam de qualquer pasta. Até 10/10/2026 o `rock_viewer.py` e o `verificar_d18.py` usavam
+  caminho relativo ao CWD e morriam com "Dataset não encontrado" fora de `AI/SAM/`.
+- **`rock_viewer.py` é interativo: só funciona no terminal do Henrique.** A guia do navegador
+  abre **antes** do `input()`; rodado pelo Claude (sem stdin), ele abre a guia e morre com
+  `EOFError`. Não tentar de novo — cada tentativa abre outra guia. Pedir para ele rodar com
+  `! ..\.venv\Scripts\python.exe rock_viewer.py`.
 - **Seleção de imagem é sempre manual** — usar o próprio SAM para escolher a imagem de
   calibração é raciocínio circular.
 - **Casing de path é uma armadilha real.** A pasta é `AI/dataset/` (minúscula). Os scripts e o
