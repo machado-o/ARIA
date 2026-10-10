@@ -28,6 +28,7 @@ CLASS_ID_MAP: dict[str, int] = {
     "Dark patches": 3,
     "light spot": 4,
     "scratch": 5,
+    "white stain": 6,
 }
 
 # Cor de cada sonda na sobreposição, em **BGR** (é o que o OpenCV espera).
@@ -40,6 +41,7 @@ CORES: dict[str, tuple[int, int, int]] = {
     "Dark patches": (200,  40, 200),
     "light spot":   ( 60, 230, 240),
     "scratch":      (120, 255,  90),
+    "white stain":  (230, 210,   0),
 }
 
 # Sonda em exploração, ainda sem id: aparece em cinza no calibrador.

@@ -243,6 +243,7 @@ assinaturas visuais; o objetivo do conjunto é **maximizar cobertura**, não cla
 | `Dark patches` | regiões escuras sobre fundo claro | rochas claras |
 | `light spot` | regiões claras sobre fundo escuro | rochas escuras |
 | `scratch` | riscos superficiais finos | pontual (`giallo_maracana`) |
+| `white stain` | manchas brancas que o `light spot` não pega | em avaliação (`san_francisco_green`) |
 
 Por isso todas as regiões recebem `class_id = 0` no treino: o projeto **não afirma** que uma
 região marcada por `"crack"` é uma fissura (**D2**). Multi-classe → trabalho futuro (**D12**).

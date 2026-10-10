@@ -66,9 +66,13 @@ As palavras usadas como prompt são **chaves lexicais de recall**, não classifi
 | `crack` | vermelho | todas |
 | `vein` | azul | todas |
 | `Stain` | laranja | todas |
-| `Dark patches` | preto | rochas claras |
-| `light spot` | ciano | rochas escuras |
-| `scratch` | magenta | pontual |
+| `Dark patches` | magenta | rochas claras |
+| `light spot` | amarelo | rochas escuras |
+| `scratch` | verde | pontual |
+| `white stain` | ciano | em avaliação (desde 10/10/2026) |
+
+> As cores valem as de `AI/SAM/sondas.py` (`CORES`), que é a fonte; esta coluna é só leitura
+> rápida. Até 10/10/2026 ela ainda mostrava as cores de antes da unificação do cadastro.
 
 **O que a calibração realmente faz:** para cada litologia, define *quais* sondas entram e *com que
 limiar*. Esse limiar é a materialização do critério arbitrário que separa feição de defeito —
@@ -116,7 +120,7 @@ Fallback: chave `"default"`. Se ela também faltar, `inference.py` usa
 <class_id> <x1> <y1> ... <xN> <yN>
 ```
 
-IDs gravados: `0=vein, 1=crack, 2=Stain, 3=Dark patches, 4=light spot, 5=scratch` — preservados
+IDs gravados: `0=vein, 1=crack, 2=Stain, 3=Dark patches, 4=light spot, 5=scratch, 6=white stain` — preservados
 no arquivo, **colapsados para 0** antes do treino (**D2**).
 
 > Sonda ausente do `CLASS_ID_MAP` costumava gravar `class_id = -1` em silêncio. Desde 2026-08-23,

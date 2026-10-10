@@ -75,13 +75,6 @@ DATASET_DIR    = (SAM_DIR / ".." / "dataset").resolve()
 # repetir — se PAPEIS mudar lá, o calibrador acompanha (DRY, CLAUDE.md).
 import rock_viewer as protocolo  # noqa: E402
 
-# O rock_viewer resolve caminho relativo ao CWD porque é sempre chamado de
-# AI/SAM/. O streamlit pode ser lançado de outro lugar, então fixamos em
-# absoluto ANTES da primeira chamada (as funções com lru_cache leem estes
-# globais do módulo).
-protocolo.DATASET_DIR = DATASET_DIR
-protocolo.SELECT_ROCKS_DIR = SELECT_ROCKS
-
 PAPEIS = protocolo.PAPEL_CHAVES                 # descoberta -> sutil -> típica -> forte
 PAPEIS_LIMIAR = tuple(p for p in PAPEIS if p.startswith("limiar_"))
 
@@ -97,7 +90,8 @@ from sondas import CLASS_ID_MAP, cor  # noqa: E402
 BIBLIOTECA: dict[str, list[str]] = {
     "Físicas":     ["crack", "fracture", "fissure", "scratch", "chip", "pit"],
     "Minerais":    ["vein", "mineral vein", "quartz vein", "crystal"],
-    "Coloração":   ["Stain", "Dark patches", "light spot", "rust stain", "oxidation"],
+    "Coloração":   ["Stain", "Dark patches", "light spot", "white stain", "rust stain",
+                    "oxidation"],
     "Contextuais": ["crack on stone surface", "dark stain on marble",
                     "surface defect on rock"],
 }
@@ -586,7 +580,7 @@ def barra_lateral() -> None:
             st.caption(
                 "Serve para testar se uma palavra faz o modelo responder. Sonda "
                 "fora do CLASS_ID_MAP **não é salva** (D8) — para promovê-la, "
-                "registre-a no `inference.py` e aqui."
+                "registre-a no `sondas.py`."
             )
             sugestoes = [s for ss in BIBLIOTECA.values() for s in ss
                          if s not in candidatas]

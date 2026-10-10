@@ -289,6 +289,12 @@ acerto, e torna a comparação entre braços sem sentido (cada braço teria um g
 | `Dark patches` | 3 |
 | `light spot` | 4 |
 | `scratch` | 5 |
+| `white stain` | 6 |
+
+`white stain` entrou em 10/10/2026, a pedido do Henrique, depois de testada como sonda
+exploratória na `san_francisco_green`: marcou regiões que nenhuma das sondas anteriores marcava,
+e que podem existir em outras litologias. Nas litologias calibradas antes dessa data ela não foi
+avaliada — aparece no calibrador como candidata desmarcada.
 
 Novas sondas podem ser adicionadas ao `rock_prompts.json` **desde que registradas no
 `CLASS_ID_MAP`**, que desde 09/10/2026 mora num lugar só: `AI/SAM/sondas.py`. Antes ele era
