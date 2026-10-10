@@ -124,8 +124,9 @@ Ver **D5** e **D7**. Não exige treino nenhum — é o caminho mais curto até u
 2. **Anotar às cegas — antes de rodar qualquer inferência sobre essas imagens.**
    A ordem é a metodologia: anotar depois de ver a máscara do modelo destrói a independência da
    anotação. Ferramenta externa (LabelMe/CVAT), exportando polígono.
-3. **Rodar o Professor três vezes por imagem** — `default`, calibrado pela regra e calibrado
-   pelo autor (**D5**, terceiro braço acrescentado em 2026-10-05).
+3. **Rodar o Professor uma vez por imagem, com todas as sondas no piso, e filtrar os quatro
+   braços do cache** (**D18**) — `default`, regra com todas as sondas, regra com as sondas do
+   autor e calibrado pelo autor (**D5**, quarto braço acrescentado em 2026-10-10).
 4. **Avaliar contra o ouro:** IoU, precisão, recall e taxa de falso positivo (D7), por braço e
    por litologia.
 5. **Preferência pareada cega com especialista** (D7): máscara A × B embaralhadas, sem

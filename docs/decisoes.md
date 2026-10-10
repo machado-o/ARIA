@@ -134,7 +134,7 @@ regra de descoberta admite sobre o material reunido.
 | Braço | Limiar | Comparação que ele permite |
 |---|---|---|
 | **Default** | joelho sobre todas as litologias reunidas | — |
-| **Calibrado pela regra** | joelho daquela litologia (limiar da regra, **D17**) | × default: efeito do **escopo**, uma variável só. É o teste limpo da **H1** |
+| **Calibrado pela regra** | joelho daquela litologia (limiar da regra, **D17**) | × default: efeito do **escopo** — ⚠️ não é uma variável só, ver o quarto braço abaixo |
 | **Calibrado pelo autor** | limiar de trabalho daquela litologia (**D17**) | × calibrado pela regra: efeito do **ajuste humano** |
 
 Por quê: na `siena_white` o autor divergiu da regra nas três sondas, sempre para cima e por
@@ -148,6 +148,41 @@ O que **não** muda: o default continua saindo da regra sobre o material reunido
 (simples ou ponderada) dos limiares de trabalho — vale o parágrafo abaixo. E *default × calibrado
 pelo autor* muda duas coisas ao mesmo tempo (escopo e quem escolhe): pode ser mostrado, mas não
 é a evidência da H1.
+
+**Quarto braço — acrescentado em 2026-10-10, antes de qualquer resultado do experimento: a regra
+com todas as sondas.**
+
+A tabela acima diz que *calibrado pela regra × default* muda "uma variável só". **Estava
+errado:** mudam duas. O default usa a união das sondas (na prática, todas); o calibrado pela
+regra usa só as que o autor admitiu na descoberta daquela litologia. Um ganho de recall do
+default não seria atribuível — pode vir do limiar ou de ter mais sondas.
+
+Quem levantou foi o autor, revisando a `siena_white`: a litologia parece ter tipos de defeito
+diferentes em partes diferentes do bloco, ou seja, em chapas distantes. As sondas do calibrado
+saem de **uma** chapa de descoberta (**D17**); um defeito que só aparece em outra parte do bloco
+fica sem sonda, e o default, que tem todas, o pegaria.
+
+A separação é possível porque o joelho não depende da descoberta: ele sai das 3 vagas de limiar
+para qualquer sonda. Os braços passam a ser quatro, cada um diferindo do anterior em **uma**
+coisa:
+
+| Braço | Sondas | Limiar | Comparado ao anterior, mede |
+|---|---|---|---|
+| **Default** | todas | joelho sobre todas as litologias reunidas | — |
+| **Regra, todas as sondas** | todas | joelho daquela litologia | o **escopo** do limiar — o teste limpo da **H1** |
+| **Regra, sondas do autor** | as admitidas na descoberta | joelho daquela litologia | a **seleção de sondas**: o recall que ela custa e a precisão que compra |
+| **Calibrado pelo autor** | as admitidas na descoberta | limiar de trabalho | o **ajuste humano** do limiar |
+
+"Regra, sondas do autor" é o braço que até aqui se chamava "calibrado pela regra". "Todas" é o
+cadastro de `sondas.py` (**D8**), igual nos dois primeiros braços.
+
+Custo: nenhuma anotação a mais. Pela **D18**, o SAM roda uma vez com todas as sondas em cada
+imagem do conjunto-ouro e os quatro braços são filtros do mesmo cache.
+
+**O que o braço novo não resolve:** se uma imagem de descoberta basta para escolher as sondas de
+uma litologia. Ele mede o tamanho do problema. Se a seleção custar recall demais, a saída é
+admitir todas as sondas e calibrar só o limiar — o que muda a **D17** e é decisão a tomar com o
+número na mão, não antes.
 
 **Por que assim, e não pela mediana dos limiares calibrados:** se o default fosse a mediana das
 configurações calibradas, o resultado seria quase aritmético — o ótimo de cada litologia vence a

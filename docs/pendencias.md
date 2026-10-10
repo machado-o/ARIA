@@ -105,8 +105,9 @@
 > quantitativa contra o conjunto-ouro (**D7**) entra como próxima etapa, já definida na
 > metodologia e ainda não executada.
 
-- [ ] **Gerar as figuras *default × calibrado* para a apresentação.** São três braços desde
-  05/10 (**D5**): default, calibrado pela regra e calibrado pelo autor. Três cuidados:
+- [ ] **Gerar as figuras *default × calibrado* para a apresentação.** São quatro braços desde
+  10/10 (**D5**): default, regra com todas as sondas, regra com as sondas do autor e calibrado
+  pelo autor. Três cuidados:
   1. **Não usar o `"default"` atual do `rock_prompts.json` como baseline.** A **D5** o descarta:
      foi escolhido no olho (`vein 0,007`, vinte vezes abaixo do joelho medido na `siena_white`).
      O baseline é a regra da **D17** aplicada sobre as litologias reunidas, e só existe depois
