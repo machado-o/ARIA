@@ -1,0 +1,62 @@
+{
+  "rock": "ubatuba_green",
+  "faixa": "A",
+  "protocolo": "D17 (4 vagas, regra = joelho) + D18 (varredura offline)",
+  "calibrado_em": "2026-10-09T20:45:25",
+  "criterio": "Tentei subir até manter todas as marcas fortes da vaga forte, e descer até ainda mostrar as marcações da vaga sutil.",
+  "conf_piso_cache": 0.001,
+  "ultralytics": "8.4.61",
+  "sondas_na_regra": 0,
+  "sondas_divergentes": [
+    "crack",
+    "Stain",
+    "Dark patches",
+    "light spot"
+  ],
+  "sondas": {
+    "crack": {
+      "limiar_trabalho": 0.09,
+      "limiar_regra": 0.0283,
+      "divergencia": 0.0617,
+      "marcacoes_por_vaga": {
+        "descoberta": 3,
+        "limiar_sutil": 2,
+        "limiar_tipica": 1,
+        "limiar_forte": 0
+      }
+    },
+    "Stain": {
+      "limiar_trabalho": 0.28,
+      "limiar_regra": 0.0973,
+      "divergencia": 0.1827,
+      "marcacoes_por_vaga": {
+        "descoberta": 1,
+        "limiar_sutil": 9,
+        "limiar_tipica": 6,
+        "limiar_forte": 7
+      }
+    },
+    "Dark patches": {
+      "limiar_trabalho": 0.52,
+      "limiar_regra": 0.1252,
+      "divergencia": 0.3948,
+      "marcacoes_por_vaga": {
+        "descoberta": 1,
+        "limiar_sutil": 6,
+        "limiar_tipica": 2,
+        "limiar_forte": 2
+      }
+    },
+    "light spot": {
+      "limiar_trabalho": 0.165,
+      "limiar_regra": 0.034,
+      "divergencia": 0.131,
+      "marcacoes_por_vaga": {
+        "descoberta": 7,
+        "limiar_sutil": 0,
+        "limiar_tipica": 0,
+        "limiar_forte": 5
+      }
+    }
+  }
+}

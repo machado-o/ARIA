@@ -2,10 +2,10 @@
   "rock": "siena_white",
   "faixa": "A",
   "protocolo": "D17 (4 vagas, regra = joelho) + D18 (varredura offline)",
-  "calibrado_em": "2026-10-01T12:51:06",
+  "calibrado_em": "2026-10-09T23:55:42",
   "criterio": "Subi até o ponto onde em que a vaga típica para de marcar matriz limpa, aceitando perder feições mais fracas da vaga sutil; a vaga forte continua com todas as óbvias.",
   "conf_piso_cache": 0.001,
-  "ultralytics": "8.4.52",
+  "ultralytics": "8.4.61",
   "sondas_na_regra": 0,
   "sondas_divergentes": [
     "vein",
@@ -25,13 +25,13 @@
       }
     },
     "Stain": {
-      "limiar_trabalho": 0.4142,
+      "limiar_trabalho": 0.392,
       "limiar_regra": 0.2025,
-      "divergencia": 0.2117,
+      "divergencia": 0.1895,
       "marcacoes_por_vaga": {
-        "descoberta": 8,
+        "descoberta": 11,
         "limiar_sutil": 17,
-        "limiar_tipica": 6,
+        "limiar_tipica": 8,
         "limiar_forte": 0
       }
     },

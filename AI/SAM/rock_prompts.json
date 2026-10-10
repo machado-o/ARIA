@@ -3,7 +3,17 @@
   "_historia": "Ate 09/10/2026 este arquivo tinha 46 entradas provisorias, escolhidas no olho antes do protocolo D17 e copiadas entre litologias (as 45 rochas usavam 13 configuracoes distintas, 17 delas a mesma). A D15 declarava tudo aquilo sem valor, e nada no codigo usava mais: o inference.py le o calibracao.json e o calibrador semeia o limiar pela REGRA (joelho da curva). Os valores antigos ficam no historico do git, no commit anterior a esta data. A entrada 'default' tambem saiu: a D5 explica que ela nao serve como braco de controle do Experimento 1.",
   "siena_white": {
     "vein": 0.3351,
-    "Stain": 0.4142,
+    "Stain": 0.392,
     "Dark patches": 0.3966
+  },
+  "nevada_black": {
+    "crack": 0.2402,
+    "light spot": 0.1463
+  },
+  "ubatuba_green": {
+    "crack": 0.09,
+    "Stain": 0.28,
+    "Dark patches": 0.52,
+    "light spot": 0.165
   }
 }
