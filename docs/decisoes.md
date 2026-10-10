@@ -685,3 +685,46 @@ cuja estrutura forma desenho (bandamento, foliação). Fontes e ressalvas em `da
   pertencimento;
 - como a opinião externa é registrada quando vier (o `calibracao.json` hoje supõe um critério
   escrito só pelo autor, e a **D7** diz que o gabarito é do autor).
+
+---
+
+## D21 — Cada contorno solto é uma marcação própria, sem ponte
+
+**Contexto:** a máscara de uma detecção do SAM pode ter vários contornos soltos. O `Masks.xyn`
+do ultralytics os funde numa poligonal só (`masks2segments(strategy="all")` →
+`merge_multi_segment`), ligando-os por pontes de ida e volta. Essa poligonal ia para o `.txt` de
+treino e para a preview do calibrador, onde cada ponte aparecia como uma reta atravessando a
+chapa. Em 09/10/2026, calibrando a faixa A, o autor viu as retas e as rejeitou.
+
+**Decisão (2026-10-09):** **cada contorno vira um polígono próprio**, sem ponte. O autor não se
+importa com o número de marcações no rótulo ficar alto. As saídas descartadas foram
+`strategy="largest"` (perde área real) e aceitar a ponte declarando-a.
+
+**Como:** `sam_cache.pecas_por_deteccao` tira os contornos direto da máscara, com as mesmas
+chamadas do `Masks.xyn` menos a fusão. É a fonte única: o cache do calibrador e o `.txt` do
+`inference.py` saem dela.
+
+**O que não muda — a unidade da regra continua sendo a detecção.** O score é da detecção, e as
+peças de uma mesma detecção entram e saem juntas na varredura. "Marcação", na curva da **D17**,
+no calibrador e no `calibracao.json`, segue significando **detecção do SAM**. Verificado em
+09/10/2026 nas três litologias então calibradas: as contagens por vaga no limiar de trabalho
+(36 pares) e o limiar da regra das 9 sondas ficaram idênticos; a **D18** passou de novo com 32
+comparações.
+
+> Uma diferença pequena no piso: contorno com menos de 3 pontos não é polígono e fica de fora.
+> Uma detecção feita só de contornos assim deixa de contar — antes a fusão juntava os pontos e
+> ela passava. Em 168 pares (vaga, sonda) medidos, 15 perderam **uma** detecção no piso de 0,001;
+> nenhuma acima do limiar de trabalho.
+
+**Em aberto:**
+
+- **A curva da regra deveria contar peças?** Levantado pelo autor em 09/10/2026: se o joelho
+  procura onde o ruído começa, a fragmentação pode ser sinal dele. O cache guarda as duas
+  contagens. Medido nas 9 sondas calibradas, o joelho por peça ficou mais perto do limiar do
+  autor em 5, igual em 2 e mais longe em 2 — e abaixo do autor em todas (`nevada_black`/crack:
+  regra 0,018, por peça 0,128, autor 0,240). A forma da regra está fechada na **D17** desde
+  26/09; trocá-la depois de ver a divergência é ajustar a regra olhando o resultado, então, se
+  for feito, o texto reporta as duas versões e diz que a segunda veio depois.
+- **Área mínima.** Separar gera fragmentos minúsculos, que antes ficavam costurados a uma peça
+  maior. O filtro e o seu valor são parte do pós-processamento do Professor (`roadmap.md` →
+  Fase 3.0).

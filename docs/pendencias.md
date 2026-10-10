@@ -6,22 +6,23 @@
 > Consolida o que antes estava espalhado em `auditoria.md`, `revisao-artigo.md` e
 > `artigo-sbc.md` (os três foram removidos em 2026-08-23).
 >
-> Última atualização: 2026-10-07
+> Última atualização: 2026-10-09
 
 ---
 
 ## 🔴 Bloqueadores — dependem do Henrique
 
-- [ ] **Confirmar a data real de entrega/defesa com o Rafael.** Em 26/09/2026 o Henrique passou
-  **15/10/2026** como estimativa ("deve ser até dia 15"), e o plano passou a usar essa data. Ela
-  **não veio do orientador** — enquanto não for confirmada, todo o cronograma está apoiado numa
-  suposição. É a pendência mais barata de resolver e a que mais muda o plano: uma mensagem.
+- [ ] **Fechar a data exata de entrega/defesa com o Rafael.** Em 09/10/2026 o Henrique informou
+  que a entrega final fica **pelo menos um mês depois da Jacitec** — não antes de ~23/11/2026.
+  Isso **substitui o 15/10/2026**, estimativa de 26/09 ("deve ser até dia 15") sobre a qual o
+  cronograma vinha apoiado. O piso está dado; falta o dia, e é com ele que o cronograma do
+  `roadmap.md` se refaz de trás para frente.
 - [ ] **Agenda de outubro tira ~9 dias do cronograma** (informado pelo Henrique em 05/10/2026).
   **11 a 18/10:** Foz do Iguaçu, LatinoWare (publicação do artigo FracStoneAI). **20 a 23/10:**
   Jacitec, onde ele apresenta uma prévia do TCC. O fim do dia 18 e o dia 19 vão para preparar a
   apresentação e outras responsabilidades — **não contar com eles**. Janela útil antes da viagem:
-  **05 a 10/10**. O prazo-alvo de 15/10 do `roadmap.md` cai no meio da viagem: rever junto com a
-  confirmação da data acima.
+  **05 a 10/10**. Com a entrega final em novembro ou depois, o que essa agenda aperta é a
+  **prévia da Jacitec**, não o TCC.
 - [x] ~~**Confirmar se o DeepStoneAI usou este mesmo dataset.**~~ — sim, confirmado em
   2026-10-02 pelo artigo do SBAI (**D9**). Citação obrigatória.
 - [ ] **Contato do especialista do setor** para a preferência pareada cega (D7). Precisa de ~30
@@ -117,8 +118,8 @@
   3. **Apresentar como exemplos ilustrativos, não como evidência.** Um par em que o calibrado
      ficou melhor não prova a **H1**, e a pergunta "foram escolhidos a dedo?" é previsível.
      Incluir também um caso de empate ou em que o calibrado piora.
-- **Escopo realista até 10/10:** a faixa A (faltam 16 vagas em 4 litologias e 10 calibrações;
-  `shadow_white` e `san_francisco_green` seguem puladas). As 45 não cabem.
+- **Escopo realista até 10/10:** a faixa A. A seleção fechou (44/44); em 09/10 faltam **8
+  calibrações**, a ~30 min cada pelo ritmo das duas feitas nesse dia. As 45 não cabem.
 
 ---
 
@@ -130,7 +131,8 @@
   Primeira litologia calibrada de fato: **1 de 45**. Entraram 3 sondas — `vein`, `Stain` e
   `Dark patches`.
 - [ ] **Observar: o autor divergiu da regra nas 3 sondas da `siena_white`**, e sempre para cima
-  (limiar de trabalho ≈ 2× o joelho: `vein` 0,145 → 0,335; `Stain` 0,203 → 0,414;
+  (limiar de trabalho ≈ 2× o joelho: `vein` 0,145 → 0,335; `Stain` 0,203 → 0,392 — era 0,414
+  até a recalibração de 09/10/2026, feita já com a preview sem pontes da **D21**;
   `Dark patches` 0,235 → 0,397). Critério escrito: subir até a vaga típica parar de marcar matriz
   limpa. Uma litologia não é padrão, mas se a divergência se repetir na faixa A é o achado que a
   **D17** prevê (*"onde a curva engana"*) — e a direção bate com o "na dúvida, cortar mais
@@ -142,11 +144,11 @@
   `san_francisco_green` (08/10). As duas últimas tinham sido puladas (03/10 e 07/10) por ser
   difícil julgar o que é defeito nelas, e foram feitas sem a opinião de especialista, que não
   veio — as quatro movimentadas estão na lista em `dataset.md` → *Litologias movimentadas*.
-- [ ] **➡️ PRÓXIMA AÇÃO — calibrar as dez litologias com as 4 vagas fechadas** (`calibrator.py`):
-  `nevada_black`, `ubatuba_green`, `ipanema_beige`, `itaunas_white`, `santa_cecilia`,
-  `white_mirage`, `golden_storm`, `white_olympus`, `shadow_white` e `san_francisco_green`. Só a
-  `siena_white` tem `calibracao.json` (**D15**). Não há mais vaga de faixa A para selecionar;
-  avançar para a faixa B é decisão em aberto.
+- [ ] **➡️ PRÓXIMA AÇÃO — calibrar as oito litologias da faixa A que faltam** (`calibrator.py`):
+  `ipanema_beige`, `itaunas_white`, `santa_cecilia`, `white_mirage`, `golden_storm`,
+  `white_olympus`, `shadow_white` e `san_francisco_green`. Têm `calibracao.json` (**D15**) a
+  `siena_white`, a `nevada_black` e a `ubatuba_green` — as duas últimas feitas em 09/10/2026.
+  Não há mais vaga de faixa A para selecionar; avançar para a faixa B é decisão em aberto.
 - [ ] **Decidir a regra de split do Aluno** (por sequência ou por sorteio), adiada pelo
   Henrique. O que se sabe sobre sequência e blocos está no item do Xception, logo abaixo.
 - [x] ~~**Decidir o que fazer com o resultado do Xception no `test/`**~~ — decidido em
@@ -198,8 +200,12 @@
   limiar com o joelho marcado como sugestão, e critério de texto obrigatório para salvar.
 - [x] ~~**Fechar a regra de limiar**~~ — fechada em 2026-09-26 na **D17**: opção (b), joelho da
   curva em escala log, sem parâmetro livre.
-- [ ] **Decidir o que fazer com a ponte entre contornos do `masks.xyn`** — medição e opções em
-  `roadmap.md` → Fase 3.0. Decisão metodológica, não de código.
+- [x] ~~**Decidir o que fazer com a ponte entre contornos do `masks.xyn`**~~ — decidido e feito
+  em 2026-10-09 (**D21**): cada contorno é um polígono próprio, na preview e no `.txt`.
+- [ ] **Decidir se a curva da regra conta detecções ou peças** (em aberto na **D21**, com a
+  primeira medição). Hoje conta detecções.
+- [ ] **Seção 4.3 da monografia** (`resultados.tex`, *Geometria dos Polígonos*) diz que o
+  tratamento da ponte é "etapa a definir". Reescrever com a **D21**.
 
 ---
 

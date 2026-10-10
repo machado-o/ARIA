@@ -3,12 +3,16 @@
 Estado vivo do desenvolvimento e ordem de execução. As decisões que justificam esta ordem estão
 em [`decisoes.md`](decisoes.md).
 
-> Última atualização: 2026-10-05
-> Prazo-alvo de trabalho: **15/10/2026** — estimativa dada pelo Henrique em 26/09/2026
-> ("deve ser até dia 15"). **Ainda não confirmada com o Rafael** — ver `pendencias.md`.
-> Eram ~19 dias em 26/09; em 05/10 a janela útil é **05 a 10/10**, porque a agenda de outubro
-> ocupa de 11 a 23/10 e o dia 15 cai no meio da viagem — ver `pendencias.md`. O cronograma
-> abaixo assume que só o **Experimento 1** (Fase 2) roda.
+> Última atualização: 2026-10-09
+> **Dois horizontes** (informado pelo Henrique em 09/10/2026):
+> 1. **Prévia na Jacitec, 20 a 23/10/2026** — o marco apertado. A janela útil antes dela é
+>    **até 10/10**, porque a agenda de outubro ocupa de 11 a 19/10 — ver `pendencias.md`.
+> 2. **Entrega final do TCC: pelo menos um mês depois da Jacitec**, ou seja, não antes de
+>    ~23/11/2026. A data exata ainda não está fechada — ver `pendencias.md`.
+>
+> O prazo-alvo de **15/10/2026** que este arquivo usava (estimativa de 26/09) está **superado**.
+> O cronograma abaixo foi montado sobre ele e assume que só o **Experimento 1** (Fase 2) roda —
+> suposição a rever com o prazo novo; rever é decisão do Henrique, ainda não tomada.
 
 ---
 
@@ -23,7 +27,7 @@ em [`decisoes.md`](decisoes.md).
 | `verificar_d18.py` — prova empírica da D18 | ✅ **novo**: 32 comparações, nenhuma divergência |
 | `rock_prompts.json` | 🟡 **provisório** (**D15**) — 46 entradas, mas só 13 configurações distintas |
 | `selectRocks/` | 🟡 **44 de 180 vagas** — **faixa A completa**: as 11 litologias com 4/4, incluindo `shadow_white` e `san_francisco_green`, feitas em 08/10/2026 depois de puladas |
-| Litologias com `calibracao.json` | 🟡 **1 de 45** — `siena_white` (01/10/2026) |
+| Litologias com `calibracao.json` | 🟡 **3 de 45** — `siena_white` (01/10/2026, refeita em 09/10), `nevada_black` e `ubatuba_green` (09/10/2026) |
 | Inferência em lote sobre o dataset | ❌ **não existe** |
 | Conjunto-ouro anotado | ❌ não existe |
 | Avaliação (IoU / mAP / falso positivo) | ❌ não existe |
@@ -64,7 +68,8 @@ resolver na Fase 3.
 Ver **D15** e **D17**. O `selectRocks/` foi **zerado em 2026-08-23**: as 14 imagens antigas foram
 apagadas e a seleção recomeça com o protocolo de 4 vagas.
 
-**Estado: 44 de 180 vagas; 1 de 45 litologias calibrada.** A faixa A são as 11 primeiras —
+**Estado: 44 de 180 vagas; 3 de 45 litologias calibradas** (`siena_white`, `nevada_black` e
+`ubatuba_green` — as duas últimas em 09/10/2026, a ~30 min cada; restam 8 na faixa A). A faixa A são as 11 primeiras —
 **44 vagas, todas feitas** (`siena_white`, em 08/09/2026, calibrada em 01/10/2026;
 `nevada_black`, em 02/10/2026; `ubatuba_green` e `ipanema_beige`, em 03/10/2026;
 `itaunas_white`, em 05/10/2026; `santa_cecilia`, em 06/10/2026; `white_mirage`, em 07/10/2026;
@@ -77,7 +82,7 @@ especialista**, que não veio. Elas, a `white_mirage` e a `golden_storm` são ro
 `santa_cecilia` ✅ (seleção), `san_francisco_green` ✅ (seleção), `white_mirage` ✅ (seleção), `golden_storm` ✅ (seleção), `white_olympus` ✅ (seleção).
 
 > **A seleção da faixa A está completa** (44/44, em 08/10/2026). O que falta na faixa é
-> calibração, não seleção: 10 das 11 litologias ainda não têm `calibracao.json`.
+> calibração, não seleção: em 09/10/2026, 8 das 11 litologias ainda não têm `calibracao.json`.
 
 ```bash
 cd AI/SAM
@@ -97,10 +102,10 @@ abas:
    três vagas de limiar, com o joelho marcado como **sugestão**;
 3. **Fechar** — a contagem por vaga, o **critério escrito** (obrigatório) e o salvamento.
 
-> **A próxima ação do Henrique é calibrar as dez litologias com as 4 vagas fechadas** —
-> `nevada_black`, `ubatuba_green`, `ipanema_beige`, `itaunas_white`, `santa_cecilia`,
-> `white_mirage`, `golden_storm`, `white_olympus`, `shadow_white` e `san_francisco_green`.
-> Não há mais vaga de faixa A para selecionar.
+> **A próxima ação do Henrique é calibrar as oito litologias da faixa A que faltam** —
+> `ipanema_beige`, `itaunas_white`, `santa_cecilia`, `white_mirage`, `golden_storm`,
+> `white_olympus`, `shadow_white` e `san_francisco_green`. A `nevada_black` e a `ubatuba_green`
+> foram calibradas em 09/10/2026. Não há mais vaga de faixa A para selecionar.
 
 > **Primeira observação (`siena_white`, 01/10/2026):** o autor divergiu da regra nas 3 sondas
 > admitidas (`vein`, `Stain`, `Dark patches`), sempre para cima — limiar de trabalho ≈ 2× o joelho.
@@ -146,15 +151,15 @@ Ver **D6**. Executa faixa por faixa. **Cada faixa é escrita antes de a seguinte
   de polígono. No único exemplo existente (`samples/ice_leke.txt`) são **107 polígonos numa
   imagem**, com até 1.742 pontos. Um Aluno treinado nisso aprende a marcar tudo. Isso é etapa
   metodológica documentada, não gambiarra.
-- **Decidir o que fazer com a ponte entre contornos.** `masks.xyn` usa
+- ✅ **Ponte entre contornos — resolvida em 2026-10-09 (D21).** `masks.xyn` usa
   `masks2segments(strategy="all")`: quando a máscara de uma detecção tem vários contornos, eles
-  são fundidos numa poligonal só, ligados por pontes de ida e volta — e é essa poligonal que o
-  `inference.py` grava no `.txt`. Medido em `siena_white/descoberta` (crack @0,08): **45 das 76**
-  detecções têm mais de um contorno; a ponte tem área ~zero, então no agregado o polígono infla
-  só **2,4%** sobre a máscara (IoU **0,93**), mas numa detecção com 18 contornos chegou a
-  **2,5×**. Três saídas possíveis: usar `strategy="largest"` (perde área real), quebrar cada
-  contorno em uma instância separada (mais fiel, muda a contagem de instâncias), ou aceitar e
-  declarar. **Decisão metodológica — do Henrique.**
+  são fundidos numa poligonal só, ligados por pontes de ida e volta — e era essa poligonal que o
+  `inference.py` gravava no `.txt`. Medido em `siena_white/descoberta` (crack @0,08): **45 das
+  76** detecções têm mais de um contorno; no agregado o polígono inflava só **2,4%** sobre a
+  máscara (IoU **0,93**), mas numa detecção com 18 contornos chegou a **2,5×**. Decisão do
+  Henrique: **cada contorno é um polígono próprio**. `sam_cache.pecas_por_deteccao` é a fonte
+  única, usada pelo cache do calibrador e pelo `inference.py`; o `sam_batch.py` deve usá-la
+  também. Sobra desta frente a **área mínima** (item acima): separar expõe fragmentos minúsculos.
 - **`train.py` / `eval.py`** — treino dos Alunos e avaliação contra o conjunto-ouro da Fase 1.
 
 ### 3.1 — Faixa A (≥1000 imagens · 11 litologias)

@@ -188,8 +188,9 @@ results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
   `santa_cecilia` (06/10/2026), `white_mirage` (07/10/2026), `golden_storm`, `white_olympus`,
   `shadow_white` e `san_francisco_green` (08/10/2026). As duas últimas tinham sido puladas e
   foram selecionadas sem a opinião de especialista; elas, a `white_mirage` e a `golden_storm` são
-  rochas movimentadas (ver `docs/dataset.md` e **D20**). **1 de 45 litologias calibrada** —
-  `siena_white` (01/10/2026); as outras 10 da faixa A esperam calibração.
+  rochas movimentadas (ver `docs/dataset.md` e **D20**). **3 de 45 litologias calibradas** —
+  `siena_white` (01/10/2026, refeita em 09/10), `nevada_black` e `ubatuba_green` (09/10/2026);
+  as outras 8 da faixa A esperam calibração.
 - **Mais de uma máquina.** O Henrique alterna entre este PC e outro. O que precisa existir nos
   dois vai para o **git**; `_cache/`, `results/`, o `.venv` e o `sam3.pt` não vão, e cada máquina
   tem os seus. **A versão do ultralytics pode diferir entre elas** — cada `calibracao.json` grava
@@ -202,11 +203,13 @@ results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
   monkey-patcha `cv2.imread`** por uma versão que aceita Unicode: quem importa ultralytics antes
   nunca vê o bug, quem não importa recebe `None` silencioso. Em código que não depende do
   ultralytics, use `np.fromfile` + `cv2.imdecode` (ver `calibrator.abrir_imagem`).
-- **`masks.xyn` funde contornos disjuntos numa só poligonal** (`masks2segments(strategy="all")`),
-  ligando-os por pontes de ida e volta. É o que vai para o `.txt` de treino. Medido em
-  `siena_white/descoberta` (crack @0,08): 45 das 76 detecções têm mais de um contorno; a área
-  agregada infla só 2,4% (IoU 0,93 contra a máscara), mas uma detecção com 18 contornos chegou a
-  **2,5×**. Tratar no pós-processamento do Professor — `docs/roadmap.md` → Fase 3.0.
+- **Não usar `masks.xyn` — usar `sam_cache.pecas_por_deteccao`** (**D21**, 09/10/2026). O
+  `masks.xyn` funde os contornos soltos de uma detecção numa só poligonal
+  (`masks2segments(strategy="all")`), ligando-os por pontes de ida e volta, que viravam retas na
+  preview e iam para o `.txt`. Hoje cada contorno é um polígono próprio: uma detecção é uma
+  **lista de peças**, no cache (`polys[i]`) e no `.txt` (uma linha por peça). "Marcação", na
+  regra e no `calibracao.json`, continua sendo **detecção**, não peça. Cache `.npz` de antes da
+  mudança é tratado como ausente (`sam_cache.cache_atual`) e recapturado sozinho.
 - **`rock_viewer.py` ordena por volume de dados** (faixa A primeiro), não em ordem alfabética: a
   ordem **é** a prioridade de trabalho. Cada litologia tem 4 vagas nomeadas pelo papel.
 - **Litologia 4/4 abre em modo revisão**, não recusa. `rock_viewer.py <rocha>` numa litologia
