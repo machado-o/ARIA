@@ -283,7 +283,13 @@ def capturar(rocha: str, pendentes: list[tuple[str, Path, str]]) -> int:
             feitos += 1
     barra.empty()
     _ler.clear()
-    semear_da_regra(rocha)
+    # Só a sonda sem limiar salvo parte da regra. Antes a captura semeava TODAS,
+    # e capturar uma sonda nova numa litologia calibrada trocava os limiares
+    # salvos das outras pelos da regra — salvar em seguida gravava isso por
+    # cima. O cache não vai para o git: na outra máquina, a primeira captura de
+    # uma litologia calibrada apagaria todos eles.
+    salvas = set((ler_calib(rocha) or {}).get("sondas", {}))
+    semear_da_regra(rocha, {s for *_, s in pendentes} - salvas)
     return feitos
 
 
@@ -488,10 +494,10 @@ def limiar_da_regra(rocha: str, sonda: str) -> float | None:
     return None if j is None else arredondar(j)
 
 
-def semear_da_regra(rocha: str) -> None:
+def semear_da_regra(rocha: str, sondas=None) -> None:
     """Põe o limiar de cada sonda no valor da regra. O autor parte dela e diverge
-    se quiser — nunca o contrário (D17)."""
-    for sonda in sondas_candidatas(rocha):
+    se quiser — nunca o contrário (D17). `sondas=None` semeia todas as candidatas."""
+    for sonda in (sondas_candidatas(rocha) if sondas is None else sondas):
         j = limiar_da_regra(rocha, sonda)
         if j is not None:
             definir_limiar(rocha, sonda, j)
