@@ -3,7 +3,7 @@
 Este capítulo reporta os resultados obtidos até o momento. Ele começa pelas verificações que sustentam o método descrito no Capítulo 3 --- e que são pré-requisito para que os experimentos façam sentido --- e prossegue para os resultados dos experimentos propriamente ditos.
 
 % =====================================================================
-% TODO (estrutura): este capítulo está completo apenas nas seções 4.1 a 4.3.
+% TODO (estrutura): este capítulo está completo apenas nas seções 4.1 a 4.4.
 % As seções do Experimento 1 e do Experimento 2 aguardam execução. Ver
 % docs/roadmap.md no repositório para o estado corrente.
 % =====================================================================
@@ -68,15 +68,33 @@ A conversão das máscaras do Professor em polígonos no formato de anotação a
 
 A medição sobre a imagem de descoberta de uma litologia da faixa A, com a sonda \textit{crack} no limiar de 0,08, encontrou 45 detecções com mais de um contorno em um total de 76. Como os trajetos de ligação têm área praticamente nula, o efeito agregado é pequeno: a área total dos polígonos supera a das máscaras em 2,4\%, e a sobreposição entre a união das máscaras e a união dos polígonos atinge IoU de 0,928. O caso individual, porém, não é igualmente benigno: em uma detecção composta por 18 contornos, a área do polígono alcançou 2,5 vezes a da máscara correspondente.
 
-A implicação é que o efeito é desprezível quando se avalia a cobertura agregada, mas não quando uma detecção fragmentada é tomada isoladamente como instância de treinamento. O tratamento dessa geometria --- seja pela retenção do maior contorno, seja pela separação dos contornos em instâncias distintas --- integra o pós-processamento do Professor e é registrado como etapa metodológica a definir, e não como limitação incidental.
+A implicação é que o efeito é desprezível quando se avalia a cobertura agregada, mas não quando uma detecção fragmentada é tomada isoladamente como instância de treinamento. Os trajetos de ligação também se mostraram visíveis na prática: durante a calibração, cada um aparecia como uma reta atravessando a chapa.
+
+Adotou-se, por isso, a separação: \textbf{cada contorno da máscara torna-se um polígono próprio}, sem trajeto de ligação, tanto no material de calibração quanto nos arquivos de anotação. A alternativa de reter apenas o maior contorno foi descartada porque elimina área efetivamente marcada pelo Professor. A separação aumenta o número de polígonos por imagem, mas não altera a unidade sobre a qual a regra de limiar opera: o escore pertence à detecção, e os contornos de uma mesma detecção entram e saem juntos na varredura. Uma marcação, na curva da Seção \ref{sec:regra}, continua sendo uma detecção do Professor. Verificou-se, nas litologias calibradas à época, que as contagens por imagem no limiar adotado e o limiar produzido pela regra permaneceram idênticos após a mudança.
+
+Duas questões permanecem em aberto no pós-processamento: a área mínima abaixo da qual um fragmento é descartado, e se a curva da regra deveria contar contornos em vez de detecções. Esta segunda questão só surgiu depois de a forma da regra ter sido fixada; caso seja adotada, os resultados serão reportados nas duas versões, com a indicação de que a segunda foi definida posteriormente.
+
+\section{Classificador de Litologias}
+\label{sec:res_classificador}
+
+A reprodução do classificador (Seção \ref{sec:classificador}) atingiu \textbf{96,72\%} de acurácia sobre as 5.153 imagens da partição de teste original, com acurácia balanceada de 92,32\% e F1 macro de 0,924. Os erros concentram-se em poucas litologias --- 15 das 45 apresentam algum --- e em poucos pares: \textit{naica} confundida com \textit{white\_olympus} em 33 imagens, \textit{white\_himalaya} com \textit{white\_liberdade} em 31, e \textit{white\_superiore} com \textit{kalahari} em 21 e com \textit{white\_olympus} em 15.
+
+O caso da \textit{white\_superiore} indica a causa. O modelo acertou 35 de suas 37 imagens de validação e nenhuma de suas 36 imagens de teste. Na inspeção visual, as imagens de teste são acinzentadas, com veios lineares e paralelos, enquanto as de treinamento e de validação são brancas, com veios ramificados: as de teste aparentam pertencer a outro bloco. Uma sondagem por similaridade de cor e brilho reforça essa leitura para essa litologia, mas não se confirma em todas --- em outras, o teste está tão próximo do treinamento quanto a validação.
+
+Para isolar o efeito do particionamento, o mesmo modelo foi treinado com a mesma receita e as partições sorteadas por imagem, como no trabalho original. O resultado foi de \textbf{99,92\%} de acurácia, com 4 erros em 5.195 imagens, acima dos 99,21\% reportados pelo DeepStoneAI. A diferença de cerca de três pontos vem, portanto, da divisão dos dados, e não da resolução nem do modelo: no sorteio por imagem, chapas vizinhas das de treinamento --- cortadas do mesmo bloco e com os mesmos veios --- caem na partição de teste.
+
+Os dois números descrevem cenários de uso distintos, e nenhum é tratado como erro do outro. O de 99,92\% corresponde a classificar chapas de um bloco já visto, situação comum na indústria, em que um mesmo bloco gera dezenas de chapas. O de 96,72\% aproxima-se de classificar chapas de um bloco novo. O valor do DeepStoneAI não é diretamente comparável a nenhum dos dois, por adotar particionamento próprio. O modelo empregado no \textit{pipeline} é o treinado sobre as partições originais.
 
 \section{Experimento 1 --- Critério por Litologia \textit{versus} Critério Único}
 
 % TODO: executar e redigir. Depende da calibração das litologias da faixa A e da
 % anotação do conjunto de referência (Seção \ref{sec:referencia}).
-% Reportar, por braço e por litologia: IoU, precisão, recall e taxa de falso
-% positivo; incluir o par de figuras "critério único x critério calibrado" sobre
-% a mesma chapa; e reportar a taxa de concordância entre a regra e o autor.
+% Reportar, pelos quatro braços e por litologia: IoU, precisão, recall e taxa de
+% falso positivo; incluir o par de figuras "critério único x critério calibrado"
+% sobre a mesma chapa; e reportar a taxa de concordância entre a regra e o autor.
+% Figuras de exemplo (decisão do Henrique, 10/10/2026): o lado calibrado usa o
+% LIMIAR DE TRABALHO (braço "calibrado pelo autor"), a não ser que o joelho da
+% regra produza figura melhor. A legenda diz qual dos dois foi usado.
 
 \section{Experimento 2 --- Especialistas \textit{versus} Generalista}
 

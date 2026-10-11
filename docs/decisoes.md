@@ -30,8 +30,8 @@ polo produtor e exportador do país.
 
 ## D2 — Prompts são sondas de recall, não rótulos semânticos
 
-**Decisão:** As palavras usadas como prompt (as seis da **D8**: `vein`, `crack`, `Stain`,
-`Dark patches`, `light spot`, `scratch`) **não são afirmações sobre a natureza do que foi
+**Decisão:** As palavras usadas como prompt (as da **D8**: `vein`, `crack`, `Stain`,
+`Dark patches`, `light spot`, `scratch`, `white stain`) **não são afirmações sobre a natureza do que foi
 encontrado**. São chaves lexicais
 escolhidas por fazerem o CLIP+SAM3 responder a certas assinaturas visuais. O objetivo do conjunto
 é **maximizar a cobertura de regiões anômalas**, não classificá-las.
@@ -178,6 +178,11 @@ cadastro de `sondas.py` (**D8**), igual nos dois primeiros braços.
 
 Custo: nenhuma anotação a mais. Pela **D18**, o SAM roda uma vez com todas as sondas em cada
 imagem do conjunto-ouro e os quatro braços são filtros do mesmo cache.
+
+**Figuras de exemplo (decisão do autor, 10/10/2026):** a figura "critério único × calibrado" usa,
+no lado calibrado, o **limiar de trabalho** (braço calibrado pelo autor), a não ser que o joelho
+da regra dê figura melhor. A legenda diz qual dos dois foi usado — a figura ilustra, não é a
+evidência da H1.
 
 **O que o braço novo não resolve:** se uma imagem de descoberta basta para escolher as sondas de
 uma litologia. Ele mede o tamanho do problema. Se a seleção custar recall demais, a saída é
@@ -508,10 +513,14 @@ uma imagem de `test/` seria ajustar o limiar em cima da própria prova. O `val/`
 para a validação do Aluno. O `rock_viewer.py` já restringe a seleção ao `train/`; a flag `--all`
 mostra os outros splits apenas para estudo, sem permitir seleção.
 
-Isso não custa cobertura: o split do dataset é **aleatório estratificado 70/15/15 em todas as 45
-classes** (verificado), então `val/` e `test/` são amostras da mesma distribuição — não há
-fenômeno que apareça sistematicamente só neles. E para a faixa A o `train/` tem de 700 a 3.200
-imagens por litologia: o que limita a cobertura é a varredura do autor, não o split.
+~~Isso não custa cobertura: o split é aleatório estratificado~~ — **corrigido em 10/10/2026.** O
+verificado foi só a **proporção** 70/15/15 em todas as 45 classes, não o sorteio. A investigação do
+Xception (**D19**, `pendencias.md`) mostrou que a numeração dos arquivos segue a sequência das
+chapas e que o `test/` de ao menos uma rocha (`white_superiore`) parece vir de outro bloco. Logo a
+restrição ao `train/` **tem custo**: fenômeno que só exista num bloco que caiu inteiro no `test/`
+não aparece na calibração. O mesmo fato torna a avaliação mais exigente — o conjunto-ouro mede a
+marcação em chapa que a calibração não pôde antecipar. Para a faixa A o `train/` tem de 700 a 3.200
+imagens por litologia: o que limita a cobertura na seleção é a varredura do autor, não o split.
 
 **Para que lado errar:** a literatura de pseudo-rotulagem tende a limiar **alto** / viés de
 precisão — o *Soft Teacher* reporta melhor resultado em 0,9 de score, notando que limiar maior dá

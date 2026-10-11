@@ -6,7 +6,57 @@
 > Consolida o que antes estava espalhado em `auditoria.md`, `revisao-artigo.md` e
 > `artigo-sbc.md` (os três foram removidos em 2026-08-23).
 >
-> Última atualização: 2026-10-09
+> Última atualização: 2026-10-11
+
+---
+
+## ➡️ Retomada em 19/10/2026 — por onde começar
+
+> Escrito em 11/10/2026, antes da viagem à LatinoWare. O Henrique volta no dia 19 para calibrar
+> e consertar o texto. Riscar cada item ao fechar; quando a lista acabar, apagar a seção.
+
+**1. Antes de calibrar — conferir o que a sessão de 10/10 pode ter estragado.** O calibrador
+tinha um bug (corrigido em 10/10): capturar uma sonda nova numa litologia calibrada punha
+**todas** as sondas de volta no valor da regra, e salvar em seguida gravava isso por cima.
+
+- [ ] **`itaunas_white` e `santa_cecilia`** — foram salvas **depois** de uma captura da
+  `white stain` (18:16 e 18:23) e nunca tinham entrado no git, então não há versão anterior
+  para comparar. Nenhum valor salvo é o da regra, mas só o Henrique sabe se reajustou cada
+  sonda antes de salvar. Abrir as duas e conferir os limiares sonda por sonda.
+- [ ] **`ubatuba_green` → `crack`** — mudou de 0,09 para 0,0385 no salvamento das 18:12; as
+  outras três sondas ficaram idênticas. Confirmar se foi de propósito.
+- Intactas, conferidas contra o git ou pelo horário: `siena_white`, `nevada_black`,
+  `ipanema_beige`, `shadow_white`.
+
+**2. Calibrar** — faltam 4 da faixa A: `white_mirage`, `golden_storm`, `white_olympus` e
+`san_francisco_green` (três delas movimentadas, **D20**). E a `white stain` (**D8**, id 6) só
+foi avaliada onde o Henrique a capturou em 10/10; nas demais aparece desmarcada.
+
+**3. Texto do TCC — compilar no Overleaf primeiro.** A revisão de 10/10 (ver *Escrita*, abaixo)
+**nunca foi compilada**. Três trechos são novos e podem quebrar: as equações do joelho
+(`eq:curva`, `eq:normalizacao`, `eq:joelho`), o `lstlisting` do `calibracao.json` com
+`literate` para acentos, e as caixas `\fbox` de "captura de tela pendente".
+
+**4. O que falta no texto, em ordem de peso** (resposta a "se pedirem o arquivo, falta muito?"):
+
+- [ ] **Experimento 1 e Experimento 2** — as duas seções de resultados estão vazias. O 1 depende
+  da faixa A calibrada e do conjunto-ouro anotado (**D7**, ainda não começou); o 2, disso e do
+  treino dos Alunos. Não se resolve escrevendo.
+- [ ] Por consequência: frases de resultado no resumo/abstract e a síntese de H1/H2 na conclusão.
+- [ ] **Figuras:** a do pipeline e as quatro capturas de tela (`figuras/rock_viewer.png`,
+  `calib_descoberta.png`, `calib_limiar.png`, `calib_fechar.png`).
+- [ ] **Referências fora do `.bib`:** `TODO-sam3` e `TODO-movimentada` (a pesquisa do termo está
+  em `dataset.md` → *Litologias movimentadas*).
+- [ ] **Pré-textuais:** dedicatória, agradecimentos, epígrafe, banca e data da defesa.
+- [ ] **Tabela regra × autor** nos resultados — o Henrique decidiu esperar a faixa A fechar.
+  Prévia: nas litologias calibradas até 10/10 o limiar do autor ficou acima do joelho em todas
+  as sondas.
+- [ ] **Outros trechos de código** no texto — o Henrique disse que pensaria depois; hoje só o
+  `calibracao.json` entra. Candidatos: a filtragem fora de linha, o joelho, os contornos (D21).
+
+Como versão **parcial** o texto se sustenta: método completo, quatro seções de resultado
+(varredura, escores, contornos, classificador) e o capítulo já abre com "resultados obtidos até
+o momento".
 
 ---
 
@@ -145,10 +195,11 @@
   `san_francisco_green` (08/10). As duas últimas tinham sido puladas (03/10 e 07/10) por ser
   difícil julgar o que é defeito nelas, e foram feitas sem a opinião de especialista, que não
   veio — as quatro movimentadas estão na lista em `dataset.md` → *Litologias movimentadas*.
-- [ ] **➡️ PRÓXIMA AÇÃO — calibrar as oito litologias da faixa A que faltam** (`calibrator.py`):
-  `ipanema_beige`, `itaunas_white`, `santa_cecilia`, `white_mirage`, `golden_storm`,
-  `white_olympus`, `shadow_white` e `san_francisco_green`. Têm `calibracao.json` (**D15**) a
-  `siena_white`, a `nevada_black` e a `ubatuba_green` — as duas últimas feitas em 09/10/2026.
+- [ ] **➡️ PRÓXIMA AÇÃO — calibrar as quatro litologias da faixa A que faltam** (`calibrator.py`):
+  `white_mirage`, `golden_storm`, `white_olympus` e `san_francisco_green`. Têm `calibracao.json`
+  (**D15**) **7 de 45**: `siena_white`, `nevada_black` e `ubatuba_green` (09/10/2026) e, de
+  10/10/2026, `ipanema_beige`, `itaunas_white`, `santa_cecilia` e `shadow_white` — com duas a
+  reconferir e uma dúvida, ver *Retomada em 19/10/2026* no topo deste arquivo.
   Não há mais vaga de faixa A para selecionar; avançar para a faixa B é decisão em aberto.
 - [ ] **Decidir a regra de split do Aluno** (por sequência ou por sorteio), adiada pelo
   Henrique. O que se sabe sobre sequência e blocos está no item do Xception, logo abaixo.
@@ -232,6 +283,20 @@
 - [x] Boxes2Pixels citado e posicionado (§2.7) sem alegar lacuna na literatura.
 - [x] "Constituir o banco" → "selecionar, caracterizar e pré-processar um conjunto público"
   (**D9**); mAP explicado como AP por causa da classe única (**D2**).
+
+### ✅ Monografia — revisão de 2026-10-10 (não compilada)
+
+- [x] Experimento 1 com os **quatro braços** da **D5**; o limiar do autor ganhou papel próprio.
+- [x] Classificador tratado como **reprodução** (**D19**): seção na metodologia, resultados com
+  96,72% e 99,92%, limitação na conclusão corrigida.
+- [x] Contornos (**D21**) decididos no texto; `white stain` no quadro de sondas.
+- [x] **Split deixou de ser "aleatório"** no texto e na **D17**; rename `whte_liberdade` (**D9**)
+  declarado; quadro de ambiente com as duas máquinas.
+- [x] Explicações novas: o joelho em equação e a alternativa descartada (135 imagens), como uma
+  sonda entra no conjunto, as litologias movimentadas (**D20**), um critério escrito real.
+- [x] Seção **Ferramentas de Seleção e Calibração** (rock_viewer, calibrador, registro de
+  calibração em `lstlisting`). `\lstlistingname` do template: "Algoritimo" → "Código".
+- [x] `verificar_tex.py` reconhece o `label=` do `lstlisting`.
 
 ### 🟡 Monografia — em aberto
 

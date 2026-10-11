@@ -82,6 +82,8 @@ def main() -> int:
 
     # ── 3. referências cruzadas ──────────────────────────────────────────────
     rotulos = {k for s in corpos.values() for k in chaves(r"\\label\{([^}]*)\}", s)}
+    # O lstlisting declara o rótulo nas opções (`label={lst:x}`), sem \label.
+    rotulos |= {k for s in corpos.values() for k in chaves(r"\blabel=\{([^}]*)\}", s)}
     for p, s in corpos.items():
         for k in chaves(r"\\(?:auto|eq|page)?ref\{([^}]*)\}", s):
             if k not in rotulos:

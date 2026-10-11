@@ -599,7 +599,7 @@
 \definecolor{keywordcolour}{RGB}{249,38,114}
 \definecolor{stringcolour}{RGB}{255,102,0}
 
-\renewcommand\lstlistingname{Algoritimo} 
+\renewcommand\lstlistingname{C\'odigo}
 \lstdefinestyle{mystyle}{
   backgroundcolor=\color{backcolour},   
   commentstyle=\color{commentcolour},
