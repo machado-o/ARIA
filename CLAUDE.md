@@ -195,9 +195,16 @@ results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
   `santa_cecilia` (06/10/2026), `white_mirage` (07/10/2026), `golden_storm`, `white_olympus`,
   `shadow_white` e `san_francisco_green` (08/10/2026). As duas últimas tinham sido puladas e
   foram selecionadas sem a opinião de especialista; elas, a `white_mirage` e a `golden_storm` são
-  rochas movimentadas (ver `docs/dataset.md` e **D20**). **3 de 45 litologias calibradas** —
-  `siena_white` (01/10/2026, refeita em 09/10), `nevada_black` e `ubatuba_green` (09/10/2026);
-  as outras 8 da faixa A esperam calibração.
+  rochas movimentadas (ver `docs/dataset.md` e **D20**). **7 de 45 litologias com `calibracao.json`** —
+  `siena_white` (01/10/2026, refeita em 09/10), `nevada_black` e `ubatuba_green` (09/10/2026),
+  `ipanema_beige`, `itaunas_white`, `santa_cecilia` e `shadow_white` (10/10/2026); faltam
+  `white_mirage`, `golden_storm`, `white_olympus` e `san_francisco_green`. **Duas das sete
+  estão a reconferir** (`itaunas_white`, `santa_cecilia`) — ver o topo de `docs/pendencias.md`.
+- **A captura não mexe em limiar salvo** (corrigido em 10/10/2026). `capturar()` chamava
+  `semear_da_regra` para **todas** as sondas: capturar uma sonda nova numa litologia calibrada
+  trocava os limiares salvos pelos da regra, e salvar gravava isso por cima. Agora só a sonda
+  sem limiar no `calibracao.json` parte da regra. Vale em dobro na outra máquina: lá o cache não
+  existe, e a primeira captura de uma litologia calibrada apagaria todos.
 - **Mais de uma máquina.** O Henrique alterna entre este PC e outro. O que precisa existir nos
   dois vai para o **git**; `_cache/`, `results/`, o `.venv` e o `sam3.pt` não vão, e cada máquina
   tem os seus. **A versão do ultralytics pode diferir entre elas** — cada `calibracao.json` grava

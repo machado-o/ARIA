@@ -27,7 +27,7 @@ em [`decisoes.md`](decisoes.md).
 | `verificar_d18.py` — prova empírica da D18 | ✅ **novo**: 32 comparações, nenhuma divergência |
 | `rock_prompts.json` | 🟡 **provisório** (**D15**) — 46 entradas, mas só 13 configurações distintas |
 | `selectRocks/` | 🟡 **44 de 180 vagas** — **faixa A completa**: as 11 litologias com 4/4, incluindo `shadow_white` e `san_francisco_green`, feitas em 08/10/2026 depois de puladas |
-| Litologias com `calibracao.json` | 🟡 **3 de 45** — `siena_white` (01/10/2026, refeita em 09/10), `nevada_black` e `ubatuba_green` (09/10/2026) |
+| Litologias com `calibracao.json` | 🟡 **7 de 45** — `siena_white` (01/10/2026, refeita em 09/10), `nevada_black` e `ubatuba_green` (09/10/2026), `ipanema_beige`, `itaunas_white`, `santa_cecilia` e `shadow_white` (10/10/2026; duas a reconferir, ver `pendencias.md`) |
 | Inferência em lote sobre o dataset | ❌ **não existe** |
 | Conjunto-ouro anotado | ❌ não existe |
 | Avaliação (IoU / mAP / falso positivo) | ❌ não existe |
@@ -68,8 +68,9 @@ resolver na Fase 3.
 Ver **D15** e **D17**. O `selectRocks/` foi **zerado em 2026-08-23**: as 14 imagens antigas foram
 apagadas e a seleção recomeça com o protocolo de 4 vagas.
 
-**Estado: 44 de 180 vagas; 3 de 45 litologias calibradas** (`siena_white`, `nevada_black` e
-`ubatuba_green` — as duas últimas em 09/10/2026, a ~30 min cada; restam 8 na faixa A). A faixa A são as 11 primeiras —
+**Estado: 44 de 180 vagas; 7 de 45 litologias com `calibracao.json`** (`siena_white`,
+`nevada_black` e `ubatuba_green` até 09/10/2026; `ipanema_beige`, `itaunas_white`,
+`santa_cecilia` e `shadow_white` em 10/10/2026; restam 4 na faixa A). A faixa A são as 11 primeiras —
 **44 vagas, todas feitas** (`siena_white`, em 08/09/2026, calibrada em 01/10/2026;
 `nevada_black`, em 02/10/2026; `ubatuba_green` e `ipanema_beige`, em 03/10/2026;
 `itaunas_white`, em 05/10/2026; `santa_cecilia`, em 06/10/2026; `white_mirage`, em 07/10/2026;
@@ -102,10 +103,10 @@ abas:
    três vagas de limiar, com o joelho marcado como **sugestão**;
 3. **Fechar** — a contagem por vaga, o **critério escrito** (obrigatório) e o salvamento.
 
-> **A próxima ação do Henrique é calibrar as oito litologias da faixa A que faltam** —
-> `ipanema_beige`, `itaunas_white`, `santa_cecilia`, `white_mirage`, `golden_storm`,
-> `white_olympus`, `shadow_white` e `san_francisco_green`. A `nevada_black` e a `ubatuba_green`
-> foram calibradas em 09/10/2026. Não há mais vaga de faixa A para selecionar.
+> **A próxima ação do Henrique é calibrar as quatro litologias da faixa A que faltam** —
+> `white_mirage`, `golden_storm`, `white_olympus` e `san_francisco_green` — depois de reconferir
+> a `itaunas_white` e a `santa_cecilia` (ver o topo de `pendencias.md`). Não há mais vaga de
+> faixa A para selecionar.
 
 > **Primeira observação (`siena_white`, 01/10/2026):** o autor divergiu da regra nas 3 sondas
 > admitidas (`vein`, `Stain`, `Dark patches`), sempre para cima — limiar de trabalho ≈ 2× o joelho.

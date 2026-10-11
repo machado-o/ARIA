@@ -2,7 +2,7 @@
   "rock": "nevada_black",
   "faixa": "A",
   "protocolo": "D17 (4 vagas, regra = joelho) + D18 (varredura offline)",
-  "calibrado_em": "2026-10-09T20:11:56",
+  "calibrado_em": "2026-10-10T15:21:37",
   "criterio": "Novamente, com a mesma mentalidade, tentei marcar o que eu achava que devia ser marcado em cada uma das rochas. A sutil acabou tendo um maior número de cracks, mas menores e mais finos na imagem, apenas os que mais aparecem, a típica acabou sendo uma com mais partes brancas, nesse fundo preto da chapa, então foquei em marcar apenas os mais pesados e claros, a forte acabou tendo tendo um ponto forte no meio. Gostei que a sonda de light spot teve bastante marcações nessa litologia, considerando que é uma chapa escura, faz sentido ela ter mais light spots do que arranhões.",
   "conf_piso_cache": 0.001,
   "ultralytics": "8.4.61",

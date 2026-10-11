@@ -1,0 +1,62 @@
+{
+  "rock": "ipanema_beige",
+  "faixa": "A",
+  "protocolo": "D17 (4 vagas, regra = joelho) + D18 (varredura offline)",
+  "calibrado_em": "2026-10-10T15:38:29",
+  "criterio": "A tipica continuou sem marcações, ja que ela não tinha nenhum defeito aparente e diminui o bastante para pegar a marcação óbvia do forte (por algum motivo eu precisei baixar pra pegar a marcação do forte em vez de pra pegar a marcação sutíl, algo que só a IA entende)",
+  "conf_piso_cache": 0.001,
+  "ultralytics": "8.4.61",
+  "sondas_na_regra": 0,
+  "sondas_divergentes": [
+    "crack",
+    "Stain",
+    "Dark patches",
+    "scratch"
+  ],
+  "sondas": {
+    "crack": {
+      "limiar_trabalho": 0.155,
+      "limiar_regra": 0.0312,
+      "divergencia": 0.1238,
+      "marcacoes_por_vaga": {
+        "descoberta": 9,
+        "limiar_sutil": 2,
+        "limiar_tipica": 0,
+        "limiar_forte": 1
+      }
+    },
+    "Stain": {
+      "limiar_trabalho": 0.1211,
+      "limiar_regra": 0.0338,
+      "divergencia": 0.0873,
+      "marcacoes_por_vaga": {
+        "descoberta": 1,
+        "limiar_sutil": 6,
+        "limiar_tipica": 0,
+        "limiar_forte": 1
+      }
+    },
+    "Dark patches": {
+      "limiar_trabalho": 0.5,
+      "limiar_regra": 0.111,
+      "divergencia": 0.389,
+      "marcacoes_por_vaga": {
+        "descoberta": 1,
+        "limiar_sutil": 1,
+        "limiar_tipica": 0,
+        "limiar_forte": 1
+      }
+    },
+    "scratch": {
+      "limiar_trabalho": 0.1447,
+      "limiar_regra": 0.0308,
+      "divergencia": 0.1139,
+      "marcacoes_por_vaga": {
+        "descoberta": 5,
+        "limiar_sutil": 3,
+        "limiar_tipica": 0,
+        "limiar_forte": 1
+      }
+    }
+  }
+}

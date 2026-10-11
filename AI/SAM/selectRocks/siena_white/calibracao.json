@@ -2,7 +2,7 @@
   "rock": "siena_white",
   "faixa": "A",
   "protocolo": "D17 (4 vagas, regra = joelho) + D18 (varredura offline)",
-  "calibrado_em": "2026-10-09T23:55:42",
+  "calibrado_em": "2026-10-10T15:20:15",
   "criterio": "Subi até o ponto onde em que a vaga típica para de marcar matriz limpa, aceitando perder feições mais fracas da vaga sutil; a vaga forte continua com todas as óbvias.",
   "conf_piso_cache": 0.001,
   "ultralytics": "8.4.61",

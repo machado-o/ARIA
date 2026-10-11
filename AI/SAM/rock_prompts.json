@@ -11,9 +11,38 @@
     "light spot": 0.1463
   },
   "ubatuba_green": {
-    "crack": 0.09,
+    "crack": 0.0385,
     "Stain": 0.28,
     "Dark patches": 0.52,
-    "light spot": 0.165
+    "light spot": 0.165,
+    "white stain": 0.2217
+  },
+  "ipanema_beige": {
+    "crack": 0.155,
+    "Stain": 0.1211,
+    "Dark patches": 0.5,
+    "scratch": 0.1447
+  },
+  "shadow_white": {
+    "vein": 0.0272,
+    "crack": 0.134,
+    "Stain": 0.2586,
+    "Dark patches": 0.5422,
+    "scratch": 0.0479
+  },
+  "itaunas_white": {
+    "crack": 0.5,
+    "Stain": 0.5244,
+    "Dark patches": 0.4012,
+    "light spot": 0.5,
+    "white stain": 0.35
+  },
+  "santa_cecilia": {
+    "vein": 0.022,
+    "crack": 0.2005,
+    "Stain": 0.7,
+    "Dark patches": 0.2629,
+    "light spot": 0.1825,
+    "white stain": 0.246
   }
 }

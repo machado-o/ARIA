@@ -1,0 +1,74 @@
+{
+  "rock": "shadow_white",
+  "faixa": "A",
+  "protocolo": "D17 (4 vagas, regra = joelho) + D18 (varredura offline)",
+  "calibrado_em": "2026-10-10T16:31:00",
+  "criterio": "Subi até o ponto em que a tipica ficava com a matriz limpa, conseguir marcar todos os defeitos mais graves",
+  "conf_piso_cache": 0.001,
+  "ultralytics": "8.4.61",
+  "sondas_na_regra": 0,
+  "sondas_divergentes": [
+    "vein",
+    "crack",
+    "Stain",
+    "Dark patches",
+    "scratch"
+  ],
+  "sondas": {
+    "vein": {
+      "limiar_trabalho": 0.0272,
+      "limiar_regra": 0.0208,
+      "divergencia": 0.0064,
+      "marcacoes_por_vaga": {
+        "descoberta": 0,
+        "limiar_sutil": 10,
+        "limiar_tipica": 0,
+        "limiar_forte": 1
+      }
+    },
+    "crack": {
+      "limiar_trabalho": 0.134,
+      "limiar_regra": 0.1241,
+      "divergencia": 0.0099,
+      "marcacoes_por_vaga": {
+        "descoberta": 0,
+        "limiar_sutil": 15,
+        "limiar_tipica": 0,
+        "limiar_forte": 15
+      }
+    },
+    "Stain": {
+      "limiar_trabalho": 0.2586,
+      "limiar_regra": 0.1511,
+      "divergencia": 0.1075,
+      "marcacoes_por_vaga": {
+        "descoberta": 41,
+        "limiar_sutil": 12,
+        "limiar_tipica": 7,
+        "limiar_forte": 0
+      }
+    },
+    "Dark patches": {
+      "limiar_trabalho": 0.5422,
+      "limiar_regra": 0.0395,
+      "divergencia": 0.5027,
+      "marcacoes_por_vaga": {
+        "descoberta": 14,
+        "limiar_sutil": 8,
+        "limiar_tipica": 10,
+        "limiar_forte": 7
+      }
+    },
+    "scratch": {
+      "limiar_trabalho": 0.0479,
+      "limiar_regra": 0.0266,
+      "divergencia": 0.0213,
+      "marcacoes_por_vaga": {
+        "descoberta": 36,
+        "limiar_sutil": 3,
+        "limiar_tipica": 2,
+        "limiar_forte": 1
+      }
+    }
+  }
+}

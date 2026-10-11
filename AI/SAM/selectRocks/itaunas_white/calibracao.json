@@ -1,0 +1,74 @@
+{
+  "rock": "itaunas_white",
+  "faixa": "A",
+  "protocolo": "D17 (4 vagas, regra = joelho) + D18 (varredura offline)",
+  "calibrado_em": "2026-10-10T18:16:02",
+  "criterio": "Subi até não marcar a rocha limpa, tudo que devia marcar foi marcado",
+  "conf_piso_cache": 0.001,
+  "ultralytics": "8.4.61",
+  "sondas_na_regra": 0,
+  "sondas_divergentes": [
+    "crack",
+    "Stain",
+    "Dark patches",
+    "light spot",
+    "white stain"
+  ],
+  "sondas": {
+    "crack": {
+      "limiar_trabalho": 0.5,
+      "limiar_regra": 0.179,
+      "divergencia": 0.321,
+      "marcacoes_por_vaga": {
+        "descoberta": 4,
+        "limiar_sutil": 0,
+        "limiar_tipica": 1,
+        "limiar_forte": 0
+      }
+    },
+    "Stain": {
+      "limiar_trabalho": 0.5244,
+      "limiar_regra": 0.1818,
+      "divergencia": 0.3426,
+      "marcacoes_por_vaga": {
+        "descoberta": 3,
+        "limiar_sutil": 6,
+        "limiar_tipica": 2,
+        "limiar_forte": 2
+      }
+    },
+    "Dark patches": {
+      "limiar_trabalho": 0.4012,
+      "limiar_regra": 0.2383,
+      "divergencia": 0.1629,
+      "marcacoes_por_vaga": {
+        "descoberta": 9,
+        "limiar_sutil": 7,
+        "limiar_tipica": 12,
+        "limiar_forte": 5
+      }
+    },
+    "light spot": {
+      "limiar_trabalho": 0.5,
+      "limiar_regra": 0.0406,
+      "divergencia": 0.4594,
+      "marcacoes_por_vaga": {
+        "descoberta": 1,
+        "limiar_sutil": 1,
+        "limiar_tipica": 0,
+        "limiar_forte": 0
+      }
+    },
+    "white stain": {
+      "limiar_trabalho": 0.35,
+      "limiar_regra": 0.0323,
+      "divergencia": 0.3177,
+      "marcacoes_por_vaga": {
+        "descoberta": 1,
+        "limiar_sutil": 1,
+        "limiar_tipica": 0,
+        "limiar_forte": 0
+      }
+    }
+  }
+}

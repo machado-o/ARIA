@@ -1,0 +1,86 @@
+{
+  "rock": "santa_cecilia",
+  "faixa": "A",
+  "protocolo": "D17 (4 vagas, regra = joelho) + D18 (varredura offline)",
+  "calibrado_em": "2026-10-10T18:23:12",
+  "criterio": "Consegui manter a parte sem defeitos da sutil limpa, e marcar as mais óbvias na forte",
+  "conf_piso_cache": 0.001,
+  "ultralytics": "8.4.61",
+  "sondas_na_regra": 0,
+  "sondas_divergentes": [
+    "vein",
+    "crack",
+    "Stain",
+    "Dark patches",
+    "light spot",
+    "white stain"
+  ],
+  "sondas": {
+    "vein": {
+      "limiar_trabalho": 0.022,
+      "limiar_regra": 0.0185,
+      "divergencia": 0.0035,
+      "marcacoes_por_vaga": {
+        "descoberta": 17,
+        "limiar_sutil": 0,
+        "limiar_tipica": 0,
+        "limiar_forte": 17
+      }
+    },
+    "crack": {
+      "limiar_trabalho": 0.2005,
+      "limiar_regra": 0.0797,
+      "divergencia": 0.1208,
+      "marcacoes_por_vaga": {
+        "descoberta": 29,
+        "limiar_sutil": 0,
+        "limiar_tipica": 0,
+        "limiar_forte": 20
+      }
+    },
+    "Stain": {
+      "limiar_trabalho": 0.7,
+      "limiar_regra": 0.1325,
+      "divergencia": 0.5675,
+      "marcacoes_por_vaga": {
+        "descoberta": 0,
+        "limiar_sutil": 1,
+        "limiar_tipica": 0,
+        "limiar_forte": 0
+      }
+    },
+    "Dark patches": {
+      "limiar_trabalho": 0.2629,
+      "limiar_regra": 0.2251,
+      "divergencia": 0.0378,
+      "marcacoes_por_vaga": {
+        "descoberta": 11,
+        "limiar_sutil": 3,
+        "limiar_tipica": 18,
+        "limiar_forte": 18
+      }
+    },
+    "light spot": {
+      "limiar_trabalho": 0.1825,
+      "limiar_regra": 0.0321,
+      "divergencia": 0.1504,
+      "marcacoes_por_vaga": {
+        "descoberta": 4,
+        "limiar_sutil": 0,
+        "limiar_tipica": 0,
+        "limiar_forte": 3
+      }
+    },
+    "white stain": {
+      "limiar_trabalho": 0.246,
+      "limiar_regra": 0.0515,
+      "divergencia": 0.1945,
+      "marcacoes_por_vaga": {
+        "descoberta": 7,
+        "limiar_sutil": 0,
+        "limiar_tipica": 0,
+        "limiar_forte": 5
+      }
+    }
+  }
+}
