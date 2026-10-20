@@ -149,6 +149,9 @@ o momento".
 
 ## 🎤 Prévia na Jacitec (20 a 23/10/2026)
 
+> **Apresentação: quinta, 22/10/2026, 14h00–14h40, ~10 minutos** (pode passar um pouco).
+> Slides em `apresentações/jacitec/slides.html`.
+
 > Plano do Henrique (05/10/2026): até a viagem, focar em terminar seleção e calibração; na
 > prévia, mostrar exemplos de imagens marcadas pelo SAM **default × calibrado**. A avaliação
 > quantitativa contra o conjunto-ouro (**D7**) entra como próxima etapa, já definida na
