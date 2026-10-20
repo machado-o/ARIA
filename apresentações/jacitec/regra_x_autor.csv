@@ -1,0 +1,46 @@
+litologia,sonda,limiar_regra,limiar_autor,razao
+golden_storm,crack,0.056,0.1552,2.77
+golden_storm,Dark patches,0.1256,0.4146,3.3
+golden_storm,light spot,0.1387,0.5698,4.11
+golden_storm,scratch,0.0507,0.0843,1.66
+golden_storm,white stain,0.0983,0.4232,4.31
+ipanema_beige,crack,0.0312,0.155,4.97
+ipanema_beige,Stain,0.0338,0.1211,3.58
+ipanema_beige,Dark patches,0.111,0.5,4.5
+ipanema_beige,scratch,0.0308,0.1447,4.7
+itaunas_white,crack,0.179,0.5,2.79
+itaunas_white,Stain,0.1818,0.5244,2.88
+itaunas_white,Dark patches,0.2383,0.4012,1.68
+itaunas_white,light spot,0.0406,0.5,12.32
+itaunas_white,white stain,0.0323,0.35,10.84
+nevada_black,crack,0.0183,0.2402,13.13
+nevada_black,light spot,0.0567,0.1463,2.58
+san_francisco_green,Stain,0.1104,0.3308,3.0
+san_francisco_green,Dark patches,0.208,0.5604,2.69
+santa_cecilia,crack,0.0797,0.2005,2.52
+santa_cecilia,Stain,0.1325,0.7,5.28
+santa_cecilia,Dark patches,0.2251,0.2629,1.17
+santa_cecilia,light spot,0.0321,0.1825,5.69
+santa_cecilia,white stain,0.0515,0.246,4.78
+shadow_white,vein,0.0208,0.0272,1.31
+shadow_white,crack,0.1241,0.134,1.08
+shadow_white,Stain,0.1511,0.2586,1.71
+shadow_white,Dark patches,0.0395,0.5422,13.73
+shadow_white,scratch,0.0266,0.0479,1.8
+siena_white,vein,0.1453,0.3351,2.31
+siena_white,Stain,0.2025,0.392,1.94
+siena_white,Dark patches,0.2345,0.3966,1.69
+ubatuba_green,crack,0.0283,0.0385,1.36
+ubatuba_green,Stain,0.0973,0.28,2.88
+ubatuba_green,Dark patches,0.1252,0.52,4.15
+ubatuba_green,light spot,0.034,0.165,4.85
+ubatuba_green,white stain,0.0453,0.2217,4.89
+white_mirage,crack,0.1007,0.2,1.99
+white_mirage,Stain,0.1073,0.3648,3.4
+white_mirage,Dark patches,0.1946,0.6545,3.36
+white_mirage,light spot,0.0435,0.157,3.61
+white_mirage,scratch,0.058,0.1961,3.38
+white_mirage,white stain,0.0199,0.0722,3.63
+white_olympus,vein,0.0674,0.1592,2.36
+white_olympus,crack,0.1516,0.4646,3.06
+white_olympus,white stain,0.0029,0.052,17.93
