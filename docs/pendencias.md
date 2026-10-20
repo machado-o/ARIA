@@ -132,6 +132,20 @@ o momento".
   pesquisa encontrou.
 - [x] ~~**Decidir o termo.**~~ — decidido em 07/10/2026 (**D20**): "movimentada", não
   "exótica", que é categoria comercial (raridade e preço).
+- [ ] **Hipótese do autor sobre o desfecho (20/10/2026, levantada numa conversa com um amigo).**
+  O Henrique suspeita que a resposta final do TCC seja esta: buscar anomalias por palavras
+  (prompts) ainda é infundado, porque o SAM não foi treinado a fundo para cada especificidade e
+  não parece haver palavras suficientes para nomear as formas que a natureza gera, mais as que
+  vêm da lavra e do beneficiamento.
+  **Posição registrada na conversa:** isso não ameaça o TCC; é um resultado possível, e os dados
+  já apontam nessa direção — o autor acima da regra em 45/45 sondas, o "parece faltar sonda" em
+  quatro critérios (três deles de movimentadas) e a `white stain` criada por falta de palavra.
+  Mas "infundado" é forte demais: o que o trabalho mede é **até onde** o prompt textual funciona,
+  e o indício é que funciona razoavelmente nas homogêneas e piora nas movimentadas. A frase
+  honesta seria algo como "o vocabulário textual é o gargalo, e isso piora com a heterogeneidade
+  da rocha". Cuidado: é hipótese até o Experimento 1 medir contra o conjunto-ouro — o recorte
+  homogênea × movimentada (item abaixo) é o que a testaria. Na Jacitec entrou como hipótese
+  (slide 9).
 - [ ] **Decidir o critério de pertencimento.** Hoje a lista é impressão do autor. Para virar
   recorte, precisa ser aplicável por outra pessoa: classificação petrográfica vinda de quem
   conhece rocha, ou medida de imagem.
