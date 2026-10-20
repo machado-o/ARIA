@@ -55,18 +55,15 @@ O ARIA organiza-se em três estágios, descritos no Quadro \ref{quad:estagios}. 
   \legend{Fonte: elaborado pelo autor.}
 \end{quadro}
 
-A separação entre Professor e Aluno é o que torna o arranjo viável industrialmente: o custo de inferência do modelo de fundação é pago uma única vez, na geração do conjunto de treinamento, e não a cada chapa inspecionada.
+A separação entre Professor e Aluno é o que torna o arranjo viável industrialmente: o custo de inferência do modelo de fundação é pago uma única vez, na geração do conjunto de treinamento, e não a cada chapa inspecionada. A Figura \ref{fig:arquitetura} mostra o fluxo nas duas fases: fora da linha, a seleção de imagens, a calibração e o Professor produzem o conjunto de treinamento do Aluno; em produção, o classificador identifica a litologia e encaminha a chapa ao Aluno correspondente.
 
-% TODO: inserir a figura do pipeline quando o arquivo estiver em figuras/.
-% O bloco abaixo está comentado de propósito: \includegraphics de um arquivo
-% inexistente interrompe a compilação.
-% \begin{figure}[ht]
-%   \caption{Fluxo de processamento do \textit{pipeline} ARIA.}
-%   \label{fig:arquitetura}
-%   \centering
-%   \includegraphics[width=0.9\textwidth]{arquitetura_aria.png}
-%   \legend{Fonte: elaborado pelo autor.}
-% \end{figure}
+\begin{figure}[ht]
+  \caption{Fluxo de processamento do \textit{pipeline} ARIA.}
+  \label{fig:arquitetura}
+  \centering
+  \includegraphics[width=\textwidth]{arquitetura_aria.png}
+  \legend{Fonte: elaborado pelo autor.}
+\end{figure}
 
 \section{Estágio 1 --- Reprodução do Classificador de Litologias}
 \label{sec:classificador}
@@ -235,8 +232,7 @@ A ferramenta de seleção exibe, no navegador, a grade de todas as imagens da pa
   \caption{Ferramenta de seleção: grade de imagens de uma litologia, com as quatro vagas e a instrução da vaga em preenchimento.}
   \label{fig:rock_viewer}
   \centering
-  % TODO: substituir a caixa pela captura de tela (figuras/rock_viewer.png).
-  \fbox{\parbox[c][5cm][c]{0.9\textwidth}{\centering Captura de tela pendente: grade do \textit{rock\_viewer}.}}
+  \includegraphics[width=\textwidth]{rock_viewer.png}
   \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
@@ -252,8 +248,7 @@ Na etapa de \textbf{descoberta} (Figura \ref{fig:calib_descoberta}), cada sonda 
   \caption{Calibração, etapa de descoberta: as sondas candidatas sobre a imagem de descoberta.}
   \label{fig:calib_descoberta}
   \centering
-  % TODO: substituir pela captura de tela (figuras/calib_descoberta.png).
-  \fbox{\parbox[c][5cm][c]{0.9\textwidth}{\centering Captura de tela pendente: aba Descoberta do calibrador.}}
+  \includegraphics[width=\textwidth]{calib_descoberta.png}
   \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
@@ -263,8 +258,7 @@ Na etapa de \textbf{limiar} (Figura \ref{fig:calib_limiar}), um único controle 
   \caption{Calibração, etapa de limiar: um controle, quatro prévias simultâneas e a curva com o limiar da regra marcado.}
   \label{fig:calib_limiar}
   \centering
-  % TODO: substituir pela captura de tela (figuras/calib_limiar.png).
-  \fbox{\parbox[c][5cm][c]{0.9\textwidth}{\centering Captura de tela pendente: aba Limiar do calibrador.}}
+  \includegraphics[width=\textwidth]{calib_limiar.png}
   \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 
@@ -274,8 +268,7 @@ Na etapa de \textbf{fechamento} (Figura \ref{fig:calib_fechar}), uma tabela reú
   \caption{Calibração, etapa de fechamento: regra, limiar do autor e divergência por sonda, e o campo obrigatório do critério.}
   \label{fig:calib_fechar}
   \centering
-  % TODO: substituir pela captura de tela (figuras/calib_fechar.png).
-  \fbox{\parbox[c][5cm][c]{0.9\textwidth}{\centering Captura de tela pendente: aba Fechar do calibrador.}}
+  \includegraphics[width=\textwidth]{calib_fechar.png}
   \legend{Fonte: elaborado pelo autor.}
 \end{figure}
 

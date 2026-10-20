@@ -101,7 +101,12 @@ Os demais rodam a partir de `AI/SAM/`, com o Python do venv em `AI/.venv` (`..\.
 ..\.venv\Scripts\python.exe -m streamlit run calibrator.py # calibrador (sondas + limiar)
 ..\.venv\Scripts\python.exe inference.py                   # inferência SAM: lê selectRocks/, grava em results/
 ..\.venv\Scripts\python.exe verificar_d18.py                # prova que a varredura offline é exata (D18)
+..\.venv\Scripts\python.exe figuras_regra_autor.py          # regra × autor na mesma chapa, do cache (sem GPU)
 ```
+
+> `figuras_regra_autor.py` grava em `apresentações/jacitec/` (figuras + `regra_x_autor.csv`).
+> Precisa do `_cache/` — na máquina sem cache, abrir cada litologia no calibrador e capturar
+> antes.
 
 Classificador de litologia (**D19**), a partir de `AI/Xception/`:
 
@@ -195,11 +200,12 @@ results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
   `santa_cecilia` (06/10/2026), `white_mirage` (07/10/2026), `golden_storm`, `white_olympus`,
   `shadow_white` e `san_francisco_green` (08/10/2026). As duas últimas tinham sido puladas e
   foram selecionadas sem a opinião de especialista; elas, a `white_mirage` e a `golden_storm` são
-  rochas movimentadas (ver `docs/dataset.md` e **D20**). **7 de 45 litologias com `calibracao.json`** —
-  `siena_white` (01/10/2026, refeita em 09/10), `nevada_black` e `ubatuba_green` (09/10/2026),
-  `ipanema_beige`, `itaunas_white`, `santa_cecilia` e `shadow_white` (10/10/2026); faltam
-  `white_mirage`, `golden_storm`, `white_olympus` e `san_francisco_green`. **Duas das sete
-  estão a reconferir** (`itaunas_white`, `santa_cecilia`) — ver o topo de `docs/pendencias.md`.
+  rochas movimentadas (ver `docs/dataset.md` e **D20**). **11 de 45 litologias com
+  `calibracao.json` — a faixa A inteira**: `siena_white` (01/10/2026, refeita em 09/10),
+  `nevada_black` e `ubatuba_green` (09/10/2026), `ipanema_beige`, `itaunas_white` e
+  `shadow_white` (10/10/2026), `santa_cecilia` (refeita em 19/10/2026, sem a `vein`),
+  `san_francisco_green`, `white_mirage`, `golden_storm` e `white_olympus` (20/10/2026). As
+  conferências pós-bug de 10/10 foram feitas pelo Henrique em 19/10.
 - **A captura não mexe em limiar salvo** (corrigido em 10/10/2026). `capturar()` chamava
   `semear_da_regra` para **todas** as sondas: capturar uma sonda nova numa litologia calibrada
   trocava os limiares salvos pelos da regra, e salvar gravava isso por cima. Agora só a sonda

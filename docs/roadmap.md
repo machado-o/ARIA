@@ -3,7 +3,7 @@
 Estado vivo do desenvolvimento e ordem de execução. As decisões que justificam esta ordem estão
 em [`decisoes.md`](decisoes.md).
 
-> Última atualização: 2026-10-09
+> Última atualização: 2026-10-20
 > **Dois horizontes** (informado pelo Henrique em 09/10/2026):
 > 1. **Prévia na Jacitec, 20 a 23/10/2026** — o marco apertado. A janela útil antes dela é
 >    **até 10/10**, porque a agenda de outubro ocupa de 11 a 19/10 — ver `pendencias.md`.
@@ -25,9 +25,10 @@ em [`decisoes.md`](decisoes.md).
 | `inference.py` — inferência sobre `selectRocks/` | ✅ funciona; já aceita o layout em pasta |
 | `sam_cache.py` — varredura offline de limiar | ✅ núcleo pronto (D18) |
 | `verificar_d18.py` — prova empírica da D18 | ✅ **novo**: 32 comparações, nenhuma divergência |
-| `rock_prompts.json` | 🟡 **provisório** (**D15**) — 46 entradas, mas só 13 configurações distintas |
+| `rock_prompts.json` | 🟡 só as litologias calibradas (11 da faixa A); os provisórios foram apagados em 09/10/2026 |
 | `selectRocks/` | 🟡 **44 de 180 vagas** — **faixa A completa**: as 11 litologias com 4/4, incluindo `shadow_white` e `san_francisco_green`, feitas em 08/10/2026 depois de puladas |
-| Litologias com `calibracao.json` | 🟡 **7 de 45** — `siena_white` (01/10/2026, refeita em 09/10), `nevada_black` e `ubatuba_green` (09/10/2026), `ipanema_beige`, `itaunas_white`, `santa_cecilia` e `shadow_white` (10/10/2026; duas a reconferir, ver `pendencias.md`) |
+| Litologias com `calibracao.json` | 🟡 **11 de 45 — faixa A completa** (20/10/2026). Autor acima do joelho da regra em 45 de 45 sondas (ver `pendencias.md` → *Código*) |
+| `figuras_regra_autor.py` | ✅ **novo** (20/10/2026): regra × autor na mesma chapa, do cache, sem GPU |
 | Inferência em lote sobre o dataset | ❌ **não existe** |
 | Conjunto-ouro anotado | ❌ não existe |
 | Avaliação (IoU / mAP / falso positivo) | ❌ não existe |
@@ -68,9 +69,10 @@ resolver na Fase 3.
 Ver **D15** e **D17**. O `selectRocks/` foi **zerado em 2026-08-23**: as 14 imagens antigas foram
 apagadas e a seleção recomeça com o protocolo de 4 vagas.
 
-**Estado: 44 de 180 vagas; 7 de 45 litologias com `calibracao.json`** (`siena_white`,
-`nevada_black` e `ubatuba_green` até 09/10/2026; `ipanema_beige`, `itaunas_white`,
-`santa_cecilia` e `shadow_white` em 10/10/2026; restam 4 na faixa A). A faixa A são as 11 primeiras —
+**Estado: 44 de 180 vagas; 11 de 45 litologias com `calibracao.json` — a faixa A inteira**
+(`siena_white`, `nevada_black` e `ubatuba_green` até 09/10/2026; `ipanema_beige`,
+`itaunas_white` e `shadow_white` em 10/10/2026; `santa_cecilia` refeita em 19/10/2026;
+`san_francisco_green`, `white_mirage`, `golden_storm` e `white_olympus` em 20/10/2026). A faixa A são as 11 primeiras —
 **44 vagas, todas feitas** (`siena_white`, em 08/09/2026, calibrada em 01/10/2026;
 `nevada_black`, em 02/10/2026; `ubatuba_green` e `ipanema_beige`, em 03/10/2026;
 `itaunas_white`, em 05/10/2026; `santa_cecilia`, em 06/10/2026; `white_mirage`, em 07/10/2026;
@@ -103,10 +105,8 @@ abas:
    três vagas de limiar, com o joelho marcado como **sugestão**;
 3. **Fechar** — a contagem por vaga, o **critério escrito** (obrigatório) e o salvamento.
 
-> **A próxima ação do Henrique é calibrar as quatro litologias da faixa A que faltam** —
-> `white_mirage`, `golden_storm`, `white_olympus` e `san_francisco_green` — depois de reconferir
-> a `itaunas_white` e a `santa_cecilia` (ver o topo de `pendencias.md`). Não há mais vaga de
-> faixa A para selecionar.
+> **A faixa A está calibrada** (11/11, em 20/10/2026). O próximo passo — conjunto-ouro (Fase 2)
+> ou seleção da faixa B — é decisão em aberto em `pendencias.md`.
 
 > **Primeira observação (`siena_white`, 01/10/2026):** o autor divergiu da regra nas 3 sondas
 > admitidas (`vein`, `Stain`, `Dark patches`), sempre para cima — limiar de trabalho ≈ 2× o joelho.

@@ -6,31 +6,25 @@
 > Consolida o que antes estava espalhado em `auditoria.md`, `revisao-artigo.md` e
 > `artigo-sbc.md` (os três foram removidos em 2026-08-23).
 >
-> Última atualização: 2026-10-11
+> Última atualização: 2026-10-20
 
 ---
 
-## ➡️ Retomada em 19/10/2026 — por onde começar
+## ➡️ Retomada — por onde começar (atualizado em 20/10/2026)
 
-> Escrito em 11/10/2026, antes da viagem à LatinoWare. O Henrique volta no dia 19 para calibrar
-> e consertar o texto. Riscar cada item ao fechar; quando a lista acabar, apagar a seção.
+> Escrito em 11/10/2026 e revisto em 20/10. Riscar cada item ao fechar; quando a lista acabar,
+> apagar a seção.
 
-**1. Antes de calibrar — conferir o que a sessão de 10/10 pode ter estragado.** O calibrador
-tinha um bug (corrigido em 10/10): capturar uma sonda nova numa litologia calibrada punha
-**todas** as sondas de volta no valor da regra, e salvar em seguida gravava isso por cima.
-
-- [ ] **`itaunas_white` e `santa_cecilia`** — foram salvas **depois** de uma captura da
-  `white stain` (18:16 e 18:23) e nunca tinham entrado no git, então não há versão anterior
-  para comparar. Nenhum valor salvo é o da regra, mas só o Henrique sabe se reajustou cada
-  sonda antes de salvar. Abrir as duas e conferir os limiares sonda por sonda.
-- [ ] **`ubatuba_green` → `crack`** — mudou de 0,09 para 0,0385 no salvamento das 18:12; as
-  outras três sondas ficaram idênticas. Confirmar se foi de propósito.
-- Intactas, conferidas contra o git ou pelo horário: `siena_white`, `nevada_black`,
-  `ipanema_beige`, `shadow_white`.
-
-**2. Calibrar** — faltam 4 da faixa A: `white_mirage`, `golden_storm`, `white_olympus` e
-`san_francisco_green` (três delas movimentadas, **D20**). E a `white stain` (**D8**, id 6) só
-foi avaliada onde o Henrique a capturou em 10/10; nas demais aparece desmarcada.
+- [x] ~~**Conferir o que a sessão de 10/10 pode ter estragado**~~ — feito pelo Henrique em
+  19/10/2026. A `santa_cecilia` foi salva de novo **sem a `vein`** (de propósito); `itaunas_white`
+  e o crack 0,0385 da `ubatuba_green` foram conferidos e ficaram como estavam. Linha do tempo
+  da `white stain` (pelos horários do `_cache/`): nasceu como sonda exploratória na
+  `san_francisco_green` (10/10 17:23), foi registrada como id 6 às 18:08 e entrou salva em
+  `ubatuba_green` (18:12), `itaunas_white` (18:16) e `santa_cecilia` (18:23).
+- [x] ~~**Calibrar as 4 que faltavam da faixa A**~~ — `san_francisco_green`, `white_mirage`,
+  `golden_storm` e `white_olympus`, em 20/10/2026. **A faixa A está calibrada: 11 de 45.** Os
+  quatro critérios escritos dizem que **parece faltar sonda** para marcar o que o autor queria
+  — as quatro são movimentadas (**D20**). Ver o achado em *Código* → regra × autor.
 
 **3. Texto do TCC — compilar no Overleaf primeiro.** A revisão de 10/10 (ver *Escrita*, abaixo)
 **nunca foi compilada**. Três trechos são novos e podem quebrar: as equações do joelho
@@ -43,14 +37,16 @@ foi avaliada onde o Henrique a capturou em 10/10; nas demais aparece desmarcada.
   da faixa A calibrada e do conjunto-ouro anotado (**D7**, ainda não começou); o 2, disso e do
   treino dos Alunos. Não se resolve escrevendo.
 - [ ] Por consequência: frases de resultado no resumo/abstract e a síntese de H1/H2 na conclusão.
-- [ ] **Figuras:** a do pipeline e as quatro capturas de tela (`figuras/rock_viewer.png`,
-  `calib_descoberta.png`, `calib_limiar.png`, `calib_fechar.png`).
+- [x] ~~**Figuras:** a do pipeline e as quatro capturas de tela~~ — feito em 20/10/2026.
+  `figuras/arquitetura_aria.png` (citada no texto) e os quatro prints do Henrique, recortados
+  sem a barra do navegador e a do Windows. Os originais ficam fora do repo, na pasta acima do
+  `ARIA/`. Falta conferir no Overleaf se cabem na página.
 - [ ] **Referências fora do `.bib`:** `TODO-sam3` e `TODO-movimentada` (a pesquisa do termo está
   em `dataset.md` → *Litologias movimentadas*).
 - [ ] **Pré-textuais:** dedicatória, agradecimentos, epígrafe, banca e data da defesa.
-- [ ] **Tabela regra × autor** nos resultados — o Henrique decidiu esperar a faixa A fechar.
-  Prévia: nas litologias calibradas até 10/10 o limiar do autor ficou acima do joelho em todas
-  as sondas.
+- [ ] **Tabela regra × autor** nos resultados — a faixa A fechou em 20/10/2026, então já pode
+  ser escrita. Os números estão em `apresentações/jacitec/regra_x_autor.csv` (gerado por
+  `AI/SAM/figuras_regra_autor.py`): o autor ficou acima do joelho em **45 de 45** sondas.
 - [ ] **Outros trechos de código** no texto — o Henrique disse que pensaria depois; hoje só o
   `calibracao.json` entra. Candidatos: a filtragem fora de linha, o joelho, os contornos (D21).
 
@@ -155,6 +151,12 @@ o momento".
 > quantitativa contra o conjunto-ouro (**D7**) entra como próxima etapa, já definida na
 > metodologia e ainda não executada.
 
+- [x] ~~**Figuras regra × autor**~~ — geradas em 20/10/2026 em `apresentações/jacitec/figuras/`
+  (vagas típica e forte das 11 litologias; `figuras_regra_autor.py`). É o braço "regra com as
+  sondas do autor" contra o "calibrado pelo autor" da **D5**, **não** o default: este continua
+  indisponível, pelo motivo do item abaixo. Todas as imagens são do `train/` (cuidado 2
+  atendido). O cuidado 3 fica com o Henrique: escolher para o slide também um caso em que o
+  autor não ficou claramente melhor.
 - [ ] **Gerar as figuras *default × calibrado* para a apresentação.** São quatro braços desde
   10/10 (**D5**): default, regra com todas as sondas, regra com as sondas do autor e calibrado
   pelo autor. Três cuidados:
@@ -169,8 +171,9 @@ o momento".
   3. **Apresentar como exemplos ilustrativos, não como evidência.** Um par em que o calibrado
      ficou melhor não prova a **H1**, e a pergunta "foram escolhidos a dedo?" é previsível.
      Incluir também um caso de empate ou em que o calibrado piora.
-- **Escopo realista até 10/10:** a faixa A. A seleção fechou (44/44); em 09/10 faltam **8
-  calibrações**, a ~30 min cada pelo ritmo das duas feitas nesse dia. As 45 não cabem.
+- **Escopo da prévia:** a faixa A, seleção e calibração completas (20/10/2026). Material
+  pronto em `apresentações/jacitec/`: figuras regra × autor, `regra_x_autor.csv`,
+  `pipeline_estado.png` (o diagrama com o estado de cada etapa) e os prints das ferramentas.
 
 ---
 
@@ -181,7 +184,13 @@ o momento".
 - [x] ~~**Calibrar `siena_white` no calibrador**~~ — feito em 2026-10-01 (`calibracao.json`).
   Primeira litologia calibrada de fato: **1 de 45**. Entraram 3 sondas — `vein`, `Stain` e
   `Dark patches`.
-- [ ] **Observar: o autor divergiu da regra nas 3 sondas da `siena_white`**, e sempre para cima
+- [ ] **Achado (20/10/2026): na faixa A inteira, o autor ficou acima do joelho em 45 de 45
+  sondas**, com razão autor/regra mediana de **3,3×** (de 1,1× no crack da `shadow_white` a
+  17,9× na white stain da `white_olympus`). Nas vagas típica e forte, a regra produz de 7 a 228
+  marcações por chapa; o autor, de 0 a 46. A divergência que a `siena_white` sugeria (abaixo)
+  se repetiu em todas: é o *"onde a curva engana"* da **D17**. Falta decidir como isso entra na
+  monografia (seção de resultados e a tabela regra × autor, em *Escrita*). Registro original:
+- [x] **Observar: o autor divergiu da regra nas 3 sondas da `siena_white`**, e sempre para cima
   (limiar de trabalho ≈ 2× o joelho: `vein` 0,145 → 0,335; `Stain` 0,203 → 0,392 — era 0,414
   até a recalibração de 09/10/2026, feita já com a preview sem pontes da **D21**;
   `Dark patches` 0,235 → 0,397). Critério escrito: subir até a vaga típica parar de marcar matriz
@@ -195,12 +204,10 @@ o momento".
   `san_francisco_green` (08/10). As duas últimas tinham sido puladas (03/10 e 07/10) por ser
   difícil julgar o que é defeito nelas, e foram feitas sem a opinião de especialista, que não
   veio — as quatro movimentadas estão na lista em `dataset.md` → *Litologias movimentadas*.
-- [ ] **➡️ PRÓXIMA AÇÃO — calibrar as quatro litologias da faixa A que faltam** (`calibrator.py`):
-  `white_mirage`, `golden_storm`, `white_olympus` e `san_francisco_green`. Têm `calibracao.json`
-  (**D15**) **7 de 45**: `siena_white`, `nevada_black` e `ubatuba_green` (09/10/2026) e, de
-  10/10/2026, `ipanema_beige`, `itaunas_white`, `santa_cecilia` e `shadow_white` — com duas a
-  reconferir e uma dúvida, ver *Retomada em 19/10/2026* no topo deste arquivo.
-  Não há mais vaga de faixa A para selecionar; avançar para a faixa B é decisão em aberto.
+- [x] ~~**Calibrar as quatro litologias da faixa A que faltavam**~~ — feito em 20/10/2026.
+  **11 de 45** com `calibracao.json`: a faixa A inteira.
+- [ ] **Decidir o próximo passo depois da faixa A**: começar o conjunto-ouro (**D7**, Fase 2)
+  ou avançar a seleção para a faixa B. É decisão do Henrique.
 - [ ] **Decidir a regra de split do Aluno** (por sequência ou por sorteio), adiada pelo
   Henrique. O que se sabe sobre sequência e blocos está no item do Xception, logo abaixo.
 - [x] ~~**Decidir o que fazer com o resultado do Xception no `test/`**~~ — decidido em
@@ -320,9 +327,8 @@ o momento".
   citação sem entrada no `.bib`.
 - [ ] **Conferir a entrada `boxes2pixels_lendering2026`** — foi montada a partir do registro
   neste arquivo, não de consulta à fonte. Confirmar autores, título e número do arXiv.
-- [ ] **Figura da arquitetura** — o bloco está comentado em `metodologia.tex` de propósito
-  (`\includegraphics` de arquivo inexistente interrompe a compilação). Gerar a imagem, pôr em
-  `figuras/` e descomentar.
+- [x] ~~**Figura da arquitetura**~~ — `figuras/arquitetura_aria.png`, descomentada e citada
+  no texto em 20/10/2026.
 - [ ] **Resumo e abstract:** acrescentar as frases de resultado e conclusão quando os
   experimentos rodarem.
 - [ ] **Conclusão §5.1:** sintetizar H1 e H2 — inclusive se o resultado for negativo.
