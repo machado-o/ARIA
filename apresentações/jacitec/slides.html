@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ARIA — Prévia Jacitec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --graphite:#15181C; --graphite-soft:#20252B; --graphite-line:rgba(255,255,255,.13);
+    --marble:#F2F2EE; --ink:#1A1D21; --ink-soft:#5B616A; --ink-faint:#949aa2; --line:#DCDBD3;
+    --teal:#0C8C84; --teal-bright:#34D6C8; --amber:#CF7A22;
+    --dark-text:#ECECE7; --dark-text-soft:#A7ADB3;
+    --f-display:"Archivo", system-ui, "Segoe UI", sans-serif;
+    --f-body:"IBM Plex Sans", system-ui, "Segoe UI", sans-serif;
+    --f-mono:"IBM Plex Mono", Consolas, monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:var(--f-body);background:var(--graphite);color:var(--ink);overflow:hidden;-webkit-font-smoothing:antialiased}
+  .viewport{position:fixed;inset:0;display:grid;place-items:center;background:radial-gradient(120% 120% at 50% -20%,#1c2127 0%,var(--graphite) 60%)}
+  .stage{width:1280px;height:720px;position:relative;transform-origin:center;box-shadow:0 40px 120px -30px rgba(0,0,0,.7)}
+  .slide{position:absolute;inset:0;padding:56px 72px;display:none;flex-direction:column;background:var(--marble);overflow:hidden}
+  .slide.on{display:flex}
+  .slide.dark{background:var(--graphite);color:var(--dark-text)}
+
+  .kicker{font-family:var(--f-mono);font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:14px}
+  .dark .kicker{color:var(--teal-bright)}
+  h1{font-family:var(--f-display);font-weight:800;font-size:76px;line-height:1;letter-spacing:-.02em}
+  h2{font-family:var(--f-display);font-weight:700;font-size:44px;line-height:1.08;letter-spacing:-.015em;margin-bottom:26px;max-width:1080px}
+  p,li{font-size:23px;line-height:1.45}
+  .soft{color:var(--ink-soft)} .dark .soft{color:var(--dark-text-soft)}
+  ul{list-style:none} li{padding-left:26px;position:relative;margin-bottom:12px}
+  li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:2px;background:var(--teal)}
+  .dark li::before{background:var(--teal-bright)}
+  em{font-style:normal;color:var(--teal);font-weight:600} .dark em{color:var(--teal-bright)}
+  code{font-family:var(--f-mono);font-size:.86em;background:rgba(12,140,132,.09);padding:1px 6px;border-radius:4px}
+  .dark code{background:rgba(255,255,255,.08)}
+
+  .row{display:flex;gap:40px;flex:1;min-height:0}
+  .col{flex:1;min-width:0}
+  .fig{width:100%;border-radius:8px;display:block;box-shadow:0 10px 30px -14px rgba(0,0,0,.35)}
+  .cap{font-size:15px;color:var(--ink-faint);margin-top:8px;font-family:var(--f-mono)}
+  .stat{font-family:var(--f-display);font-weight:800;font-size:96px;line-height:1;color:var(--teal);letter-spacing:-.03em}
+  .dark .stat{color:var(--teal-bright)}
+  .statlabel{font-size:20px;color:var(--ink-soft);margin-top:6px;max-width:360px}
+  .dark .statlabel{color:var(--dark-text-soft)}
+  .stats{display:flex;gap:56px;margin:8px 0 30px}
+  .note{margin-top:auto;font-size:17px;color:var(--ink-soft);border-left:3px solid var(--amber);padding-left:14px}
+  .dark .note{color:var(--dark-text-soft)}
+
+  .bars{display:grid;grid-template-columns:200px 1fr 54px;gap:7px 14px;align-items:center;font-size:17px}
+  .bars .n{font-family:var(--f-mono);font-size:15px}
+  .bar{height:16px;background:var(--line);border-radius:3px;position:relative}
+  .bar span{position:absolute;inset:0 auto 0 0;background:var(--teal);border-radius:3px}
+  .bar.mov span{background:var(--amber)}
+  .bar i{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink);left:calc(100%/8)}
+  .legend{font-size:15px;color:var(--ink-soft);margin-top:14px;font-family:var(--f-mono)}
+  .sw{display:inline-block;width:12px;height:12px;border-radius:2px;vertical-align:-1px;margin:0 6px 0 14px}
+
+  table{border-collapse:collapse;font-size:21px;width:100%}
+  td,th{padding:12px 14px;text-align:left;border-bottom:1px solid var(--graphite-line)}
+  th{font-family:var(--f-mono);font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--dark-text-soft);font-weight:500}
+  td.num{font-family:var(--f-display);font-weight:700;font-size:30px;color:var(--teal-bright)}
+
+  .cover{justify-content:center}
+  .cover .meta{margin-top:44px;font-size:20px;line-height:1.6;color:var(--dark-text-soft)}
+  .cover .sub{font-size:28px;color:var(--dark-text);margin-top:18px;max-width:900px;line-height:1.35}
+
+  .foot{position:absolute;left:72px;right:72px;bottom:22px;display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:13px;color:var(--ink-faint)}
+  .dark .foot{color:#5f666e}
+  .hud{position:fixed;bottom:14px;right:18px;font-family:var(--f-mono);font-size:12px;color:#6b727a}
+
+  @media print{
+    @page{size:1280px 720px;margin:0}
+    body{overflow:visible;background:none}
+    .viewport{position:static;display:block;background:none}
+    .stage{transform:none!important;box-shadow:none;width:auto;height:auto}
+    .slide{position:relative;display:flex!important;width:1280px;height:720px;page-break-after:always;break-after:page}
+    .hud{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="viewport"><div class="stage" id="stage">
+
+<!-- 1 · capa -->
+<section class="slide dark cover">
+  <div class="kicker">Prévia do TCC · Jacitec 2026</div>
+  <h1>ARIA</h1>
+  <p class="sub">Análise e Reconhecimento Inteligente de Anomalias em chapas de rochas ornamentais, com critério de marcação explícito e calibrado por litologia</p>
+  <div class="meta">
+    Henrique Machado de Oliveira<br>
+    Orientador: Prof. Dr. Rafael Silva Guimarães<br>
+    Bacharelado em Sistemas de Informação · Ifes Cachoeiro de Itapemirim
+  </div>
+</section>
+
+<!-- 2 · problema -->
+<section class="slide">
+  <div class="kicker">O problema</div>
+  <h2>Marcar defeito em chapa depende de quem olha, e anotar à mão para treinar um modelo não resolveu</h2>
+  <div class="row">
+    <div class="col">
+      <ul>
+        <li>A marcação de anomalias é feita por inspeção visual. O critério vive na experiência do operador e não pode ser auditado.</li>
+        <li>O caminho óbvio é anotar à mão e treinar um YOLO. Um trabalho vizinho fez isso com <em>1.088 imagens deste mesmo dataset</em>.</li>
+        <li>Pergunta do ARIA: dá para gerar os rótulos <em>sem anotar à mão</em>, com um critério escrito e reproduzível?</li>
+      </ul>
+    </div>
+    <div class="col" style="flex:.7">
+      <div class="stat">0,04–0,21</div>
+      <div class="statlabel">mask mAP50-95 do YOLO11-seg treinado sobre anotação manual (FracStoneAI). Os próprios autores apontam ruído e defeitos omitidos na anotação.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · proposta -->
+<section class="slide">
+  <div class="kicker">A proposta</div>
+  <h2>Professor e Aluno: o modelo caro roda uma vez, o rápido roda na linha</h2>
+  <img class="fig" src="../Overleaf/TCC/figuras/arquitetura_aria.png" alt="Pipeline ARIA">
+  <p class="note">O Professor (SAM3) é um modelo de fundação guiado por texto: gera os polígonos sem anotação humana. O Aluno (YOLO11-seg) aprende com eles e faz a inferência em produção.</p>
+</section>
+
+<!-- 4 · dados -->
+<section class="slide">
+  <div class="kicker">Os dados</div>
+  <h2>Um dataset público, desbalanceado de propósito</h2>
+  <div class="stats">
+    <div><div class="stat">34.630</div><div class="statlabel">imagens de chapas polidas, partição original 70 / 15 / 15</div></div>
+    <div><div class="stat">45</div><div class="statlabel">litologias, de 106 a 4.588 imagens cada</div></div>
+    <div><div class="stat">4</div><div class="statlabel">faixas de volume (A, B, C, D) com 11, 6, 14 e 14 litologias</div></div>
+  </div>
+  <ul>
+    <li>O desbalanceamento vira <em>variável do experimento</em>: especializar por litologia vale a pena com quanto dado?</li>
+    <li>A execução segue as faixas, da maior para a menor. Cada faixa fecha como resultado próprio. <span class="soft">Hoje: faixa A.</span></li>
+  </ul>
+</section>
+
+<!-- 5 · sondas -->
+<section class="slide">
+  <div class="kicker">Como o SAM3 procura</div>
+  <h2>O Professor procura por palavras: cada sonda é um prompt de texto</h2>
+  <div class="row">
+    <div class="col" style="flex:1.5"><img class="fig" src="../Overleaf/TCC/figuras/calib_descoberta.png" alt="Aba de descoberta do calibrador"><div class="cap">calibrador · aba Descoberta · siena_white</div></div>
+    <div class="col">
+      <ul>
+        <li>7 sondas registradas: <code>vein</code> <code>crack</code> <code>Stain</code> <code>Dark patches</code> <code>light spot</code> <code>scratch</code> <code>white stain</code></li>
+        <li>Cada detecção vem com um escore. O que vira marcação depende de <em>onde se corta</em> esse escore.</li>
+        <li>Esse corte, o limiar, muda de rocha para rocha: o mesmo número marca demais num granito escuro e de menos num mármore claro.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · protocolo -->
+<section class="slide">
+  <div class="kicker">O protocolo de calibração</div>
+  <h2>Quatro imagens, um limiar por sonda, e um critério escrito</h2>
+  <div class="row">
+    <div class="col" style="flex:1.5"><img class="fig" src="../Overleaf/TCC/figuras/calib_limiar.png" alt="Aba de limiar do calibrador"><div class="cap">calibrador · aba Limiar · um controle, quatro prévias, a curva</div></div>
+    <div class="col">
+      <ul>
+        <li><em>Descoberta</em>: a chapa mais rica decide quais sondas entram.</li>
+        <li><em>Sutil, típica e forte</em>: um único limiar é testado nos três casos.</li>
+        <li>A <em>regra</em> sugere o joelho da curva limiar × marcações. O autor pode divergir, e precisa escrever por quê.</li>
+        <li>Imagens só do <code>train/</code>. O <code>test/</code> fica intocado para a avaliação.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="note">A varredura de limiar é feita fora da linha, sobre um cache: o SAM roda uma vez por imagem e sonda. Verificado contra o SAM rodando de novo em cada limiar: 32 comparações, nenhuma divergência.</p>
+</section>
+
+<!-- 7 · resultado regra x autor -->
+<section class="slide">
+  <div class="kicker">Primeiro resultado · faixa A calibrada</div>
+  <h2>Em todas as sondas, o autor cortou mais apertado que a regra</h2>
+  <div class="row">
+    <div class="col" style="flex:.8">
+      <div class="stat">45 / 45</div>
+      <div class="statlabel" style="margin-bottom:30px">sondas com o limiar do autor acima do joelho da regra, nas 11 litologias da faixa A</div>
+      <div class="stat">3,3×</div>
+      <div class="statlabel">razão mediana entre o limiar do autor e o da regra (de 1,1× a 17,9×)</div>
+    </div>
+    <div class="col">
+      <div class="bars">
+        <div>nevada_black</div><div class="bar"><span style="width:98.8%"></span><i></i></div><div class="n">7,9×</div>
+        <div>santa_cecilia</div><div class="bar"><span style="width:60%"></span><i></i></div><div class="n">4,8×</div>
+        <div>ipanema_beige</div><div class="bar"><span style="width:57.5%"></span><i></i></div><div class="n">4,6×</div>
+        <div>ubatuba_green</div><div class="bar"><span style="width:52.5%"></span><i></i></div><div class="n">4,2×</div>
+        <div>white_mirage</div><div class="bar mov"><span style="width:42.5%"></span><i></i></div><div class="n">3,4×</div>
+        <div>golden_storm</div><div class="bar mov"><span style="width:41.3%"></span><i></i></div><div class="n">3,3×</div>
+        <div>white_olympus</div><div class="bar"><span style="width:38.8%"></span><i></i></div><div class="n">3,1×</div>
+        <div>itaunas_white</div><div class="bar"><span style="width:36.3%"></span><i></i></div><div class="n">2,9×</div>
+        <div>san_francisco_green</div><div class="bar mov"><span style="width:35%"></span><i></i></div><div class="n">2,8×</div>
+        <div>siena_white</div><div class="bar"><span style="width:23.8%"></span><i></i></div><div class="n">1,9×</div>
+        <div>shadow_white</div><div class="bar mov"><span style="width:21.3%"></span><i></i></div><div class="n">1,7×</div>
+      </div>
+      <div class="legend">razão mediana por litologia · traço = 1× (igual à regra)<br><span class="sw" style="background:var(--teal);margin-left:0"></span>homogênea<span class="sw" style="background:var(--amber)"></span>movimentada</div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 · na chapa -->
+<section class="slide">
+  <div class="kicker">Na chapa</div>
+  <h2>Mesma chapa, mesmas sondas: só o limiar muda</h2>
+  <img class="fig" src="figuras/nevada_black_tipica.jpg" alt="nevada_black, vaga típica: regra 185 marcações, autor 8">
+  <p class="note">Exemplos ilustrativos, não evidência: mostram o que muda, não qual está certo. Nas vagas típica e forte, a regra produz de 7 a 228 marcações por chapa; o autor, de 0 a 46. Quem diz qual acerta é o conjunto de referência (próximos passos).</p>
+</section>
+
+<!-- 9 · movimentadas -->
+<section class="slide">
+  <div class="kicker">O que a calibração está sugerindo</div>
+  <h2>Nas rochas movimentadas, o vocabulário parece não dar conta</h2>
+  <img class="fig" src="figuras/white_mirage_tipica.jpg" alt="white_mirage, vaga típica">
+  <div class="row" style="margin-top:18px">
+    <div class="col">
+      <ul>
+        <li>Em 3 das 4 movimentadas (e numa homogênea), o critério escrito diz o mesmo: <em>"parece faltar alguma sonda"</em>.</li>
+        <li>A <code>white stain</code> nasceu calibrando uma delas.</li>
+      </ul>
+    </div>
+    <div class="col">
+      <p class="soft">Hipótese, ainda não resultado: a natureza gera mais formas do que as palavras de um prompt conseguem nomear, e isso piora quanto mais heterogênea é a rocha. O Experimento 1 é que vai medir.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · classificador -->
+<section class="slide dark">
+  <div class="kicker">Estágio 1 · classificador de litologia</div>
+  <h2>Reproduzir o Xception mostrou que o número depende de como se divide o dataset</h2>
+  <table>
+    <tr><th>Divisão dos dados</th><th>Acurácia no teste</th><th>O que está no teste</th></tr>
+    <tr><td>Sorteio por imagem (como o original)</td><td class="num">99,92%</td><td class="soft">chapas vizinhas do mesmo bloco das de treino</td></tr>
+    <tr><td>Partição oficial do dataset</td><td class="num">96,72%</td><td class="soft">em algumas rochas, um bloco que o treino não viu</td></tr>
+  </table>
+  <p class="note" style="margin-top:34px">Mesmo modelo, mesma receita. A diferença de ~3 pontos vem da divisão: imagens em sequência são chapas vizinhas, com os mesmos veios. O trabalho original reportou 99,21% com sorteio por imagem. Os dois números vão para a monografia.</p>
+</section>
+
+<!-- 11 · estado -->
+<section class="slide">
+  <div class="kicker">Onde o projeto está</div>
+  <h2>A faixa A está selecionada e calibrada</h2>
+  <img class="fig" src="pipeline_estado.png" alt="Pipeline com o estado de cada etapa" style="width:88%">
+  <div class="stats" style="margin:16px 0 0">
+    <div><div class="stat" style="font-size:64px">44 / 180</div><div class="statlabel">imagens de calibração selecionadas</div></div>
+    <div><div class="stat" style="font-size:64px">11 / 45</div><div class="statlabel">litologias calibradas: a faixa A inteira</div></div>
+  </div>
+</section>
+
+<!-- 12 · próximos passos -->
+<section class="slide">
+  <div class="kicker">Próximos passos</div>
+  <h2>Do que muda para o que acerta</h2>
+  <div class="row">
+    <div class="col">
+      <ul>
+        <li><em>Conjunto de referência</em>: ~50 imagens do <code>test/</code>, anotadas à mão <em>antes</em> de o SAM rodar nelas.</li>
+        <li><em>Experimento 1</em>: SAM default × regra × calibrado pelo autor, medidos contra a referência (IoU, precisão, recall, falso positivo).</li>
+        <li><em>Experimento 2</em>: Aluno especialista por litologia × generalista, faixa por faixa.</li>
+      </ul>
+    </div>
+    <div class="col">
+      <ul>
+        <li>Gerar os rótulos em lote e treinar os Alunos YOLO11-seg.</li>
+        <li>Ligar o classificador ao Aluno da litologia.</li>
+        <li>Preferência cega com especialista do setor: máscara A × B, sem identificação.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 13 · fim -->
+<section class="slide dark cover">
+  <div class="kicker">Obrigado</div>
+  <h1 style="font-size:64px">Perguntas?</h1>
+  <p class="sub">O critério de marcação deixa de viver na experiência de quem olha e passa a ser um arquivo: versionado, comparável e auditável.</p>
+  <div class="meta">Henrique Machado de Oliveira · Ifes Cachoeiro de Itapemirim</div>
+</section>
+
+</div></div>
+<div class="hud" id="hud"></div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')], stage=document.getElementById('stage'), hud=document.getElementById('hud');
+  let i=0;
+  try{ i=Math.min(slides.length-1, Math.max(0, parseInt(location.hash.slice(1))-1||0)); }catch(e){}
+  slides.forEach((s,k)=>{ if(!s.classList.contains('cover')){ const f=document.createElement('div'); f.className='foot'; f.innerHTML='<span>ARIA · prévia do TCC</span><span>'+(k+1)+' / '+slides.length+'</span>'; s.appendChild(f);} });
+  function show(n){ i=Math.max(0,Math.min(slides.length-1,n)); slides.forEach((s,k)=>s.classList.toggle('on',k===i)); history.replaceState(null,'','#'+(i+1)); }
+  function fit(){ const e=Math.min(innerWidth/1280, innerHeight/720); stage.style.transform='scale('+e+')'; }
+  addEventListener('resize',fit);
+  addEventListener('keydown',e=>{
+    if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)) show(i+1);
+    else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)) show(i-1);
+    else if(e.key==='Home') show(0); else if(e.key==='End') show(slides.length-1);
+    else if(e.key==='f'||e.key==='F'){ document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen(); }
+  });
+  stage.addEventListener('click',e=>show(e.clientX>innerWidth/2?i+1:i-1));
+  fit(); show(i);
+</script>
+</body>
+</html>

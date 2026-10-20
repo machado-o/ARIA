@@ -23,8 +23,11 @@
   `ubatuba_green` (18:12), `itaunas_white` (18:16) e `santa_cecilia` (18:23).
 - [x] ~~**Calibrar as 4 que faltavam da faixa A**~~ — `san_francisco_green`, `white_mirage`,
   `golden_storm` e `white_olympus`, em 20/10/2026. **A faixa A está calibrada: 11 de 45.** Os
-  quatro critérios escritos dizem que **parece faltar sonda** para marcar o que o autor queria
-  — as quatro são movimentadas (**D20**). Ver o achado em *Código* → regra × autor.
+  quatro critérios escritos dizem que **parece faltar sonda** para marcar o que o autor queria.
+  Três delas são movimentadas (**D20**); a `white_olympus` não é, e a quarta movimentada, a
+  `shadow_white`, não registrou essa queixa. Os critérios da `shadow_white` e da
+  `san_francisco_green` ainda não dizem que a seleção saiu **sem conferência de especialista**,
+  o que o `dataset.md` (*Litologias movimentadas*) pede. Ver o achado em *Código* → regra × autor.
 
 **3. Texto do TCC — compilar no Overleaf primeiro.** A revisão de 10/10 (ver *Escrita*, abaixo)
 **nunca foi compilada**. Três trechos são novos e podem quebrar: as equações do joelho
