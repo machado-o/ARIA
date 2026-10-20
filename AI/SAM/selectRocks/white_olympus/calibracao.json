@@ -1,0 +1,50 @@
+{
+  "rock": "white_olympus",
+  "faixa": "A",
+  "protocolo": "D17 (4 vagas, regra = joelho) + D18 (varredura offline)",
+  "calibrado_em": "2026-10-20T01:32:18",
+  "criterio": "Outra em que parece me faltar alguma sonda, mas tentei marcar a forte sem marcar coisas leves da sutil",
+  "conf_piso_cache": 0.001,
+  "ultralytics": "8.4.61",
+  "sondas_na_regra": 0,
+  "sondas_divergentes": [
+    "vein",
+    "crack",
+    "white stain"
+  ],
+  "sondas": {
+    "vein": {
+      "limiar_trabalho": 0.1592,
+      "limiar_regra": 0.0674,
+      "divergencia": 0.0918,
+      "marcacoes_por_vaga": {
+        "descoberta": 0,
+        "limiar_sutil": 18,
+        "limiar_tipica": 0,
+        "limiar_forte": 0
+      }
+    },
+    "crack": {
+      "limiar_trabalho": 0.4646,
+      "limiar_regra": 0.1516,
+      "divergencia": 0.313,
+      "marcacoes_por_vaga": {
+        "descoberta": 0,
+        "limiar_sutil": 7,
+        "limiar_tipica": 0,
+        "limiar_forte": 0
+      }
+    },
+    "white stain": {
+      "limiar_trabalho": 0.052,
+      "limiar_regra": 0.0029,
+      "divergencia": 0.0491,
+      "marcacoes_por_vaga": {
+        "descoberta": 12,
+        "limiar_sutil": 0,
+        "limiar_tipica": 0,
+        "limiar_forte": 33
+      }
+    }
+  }
+}

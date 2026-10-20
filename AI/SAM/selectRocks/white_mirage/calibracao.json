@@ -1,0 +1,86 @@
+{
+  "rock": "white_mirage",
+  "faixa": "A",
+  "protocolo": "D17 (4 vagas, regra = joelho) + D18 (varredura offline)",
+  "calibrado_em": "2026-10-20T00:30:15",
+  "criterio": "Não consegui marcar tudo que queria com essas sondas, mas os limiares foram suficientes para marcar as partes mais evidentes",
+  "conf_piso_cache": 0.001,
+  "ultralytics": "8.4.61",
+  "sondas_na_regra": 0,
+  "sondas_divergentes": [
+    "crack",
+    "Stain",
+    "Dark patches",
+    "light spot",
+    "scratch",
+    "white stain"
+  ],
+  "sondas": {
+    "crack": {
+      "limiar_trabalho": 0.2,
+      "limiar_regra": 0.1007,
+      "divergencia": 0.0993,
+      "marcacoes_por_vaga": {
+        "descoberta": 1,
+        "limiar_sutil": 8,
+        "limiar_tipica": 0,
+        "limiar_forte": 1
+      }
+    },
+    "Stain": {
+      "limiar_trabalho": 0.3648,
+      "limiar_regra": 0.1073,
+      "divergencia": 0.2575,
+      "marcacoes_por_vaga": {
+        "descoberta": 6,
+        "limiar_sutil": 1,
+        "limiar_tipica": 0,
+        "limiar_forte": 4
+      }
+    },
+    "Dark patches": {
+      "limiar_trabalho": 0.6545,
+      "limiar_regra": 0.1946,
+      "divergencia": 0.4599,
+      "marcacoes_por_vaga": {
+        "descoberta": 0,
+        "limiar_sutil": 1,
+        "limiar_tipica": 0,
+        "limiar_forte": 2
+      }
+    },
+    "light spot": {
+      "limiar_trabalho": 0.157,
+      "limiar_regra": 0.0435,
+      "divergencia": 0.1135,
+      "marcacoes_por_vaga": {
+        "descoberta": 0,
+        "limiar_sutil": 0,
+        "limiar_tipica": 13,
+        "limiar_forte": 0
+      }
+    },
+    "scratch": {
+      "limiar_trabalho": 0.1961,
+      "limiar_regra": 0.058,
+      "divergencia": 0.1381,
+      "marcacoes_por_vaga": {
+        "descoberta": 1,
+        "limiar_sutil": 1,
+        "limiar_tipica": 4,
+        "limiar_forte": 1
+      }
+    },
+    "white stain": {
+      "limiar_trabalho": 0.0722,
+      "limiar_regra": 0.0199,
+      "divergencia": 0.0523,
+      "marcacoes_por_vaga": {
+        "descoberta": 0,
+        "limiar_sutil": 0,
+        "limiar_tipica": 9,
+        "limiar_forte": 1
+      }
+    }
+  }
+}

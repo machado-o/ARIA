@@ -1,0 +1,38 @@
+{
+  "rock": "san_francisco_green",
+  "faixa": "A",
+  "protocolo": "D17 (4 vagas, regra = joelho) + D18 (varredura offline)",
+  "calibrado_em": "2026-10-20T00:08:44",
+  "criterio": "Tentei não marcar a parte limpa da chapa, mas talvez não tenha encontrado todas as sondas ainda, os limiares das manchas presentes estão calibrados",
+  "conf_piso_cache": 0.001,
+  "ultralytics": "8.4.61",
+  "sondas_na_regra": 0,
+  "sondas_divergentes": [
+    "Stain",
+    "Dark patches"
+  ],
+  "sondas": {
+    "Stain": {
+      "limiar_trabalho": 0.3308,
+      "limiar_regra": 0.1104,
+      "divergencia": 0.2204,
+      "marcacoes_por_vaga": {
+        "descoberta": 5,
+        "limiar_sutil": 9,
+        "limiar_tipica": 19,
+        "limiar_forte": 5
+      }
+    },
+    "Dark patches": {
+      "limiar_trabalho": 0.5604,
+      "limiar_regra": 0.208,
+      "divergencia": 0.3524,
+      "marcacoes_por_vaga": {
+        "descoberta": 7,
+        "limiar_sutil": 5,
+        "limiar_tipica": 9,
+        "limiar_forte": 4
+      }
+    }
+  }
+}

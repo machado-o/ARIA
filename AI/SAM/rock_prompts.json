@@ -38,11 +38,34 @@
     "white stain": 0.35
   },
   "santa_cecilia": {
-    "vein": 0.022,
     "crack": 0.2005,
     "Stain": 0.7,
     "Dark patches": 0.2629,
     "light spot": 0.1825,
     "white stain": 0.246
+  },
+  "san_francisco_green": {
+    "Stain": 0.3308,
+    "Dark patches": 0.5604
+  },
+  "white_mirage": {
+    "crack": 0.2,
+    "Stain": 0.3648,
+    "Dark patches": 0.6545,
+    "light spot": 0.157,
+    "scratch": 0.1961,
+    "white stain": 0.0722
+  },
+  "golden_storm": {
+    "crack": 0.1552,
+    "Dark patches": 0.4146,
+    "light spot": 0.5698,
+    "scratch": 0.0843,
+    "white stain": 0.4232
+  },
+  "white_olympus": {
+    "vein": 0.1592,
+    "crack": 0.4646,
+    "white stain": 0.052
   }
 }

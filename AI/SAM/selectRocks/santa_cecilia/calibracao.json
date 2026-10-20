@@ -2,13 +2,12 @@
   "rock": "santa_cecilia",
   "faixa": "A",
   "protocolo": "D17 (4 vagas, regra = joelho) + D18 (varredura offline)",
-  "calibrado_em": "2026-10-10T18:23:12",
+  "calibrado_em": "2026-10-19T23:48:32",
   "criterio": "Consegui manter a parte sem defeitos da sutil limpa, e marcar as mais óbvias na forte",
   "conf_piso_cache": 0.001,
   "ultralytics": "8.4.61",
   "sondas_na_regra": 0,
   "sondas_divergentes": [
-    "vein",
     "crack",
     "Stain",
     "Dark patches",
@@ -16,17 +15,6 @@
     "white stain"
   ],
   "sondas": {
-    "vein": {
-      "limiar_trabalho": 0.022,
-      "limiar_regra": 0.0185,
-      "divergencia": 0.0035,
-      "marcacoes_por_vaga": {
-        "descoberta": 17,
-        "limiar_sutil": 0,
-        "limiar_tipica": 0,
-        "limiar_forte": 17
-      }
-    },
     "crack": {
       "limiar_trabalho": 0.2005,
       "limiar_regra": 0.0797,

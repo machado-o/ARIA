@@ -1,0 +1,74 @@
+{
+  "rock": "golden_storm",
+  "faixa": "A",
+  "protocolo": "D17 (4 vagas, regra = joelho) + D18 (varredura offline)",
+  "calibrado_em": "2026-10-20T01:27:06",
+  "criterio": "Tentei deixar matriz limpa sem marcações, mas não acho que encontrei todas as sondas",
+  "conf_piso_cache": 0.001,
+  "ultralytics": "8.4.61",
+  "sondas_na_regra": 0,
+  "sondas_divergentes": [
+    "crack",
+    "Dark patches",
+    "light spot",
+    "scratch",
+    "white stain"
+  ],
+  "sondas": {
+    "crack": {
+      "limiar_trabalho": 0.1552,
+      "limiar_regra": 0.056,
+      "divergencia": 0.0992,
+      "marcacoes_por_vaga": {
+        "descoberta": 1,
+        "limiar_sutil": 1,
+        "limiar_tipica": 1,
+        "limiar_forte": 0
+      }
+    },
+    "Dark patches": {
+      "limiar_trabalho": 0.4146,
+      "limiar_regra": 0.1256,
+      "divergencia": 0.289,
+      "marcacoes_por_vaga": {
+        "descoberta": 1,
+        "limiar_sutil": 8,
+        "limiar_tipica": 0,
+        "limiar_forte": 0
+      }
+    },
+    "light spot": {
+      "limiar_trabalho": 0.5698,
+      "limiar_regra": 0.1387,
+      "divergencia": 0.4311,
+      "marcacoes_por_vaga": {
+        "descoberta": 0,
+        "limiar_sutil": 0,
+        "limiar_tipica": 6,
+        "limiar_forte": 0
+      }
+    },
+    "scratch": {
+      "limiar_trabalho": 0.0843,
+      "limiar_regra": 0.0507,
+      "divergencia": 0.0336,
+      "marcacoes_por_vaga": {
+        "descoberta": 0,
+        "limiar_sutil": 9,
+        "limiar_tipica": 0,
+        "limiar_forte": 9
+      }
+    },
+    "white stain": {
+      "limiar_trabalho": 0.4232,
+      "limiar_regra": 0.0983,
+      "divergencia": 0.3249,
+      "marcacoes_por_vaga": {
+        "descoberta": 5,
+        "limiar_sutil": 0,
+        "limiar_tipica": 9,
+        "limiar_forte": 0
+      }
+    }
+  }
+}
