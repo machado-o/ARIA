@@ -90,7 +90,7 @@
 <section class="slide dark cover">
   <div class="kicker">Prévia do TCC · Jacitec 2026</div>
   <h1>ARIA</h1>
-  <p class="sub">Análise e Reconhecimento Inteligente de Anomalias em chapas de rochas ornamentais, com critério de marcação explícito e calibrado por litologia</p>
+  <p class="sub" style="max-width:1060px">Pipeline Hierárquico de Visão Computacional com abordagem <i>Teacher&#8209;Student</i> para Marcação Automatizada de Anomalias por Pseudo&#8209;Rotulagem em Chapas de Rochas Ornamentais com Critério Parametrizado por Litologia</p>
   <div class="meta">
     Henrique Machado de Oliveira<br>
     Orientador: Prof. Dr. Rafael Silva Guimarães<br>
@@ -98,59 +98,82 @@
   </div>
 </section>
 
-<!-- 2 · problema -->
+<!-- 2 · contexto -->
+<section class="slide">
+  <div class="kicker">O contexto</div>
+  <h2>Toda chapa de rocha tem marcas. Algumas são desenho da pedra, outras são defeito</h2>
+  <div class="row">
+    <div class="col" style="flex:1.3"><img class="fig" src="../Overleaf/TCC/figuras/sample_ice_leke_original.jpg" alt="Chapa polida de rocha ornamental"><div class="cap">chapa polida · ice_leke</div></div>
+    <div class="col">
+      <ul>
+        <li>O bloco de rocha sai da pedreira, é serrado em <em>chapas</em> e polido. O Espírito Santo é o maior polo produtor e exportador do país.</li>
+        <li>Antes da venda, alguém olha a chapa e marca o que considera defeito: trincas, manchas, riscos.</li>
+        <li>Mas veios e manchas também fazem parte do <em>desenho natural</em> da pedra.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · problema -->
 <section class="slide">
   <div class="kicker">O problema</div>
-  <h2>Marcar defeito em chapa depende de quem olha, e anotar à mão para treinar um modelo não resolveu</h2>
+  <h2>O que é defeito depende de quem olha</h2>
   <div class="row">
     <div class="col">
       <ul>
-        <li>A marcação de anomalias é feita por inspeção visual. O critério vive na experiência do operador e não pode ser auditado.</li>
-        <li>O caminho óbvio é anotar à mão e treinar um YOLO. Um trabalho vizinho fez isso com <em>1.088 imagens deste mesmo dataset</em>.</li>
-        <li>Pergunta do ARIA: dá para gerar os rótulos <em>sem anotar à mão</em>, com um critério escrito e reproduzível?</li>
+        <li>A linha entre desenho e defeito muda com a rocha, o cliente, o lote e o inspetor. O critério fica <em>na cabeça de cada pessoa</em> e não está escrito em lugar nenhum.</li>
+        <li>O caminho comum para automatizar é desenhar os defeitos à mão em muitas imagens e treinar um modelo com elas.</li>
+        <li>Um trabalho anterior aqui no Ifes fez isso (<em>FracStoneAI</em>): <em>1.088 imagens</em> desenhadas à mão, com o mesmo conjunto de imagens que o ARIA usa.</li>
       </ul>
     </div>
     <div class="col" style="flex:.7">
       <div class="stat">0,04–0,21</div>
-      <div class="statlabel">mask mAP50-95 do YOLO11-seg treinado sobre anotação manual (FracStoneAI). Os próprios autores apontam ruído e defeitos omitidos na anotação.</div>
+      <div class="statlabel">acerto do contorno dos defeitos, numa escala de 0 a 1 (mAP). Os próprios autores apontam que a anotação à mão saiu ruidosa e deixou defeitos de fora.</div>
     </div>
   </div>
+  <p class="note">A pergunta do ARIA: dá para gerar essas marcações <em>sem desenhar à mão</em>, com um critério escrito, que qualquer pessoa possa conferir e repetir?</p>
 </section>
 
 <!-- 3 · proposta -->
 <section class="slide">
   <div class="kicker">A proposta</div>
-  <h2>Professor e Aluno: o modelo caro roda uma vez, o rápido roda na linha</h2>
-  <img class="fig" src="../Overleaf/TCC/figuras/arquitetura_aria.png" alt="Pipeline ARIA">
-  <p class="note">O Professor (SAM3) é um modelo de fundação guiado por texto: gera os polígonos sem anotação humana. O Aluno (YOLO11-seg) aprende com eles e faz a inferência em produção.</p>
+  <h2>Um modelo grande ensina um modelo pequeno</h2>
+  <div class="row" style="flex:0 0 auto;margin:-8px 0 16px">
+    <div class="col"><p style="font-size:18px"><em>Professor · SAM3.</em> Modelo grande, já treinado em muitas imagens, que acha objetos a partir de uma palavra. Lento: roda uma vez só, para gerar os exemplos.</p></div>
+    <div class="col"><p style="font-size:18px"><em>Aluno · YOLO11-seg.</em> Modelo pequeno e rápido, que aprende com os exemplos do Professor. É ele que roda na linha de produção.</p></div>
+    <div class="col"><p style="font-size:18px"><em>Classificador · Xception.</em> Antes de tudo, reconhece qual é a rocha, para chamar o Aluno certo.</p></div>
+  </div>
+  <img class="fig" src="../Overleaf/TCC/figuras/arquitetura_aria.png" alt="Pipeline ARIA" style="flex:1;min-height:0;object-fit:contain;background:#fff;margin-bottom:24px">
 </section>
 
 <!-- 4 · dados -->
 <section class="slide">
   <div class="kicker">Os dados</div>
-  <h2>Um dataset público, desbalanceado de propósito</h2>
+  <h2>Um conjunto público de fotos de chapas, com muito mais de umas rochas que de outras</h2>
   <div class="stats">
-    <div><div class="stat">34.630</div><div class="statlabel">imagens de chapas polidas, partição original 70 / 15 / 15</div></div>
-    <div><div class="stat">45</div><div class="statlabel">litologias, de 106 a 4.588 imagens cada</div></div>
-    <div><div class="stat">4</div><div class="statlabel">faixas de volume (A, B, C, D) com 11, 6, 14 e 14 litologias</div></div>
+    <div><div class="stat">34.630</div><div class="statlabel">fotos de chapas polidas, públicas no Kaggle</div></div>
+    <div><div class="stat">45</div><div class="statlabel">tipos de rocha (<em>litologias</em>), de 106 a 4.588 fotos cada</div></div>
+    <div><div class="stat">4</div><div class="statlabel">faixas por quantidade de fotos: A, B, C e D</div></div>
   </div>
   <ul>
-    <li>O desbalanceamento vira <em>variável do experimento</em>: especializar por litologia vale a pena com quanto dado?</li>
-    <li>A execução segue as faixas, da maior para a menor. Cada faixa fecha como resultado próprio. <span class="soft">Hoje: faixa A.</span></li>
+    <li>As fotos são separadas de antemão: 70% para treinar, 15% para ajustar e 15% guardadas para a prova final.</li>
+    <li>A diferença de volume vira pergunta: <em>com quantas fotos vale a pena ter um modelo só para aquela rocha?</em></li>
+    <li>O trabalho anda da faixa com mais fotos para a com menos. <span class="soft">Hoje: faixa A, as 11 rochas com mais de mil fotos.</span></li>
   </ul>
 </section>
 
 <!-- 5 · sondas -->
 <section class="slide">
   <div class="kicker">Como o SAM3 procura</div>
-  <h2>O Professor procura por palavras: cada sonda é um prompt de texto</h2>
+  <h2>O Professor procura por palavras: cada palavra é uma <em>sonda</em></h2>
   <div class="row">
-    <div class="col" style="flex:1.5"><img class="fig" src="../Overleaf/TCC/figuras/calib_descoberta.png" alt="Aba de descoberta do calibrador"><div class="cap">calibrador · aba Descoberta · siena_white</div></div>
+    <div class="col" style="flex:1.5"><img class="fig" src="../Overleaf/TCC/figuras/sample_ice_leke_combined.jpg" alt="Chapa com as marcações do SAM3, uma cor por sonda"><div class="cap">uma cor por sonda · ice_leke</div></div>
     <div class="col">
       <ul>
-        <li>7 sondas registradas: <code>vein</code> <code>crack</code> <code>Stain</code> <code>Dark patches</code> <code>light spot</code> <code>scratch</code> <code>white stain</code></li>
-        <li>Cada detecção vem com um escore. O que vira marcação depende de <em>onde se corta</em> esse escore.</li>
-        <li>Esse corte, o limiar, muda de rocha para rocha: o mesmo número marca demais num granito escuro e de menos num mármore claro.</li>
+        <li>Pedimos ao SAM3, em inglês: "ache <code>crack</code>", "ache <code>stain</code>"… São 7 palavras ao todo.</li>
+        <li>Cada coisa encontrada vem com uma nota de confiança, de 0 a 1.</li>
+        <li>O <em>limiar</em> é a nota mínima para virar marcação. Baixo demais, marca a pedra inteira; alto demais, não marca nada.</li>
+        <li>E o limiar certo muda de rocha para rocha.</li>
       </ul>
     </div>
   </div>
@@ -159,31 +182,31 @@
 <!-- 6 · protocolo -->
 <section class="slide">
   <div class="kicker">O protocolo de calibração</div>
-  <h2>Quatro imagens, um limiar por sonda, e um critério escrito</h2>
+  <h2>Para cada rocha: quatro fotos, um limiar por sonda e o motivo escrito</h2>
   <div class="row">
-    <div class="col" style="flex:1.5"><img class="fig" src="../Overleaf/TCC/figuras/calib_limiar.png" alt="Aba de limiar do calibrador"><div class="cap">calibrador · aba Limiar · um controle, quatro prévias, a curva</div></div>
+    <div class="col" style="flex:1.5"><img class="fig" src="../Overleaf/TCC/figuras/calib_limiar.png" alt="Ferramenta de calibração"><div class="cap">ferramenta de calibração · um controle, quatro prévias, a curva</div></div>
     <div class="col">
       <ul>
-        <li><em>Descoberta</em>: a chapa mais rica decide quais sondas entram.</li>
-        <li><em>Sutil, típica e forte</em>: um único limiar é testado nos três casos.</li>
-        <li>A <em>regra</em> sugere o joelho da curva limiar × marcações. O autor pode divergir, e precisa escrever por quê.</li>
-        <li>Imagens só do <code>train/</code>. O <code>test/</code> fica intocado para a avaliação.</li>
+        <li>Escolho à mão 4 fotos da rocha: uma <em>com muitos tipos de marca</em>, que decide quais sondas usar, e três com defeito <em>sutil, típico e forte</em>.</li>
+        <li>Uma <em>regra automática</em> sugere um limiar: o ponto em que a quantidade de marcações para de despencar.</li>
+        <li>Eu, como autor, posso discordar da regra, mas preciso <em>escrever por quê</em>.</li>
+        <li>As fotos da prova final não são usadas aqui.</li>
       </ul>
     </div>
   </div>
-  <p class="note">A varredura de limiar é feita fora da linha, sobre um cache: o SAM roda uma vez por imagem e sonda. Verificado contra o SAM rodando de novo em cada limiar: 32 comparações, nenhuma divergência.</p>
+  <p class="note">Tudo vai para um arquivo por rocha: quais sondas, qual limiar e por quê. Esse arquivo é o critério, e qualquer um pode conferir.</p>
 </section>
 
 <!-- 7 · resultado regra x autor -->
 <section class="slide">
   <div class="kicker">Primeiro resultado · faixa A calibrada</div>
-  <h2>Em todas as sondas, o autor cortou mais apertado que a regra</h2>
+  <h2>Em todos os casos, o autor foi mais exigente que a regra automática</h2>
   <div class="row">
     <div class="col" style="flex:.8">
       <div class="stat">45 / 45</div>
-      <div class="statlabel" style="margin-bottom:30px">sondas com o limiar do autor acima do joelho da regra, nas 11 litologias da faixa A</div>
+      <div class="statlabel" style="margin-bottom:30px">pares rocha × sonda em que o autor pediu nota mínima maior que a da regra, nas 11 rochas da faixa A</div>
       <div class="stat">3,3×</div>
-      <div class="statlabel">razão mediana entre o limiar do autor e o da regra (de 1,1× a 17,9×)</div>
+      <div class="statlabel">em geral, o limiar do autor ficou 3,3 vezes o da regra (de 1,1× a 17,9×)</div>
     </div>
     <div class="col">
       <div class="bars">
@@ -199,7 +222,7 @@
         <div>siena_white</div><div class="bar"><span style="width:23.8%"></span><i></i></div><div class="n">1,9×</div>
         <div>shadow_white</div><div class="bar mov"><span style="width:21.3%"></span><i></i></div><div class="n">1,7×</div>
       </div>
-      <div class="legend">razão mediana por litologia · traço = 1× (igual à regra)<br><span class="sw" style="background:var(--teal);margin-left:0"></span>homogênea<span class="sw" style="background:var(--amber)"></span>movimentada</div>
+      <div class="legend">autor ÷ regra, mediana por rocha · traço = 1× (igual à regra)<br><span class="sw" style="background:var(--teal);margin-left:0"></span>padrão uniforme<span class="sw" style="background:var(--amber)"></span>movimentada</div>
     </div>
   </div>
 </section>
@@ -207,69 +230,70 @@
 <!-- 8 · na chapa -->
 <section class="slide">
   <div class="kicker">Na chapa</div>
-  <h2>Mesma chapa, mesmas sondas: só o limiar muda</h2>
-  <img class="fig" src="figuras/nevada_black_tipica.jpg" alt="nevada_black, vaga típica: regra 185 marcações, autor 8">
-  <p class="note">Exemplos ilustrativos, não evidência: mostram o que muda, não qual está certo. Nas vagas típica e forte, a regra produz de 7 a 228 marcações por chapa; o autor, de 0 a 46. Quem diz qual acerta é o conjunto de referência (próximos passos).</p>
+  <h2>Mesma chapa, mesmas palavras: só o limiar muda</h2>
+  <img class="fig" src="figuras/nevada_black_tipica.jpg" alt="nevada_black, foto típica: regra 185 marcações, autor 8">
+  <p class="note">Isto mostra a diferença, não quem está certo. Nas fotos de defeito típico e forte, a regra marca de 7 a 228 coisas por chapa; o autor, de 0 a 46. Quem decide qual acerta é a comparação com marcações feitas à mão (próximos passos).</p>
 </section>
 
 <!-- 9 · movimentadas -->
 <section class="slide">
   <div class="kicker">O que a calibração está sugerindo</div>
-  <h2>Nas rochas movimentadas, o vocabulário parece não dar conta</h2>
-  <img class="fig" src="figuras/white_mirage_tipica.jpg" alt="white_mirage, vaga típica">
+  <h2>Nas rochas mais movimentadas, as palavras parecem não dar conta</h2>
+  <img class="fig" src="figuras/white_mirage_tipica.jpg" alt="white_mirage, foto típica">
   <div class="row" style="margin-top:18px">
     <div class="col">
       <ul>
-        <li>Em 3 das 4 movimentadas (e numa homogênea), o critério escrito diz o mesmo: <em>"parece faltar alguma sonda"</em>.</li>
-        <li>A <code>white stain</code> nasceu calibrando uma delas.</li>
+        <li style="font-size:20px"><em>Movimentada</em>: rocha com tanto desenho que até uma pessoa tem dificuldade de separar o defeito.</li>
+        <li style="font-size:20px">Em 3 das 4 movimentadas (e em mais uma), o motivo escrito diz: <em>"parece faltar alguma palavra"</em>.</li>
       </ul>
     </div>
     <div class="col">
-      <p class="soft">Hipótese, ainda não resultado: a natureza gera mais formas do que as palavras de um prompt conseguem nomear, e isso piora quanto mais heterogênea é a rocha. O Experimento 1 é que vai medir.</p>
+      <p class="soft" style="font-size:20px">Ainda é hipótese: a natureza cria mais formas do que algumas palavras conseguem nomear, e isso piora quanto mais variada a rocha. O Experimento 1 vai medir.</p>
     </div>
   </div>
 </section>
 
 <!-- 10 · classificador -->
 <section class="slide dark">
-  <div class="kicker">Estágio 1 · classificador de litologia</div>
-  <h2>Reproduzir o Xception mostrou que o número depende de como se divide o dataset</h2>
+  <div class="kicker">Etapa 1 · reconhecer a rocha</div>
+  <h2>Refazer o classificador mostrou que o resultado depende de como se separam as fotos</h2>
+  <p class="soft" style="margin-bottom:22px">Outro trabalho anterior do Ifes (<em>DeepStoneAI</em>) usou o modelo Xception para reconhecer as 45 rochas, com 99,21% de acerto. Ele não guardou o modelo treinado, então o ARIA o refez com a mesma receita.</p>
   <table>
-    <tr><th>Divisão dos dados</th><th>Acurácia no teste</th><th>O que está no teste</th></tr>
-    <tr><td>Sorteio por imagem (como o original)</td><td class="num">99,92%</td><td class="soft">chapas vizinhas do mesmo bloco das de treino</td></tr>
-    <tr><td>Partição oficial do dataset</td><td class="num">96,72%</td><td class="soft">em algumas rochas, um bloco que o treino não viu</td></tr>
+    <tr><th>Como as fotos foram separadas</th><th>Acerto na prova</th><th>O que cai na prova</th></tr>
+    <tr><td>Sorteadas uma a uma (como no DeepStoneAI)</td><td class="num">99,92%</td><td class="soft">chapas vizinhas das de treino, do mesmo bloco</td></tr>
+    <tr><td>Separação oficial do conjunto</td><td class="num">96,72%</td><td class="soft">em algumas rochas, um bloco que o modelo nunca viu</td></tr>
   </table>
-  <p class="note" style="margin-top:34px">Mesmo modelo, mesma receita. A diferença de ~3 pontos vem da divisão: imagens em sequência são chapas vizinhas, com os mesmos veios. O trabalho original reportou 99,21% com sorteio por imagem. Os dois números vão para a monografia.</p>
+  <p class="note" style="margin-top:28px">Chapas cortadas do mesmo bloco são quase gêmeas, com os mesmos veios. Os dois números valem: um para bloco já visto, outro para bloco novo.</p>
 </section>
 
 <!-- 11 · estado -->
 <section class="slide">
   <div class="kicker">Onde o projeto está</div>
-  <h2>A faixa A está selecionada e calibrada</h2>
+  <h2>As 11 rochas com mais fotos já estão calibradas</h2>
   <img class="fig" src="pipeline_estado.png" alt="Pipeline com o estado de cada etapa" style="width:88%">
   <div class="stats" style="margin:16px 0 0">
-    <div><div class="stat" style="font-size:64px">44 / 180</div><div class="statlabel">imagens de calibração selecionadas</div></div>
-    <div><div class="stat" style="font-size:64px">11 / 45</div><div class="statlabel">litologias calibradas: a faixa A inteira</div></div>
+    <div><div class="stat" style="font-size:64px">44 / 180</div><div class="statlabel">fotos de calibração escolhidas (4 por rocha)</div></div>
+    <div><div class="stat" style="font-size:64px">11 / 45</div><div class="statlabel">rochas calibradas: a faixa A inteira</div></div>
   </div>
 </section>
 
 <!-- 12 · próximos passos -->
 <section class="slide">
   <div class="kicker">Próximos passos</div>
-  <h2>Do que muda para o que acerta</h2>
+  <h2>Até aqui, sabemos o que muda. Falta saber o que acerta</h2>
   <div class="row">
     <div class="col">
       <ul>
-        <li><em>Conjunto de referência</em>: ~50 imagens do <code>test/</code>, anotadas à mão <em>antes</em> de o SAM rodar nelas.</li>
-        <li><em>Experimento 1</em>: SAM default × regra × calibrado pelo autor, medidos contra a referência (IoU, precisão, recall, falso positivo).</li>
-        <li><em>Experimento 2</em>: Aluno especialista por litologia × generalista, faixa por faixa.</li>
+        <li><em>Gabarito</em>: ~50 fotos da prova final, marcadas à mão <em>antes</em> de o SAM3 olhar para elas.</li>
+        <li><em>Experimento 1</em>: SAM3 sem ajuste × regra automática × ajuste do autor. Qual chega mais perto do gabarito?</li>
+        <li><em>Experimento 2</em>: um Aluno por rocha × um Aluno para todas, faixa por faixa.</li>
       </ul>
     </div>
     <div class="col">
       <ul>
-        <li>Gerar os rótulos em lote e treinar os Alunos YOLO11-seg.</li>
-        <li>Ligar o classificador ao Aluno da litologia.</li>
-        <li>Preferência cega com especialista do setor: máscara A × B, sem identificação.</li>
+        <li>Gerar as marcações de todas as fotos e treinar os Alunos.</li>
+        <li>Ligar o classificador ao Aluno de cada rocha.</li>
+        <li>Teste cego com alguém do setor: duas marcações lado a lado, sem saber de onde veio cada uma.</li>
       </ul>
     </div>
   </div>
@@ -279,7 +303,7 @@
 <section class="slide dark cover">
   <div class="kicker">Obrigado</div>
   <h1 style="font-size:64px">Perguntas?</h1>
-  <p class="sub">O critério de marcação deixa de viver na experiência de quem olha e passa a ser um arquivo: versionado, comparável e auditável.</p>
+  <p class="sub">O critério do que é defeito sai da cabeça de quem olha e vira um arquivo, que qualquer um pode conferir, comparar e repetir.</p>
   <div class="meta">Henrique Machado de Oliveira · Ifes Cachoeiro de Itapemirim</div>
 </section>
 
