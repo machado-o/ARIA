@@ -82,8 +82,27 @@ o momento".
   da faculdade de Minas** uma análise qualitativa. Falta o nome e o formato.
 - [x] ~~**Versão final submetida ao Latinoware**~~ — **o artigo do TCC foi recusado** (informado
   em 06/11/2026). Ele seguiu na LatinoWare só com a versão do **projeto**, não com a do TCC.
-- [ ] **Pareceres dos avaliadores da LatinoWare** — o Henrique vai passar. Servem de revisão
-  externa do texto: conferir cada crítica contra a monografia.
+- [ ] **Parecer da LatinoWare (submissão #34865, recusa de 14/09/2026)** — recebido em 06/11/2026.
+  Veio só o *Review 1*. Ele abre dizendo que a premissa é "muito interessante" e o texto "bem
+  escrito", e faz quatro críticas. Elas servem de revisão externa da monografia. Primeira leitura
+  de cada uma contra o estado atual, ainda **não discutida com o Henrique**:
+  1. *"A hipótese central não é avaliada empiricamente; não se mostra que a especialização reduz
+     falsos positivos em relação ao baseline."* — Continua verdade na monografia: os
+     Experimentos 1 e 2 estão vazios. Com o conjunto-ouro condicional (emenda da **D7**), a taxa
+     de falso positivo só existe se ele for feito. Além disso, desde a **D3** o problema central
+     é a arbitrariedade, não o falso positivo, então a hipótese tem de ser escrita de um jeito
+     que a avaliação disponível consiga responder.
+  2. *"Diz-se que as máscaras são satisfatórias sem dizer por qual critério."* — Na monografia
+     isso já tem resposta parcial: a regra do joelho (**D17**) e o critério escrito de cada
+     `calibracao.json`. Conferir que o texto não usa "satisfatório" sem esse critério ao lado.
+  3. *"O pipeline se diz zero-shot, mas há várias adaptações ao domínio (limiar, prompts,
+     imagens representativas)."* — Na monografia, "zero-shot" só aparece descrevendo modelos de
+     fundação, não o pipeline. A calibração é justamente a adaptação ao domínio, e o texto deve
+     assumi-la como tal.
+  4. *"Falta ablação: a contribuição vem do Xception, dos prompts, dos YOLOs especialistas ou de
+     todos?"* — Em parte coberta: os quatro braços da **D5** separam regra e autor e sondas e
+     limiar; o controle da **D6** separa número de modelos e qualidade da anotação. **Não
+     coberta:** a contribuição do Xception (roteador certo × errado × sem roteador).
 
 ---
 
