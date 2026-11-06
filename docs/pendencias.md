@@ -15,7 +15,9 @@
 > Escrito em 11/10/2026 e revisto em 20/10 e 06/11. Riscar cada item ao fechar; quando a lista
 > acabar, apagar a seção.
 >
-> **Próxima sessão (combinado em 06/11):** compilar o TCC no Overleaf (item 3). Em seguida, os
+> **Próxima sessão (combinado em 06/11):** compilar o TCC no Overleaf (item 3) e, na mesma
+> passada, discutir o **parecer da LatinoWare** (ver *Bloqueadores*) e ajustar as críticas 2
+> ("satisfatório" sem critério) e 3 ("zero-shot") no texto. Em seguida, os
 > treinos dos Alunos da faixa A (Fase 3.0 do `roadmap.md`), sem esperar o conjunto-ouro, que
 > agora é condicional (emenda da **D7**, 06/11/2026). Entrega: **01/12/2026**.
 
