@@ -6,14 +6,18 @@
 > Consolida o que antes estava espalhado em `auditoria.md`, `revisao-artigo.md` e
 > `artigo-sbc.md` (os três foram removidos em 2026-08-23).
 >
-> Última atualização: 2026-10-20
+> Última atualização: 2026-11-06
 
 ---
 
-## ➡️ Retomada — por onde começar (atualizado em 20/10/2026)
+## ➡️ Retomada — por onde começar (atualizado em 06/11/2026)
 
-> Escrito em 11/10/2026 e revisto em 20/10. Riscar cada item ao fechar; quando a lista acabar,
-> apagar a seção.
+> Escrito em 11/10/2026 e revisto em 20/10 e 06/11. Riscar cada item ao fechar; quando a lista
+> acabar, apagar a seção.
+>
+> **Próxima sessão (combinado em 06/11):** compilar o TCC no Overleaf (item 3). Em seguida, os
+> treinos dos Alunos da faixa A (Fase 3.0 do `roadmap.md`), sem esperar o conjunto-ouro, que
+> agora é condicional (emenda da **D7**, 06/11/2026). Entrega: **01/12/2026**.
 
 - [x] ~~**Conferir o que a sessão de 10/10 pode ter estragado**~~ — feito pelo Henrique em
   19/10/2026. A `santa_cecilia` foi salva de novo **sem a `vein`** (de propósito); `itaunas_white`
@@ -61,12 +65,11 @@ o momento".
 
 ## 🔴 Bloqueadores — dependem do Henrique
 
-- [ ] **Fechar a data exata de entrega/defesa com o Rafael.** Em 09/10/2026 o Henrique informou
-  que a entrega final fica **pelo menos um mês depois da Jacitec** — não antes de ~23/11/2026.
-  Isso **substitui o 15/10/2026**, estimativa de 26/09 ("deve ser até dia 15") sobre a qual o
-  cronograma vinha apoiado. O piso está dado; falta o dia, e é com ele que o cronograma do
-  `roadmap.md` se refaz de trás para frente.
-- [ ] **Agenda de outubro tira ~9 dias do cronograma** (informado pelo Henrique em 05/10/2026).
+- [ ] **Entrega do TCC: 01/12/2026, por enquanto** (definido pelo Henrique em 06/11/2026, como
+  data de trabalho). Substitui o "pelo menos um mês depois da Jacitec" (~23/11) de 09/10, que já
+  tinha substituído o 15/10. Falta confirmar com o Rafael; o cronograma do `roadmap.md` se refaz
+  de trás para frente a partir desse dia.
+- [x] ~~**Agenda de outubro tira ~9 dias do cronograma**~~ (passou) (informado pelo Henrique em 05/10/2026).
   **11 a 18/10:** Foz do Iguaçu, LatinoWare (publicação do artigo FracStoneAI). **20 a 23/10:**
   Jacitec, onde ele apresenta uma prévia do TCC. O fim do dia 18 e o dia 19 vão para preparar a
   apresentação e outras responsabilidades — **não contar com eles**. Janela útil antes da viagem:
@@ -75,9 +78,12 @@ o momento".
 - [x] ~~**Confirmar se o DeepStoneAI usou este mesmo dataset.**~~ — sim, confirmado em
   2026-10-02 pelo artigo do SBAI (**D9**). Citação obrigatória.
 - [ ] **Contato do especialista do setor** para a preferência pareada cega (D7). Precisa de ~30
-  minutos dele, não mais.
-- [ ] **Versão final submetida ao Latinoware** — o `main.tex` do repo diverge do que foi enviado
-  ao JEMS. Henrique envia quando sair o resultado (14/09).
+  minutos dele, não mais. Em 06/11/2026 o Henrique disse que **provavelmente vai pedir a alguém
+  da faculdade de Minas** uma análise qualitativa. Falta o nome e o formato.
+- [x] ~~**Versão final submetida ao Latinoware**~~ — **o artigo do TCC foi recusado** (informado
+  em 06/11/2026). Ele seguiu na LatinoWare só com a versão do **projeto**, não com a do TCC.
+- [ ] **Pareceres dos avaliadores da LatinoWare** — o Henrique vai passar. Servem de revisão
+  externa do texto: conferir cada crítica contra a monografia.
 
 ---
 
@@ -161,10 +167,13 @@ o momento".
 
 ---
 
-## 🎤 Prévia na Jacitec (20 a 23/10/2026)
+## 🎤 Prévia na Jacitec — apresentada em 22/10/2026
 
 > **Apresentação: quinta, 22/10/2026, 14h00–14h40, ~10 minutos** (pode passar um pouco).
 > Slides em `apresentações/jacitec/slides.html`.
+
+> **Como foi (relato do Henrique, 06/11/2026):** correu bem; passou um pouco do tempo, porque
+> havia muito a dizer. Daí saiu a ideia do YOLOE (ver *Código*).
 
 > Plano do Henrique (05/10/2026): até a viagem, focar em terminar seleção e calibração; na
 > prévia, mostrar exemplos de imagens marcadas pelo SAM **default × calibrado**. A avaliação
@@ -177,7 +186,8 @@ o momento".
   indisponível, pelo motivo do item abaixo. Todas as imagens são do `train/` (cuidado 2
   atendido). O cuidado 3 fica com o Henrique: escolher para o slide também um caso em que o
   autor não ficou claramente melhor.
-- [ ] **Gerar as figuras *default × calibrado* para a apresentação.** São quatro braços desde
+- [ ] **Gerar as figuras *default × calibrado*** — não ficaram prontas para a prévia; passam para
+  o **Experimento 1** (Fase 2). Os cuidados abaixo continuam valendo. São quatro braços desde
   10/10 (**D5**): default, regra com todas as sondas, regra com as sondas do autor e calibrado
   pelo autor. Três cuidados:
   1. **Não usar o `"default"` atual do `rock_prompts.json` como baseline.** A **D5** o descarta:
@@ -200,6 +210,14 @@ o momento".
 ## 🧩 Código
 
 > ✅ Os três bugs de desbloqueio (**Fase 0**) foram corrigidos e verificados em 2026-08-23.
+
+- [ ] 💡 **Opcional, só se sobrar tempo antes de 01/12: comparar com o YOLOE** (ideia de
+  06/11/2026). O YOLOE é um YOLO de segmentação da Ultralytics que recebe a classe como texto,
+  como o SAM3, quase na velocidade de um YOLO comum. Rodado **sem treino**, com as mesmas
+  sondas, ele vira mais um braço: SAM3 calibrado × YOLOE. Para dar **número** a essa comparação
+  é preciso o conjunto-ouro; sem ele, dá para incluí-lo na preferência pareada cega (**D7**,
+  item 2). Antes de qualquer coisa, conferir se a versão do `ultralytics` de cada máquina tem
+  o YOLOE. Esperado: o mesmo limite de vocabulário textual do SAM3 (hipótese de 20/10/2026).
 
 - [x] ~~**Calibrar `siena_white` no calibrador**~~ — feito em 2026-10-01 (`calibracao.json`).
   Primeira litologia calibrada de fato: **1 de 45**. Entraram 3 sondas — `vein`, `Stain` e
@@ -366,6 +384,10 @@ ef` sem `\label`, ambiente
   desbalanceado, figura ausente), **não** é compilação.
 
 ### 🔴 Artigo de PD1 e LatinoWare2026 — nada feito
+
+> O artigo da LatinoWare2026 **foi recusado** (06/11/2026), e a lista abaixo só importa para
+> ele se houver nova submissão. Os pareceres dos avaliadores ainda vão chegar (ver
+> *Bloqueadores*).
 
 Continuam valendo, agora só para essas duas pastas: orientador desatualizado, "SAM" onde é SAM3,
 "constituir o banco de imagens" (**D9**), "45 especialistas" sem estratificação (**D6**), o

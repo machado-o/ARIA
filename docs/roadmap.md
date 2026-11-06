@@ -3,16 +3,14 @@
 Estado vivo do desenvolvimento e ordem de execução. As decisões que justificam esta ordem estão
 em [`decisoes.md`](decisoes.md).
 
-> Última atualização: 2026-10-20
-> **Dois horizontes** (informado pelo Henrique em 09/10/2026):
-> 1. **Prévia na Jacitec, 20 a 23/10/2026** — o marco apertado. A janela útil antes dela é
->    **até 10/10**, porque a agenda de outubro ocupa de 11 a 19/10 — ver `pendencias.md`.
-> 2. **Entrega final do TCC: pelo menos um mês depois da Jacitec**, ou seja, não antes de
->    ~23/11/2026. A data exata ainda não está fechada — ver `pendencias.md`.
+> Última atualização: 2026-11-06
+> **Entrega do TCC: 01/12/2026**, data de trabalho definida pelo Henrique em 06/11/2026 (falta
+> confirmar com o Rafael). A Jacitec (22/10) já passou. Substitui o "pelo menos um mês depois da
+> Jacitec" (09/10) e o 15/10 (26/09).
 >
-> O prazo-alvo de **15/10/2026** que este arquivo usava (estimativa de 26/09) está **superado**.
-> O cronograma abaixo foi montado sobre ele e assume que só o **Experimento 1** (Fase 2) roda —
-> suposição a rever com o prazo novo; rever é decisão do Henrique, ainda não tomada.
+> O cronograma abaixo foi montado sobre o 15/10. Ele assume que só o **Experimento 1** (Fase 2)
+> roda e que o conjunto-ouro vem antes dos treinos. Em 06/11 o Henrique propôs **adiantar os
+> treinos e a escrita**, porque o conjunto-ouro é trabalhoso. Ver `pendencias.md` → Retomada.
 
 ---
 
@@ -35,7 +33,7 @@ em [`decisoes.md`](decisoes.md).
 | Treino e avaliação YOLO | ❌ não existe (`AI/YOLO/` está vazio) |
 | Integração Xception | 🟡 **treinado** (03/10, D19): 96,72% no `test/` (98,71% no `val/`), abaixo dos 99,21% do original. Com o sorteio por imagem do original, o mesmo modelo dá 99,92%: a diferença vem da divisão dos dados. Os dois números são reportados (D19, 06/10); falta só integrar o roteador. Ver Fase 4 |
 | **Monografia** (`Overleaf/TCC/`) | 🟡 **reestruturada em 26/09**: bibliografia (37 entradas), esqueleto, Introdução, Fundamentação, Metodologia e Conclusão escritas; Resultados só com o que já foi medido |
-| Artigo de PD1 e LatinoWare2026 | 🔴 intocados — continuam desalinhados (**D13**) |
+| Artigo de PD1 e LatinoWare2026 | 🔴 intocados — continuam desalinhados (**D13**). O da LatinoWare foi **recusado** (informado em 06/11/2026) |
 
 > ⚠️ A monografia **nunca foi compilada** depois da reestruturação: não há LaTeX na máquina de
 > desenvolvimento. `Overleaf/TCC/verificar_tex.py` faz a conferência estrutural possível

@@ -6,7 +6,7 @@
 > ⚠️ **A numeração foi refeita em 2026-08-23.** Referências a "D1…D10" em textos antigos
 > (dentro de `apresentações/`) apontam para a numeração velha e **não valem**.
 >
-> Última atualização: 2026-10-07
+> Última atualização: 2026-11-06
 
 ---
 
@@ -279,6 +279,14 @@ acerto, e torna a comparação entre braços sem sentido (cada braço teria um g
 
 **Definição operacional de falso positivo:** região marcada pelo modelo sem sobreposição
 (IoU = 0) com qualquer região do conjunto-ouro.
+
+> **Emenda de 06/11/2026 (Henrique): o conjunto-ouro passa a ser condicional.** Ele só é feito
+> se houver tempo, disposição ou ajuda para anotar; senão, a avaliação fica só na análise
+> qualitativa (item 2, provavelmente com alguém da faculdade de Minas), e a falta de métrica
+> quantitativa entra no texto como limitação declarada. Enquanto isso, treinos e escrita seguem
+> sem esperar por ele. **O que não muda:** o conjunto-ouro, se vier, sai do `test/`. Os treinos
+> usam só `train/` e `val/`, e nada roda sobre o `test/` antes da anotação. Assim a opção de
+> fazê-lo continua aberta.
 
 ---
 
