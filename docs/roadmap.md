@@ -3,10 +3,10 @@
 Estado vivo do desenvolvimento e ordem de execução. As decisões que justificam esta ordem estão
 em [`decisoes.md`](decisoes.md).
 
-> Última atualização: 2026-11-06
-> **Entrega do TCC: 01/12/2026**, data de trabalho definida pelo Henrique em 06/11/2026 (falta
-> confirmar com o Rafael). A Jacitec (22/10) já passou. Substitui o "pelo menos um mês depois da
-> Jacitec" (09/10) e o 15/10 (26/09).
+> Última atualização: 2026-11-19
+> **Prazos (19/11/2026, ainda sem confirmação):** defesa para a banca **até dezembro de 2026**,
+> publicação **até fevereiro de 2027**. O **01/12/2026** (data de trabalho de 06/11) fica como a
+> versão que vai à banca. Falta confirmar com o Rafael. A Jacitec (22/10) já passou.
 >
 > O cronograma abaixo foi montado sobre o 15/10. Ele assume que só o **Experimento 1** (Fase 2)
 > roda e que o conjunto-ouro vem antes dos treinos. Em 06/11 o Henrique propôs **adiantar os
@@ -32,7 +32,7 @@ em [`decisoes.md`](decisoes.md).
 | Avaliação (IoU / mAP / falso positivo) | ❌ não existe |
 | Treino e avaliação YOLO | ❌ não existe (`AI/YOLO/` está vazio) |
 | Integração Xception | 🟡 **treinado** (03/10, D19): 96,72% no `test/` (98,71% no `val/`), abaixo dos 99,21% do original. Com o sorteio por imagem do original, o mesmo modelo dá 99,92%: a diferença vem da divisão dos dados. Os dois números são reportados (D19, 06/10); falta só integrar o roteador. Ver Fase 4 |
-| **Monografia** (`Overleaf/TCC/`) | 🟡 **reestruturada em 26/09**: bibliografia (37 entradas), esqueleto, Introdução, Fundamentação, Metodologia e Conclusão escritas; Resultados só com o que já foi medido |
+| **Monografia** (`Overleaf/TCC/`) | 🟡 **reestruturada em 26/09**, revista em 10/10 e 19/11: bibliografia (40 entradas), Introdução, Fundamentação, Metodologia e Conclusão escritas; Resultados com 5 seções medidas (a 4.5, *Calibração da Faixa A*, e o Apêndice A em 19/11). Faltam os Experimentos 1 e 2 |
 | Artigo de PD1 e LatinoWare2026 | 🔴 intocados — continuam desalinhados (**D13**). O da LatinoWare foi **recusado** (informado em 06/11/2026) |
 
 > ⚠️ A monografia **nunca foi compilada** depois da reestruturação: não há LaTeX na máquina de

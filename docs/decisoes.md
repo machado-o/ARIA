@@ -737,10 +737,15 @@ cuja estrutura forma desenho (bandamento, foliação). Fontes e ressalvas em `da
 > movimentadas — isso não foi verificado por fonte nem por especialista. Até ser, o texto diz
 > que o autor as *percebeu* como movimentadas.
 
+**Decisão 3 — o recorte entra no texto (2026-11-19):** a monografia compara as quatro
+movimentadas com as sete demais da faixa A (seção 4.5). A razão autor/regra não separa os grupos
+(mediana 3,15 contra 3,58); os critérios escritos separam (sondas insuficientes em 3 das 4
+movimentadas, contra 1 das 7 demais). O pertencimento continua sendo a identificação do autor.
+
 **Ainda em aberto:**
 
-- se os resultados das movimentadas são reportados num recorte à parte, e com que critério de
-  pertencimento;
+- um critério de pertencimento aplicável por outra pessoa (classificação petrográfica ou
+  medida de imagem);
 - como a opinião externa é registrada quando vier (o `calibracao.json` hoje supõe um critério
   escrito só pelo autor, e a **D7** diz que o gabarito é do autor).
 

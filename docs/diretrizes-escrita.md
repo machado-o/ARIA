@@ -47,6 +47,15 @@ vazia que soa bem.
 2.4. Incertezas do sistema são parte do projeto. Surgindo algo não documentado, **perguntar** —
 não resolver por conta própria.
 
+2.5. **Tom: o texto não diminui o próprio trabalho** (pedido do Henrique, 19/11/2026). Limitação
+entra como **escopo** ou **decisão de desenho**, em poucas linhas, e de preferência ligada a um
+trabalho futuro, nunca como autocrítica ("o elo mais frágil", "o trabalho reconhece que...",
+"não é demonstrado", "não foi possível"). Não se lista como limitação o que é escolha
+deliberada (ex.: rotulagem binária, **D2**). Não se conta o que foi tentado e não deu certo quando
+isso não muda nenhuma conclusão (ex.: "a opinião de especialista foi pedida e não veio"). O que
+continua inegociável é a seção 2: nada se inventa, e um furo que mude uma conclusão é levado ao
+Henrique para decidir junto, não resolvido em silêncio.
+
 ---
 
 ## 3. Escopo (ver `decisoes.md`)

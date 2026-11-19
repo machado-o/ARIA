@@ -6,20 +6,33 @@
 > Consolida o que antes estava espalhado em `auditoria.md`, `revisao-artigo.md` e
 > `artigo-sbc.md` (os três foram removidos em 2026-08-23).
 >
-> Última atualização: 2026-11-06
+> Última atualização: 2026-11-19
 
 ---
 
-## ➡️ Retomada — por onde começar (atualizado em 06/11/2026)
+## ➡️ Retomada — por onde começar (atualizado em 19/11/2026)
 
-> Escrito em 11/10/2026 e revisto em 20/10 e 06/11. Riscar cada item ao fechar; quando a lista
-> acabar, apagar a seção.
+> Escrito em 11/10/2026 e revisto em 20/10, 06/11 e 19/11. Riscar cada item ao fechar; quando a
+> lista acabar, apagar a seção.
 >
-> **Próxima sessão (combinado em 06/11):** compilar o TCC no Overleaf (item 3) e, na mesma
-> passada, discutir o **parecer da LatinoWare** (ver *Bloqueadores*) e ajustar as críticas 2
-> ("satisfatório" sem critério) e 3 ("zero-shot") no texto. Em seguida, os
-> treinos dos Alunos da faixa A (Fase 3.0 do `roadmap.md`), sem esperar o conjunto-ouro, que
-> agora é condicional (emenda da **D7**, 06/11/2026). Entrega: **01/12/2026**.
+> **Sessão de 19/11:** o texto avançou no que não dependia de decisão (ver *Escrita* → *revisão
+> de 19/11*): seção 4.5 *Calibração da Faixa A*, Apêndice A, referências completas (nenhum
+> `TODO-` sobrando), título provisório na capa e uma passada de tom no texto inteiro
+> (`diretrizes-escrita.md` §2.5). **Nada foi compilado.** Dar commit e push **antes** de
+> editar no Overleaf ou no outro PC.
+>
+> **O que trava os resultados é a avaliação do Experimento 1.** Sem uma referência, nem a H1
+> nem a H2 têm número, e treinar os Alunos sem ela mede só a fidelidade da cópia (**D7**). A
+> proposta de 19/11, ainda **não decidida**: trocar o conjunto-ouro por uma **auditoria cega
+> por amostragem** (o Henrique julga detecções sorteadas, uma por vez, sem saber de que braço
+> vieram; um clique por detecção, sem desenhar polígono). Como os quatro braços são filtros
+> aninhados do mesmo cache (**D18**), um julgamento por detecção serve a todos. Mede precisão
+> por braço; *recall* fica fora. Muda a **D7** e a redação da H1. E declarar o Experimento 2
+> como trabalho futuro, o que muda a **D6** e a H2.
+>
+> **Prazos (informados em 19/11, "pelo que fiquei sabendo"):** defesa para a banca **até
+> dezembro**; publicação **até fevereiro de 2027**. Confirmar com o Rafael. O 01/12 de 06/11
+> fica como data de trabalho para a versão que vai à banca.
 
 - [x] ~~**Conferir o que a sessão de 10/10 pode ter estragado**~~ — feito pelo Henrique em
   19/10/2026. A `santa_cecilia` foi salva de novo **sem a `vein`** (de propósito); `itaunas_white`
@@ -50,12 +63,15 @@
   `figuras/arquitetura_aria.png` (citada no texto) e os quatro prints do Henrique, recortados
   sem a barra do navegador e a do Windows. Os originais ficam fora do repo, na pasta acima do
   `ARIA/`. Falta conferir no Overleaf se cabem na página.
-- [ ] **Referências fora do `.bib`:** `TODO-sam3` e `TODO-movimentada` (a pesquisa do termo está
-  em `dataset.md` → *Litologias movimentadas*).
+- [x] ~~**Referências fora do `.bib`:** `TODO-sam3` e `TODO-movimentada`~~ — feito em 19/11/2026:
+  `sam3_carion2026` (ICLR 2026, conferido no arXiv) e `camargo_geociencias2015`, com a definição
+  atribuída a Meyer (2003) no texto, porque Meyer foi lido em segunda mão. Entrou um TODO novo,
+  `TODO-fracstoneai` (ver *Escrita*).
 - [ ] **Pré-textuais:** dedicatória, agradecimentos, epígrafe, banca e data da defesa.
-- [ ] **Tabela regra × autor** nos resultados — a faixa A fechou em 20/10/2026, então já pode
-  ser escrita. Os números estão em `apresentações/jacitec/regra_x_autor.csv` (gerado por
-  `AI/SAM/figuras_regra_autor.py`): o autor ficou acima do joelho em **45 de 45** sondas.
+- [x] ~~**Tabela regra × autor** nos resultados~~ — feito em 19/11/2026: seção 4.5 *Calibração
+  da Faixa A* (`tab:calib_faixa_a`, por litologia) e o Apêndice A
+  (`pos_textuais/apendice_limiares.tex`, os 45 pares), gerado do `regra_x_autor.csv`. Se uma
+  litologia for recalibrada, gerar o CSV e o apêndice de novo.
 - [ ] **Outros trechos de código** no texto — o Henrique disse que pensaria depois; hoje só o
   `calibracao.json` entra. Candidatos: a filtragem fora de linha, o joelho, os contornos (D21).
 
@@ -67,10 +83,11 @@ o momento".
 
 ## 🔴 Bloqueadores — dependem do Henrique
 
-- [ ] **Entrega do TCC: 01/12/2026, por enquanto** (definido pelo Henrique em 06/11/2026, como
-  data de trabalho). Substitui o "pelo menos um mês depois da Jacitec" (~23/11) de 09/10, que já
-  tinha substituído o 15/10. Falta confirmar com o Rafael; o cronograma do `roadmap.md` se refaz
-  de trás para frente a partir desse dia.
+- [ ] **Prazos: defesa até dezembro de 2026, publicação até fevereiro de 2027** (informado pelo
+  Henrique em 19/11/2026: "pelo que fiquei sabendo", ainda sem confirmação). O **01/12/2026**
+  (definido em 06/11 como data de trabalho) fica como data da versão que vai à banca. Ele
+  substituiu o "pelo menos um mês depois da Jacitec" (~23/11) de 09/10, que já tinha
+  substituído o 15/10. Falta confirmar os prazos com o Rafael.
 - [x] ~~**Agenda de outubro tira ~9 dias do cronograma**~~ (passou) (informado pelo Henrique em 05/10/2026).
   **11 a 18/10:** Foz do Iguaçu, LatinoWare (publicação do artigo FracStoneAI). **20 a 23/10:**
   Jacitec, onde ele apresenta uma prévia do TCC. O fim do dia 18 e o dia 19 vão para preparar a
@@ -84,7 +101,9 @@ o momento".
   da faculdade de Minas** uma análise qualitativa. Falta o nome e o formato.
 - [x] ~~**Versão final submetida ao Latinoware**~~ — **o artigo do TCC foi recusado** (informado
   em 06/11/2026). Ele seguiu na LatinoWare só com a versão do **projeto**, não com a do TCC.
-- [ ] **Parecer da LatinoWare (submissão #34865, recusa de 14/09/2026)** — recebido em 06/11/2026.
+- [x] ~~**Parecer da LatinoWare**~~ — **encerrado pelo Henrique em 19/11/2026: não orienta mais o
+  trabalho.** Não trazer de volta. Registro antigo, só por histórico:
+  (submissão #34865, recusa de 14/09/2026) — recebido em 06/11/2026.
   Veio só o *Review 1*. Ele abre dizendo que a premissa é "muito interessante" e o texto "bem
   escrito", e faz quatro críticas. Elas servem de revisão externa da monografia. Primeira leitura
   de cada uma contra o estado atual, ainda **não discutida com o Henrique**:
@@ -96,15 +115,20 @@ o momento".
      que a avaliação disponível consiga responder.
   2. *"Diz-se que as máscaras são satisfatórias sem dizer por qual critério."* — Na monografia
      isso já tem resposta parcial: a regra do joelho (**D17**) e o critério escrito de cada
-     `calibracao.json`. Conferir que o texto não usa "satisfatório" sem esse critério ao lado.
+     `calibracao.json`. **Conferido em 19/11/2026:** "satisfatório" não aparece em nenhum `.tex`.
   3. *"O pipeline se diz zero-shot, mas há várias adaptações ao domínio (limiar, prompts,
      imagens representativas)."* — Na monografia, "zero-shot" só aparece descrevendo modelos de
-     fundação, não o pipeline. A calibração é justamente a adaptação ao domínio, e o texto deve
-     assumi-la como tal.
+     fundação, não o pipeline. **Feito em 19/11/2026:** parágrafo novo na abertura de
+     *Protocolo de Calibração* (`metodologia.tex`), assumindo a calibração como adaptação do
+     Professor ao domínio e dizendo que o pipeline não é descrito como zero-shot.
   4. *"Falta ablação: a contribuição vem do Xception, dos prompts, dos YOLOs especialistas ou de
      todos?"* — Em parte coberta: os quatro braços da **D5** separam regra e autor e sondas e
      limiar; o controle da **D6** separa número de modelos e qualidade da anotação. **Não
-     coberta:** a contribuição do Xception (roteador certo × errado × sem roteador).
+     coberta:** a contribuição do Xception (roteador certo × errado × sem roteador). **Feito em
+     19/11/2026:** entrou como limitação declarada na conclusão (*Contribuição do classificador
+     não isolada*, com os ~3% de erro no `test/`). Rodar a ablação não está previsto.
+  
+  A crítica 1 continua aberta: depende da decisão do conjunto-ouro (ver *Retomada*).
 
 ---
 
@@ -176,7 +200,8 @@ o momento".
 - [ ] **Decidir o critério de pertencimento.** Hoje a lista é impressão do autor. Para virar
   recorte, precisa ser aplicável por outra pessoa: classificação petrográfica vinda de quem
   conhece rocha, ou medida de imagem.
-- [ ] **Decidir se as movimentadas são reportadas num recorte à parte** (em aberto na **D20**).
+- [x] ~~**Decidir se as movimentadas são reportadas num recorte à parte**~~ — sim, decidido em
+  19/11/2026 (**D20**, decisão 3); está na seção 4.5 da monografia.
 - [ ] **Ler antes de citar:** a dissertação de Meyer (2003), origem da definição *homogêneo ×
   movimentado*, e o trabalho de Bolonha sobre caracterização estética de chapas — os dois só
   foram vistos em segunda mão.
@@ -322,8 +347,9 @@ o momento".
   em 2026-10-09 (**D21**): cada contorno é um polígono próprio, na preview e no `.txt`.
 - [ ] **Decidir se a curva da regra conta detecções ou peças** (em aberto na **D21**, com a
   primeira medição). Hoje conta detecções.
-- [ ] **Seção 4.3 da monografia** (`resultados.tex`, *Geometria dos Polígonos*) diz que o
-  tratamento da ponte é "etapa a definir". Reescrever com a **D21**.
+- [x] ~~**Seção 4.3 da monografia** (`resultados.tex`, *Geometria dos Polígonos*) diz que o
+  tratamento da ponte é "etapa a definir". Reescrever com a **D21**.~~ — visto em 19/11/2026: o
+  item estava desatualizado. A 4.3 já descreve a separação dos contornos (revisão de 10/10).
 
 ---
 
@@ -364,9 +390,66 @@ o momento".
   calibração em `lstlisting`). `\lstlistingname` do template: "Algoritimo" → "Código".
 - [x] `verificar_tex.py` reconhece o `label=` do `lstlisting`.
 
+### ✅ Monografia — revisão de 2026-11-19 (não compilada)
+
+- [x] **Seção 4.5 *Calibração da Faixa A*** (`resultados.tex`, `sec:res_calibracao`): sondas
+  admitidas (2 a 6 por litologia, 45 pares), regra × autor (45/45 para cima, razão mediana 3,3,
+  quartis 2,1 e 4,7, 34/45 com o dobro ou mais), marcações por vaga, o critério dominante
+  ("matriz limpa", 7 de 11) e o "falta sonda" (4 de 11). Tabela `tab:calib_faixa_a`.
+- [x] **Apêndice A** (`pos_textuais/apendice_limiares.tex`, ligado no `main.tex`): os 45 pares.
+- [x] **Síntese da conclusão:** um terceiro resultado já firmado, a divergência regra × autor.
+- [x] **Recorte movimentadas × demais** na 4.5 (**D20**, decisão 3) e trabalho futuro sobre o
+  vocabulário de sondas.
+- [x] **Passada de tom** (`diretrizes-escrita.md` §2.5, pedido do Henrique): *Limitações* virou
+  *Escopo*, com dois parágrafos; saíram a rotulagem binária (é decisão, **D2**), a equivalência
+  da varredura (já está na 4.1), a integração e a latência (já estão em trabalhos futuros) e o
+  efeito líquido (fica na metodologia do Experimento 2). Na metodologia, as movimentadas perderam
+  "elo mais frágil" e "a opinião de especialista foi pedida e não veio"; a referência e a
+  preferência pareada, as frases defensivas. Na fundamentação, o "sem recorrer à alegação de
+  lacuna" e o "não como hipótese original".
+- [x] **Resumo e abstract:** diziam que a avaliação "usa um conjunto de referência anotado" (não
+  existe ainda) e que o Aluno é "em tempo real" (nunca medido). Trocados pelos resultados que
+  existem: regra × autor, movimentadas e classificador.
+- [x] **Título provisório** na capa (`macros.tex`).
+- [x] **FracStoneAI** citado com os números do artigo publicado, na introdução e na §2.7, que
+  agora também liga o ARIA ao trabalho futuro que o FracStoneAI propôs (classificar a litologia
+  e especializar a segmentação).
+- [x] **Corrigido — o texto afirmava o que não era verdade:** a subseção *Litologias
+  movimentadas* dizia que "o registro de calibração de cada uma o declara" (a falta de
+  especialista). Nenhum dos quatro critérios diz isso. O texto passou a dizer que **o trabalho**
+  o declara, e na passada de tom do mesmo dia a frase saiu. O pedido do `dataset.md` (o critério do `calibracao.json` dizer) continua aberto,
+  e só o calibrador pode atendê-lo.
+- [x] **Corrigido:** a limitação *Independência parcial da referência* dizia que o
+  conjunto-ouro "foi anotado", o que ainda não aconteceu (e agora é condicional). Passou ao
+  presente.
+- [x] **Referências:** `sam3_carion2026` e `camargo_geociencias2015` novas; o Boxes2Pixels com
+  os prenomes corrigidos (eram "Mike" e "Hasan"; são Camile Lendering e Erkut Akdag, conferido no
+  arXiv); o `note` do `dataset_araujo2023`, que sairia impresso na lista de referências e tinha
+  um TAB no lugar do `\t` de `\textit`, virou comentário.
+- [x] **TCC do Pedro Lucas e FracStoneAI** posicionados em §2.7 e citados na introdução (ver o
+  item abaixo, que fica aberto pelos dados que faltam).
+- [x] **`verificar_tex.py`:** não reconhecia `\cite[p.~X]{chave}` nem `\citeonline[...]{}`;
+  uma chave inexistente citada com página passaria sem aviso.
+
 ### 🟡 Monografia — em aberto
 
-- [ ] **Citar e posicionar o TCC do Pedro Lucas Brito Moreira** (IFES, 2025, *Redes Neurais
+- [x] ~~**`TODO-fracstoneai`**~~ — `fracstoneai_oliveira2026`, montada do PDF final em 19/11/2026,
+  com `note = {No prelo}`: os anais do Latinoware 2026 ainda não estavam no SOL/SBC (o último
+  volume era o de 2025). **Quando saírem, trocar o `note` por páginas e DOI.** ⚠️ Os números que
+  este arquivo registrava (mAP50-95 de 0,04 a 0,21, "ruído de anotação") **não batem com o
+  artigo publicado**: lá são precisão de máscara até 0,744 e mAP@0,5 de máscara de 0,10 a 0,36,
+  e a leitura dos autores é que parte dos falsos positivos são defeitos reais deixados fora pelo
+  critério de anotação. O texto usa os do artigo.
+- [x] ~~**Entrada `moreira_tcc2025`**~~ — curso e campus os mesmos do ARIA (Henrique, 19/11/2026).
+- [ ] **Título:** está na capa, **provisório**, a versão mais longa (sem "Teacher-Student"), para
+  ver se cabe depois de compilar. Escolhido o definitivo, registrar em `decisoes.md`.
+- [ ] **A `white stain` não foi admitida na `san_francisco_green`**, a litologia em que ela
+  nasceu (calibrada em 20/10, só com `Stain` e `Dark patches`). A metodologia conta que ela foi
+  registrada porque, testada ali, marcou manchas que a `light spot` não alcançava. Não é
+  contradição (quem decide é a vaga de descoberta), mas a banca pode perguntar. Vale uma frase
+  do Henrique explicando.
+- [x] ~~**Citar e posicionar o TCC do Pedro Lucas Brito Moreira**~~ — feito em 19/11/2026
+  (§2.7 e introdução), com as pendências de dados acima. Registro original: (IFES, 2025, *Redes Neurais
   Convolucionais para Segmentação e Classificação de Rochas Ornamentais*, **mesmo orientador**).
   É o trabalho mais próximo do ARIA: mesmo dataset, Xception (99,21%) + YOLO de segmentação de
   defeitos com **anotação manual** e 4 classes semânticas, métricas modestas por ruído de
@@ -382,10 +465,9 @@ o momento".
     usar na introdução para responder de antemão *"por que não anotar à mão e treinar o
     YOLO?"*. Fonte dos números: `docs/NEXT-STEPS.md` e `docs/Latinoware2026/Artigo/` do repo.
 
-- [ ] **`\cite{TODO-sam3}`** em `ref_teorico.tex`: falta a referência do **SAM3**. É a única
-  citação sem entrada no `.bib`.
-- [ ] **Conferir a entrada `boxes2pixels_lendering2026`** — foi montada a partir do registro
-  neste arquivo, não de consulta à fonte. Confirmar autores, título e número do arXiv.
+- [x] ~~**`\cite{TODO-sam3}`** em `ref_teorico.tex`~~ — `sam3_carion2026`, em 19/11/2026.
+- [x] ~~**Conferir a entrada `boxes2pixels_lendering2026`**~~ — conferida no arXiv em 19/11/2026;
+  os prenomes estavam errados e foram corrigidos. Título e número (2604.11162) estavam certos.
 - [x] ~~**Figura da arquitetura**~~ — `figuras/arquitetura_aria.png`, descomentada e citada
   no texto em 20/10/2026.
 - [ ] **Resumo e abstract:** acrescentar as frases de resultado e conclusão quando os
