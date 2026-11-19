@@ -300,13 +300,15 @@
   publisher = {CETEM/MCTIC}
 }
 
+% O slug da URL tem um typo de origem ("ornametais"); e' a grafia que funciona.
+% (Ate' 19/11/2026 isto era um campo note, que sairia impresso na lista de
+% referencias -- e com um TAB no lugar do "\t" de \textit.)
 @misc{dataset_araujo2023,
   author    = {Araujo, Jo{\~a}o Victor Costa},
   title     = {Chapas Polidas de Rochas Ornamentais},
   year      = {2023},
   publisher = {Kaggle},
   url       = {https://www.kaggle.com/datasets/joovictorcostaaraujo/chapas-polidas-de-rochas-ornametais},
-  note      = {O slug tem um typo de origem (	extit{ornametais}); a URL acima e' a que funciona},
   doi       = {10.34740/KAGGLE/DS/3091991}
 }
 
@@ -348,13 +350,73 @@
   doi       = {10.1109/ICDCSW.2011.20}
 }
 
-% ATENCAO: entrada montada a partir do registro em docs/pendencias.md, nao de
-% consulta a fonte. Conferir autores, titulo e numero do arXiv antes de submeter.
+% Conferida em 19/11/2026 na pagina do arXiv (https://arxiv.org/abs/2604.11162).
+% Os prenomes estavam errados ("Mike", "Hasan"). Aceito no workshop AI4RWC do
+% CVPR 2026, segundo o campo de comentarios do arXiv.
 @misc{boxes2pixels_lendering2026,
-  author        = {Lendering, Mike and Akdag, Hasan and Bondarev, Egor},
+  author        = {Lendering, Camile and Akdag, Erkut and Bondarev, Egor},
   title         = {Boxes2Pixels: Learning Defect Segmentation from Noisy SAM Masks},
   year          = {2026},
   eprint        = {2604.11162},
   archivePrefix = {arXiv},
-  primaryClass  = {cs.CV}
+  primaryClass  = {cs.CV},
+  url           = {https://arxiv.org/abs/2604.11162}
+}
+
+
+% --------------------------------------------------------------------------
+% Acrescentado em 2026-11-19.
+% --------------------------------------------------------------------------
+
+% Conferida em 19/11/2026 na pagina do arXiv (https://arxiv.org/abs/2511.16719):
+% 38 autores, v1 de 20/11/2025. Publicado no ICLR 2026. "and others" vira
+% "et al." no abntex2 (NBR 6023 admite para mais de tres autores).
+@inproceedings{sam3_carion2026,
+  author        = {Carion, Nicolas and Gustafson, Laura and Hu, Yuan-Ting and Debnath, Shoubhik and others},
+  title         = {{SAM} 3: Segment Anything with Concepts},
+  booktitle     = {International Conference on Learning Representations (ICLR)},
+  year          = {2026},
+  eprint        = {2511.16719},
+  archivePrefix = {arXiv},
+  url           = {https://arxiv.org/abs/2511.16719}
+}
+
+% Fonte da classificacao homogeneo x movimentado (docs/dataset.md ->
+% Litologias movimentadas). A definicao e' de Meyer (2003), lida aqui em
+% segunda mao (p. 920); a dissertacao de Meyer nao foi consultada. Dados
+% conferidos no repositorio da UNESP (http://hdl.handle.net/11449/173046).
+@article{camargo_geociencias2015,
+  author  = {Camargo, Jefferson Luiz and Artur, Antonio Carlos and Silveira, Leonardo Luiz Lyrio da},
+  title   = {Utiliza{\c{c}}{\~a}o de Ensaios Tecnol{\'o}gicos como Aux{\'i}lio na Interpreta{\c{c}}{\~a}o do Polimento de Rochas Ornamentais},
+  journal = {Geoci{\^e}ncias},
+  volume  = {34},
+  number  = {4},
+  pages   = {919--937},
+  year    = {2015},
+  url     = {http://hdl.handle.net/11449/173046}
+}
+
+% TCC do Pedro Lucas. Curso e campus informados pelo Henrique em 19/11/2026
+% (os mesmos do ARIA).
+@monography{moreira_tcc2025,
+  author  = {Moreira, Pedro Lucas Brito},
+  title   = {Redes Neurais Convolucionais para Segmenta{\c{c}}{\~a}o e Classifica{\c{c}}{\~a}o de Rochas Ornamentais},
+  type    = {Trabalho de Conclus{\~a}o de Curso (Bacharelado em Sistemas de Informa{\c{c}}{\~a}o)},
+  school  = {Instituto Federal do Esp{\'i}rito Santo},
+  address = {Cachoeiro de Itapemirim},
+  year    = {2025}
+}
+
+% FracStoneAI, apresentado no Latinoware 2026 (Foz do Iguacu, out/2026).
+% Dados tirados do PDF final (19/11/2026). Os anais de 2026 ainda nao estavam
+% no SOL/SBC nessa data (o ultimo volume era o de 2025), dai o "No prelo".
+% Quando sair: trocar o note por pages e doi.
+@inproceedings{fracstoneai_oliveira2026,
+  author    = {Oliveira, Henrique Machado de and Souza, Matheus Gimenes de and Silva, Arthur Cesar Figueiredo da and Silva, Andrey Magalh{\~a}es and Guimar{\~a}es, Rafael Silva and Pizetta, Igor Henrique Beloti and Zag{\^o}to, Juliano Tessinari and Borges, Everson Scherrer},
+  title     = {{FracStoneAI}: Segmenta{\c{c}}{\~a}o de Defeitos Superficiais em Chapas de Rochas Ornamentais com {YOLO11}},
+  booktitle = {Anais do Congresso Latino-Americano de Software Livre e Tecnologias Abertas (Latinoware)},
+  address   = {Foz do Igua{\c{c}}u},
+  publisher = {Sociedade Brasileira de Computa{\c{c}}{\~a}o},
+  year      = {2026},
+  note      = {No prelo}
 }

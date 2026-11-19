@@ -66,7 +66,9 @@ def main() -> int:
                                      re.MULTILINE))
     usadas: dict[str, str] = {}
     for p, s in corpos.items():
-        for k in chaves(r"\\cite(?:online)?\{([^}]*)\}", s):
+        # O [p.~920] opcional precisa casar também: sem ele, \citeonline[p.~920]{x}
+        # passava sem conferência — chave inexistente não seria apontada.
+        for k in chaves(r"\\cite(?:online)?(?:\[[^\]]*\])*\{([^}]*)\}", s):
             usadas.setdefault(k, p.name)
     for k, onde in sorted(usadas.items()):
         if k in disponiveis:

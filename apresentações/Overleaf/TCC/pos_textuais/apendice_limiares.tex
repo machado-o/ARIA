@@ -1,0 +1,77 @@
+\chapter{Limiares da Regra e do Autor na Faixa A}
+\label{apendice:limiares}
+
+% Gerado em 19/11/2026 a partir de apresentações/jacitec/regra_x_autor.csv, que
+% o AI/SAM/figuras_regra_autor.py escreve lendo os calibracao.json da faixa A.
+% Se uma litologia for recalibrada, gerar o CSV de novo e refazer esta tabela.
+
+A Tabela \ref{tab:apendice_limiares} lista, para cada par de litologia e sonda admitida na calibração da faixa A, o limiar produzido pela regra da Seção \ref{sec:regra}, o limiar adotado pelo autor e a razão entre os dois. Os valores são os gravados no registro de calibração de cada litologia, com quatro casas decimais. O resumo por litologia e a discussão estão na Seção \ref{sec:res_calibracao}.
+
+\begin{table}[ht]
+  \caption{Limiar da regra e limiar adotado pelo autor, por litologia e sonda, na faixa A.}
+  \label{tab:apendice_limiares}
+  \centering
+  \footnotesize
+  \begin{tabular}{llrrr}
+    \hline
+    \bfseries Litologia & \bfseries Sonda & \bfseries Regra & \bfseries Autor & \bfseries Razão \\
+    \hline
+    \textit{golden\_storm}$^{\dagger}$ & \textit{crack} & 0,0560 & 0,1552 & 2,77 \\
+     & \textit{Dark patches} & 0,1256 & 0,4146 & 3,30 \\
+     & \textit{light spot} & 0,1387 & 0,5698 & 4,11 \\
+     & \textit{scratch} & 0,0507 & 0,0843 & 1,66 \\
+     & \textit{white stain} & 0,0983 & 0,4232 & 4,31 \\
+    \hline
+    \textit{ipanema\_beige} & \textit{crack} & 0,0312 & 0,1550 & 4,97 \\
+     & \textit{Stain} & 0,0338 & 0,1211 & 3,58 \\
+     & \textit{Dark patches} & 0,1110 & 0,5000 & 4,50 \\
+     & \textit{scratch} & 0,0308 & 0,1447 & 4,70 \\
+    \hline
+    \textit{itaunas\_white} & \textit{crack} & 0,1790 & 0,5000 & 2,79 \\
+     & \textit{Stain} & 0,1818 & 0,5244 & 2,88 \\
+     & \textit{Dark patches} & 0,2383 & 0,4012 & 1,68 \\
+     & \textit{light spot} & 0,0406 & 0,5000 & 12,32 \\
+     & \textit{white stain} & 0,0323 & 0,3500 & 10,84 \\
+    \hline
+    \textit{nevada\_black} & \textit{crack} & 0,0183 & 0,2402 & 13,13 \\
+     & \textit{light spot} & 0,0567 & 0,1463 & 2,58 \\
+    \hline
+    \textit{san\_francisco\_green}$^{\dagger}$ & \textit{Stain} & 0,1104 & 0,3308 & 3,00 \\
+     & \textit{Dark patches} & 0,2080 & 0,5604 & 2,69 \\
+    \hline
+    \textit{santa\_cecilia} & \textit{crack} & 0,0797 & 0,2005 & 2,52 \\
+     & \textit{Stain} & 0,1325 & 0,7000 & 5,28 \\
+     & \textit{Dark patches} & 0,2251 & 0,2629 & 1,17 \\
+     & \textit{light spot} & 0,0321 & 0,1825 & 5,69 \\
+     & \textit{white stain} & 0,0515 & 0,2460 & 4,78 \\
+    \hline
+    \textit{shadow\_white}$^{\dagger}$ & \textit{vein} & 0,0208 & 0,0272 & 1,31 \\
+     & \textit{crack} & 0,1241 & 0,1340 & 1,08 \\
+     & \textit{Stain} & 0,1511 & 0,2586 & 1,71 \\
+     & \textit{Dark patches} & 0,0395 & 0,5422 & 13,73 \\
+     & \textit{scratch} & 0,0266 & 0,0479 & 1,80 \\
+    \hline
+    \textit{siena\_white} & \textit{vein} & 0,1453 & 0,3351 & 2,31 \\
+     & \textit{Stain} & 0,2025 & 0,3920 & 1,94 \\
+     & \textit{Dark patches} & 0,2345 & 0,3966 & 1,69 \\
+    \hline
+    \textit{ubatuba\_green} & \textit{crack} & 0,0283 & 0,0385 & 1,36 \\
+     & \textit{Stain} & 0,0973 & 0,2800 & 2,88 \\
+     & \textit{Dark patches} & 0,1252 & 0,5200 & 4,15 \\
+     & \textit{light spot} & 0,0340 & 0,1650 & 4,85 \\
+     & \textit{white stain} & 0,0453 & 0,2217 & 4,89 \\
+    \hline
+    \textit{white\_mirage}$^{\dagger}$ & \textit{crack} & 0,1007 & 0,2000 & 1,99 \\
+     & \textit{Stain} & 0,1073 & 0,3648 & 3,40 \\
+     & \textit{Dark patches} & 0,1946 & 0,6545 & 3,36 \\
+     & \textit{light spot} & 0,0435 & 0,1570 & 3,61 \\
+     & \textit{scratch} & 0,0580 & 0,1961 & 3,38 \\
+     & \textit{white stain} & 0,0199 & 0,0722 & 3,63 \\
+    \hline
+    \textit{white\_olympus} & \textit{vein} & 0,0674 & 0,1592 & 2,36 \\
+     & \textit{crack} & 0,1516 & 0,4646 & 3,06 \\
+     & \textit{white stain} & 0,0029 & 0,0520 & 17,93 \\
+    \hline
+  \end{tabular}
+  \legend{Nota: razão é o limiar do autor dividido pelo da regra. $^{\dagger}$Litologia identificada pelo autor como movimentada. Fonte: elaborado pelo autor.}
+\end{table}

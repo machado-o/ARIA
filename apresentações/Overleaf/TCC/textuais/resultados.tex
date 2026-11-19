@@ -1,9 +1,10 @@
 \chapter[RESULTADOS]{RESULTADOS}
 
-Este capítulo reporta os resultados obtidos até o momento. Ele começa pelas verificações que sustentam o método descrito no Capítulo 3 --- e que são pré-requisito para que os experimentos façam sentido --- e prossegue para os resultados dos experimentos propriamente ditos.
+Este capítulo começa pelas verificações que sustentam o método descrito no Capítulo 3 --- e que são pré-requisito para que os experimentos façam sentido ---, apresenta o resultado do classificador e da calibração da faixa A, e prossegue para os experimentos propriamente ditos.
 
 % =====================================================================
-% TODO (estrutura): este capítulo está completo apenas nas seções 4.1 a 4.4.
+% TODO (estrutura): este capítulo está completo apenas nas seções 4.1 a 4.5
+% (a 4.5, Calibração da Faixa A, entrou em 19/11/2026).
 % As seções do Experimento 1 e do Experimento 2 aguardam execução. Ver
 % docs/roadmap.md no repositório para o estado corrente.
 % =====================================================================
@@ -35,7 +36,7 @@ As 32 comparações resultaram idênticas em todas as três grandezas. Não houv
 
 O resultado tem duas consequências. A primeira é prática: o ciclo de calibração deixa de custar minutos de GPU por iteração e passa a custar milissegundos, o que é o que viabiliza submeter um mesmo limiar às quatro imagens da litologia simultaneamente. A segunda é metodológica: a varredura fora de linha não introduz aproximação alguma, de modo que nenhum resultado obtido por ela precisa ser qualificado como estimativa.
 
-Ressalva necessária: a equivalência é propriedade da \textbf{implementação} verificada, não do método em abstrato. Uma versão futura da biblioteca que aplicasse o limiar antes da supressão de não-máximos, ou que o incorporasse ao próprio modelo, invalidaria a conclusão. Por isso o procedimento de verificação integra o repositório e deve ser reexecutado a cada atualização de versão.
+A equivalência é propriedade da \textbf{implementação} verificada, e por isso o procedimento de verificação integra o repositório: a cada atualização de versão da biblioteca, ele é reexecutado e o resultado é registrado junto da versão. Foi o que se fez com as duas versões usadas no trabalho (Quadro \ref{quad:ambiente}), ambas com as 32 comparações idênticas.
 
 \section{Caracterização dos Escores do Professor}
 
@@ -72,7 +73,7 @@ A implicação é que o efeito é desprezível quando se avalia a cobertura agre
 
 Adotou-se, por isso, a separação: \textbf{cada contorno da máscara torna-se um polígono próprio}, sem trajeto de ligação, tanto no material de calibração quanto nos arquivos de anotação. A alternativa de reter apenas o maior contorno foi descartada porque elimina área efetivamente marcada pelo Professor. A separação aumenta o número de polígonos por imagem, mas não altera a unidade sobre a qual a regra de limiar opera: o escore pertence à detecção, e os contornos de uma mesma detecção entram e saem juntos na varredura. Uma marcação, na curva da Seção \ref{sec:regra}, continua sendo uma detecção do Professor. Verificou-se, nas litologias calibradas à época, que as contagens por imagem no limiar adotado e o limiar produzido pela regra permaneceram idênticos após a mudança.
 
-Duas questões permanecem em aberto no pós-processamento: a área mínima abaixo da qual um fragmento é descartado, e se a curva da regra deveria contar contornos em vez de detecções. Esta segunda questão só surgiu depois de a forma da regra ter sido fixada; caso seja adotada, os resultados serão reportados nas duas versões, com a indicação de que a segunda foi definida posteriormente.
+A separação desloca para o pós-processamento do conjunto de treinamento do Aluno a escolha de uma área mínima, abaixo da qual um fragmento isolado é descartado.
 
 \section{Classificador de Litologias}
 \label{sec:res_classificador}
@@ -85,13 +86,67 @@ Para isolar o efeito do particionamento, o mesmo modelo foi treinado com a mesma
 
 Os dois números descrevem cenários de uso distintos, e nenhum é tratado como erro do outro. O de 99,92\% corresponde a classificar chapas de um bloco já visto, situação comum na indústria, em que um mesmo bloco gera dezenas de chapas. O de 96,72\% aproxima-se de classificar chapas de um bloco novo. O valor do DeepStoneAI não é diretamente comparável a nenhum dos dois, por adotar particionamento próprio. O modelo empregado no \textit{pipeline} é o treinado sobre as partições originais.
 
+\section{Calibração da Faixa A}
+\label{sec:res_calibracao}
+
+As onze litologias da faixa A foram calibradas pelo protocolo da Seção \ref{sec:protocolo}. Foram selecionadas manualmente 44 imagens da partição de treinamento, quatro por litologia, e cada litologia recebeu um registro de calibração com o limiar produzido pela regra, o limiar adotado pelo autor e o critério escrito. A forma da regra foi fixada antes da primeira calibração e não foi alterada depois.
+
+A etapa de descoberta admitiu de duas a seis sondas por litologia, em um total de 45 pares de litologia e sonda. As sondas mais admitidas foram \textit{crack} e \textit{Dark patches}, em nove litologias cada, e a menos admitida foi \textit{vein}, em três. A sonda \textit{white stain}, registrada durante a calibração da faixa, pôde ser avaliada nas sete litologias calibradas depois do registro e foi admitida em seis delas; nas outras quatro, permanece candidata não avaliada, como prevê a Seção \ref{sec:sondas}.
+
+\subsection{Divergência entre a regra e o autor}
+
+Em nenhum dos 45 pares o autor adotou o limiar produzido pela regra, e em todos adotou um valor maior. A razão entre o limiar adotado e o da regra teve mediana de 3,3, com quartis de 2,1 e 4,7, e variou de 1,08, na sonda \textit{crack} da \textit{shadow\_white}, a 17,9, na sonda \textit{white stain} da \textit{white\_olympus}. Em 34 dos 45 pares, o limiar adotado foi ao menos o dobro do da regra. A Tabela \ref{tab:calib_faixa_a} resume os valores por litologia, e o Apêndice \ref{apendice:limiares} lista os dois limiares de cada par.
+
+\begin{table}[ht]
+  \caption{Calibração da faixa A: sondas admitidas, razão entre o limiar do autor e o da regra, e marcações no limiar do autor.}
+  \label{tab:calib_faixa_a}
+  \centering
+  \small
+  \begin{tabular}{lcccc}
+    \hline
+    \bfseries Litologia & \bfseries Sondas & \bfseries Razão & \bfseries Mediana & \bfseries Marcações (S / T / F) \\
+    \hline
+    \textit{golden\_storm}$^{\dagger}$        & 5 & 1,66--4,31  & 3,30 & 18 / 16 / 9  \\
+    \textit{ipanema\_beige}                   & 4 & 3,58--4,97  & 4,60 & 12 / 0 / 4   \\
+    \textit{itaunas\_white}                   & 5 & 1,68--12,32 & 2,88 & 15 / 15 / 7  \\
+    \textit{nevada\_black}                    & 2 & 2,58--13,13 & 7,85 & 8 / 8 / 12   \\
+    \textit{san\_francisco\_green}$^{\dagger}$ & 2 & 2,69--3,00  & 2,85 & 14 / 28 / 9  \\
+    \textit{santa\_cecilia}                   & 5 & 1,17--5,69  & 4,78 & 4 / 18 / 46  \\
+    \textit{shadow\_white}$^{\dagger}$        & 5 & 1,08--13,73 & 1,71 & 48 / 19 / 24 \\
+    \textit{siena\_white}                     & 3 & 1,69--2,31  & 1,94 & 30 / 23 / 22 \\
+    \textit{ubatuba\_green}                   & 5 & 1,36--4,89  & 4,15 & 28 / 12 / 19 \\
+    \textit{white\_mirage}$^{\dagger}$        & 6 & 1,99--3,63  & 3,39 & 11 / 26 / 9  \\
+    \textit{white\_olympus}                   & 3 & 2,36--17,93 & 3,06 & 25 / 0 / 33  \\
+    \hline
+    Faixa A                                   & 45 & 1,08--17,93 & 3,30 & 4--48 / 0--28 / 4--46 \\
+    \hline
+  \end{tabular}
+  \legend{Nota: razão é o limiar do autor dividido pelo da regra, por sonda, com seu mínimo, máximo e mediana na litologia. Marcações são as detecções somadas sobre as sondas admitidas, no limiar do autor, nas imagens sutil (S), típica (T) e forte (F). $^{\dagger}$Litologia identificada pelo autor como movimentada (Seção \ref{sec:movimentadas}). Fonte: elaborado pelo autor.}
+\end{table}
+
+A diferença pesa na marcação. Nas imagens típica e forte, somadas as sondas admitidas, o limiar da regra produziu de 7 a 228 marcações por imagem; o do autor, de 0 a 46. Em duas litologias, \textit{ipanema\_beige} e \textit{white\_olympus}, o autor deixou a imagem típica sem marcação alguma.
+
+Os critérios escritos indicam de onde vem a divergência. Em sete das onze litologias, o critério gira em torno de uma mesma condição: subir o limiar até que a imagem típica --- em uma delas, a sutil --- deixe de marcar a matriz limpa da rocha. Na \textit{itaunas\_white}, por exemplo, o registro diz: ``Subi até não marcar a rocha limpa, tudo que devia marcar foi marcado''. A regra não tem acesso a essa condição. O joelho depende apenas da forma da curva de contagem, e não do conteúdo do que é marcado. A divergência para cima é coerente com um critério de precisão que a curva não enxerga, e com a direção que a literatura de pseudo-rotulagem recomenda (Seção \ref{sec:ruidosos}).
+
+O resultado é o caso previsto na Seção \ref{sec:regra}, em que a curva engana, agora com uma regularidade que uma única litologia não permitiria afirmar: a divergência foi sistemática e de mesmo sinal. É também exatamente o que o protocolo foi desenhado para capturar. Sem o registro dos dois valores, o ajuste do autor seria invisível; com ele, a troca fica escrita --- o critério da \textit{siena\_white}, por exemplo, aceita perder feições fracas da imagem sutil para manter limpa a típica. Qual dos dois limiares marca melhor é a pergunta que o Experimento 1 responde, ao comparar os braços que usam as sondas do autor com o limiar da regra e com o do autor.
+
+\subsection{Litologias movimentadas: o que marcar, e não quanto}
+
+Em quatro dos onze critérios, o autor registrou que as sondas disponíveis não pareciam suficientes para marcar tudo o que pretendia: \textit{golden\_storm}, \textit{san\_francisco\_green}, \textit{white\_mirage} e \textit{white\_olympus}. Na \textit{white\_mirage}, o registro diz: ``Não consegui marcar tudo que queria com essas sondas, mas os limiares foram suficientes para marcar as partes mais evidentes''. A própria sonda \textit{white stain} surgiu de uma necessidade desse tipo: foi registrada porque marcava manchas que nenhuma das sondas existentes alcançava.
+
+Separar as litologias movimentadas (Seção \ref{sec:movimentadas}) das demais mostra onde está a dificuldade. A razão entre o limiar do autor e o da regra não distingue os dois grupos: sua mediana foi de 3,15 nos 18 pares das quatro litologias movimentadas e de 3,58 nos 27 pares das sete demais. Os critérios escritos, sim: três das quatro litologias movimentadas registraram sondas insuficientes, contra uma das sete demais. Nas rochas cujo desenho natural se confunde com defeito, a dificuldade não esteve em decidir \textit{quanto} marcar --- o ajuste do limiar seguiu o mesmo padrão das outras ---, mas \textit{o que} marcar. É uma questão de vocabulário, e não de limiar: ajustar o corte não faz uma sonda marcar o que ela não reconhece. O resultado aponta a ampliação do vocabulário de sondas como a alavanca seguinte para essas litologias (Seção \ref{sec:futuros}).
+
 \section{Experimento 1 --- Critério por Litologia \textit{versus} Critério Único}
 
-% TODO: executar e redigir. Depende da calibração das litologias da faixa A e da
-% anotação do conjunto de referência (Seção \ref{sec:referencia}).
+% TODO: executar e redigir. Depende da anotação do conjunto de referência
+% (Seção \ref{sec:referencia}), que passou a ser CONDICIONAL em 06/11/2026
+% (emenda da D7): sem ele, a avaliação fica na preferência pareada e a falta de
+% métrica quantitativa entra como limitação declarada. A calibração da faixa A
+% está pronta e reportada na Seção \ref{sec:res_calibracao}, inclusive a
+% concordância entre a regra e o autor, que saiu deste TODO.
 % Reportar, pelos quatro braços e por litologia: IoU, precisão, recall e taxa de
 % falso positivo; incluir o par de figuras "critério único x critério calibrado"
-% sobre a mesma chapa; e reportar a taxa de concordância entre a regra e o autor.
+% sobre a mesma chapa.
 % Figuras de exemplo (decisão do Henrique, 10/10/2026): o lado calibrado usa o
 % LIMIAR DE TRABALHO (braço "calibrado pelo autor"), a não ser que o joelho da
 % regra produza figura melhor. A legenda diz qual dos dois foi usado.

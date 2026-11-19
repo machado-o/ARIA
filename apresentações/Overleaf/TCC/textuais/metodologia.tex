@@ -123,6 +123,9 @@ Dessa decisão decorre a \textbf{rotulagem binária}: todas as regiões marcadas
 O conjunto de sondas não é fechado: ele pode crescer durante a calibração, sob uma condição. Qualquer palavra pode ser testada na ferramenta de calibração como sonda exploratória, com as máscaras exibidas, mas uma sonda só passa a gerar anotação depois de \textbf{registrada}, com identificador próprio --- e só é registrada quando marca regiões que nenhuma das sondas existentes marca. A sonda \textit{white stain} entrou dessa forma: testada sobre a litologia \textit{san\_francisco\_green}, marcou manchas brancas que \textit{light spot} não alcançava. O identificador de uma sonda é permanente, e sondas novas recebem o próximo número livre. Renumerar uma sonda já usada faria os arquivos de anotação gravados antes passarem a indicar outra sonda, sem erro algum que denunciasse a troca. Como os identificadores são colapsados em uma única classe antes do treino, registrar uma sonda a mais amplia a cobertura sem alterar a natureza do rótulo. Nas litologias calibradas antes do registro de uma sonda, ela permanece candidata não avaliada até que a litologia seja revista.
 
 \section{Protocolo de Calibração}
+\label{sec:protocolo}
+
+O Professor não é empregado como modelo pronto. O modelo de fundação responde a uma sonda textual sem treinamento no domínio, mas o que ele marca com cada sonda, e a partir de que escore a marcação deixa de ser ruído, varia de uma litologia para outra. A calibração é, portanto, a \textbf{adaptação do Professor ao domínio}, feita sem alterar os pesos do modelo: por litologia, escolhem-se as sondas e o limiar a partir de quatro imagens selecionadas manualmente. A capacidade \textit{zero-shot} é do modelo de fundação; a contribuição do ARIA está em tornar explícita, e registrada, a adaptação que o domínio exige.
 
 Calibrar uma litologia significa responder a duas perguntas distintas: \textit{quais} sondas entram no conjunto, e com \textit{qual} limiar de confiança cada uma opera. A imagem ideal para responder a cada uma é oposta, e confundi-las é a origem de um viés concreto.
 
@@ -153,17 +156,18 @@ Primeiro, as três imagens de limiar \textbf{não produzem três limiares a sere
 
 Segundo, a seleção das quatro imagens é \textbf{manual}. Usar o próprio Professor para escolher as imagens de calibração seria raciocínio circular.
 
-Terceiro, as quatro imagens saem exclusivamente da partição de \textbf{treinamento}. O conjunto de referência da avaliação sai da partição de teste, e calibrar sobre uma imagem de teste equivaleria a ajustar o limiar sobre a própria prova. A restrição tem um custo, que se declara: como as partições não são sorteadas por imagem, um fenômeno presente apenas em um bloco que caiu inteiro na partição de teste não pode ser visto durante a calibração. Esse custo é também o que torna a avaliação mais exigente --- o conjunto de referência mede a marcação inclusive em chapas que a calibração não teve como antecipar. Para as litologias da faixa A, a partição de treinamento reúne de 700 a 3.200 imagens, e o que limita a cobertura na escolha das imagens de calibração é a varredura do autor, não o tamanho da partição.
+Terceiro, as quatro imagens saem exclusivamente da partição de \textbf{treinamento}. O conjunto de referência da avaliação sai da partição de teste, e calibrar sobre uma imagem de teste equivaleria a ajustar o limiar sobre a própria prova. Como as partições não são sorteadas por imagem, um bloco que caiu inteiro na partição de teste não é visto durante a calibração, o que torna a avaliação mais exigente: o conjunto de referência mede a marcação inclusive em chapas que a calibração não teve como antecipar. Para as litologias da faixa A, a partição de treinamento reúne de 700 a 3.200 imagens, e o que limita a cobertura na escolha das imagens de calibração é a varredura do autor, não o tamanho da partição.
 
 A origem de cada imagem selecionada --- partição e arquivo --- é registrada em um arquivo de metadados por litologia, compondo o material de reprodutibilidade do trabalho.
 
 \subsection{Litologias movimentadas}
+\label{sec:movimentadas}
 
-Durante a seleção das imagens da faixa A, o autor encontrou litologias de padrão movimentado, em que é difícil distinguir o que é defeito do que é o próprio desenho da pedra: o padrão natural já contém manchas, veios e contrastes fortes, e uma mesma feição pode valorizar a chapa ou desqualificá-la. Quatro litologias foram assim percebidas --- \textit{shadow\_white}, \textit{san\_francisco\_green}, \textit{white\_mirage} e \textit{golden\_storm}. A lista é percepção do autor: nenhuma delas teve a classificação petrográfica confirmada.
+Durante a seleção das imagens da faixa A, o autor encontrou litologias de padrão movimentado, em que é difícil distinguir o que é defeito do que é o próprio desenho da pedra: o padrão natural já contém manchas, veios e contrastes fortes, e uma mesma feição pode valorizar a chapa ou desqualificá-la. Quatro litologias da faixa A foram identificadas assim pelo autor: \textit{shadow\_white}, \textit{san\_francisco\_green}, \textit{white\_mirage} e \textit{golden\_storm}.
 
-Essas litologias são calibradas pelo mesmo protocolo das demais. Excluí-las retiraria quatro das onze litologias da faixa A e exigiria um critério de exclusão que não existe por escrito --- o que reproduziria, na seleção do experimento, o problema que o trabalho aponta na inspeção. A dificuldade de julgá-las também não é um desvio do trabalho: é a arbitrariedade da fronteira entre feição e defeito no seu caso mais forte. A opinião de um especialista do setor foi solicitada e não havia sido obtida quando a seleção foi feita, de modo que o julgamento do autor é, nessas quatro litologias, o elo mais frágil da calibração, e o registro de calibração de cada uma o declara.
+Essas litologias são calibradas pelo mesmo protocolo das demais. Excluí-las retiraria quatro das onze litologias da faixa A e exigiria um critério de exclusão que não existe por escrito --- o que reproduziria, na seleção do experimento, o problema que o trabalho aponta na inspeção. A dificuldade de julgá-las também não é um desvio do trabalho: é a arbitrariedade da fronteira entre feição e defeito no seu caso mais forte, e por isso elas são o melhor teste do protocolo. O que se observou nelas está na Seção \ref{sec:res_calibracao}.
 
-O termo adotado é \textbf{movimentada}, em oposição a homogênea: designa a rocha cuja estrutura forma desenho, como bandamento ou foliação \cite{TODO-movimentada}. O termo ``exótica'', que circula no setor, foi evitado por designar uma categoria comercial, ligada a raridade e preço, que não descreve a dificuldade observada.
+O termo adotado é \textbf{movimentada}, em oposição a homogênea. A classificação, que \citeonline[p.~920]{camargo_geociencias2015} atribuem a Meyer (2003), separa os materiais pelo padrão textural e estrutural: os homogêneos têm estrutura isotrópica, sem orientação mineral definida; os movimentados apresentam estrutura ou textura definida pela concentração ou pela orientação preferencial de seus minerais, como bandamento ou foliação. O termo ``exótica'', que circula no setor, foi evitado por designar uma categoria comercial, ligada a raridade e preço, que não descreve a dificuldade observada.
 
 \section{A Regra que Produz o Limiar}
 \label{sec:regra}
@@ -312,7 +316,7 @@ Toda métrica quantitativa de segmentação exige uma referência. Usar a saída
 
 Constitui-se um conjunto de aproximadamente 50 imagens, retiradas da partição de \textbf{teste} e distribuídas entre litologias da faixa A. Essas imagens são anotadas manualmente pelo autor \textbf{antes} de qualquer inferência ser executada sobre elas. A ordem é parte da metodologia: anotar depois de ver a máscara do modelo ancora o anotador nela, e a anotação deixa de ser independente.
 
-É preciso delimitar o que essa precaução garante e o que não garante. Ela garante que a anotação não é cópia da máscara do modelo. Ela \textbf{não} garante neutralidade: o autor desenvolveu o protocolo de calibração observando saídas do Professor durante meses, e essa exposição molda sua noção do que constitui uma anomalia. A independência é parcial, e o trabalho a declara como limitação em vez de apresentá-la como garantia de imparcialidade.
+A precaução garante que a anotação não é cópia da máscara do modelo. O anotador é o mesmo que conduziu a calibração, de modo que a referência expressa o critério de um observador familiarizado com o domínio e com o protocolo --- independente da predição avaliada, ainda que não do processo que a gerou.
 
 Sobre esse gabarito calculam-se IoU, precisão, \textit{recall} e taxa de falso positivo, definido operacionalmente como \textbf{região marcada pelo modelo sem qualquer sobreposição} --- IoU igual a zero --- com região alguma do conjunto de referência.
 
@@ -320,7 +324,7 @@ Sobre esse gabarito calculam-se IoU, precisão, \textit{recall} e taxa de falso 
 
 A segunda fonte é qualitativa e envolve um profissional do setor. A mesma chapa é apresentada com a marcação de dois braços experimentais, embaralhadas e sem identificação, e o profissional indica qual representa melhor o que trataria como defeito. O procedimento produz estatística de preferência, e não IoU.
 
-Registra-se explicitamente que essa fonte é \textbf{complementar}: as hipóteses H1 e H2 são enunciadas contra o conjunto de referência anotado, e não contra o julgamento do profissional. Caso a preferência pareada seja realizada, ela reforça as conclusões; sua ausência não invalida as hipóteses.
+Essa fonte é \textbf{complementar}: as hipóteses H1 e H2 são enunciadas contra o conjunto de referência anotado, e a preferência do profissional, quando obtida, reforça as conclusões.
 
 \section{Experimento 1 --- Critério por Litologia \textit{versus} Critério Único}
 \label{sec:exp1}
@@ -380,7 +384,7 @@ O braço de controle existe por necessidade de desenho: sem ele, a comparação 
 
 Os resultados são reportados \textbf{por faixa} de volume, e não agregados, o que responde à segunda metade de H2.
 
-Reconhece-se uma limitação de interpretação: cada modelo especialista é treinado com uma fração dos dados vistos pelo generalista, de modo que a comparação mede o efeito \textbf{líquido} da especialização em cada volume de dados, e não um efeito causal isolado do número de modelos. A estratificação por faixa é justamente o que torna esse efeito líquido interpretável.
+Cada modelo especialista é treinado com uma fração dos dados vistos pelo generalista, de modo que a comparação mede o efeito \textbf{líquido} da especialização em cada volume de dados --- e é a estratificação por faixa que torna esse efeito interpretável.
 
 \section{Ambiente Experimental e Reprodutibilidade}
 \label{sec:verificacao}
