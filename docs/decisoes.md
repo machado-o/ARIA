@@ -87,6 +87,10 @@ código (a sonda `vein` está ativa em todas as configurações) e que fica **de
   > aberto. Prometer "especialista" na hipótese e medir com o gabarito do autor era um flanco
   > gratuito: a hipótese passa a enunciar exatamente o que é medido. Se o especialista aparecer,
   > ele **reforça** o resultado; ele não é mais requisito para a H1 existir.
+  > **Reescrita em 2026-11-19**, com a auditoria cega (emenda da **D7**): um critério de
+  > marcação **parametrizado por litologia** produz marcações mais alinhadas ao **julgamento
+  > humano**, medido em auditoria cega (precisão e recall relativo), do que um critério **único e
+  > global**.
 - **H2 (Experimento 2 — D6):** modelos Alunos **especialistas** (um por litologia) alinham-se
   melhor ao julgamento humano do que um único Aluno **generalista** — e esse ganho é **função do
   volume de dados** disponível por litologia.
@@ -287,6 +291,30 @@ acerto, e torna a comparação entre braços sem sentido (cada braço teria um g
 > sem esperar por ele. **O que não muda:** o conjunto-ouro, se vier, sai do `test/`. Os treinos
 > usam só `train/` e `val/`, e nada roda sobre o `test/` antes da anotação. Assim a opção de
 > fazê-lo continua aberta.
+
+> **Emenda de 19/11/2026 (Henrique): o Experimento 1 é avaliado por auditoria cega, no lugar do
+> conjunto-ouro.** Ninguém desenha polígono. Um programa mostra uma marcação por vez, sorteada,
+> sem dizer de que braço veio, e o avaliador responde *sim / não / não sei* à pergunta "você
+> marcaria esta região como defeito?". Como os quatro braços da **D5** são filtros do mesmo cache
+> (**D18**), um julgamento por detecção serve a todos os braços que a contêm.
+>
+> - **Avaliadores:** uma estudante de Engenharia de Minas, sem contato com a calibração, é a
+>   referência da H1. O autor julga **a mesma amostra, separadamente** (cada um na sua tela, sem
+>   ver nem discutir a resposta do outro), e a concordância entre os dois (kappa de Cohen) mede a
+>   arbitrariedade que a **D3** afirma.
+> - **O que mede:** a **precisão** de cada braço e o **recall relativo** ao conjunto das
+>   marcações de todos os braços (o *pooling* usado em avaliação de recuperação de informação). O
+>   que nenhum braço marcou fica fora do denominador de todos, então a comparação entre braços é
+>   justa. **Não mede** o recall absoluto nem a qualidade da borda (IoU).
+> - **Falso positivo** passa a ser a marcação julgada "não". A definição por IoU = 0 só valia com
+>   o conjunto-ouro.
+> - **Amostra:** 3 chapas do `test/` por litologia calibrada, sorteadas com semente fixa. As
+>   detecções são sorteadas por estrato (o padrão de pertencimento aos braços), com pesos na
+>   análise, e a ordem é intercalada para que qualquer começo da lista seja amostra válida: a
+>   avaliadora pode parar onde quiser.
+> - **Por que assim:** o conjunto-ouro não tinha prazo para sair (anotar polígono de trinca fina
+>   à mão é lento), e a auditoria responde a pergunta que a calibração deixou aberta, regra × autor,
+>   em uma ou duas horas de cliques.
 
 ---
 

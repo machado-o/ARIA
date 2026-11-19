@@ -21,14 +21,23 @@
 > (`diretrizes-escrita.md` §2.5). **Nada foi compilado.** Dar commit e push **antes** de
 > editar no Overleaf ou no outro PC.
 >
-> **O que trava os resultados é a avaliação do Experimento 1.** Sem uma referência, nem a H1
-> nem a H2 têm número, e treinar os Alunos sem ela mede só a fidelidade da cópia (**D7**). A
-> proposta de 19/11, ainda **não decidida**: trocar o conjunto-ouro por uma **auditoria cega
-> por amostragem** (o Henrique julga detecções sorteadas, uma por vez, sem saber de que braço
-> vieram; um clique por detecção, sem desenhar polígono). Como os quatro braços são filtros
-> aninhados do mesmo cache (**D18**), um julgamento por detecção serve a todos. Mede precisão
-> por braço; *recall* fica fora. Muda a **D7** e a redação da H1. E declarar o Experimento 2
-> como trabalho futuro, o que muda a **D6** e a H2.
+> **Auditoria cega do Experimento 1 — pronta para julgar (19/11/2026, emenda da D7).** O pacote
+> `AI/SAM/auditoria/pacote_aria-auditoria-20261119.zip` (16,8 MB, só nesta máquina) tem 420
+> marcações de 33 chapas do `test/`, 60 por estrato. Próximos passos:
+>
+> 1. [ ] Mandar o `.zip` para a avaliadora (estudante de Engenharia de Minas). Ela extrai, abre o
+>    `index.html` no computador, julga quantas conseguir e devolve o `.json` exportado.
+> 2. [ ] O Henrique julga a mesma amostra, **separado**: cada um na sua tela, sem ver nem
+>    comentar a resposta do outro. Ele não abre `itens.json` nem `limiares.json` antes.
+> 3. [ ] Os `.json` vão para `AI/SAM/auditoria/respostas/`; rodar `auditoria_analisar.py`.
+> 4. [ ] Escrever o resultado na seção do Experimento 1 (o TODO está lá), mais a figura único ×
+>    calibrado sobre uma chapa da amostra.
+> 5. [ ] Nome completo da avaliadora para os agradecimentos (pedido do Henrique).
+>
+> O texto do TCC já descreve a auditoria (metodologia, H1, objetivos, escopo) e traz o que não
+> depende dos julgamentos: volume de marcações por braço e a reprodutibilidade da regra entre as
+> duas máquinas. **Ainda em aberto:** declarar o Experimento 2 como trabalho futuro (muda a
+> **D6** e a H2).
 >
 > **Prazos (informados em 19/11, "pelo que fiquei sabendo"):** defesa para a banca **até
 > dezembro**; publicação **até fevereiro de 2027**. Confirmar com o Rafael. O 01/12 de 06/11

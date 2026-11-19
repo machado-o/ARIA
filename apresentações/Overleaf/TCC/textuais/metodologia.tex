@@ -4,7 +4,7 @@ Este capítulo descreve o conjunto de dados, a arquitetura do \textit{pipeline},
 
 \section{Caracterização da Pesquisa}
 
-O trabalho classifica-se como pesquisa aplicada, de natureza experimental e abordagem predominantemente quantitativa. É aplicada porque endereça um problema concreto da indústria de rochas ornamentais. É experimental porque manipula variáveis controladas --- o escopo sobre o qual a regra de calibração é aplicada e a quantidade de modelos treinados --- e observa seu efeito sobre métricas de sobreposição com uma referência anotada.
+O trabalho classifica-se como pesquisa aplicada, de natureza experimental e abordagem predominantemente quantitativa. É aplicada porque endereça um problema concreto da indústria de rochas ornamentais. É experimental porque manipula variáveis controladas --- o escopo sobre o qual a regra de calibração é aplicada e a quantidade de modelos treinados --- e observa seu efeito sobre a precisão e a cobertura das marcações, julgadas por avaliadores humanos.
 
 \section{Conjunto de Dados}
 
@@ -87,7 +87,7 @@ O classificador do primeiro estágio é uma \textbf{reprodução} do modelo Xcep
   \legend{Fonte: elaborado pelo autor.}
 \end{quadro}
 
-A troca de arcabouço é de ordem prática. A alteração do particionamento é metodológica: com as partições originais, o classificador nunca é treinado sobre as imagens de teste das quais sai o conjunto de referência (Seção \ref{sec:referencia}). A correção da normalização ajusta a entrada à escala para a qual os pesos pré-treinados foram produzidos. A fidelidade da reprodução foi conferida no código, inclusive pela contagem de parâmetros treináveis na fase de ajuste fino, idêntica à do modelo original.
+A troca de arcabouço é de ordem prática. A alteração do particionamento é metodológica: com as partições originais, o classificador nunca é treinado sobre as imagens de teste das quais saem as chapas da avaliação (Seção \ref{sec:referencia}). A correção da normalização ajusta a entrada à escala para a qual os pesos pré-treinados foram produzidos. A fidelidade da reprodução foi conferida no código, inclusive pela contagem de parâmetros treináveis na fase de ajuste fino, idêntica à do modelo original.
 
 O classificador é avaliado uma única vez sobre a partição de teste, ao final do treinamento, por acurácia, acurácia balanceada e F1 macro.
 
@@ -156,7 +156,7 @@ Primeiro, as três imagens de limiar \textbf{não produzem três limiares a sere
 
 Segundo, a seleção das quatro imagens é \textbf{manual}. Usar o próprio Professor para escolher as imagens de calibração seria raciocínio circular.
 
-Terceiro, as quatro imagens saem exclusivamente da partição de \textbf{treinamento}. O conjunto de referência da avaliação sai da partição de teste, e calibrar sobre uma imagem de teste equivaleria a ajustar o limiar sobre a própria prova. Como as partições não são sorteadas por imagem, um bloco que caiu inteiro na partição de teste não é visto durante a calibração, o que torna a avaliação mais exigente: o conjunto de referência mede a marcação inclusive em chapas que a calibração não teve como antecipar. Para as litologias da faixa A, a partição de treinamento reúne de 700 a 3.200 imagens, e o que limita a cobertura na escolha das imagens de calibração é a varredura do autor, não o tamanho da partição.
+Terceiro, as quatro imagens saem exclusivamente da partição de \textbf{treinamento}. As chapas da avaliação saem da partição de teste, e calibrar sobre uma imagem de teste equivaleria a ajustar o limiar sobre a própria prova. Como as partições não são sorteadas por imagem, um bloco que caiu inteiro na partição de teste não é visto durante a calibração, o que torna a avaliação mais exigente: ela mede a marcação inclusive em chapas que a calibração não teve como antecipar. Para as litologias da faixa A, a partição de treinamento reúne de 700 a 3.200 imagens, e o que limita a cobertura na escolha das imagens de calibração é a varredura do autor, não o tamanho da partição.
 
 A origem de cada imagem selecionada --- partição e arquivo --- é registrada em um arquivo de metadados por litologia, compondo o material de reprodutibilidade do trabalho.
 
@@ -206,7 +206,7 @@ Formalmente, seja $V = \{\text{sutil}, \text{típica}, \text{forte}\}$ o conjunt
   \label{eq:joelho}
 \end{equation}
 
-A forma da regra foi escolhida entre duas alternativas. A outra fixaria o limiar como o maior valor que ainda marca uma fração mínima das feições anotadas nas imagens de limiar. Seria uma regra mais próxima do objetivo final, por medir acerto em vez de forma de curva, mas exigiria anotar manualmente as três imagens de limiar de cada litologia --- 135 imagens, quase o triplo do conjunto de referência inteiro (Seção \ref{sec:referencia}) --- e ainda introduziria um parâmetro livre, a fração mínima. O joelho dispensa anotação e não tem parâmetro a fixar. Sua adequação é verificada sem custo adicional, pelo mesmo conjunto de referência que avalia os experimentos.
+A forma da regra foi escolhida entre duas alternativas. A outra fixaria o limiar como o maior valor que ainda marca uma fração mínima das feições anotadas nas imagens de limiar. Seria uma regra mais próxima do objetivo final, por medir acerto em vez de forma de curva, mas exigiria anotar manualmente as três imagens de limiar de cada litologia --- 135 imagens com polígonos desenhados à mão --- e ainda introduziria um parâmetro livre, a fração mínima. O joelho dispensa anotação e não tem parâmetro a fixar. Sua adequação é verificada sem custo adicional, pela mesma auditoria cega que avalia o Experimento 1 (Seção \ref{sec:referencia}).
 
 Três aspectos da regra são fixados deliberadamente. A imagem de \textit{descoberta} \textbf{não} entra no cálculo: escolhida por ser a mais rica em feições, ela puxaria o limiar para cima, reintroduzindo o viés de seleção por visibilidade que o protocolo existe para evitar. O eixo do limiar é tomado em escala \textbf{logarítmica}, porque os escores concentram-se na década baixa --- medidos entre 0,011 e 0,770 em uma litologia de referência, com mediana entre 0,040 e 0,080 --- e, em escala linear, o joelho recairia sistematicamente sobre o primeiro ponto da curva. Por fim, a regra \textbf{não possui parâmetro livre}: não há constante a ser fixada por inspeção, o que elimina a possibilidade de ajustá-la para favorecer um resultado.
 
@@ -307,24 +307,47 @@ O salvamento produz o registro de calibração da litologia, um arquivo de texto
 
 Cada campo responde a uma pergunta que um auditor faria. O critério diz por que o limiar é aquele. Os dois limiares e a divergência dizem quanto do valor veio da regra e quanto do autor. As contagens por imagem permitem conferir o efeito do limiar sem reexecutar nada. O piso e a versão da biblioteca dizem sob que condições a varredura fora de linha foi exata. É esse arquivo, e não o modelo treinado, que materializa a contribuição do trabalho: o critério de marcação de uma litologia, escrito em um lugar onde pode ser lido, contestado e versionado.
 
-\section{Referência de Avaliação}
+\section{Avaliação por Auditoria Cega}
 \label{sec:referencia}
 
-Toda métrica quantitativa de segmentação exige uma referência. Usar a saída do próprio Professor como referência mediria fidelidade de cópia, não acerto, e tornaria a comparação entre braços experimentais destituída de sentido --- cada braço teria um gabarito diferente. Adotam-se, portanto, duas fontes de referência complementares.
+Toda métrica de acerto exige uma referência externa ao modelo. Usar a saída do próprio Professor como referência mediria fidelidade de cópia, e não acerto, e tornaria sem sentido a comparação entre configurações --- cada uma teria um gabarito diferente. A referência adotada é o \textbf{julgamento humano}, obtido por auditoria cega das marcações.
 
-\subsection{Conjunto de referência anotado}
+\subsection{Procedimento}
 
-Constitui-se um conjunto de aproximadamente 50 imagens, retiradas da partição de \textbf{teste} e distribuídas entre litologias da faixa A. Essas imagens são anotadas manualmente pelo autor \textbf{antes} de qualquer inferência ser executada sobre elas. A ordem é parte da metodologia: anotar depois de ver a máscara do modelo ancora o anotador nela, e a anotação deixa de ser independente.
+A amostra de avaliação reúne três chapas por litologia da faixa A, sorteadas com semente fixa da partição de \textbf{teste}: 33 chapas que nenhuma etapa da calibração viu. O Professor é executado uma única vez sobre cada uma, com todas as sondas e o limiar no piso, e os quatro braços do Experimento 1 (Seção \ref{sec:exp1}) são aplicados como filtros desse material. O \textbf{conjunto reunido} é formado por toda detecção que ao menos um braço marcaria.
 
-A precaução garante que a anotação não é cópia da máscara do modelo. O anotador é o mesmo que conduziu a calibração, de modo que a referência expressa o critério de um observador familiarizado com o domínio e com o protocolo --- independente da predição avaliada, ainda que não do processo que a gerou.
+As detecções são apresentadas ao avaliador uma a uma, em um aplicativo desenvolvido para este fim, que exibe a região contornada, ampliada, ao lado da chapa inteira, e faz sempre a mesma pergunta: \textit{numa inspeção de qualidade, você marcaria esta região como defeito?} As respostas possíveis são sim, não e não sei. O aplicativo não informa de que braço, de que sonda ou de que litologia vem cada marcação, nem o seu escore. Como os braços são filtros do mesmo material, uma detecção pertence em geral a vários deles, e o julgamento de cada detecção vale para todos os braços que a contêm --- de modo que a auditoria é cega quanto ao braço por construção.
 
-Sobre esse gabarito calculam-se IoU, precisão, \textit{recall} e taxa de falso positivo, definido operacionalmente como \textbf{região marcada pelo modelo sem qualquer sobreposição} --- IoU igual a zero --- com região alguma do conjunto de referência.
+O conjunto reunido é grande demais para ser julgado por inteiro, e por isso é amostrado. As detecções são agrupadas em \textbf{estratos}, definidos pelo padrão de pertencimento aos quatro braços, e cada estrato contribui com o mesmo número de itens, o que garante julgamentos suficientes também para os braços que marcam pouco. Os itens são apresentados em ordem intercalada entre estratos, de modo que qualquer trecho inicial da lista já constitui uma amostra estratificada, e a avaliação pode ser interrompida e retomada sem perda.
 
-\subsection{Preferência pareada cega}
+\subsection{Métricas}
 
-A segunda fonte é qualitativa e envolve um profissional do setor. A mesma chapa é apresentada com a marcação de dois braços experimentais, embaralhadas e sem identificação, e o profissional indica qual representa melhor o que trataria como defeito. O procedimento produz estatística de preferência, e não IoU.
+Seja $h$ um estrato, $N_h$ o número de detecções do conjunto reunido que ele contém e $\hat{p}_h$ a fração julgada como defeito entre os itens julgados do estrato, desconsideradas as respostas ``não sei''. Para um braço $b$, seja $H_b$ o conjunto dos estratos cujas detecções ele marca. A precisão do braço é a fração de suas marcações julgadas como defeito, estimada com peso proporcional ao tamanho de cada estrato (Equação \ref{eq:precisao}):
 
-Essa fonte é \textbf{complementar}: as hipóteses H1 e H2 são enunciadas contra o conjunto de referência anotado, e a preferência do profissional, quando obtida, reforça as conclusões.
+\begin{equation}
+  P_b = \frac{\sum_{h \in H_b} N_h \, \hat{p}_h}{\sum_{h \in H_b} N_h}
+  \label{eq:precisao}
+\end{equation}
+
+O \textit{recall} absoluto exigiria conhecer todas as anomalias de cada chapa, inclusive as que nenhum braço marcou. Adota-se o \textbf{\textit{recall} relativo} ao conjunto reunido, recurso consolidado na avaliação de sistemas de recuperação de informação, em que se mostra que a ordem relativa entre sistemas avaliados sobre o conjunto reunido de suas respostas é confiável \cite{pooling_zobel1998}. O denominador é o total de acertos dos quatro braços juntos (Equação \ref{eq:recall_rel}):
+
+\begin{equation}
+  R_b = \frac{\sum_{h \in H_b} N_h \, \hat{p}_h}{\sum_{h} N_h \, \hat{p}_h}
+  \label{eq:recall_rel}
+\end{equation}
+
+Uma anomalia que nenhum braço marcou fica fora do denominador de todos eles, de modo que a comparação entre braços permanece justa. Os intervalos de confiança de 95\% são obtidos por reamostragem \textit{bootstrap} dentro de cada estrato \cite{bootstrap_efron1979}, e as diferenças entre braços usam as mesmas reamostragens. Falso positivo, nesta avaliação, é a marcação julgada como não defeito.
+
+\subsection{Avaliadores e concordância}
+
+A avaliação principal é feita por uma estudante de Engenharia de Minas, que não participou da calibração e não conhece a configuração de nenhum braço. O autor julga a mesma amostra, separadamente e sem acesso às respostas dela. A concordância entre os dois é medida pelo coeficiente kappa de Cohen \cite{kappa_cohen1960}, em que $p_o$ é a proporção de itens com a mesma resposta e $p_e$ a proporção esperada ao acaso (Equação \ref{eq:kappa}):
+
+\begin{equation}
+  \kappa = \frac{p_o - p_e}{1 - p_e}
+  \label{eq:kappa}
+\end{equation}
+
+A concordância tem papel próprio no trabalho: ela mede, entre duas pessoas e sobre as mesmas marcações, a arbitrariedade do critério de marcação que o Capítulo 1 descreve.
 
 \section{Experimento 1 --- Critério por Litologia \textit{versus} Critério Único}
 \label{sec:exp1}
@@ -352,13 +375,13 @@ Comparar esse controle diretamente à configuração calibrada, contudo, alterar
   \legend{Fonte: elaborado pelo autor.}
 \end{table}
 
-A comparação entre os dois primeiros braços é o teste de H1. As duas seguintes decompõem o conhecimento de domínio embutido na calibração: quanto do efeito vem de escolher as sondas por litologia e quanto vem do julgamento de quem calibra. A comparação direta entre o braço único e o calibrado pelo autor altera vários fatores de uma vez e pode ser exibida, mas não constitui evidência de H1. Os quatro braços não exigem anotação adicional: pela equivalência demonstrada na Seção \ref{sec:varredura}, o Professor é executado uma única vez com todas as sondas sobre cada imagem do conjunto de referência, e os braços são filtros distintos do mesmo material.
+A comparação entre os dois primeiros braços é o teste de H1. As duas seguintes decompõem o conhecimento de domínio embutido na calibração: quanto do efeito vem de escolher as sondas por litologia e quanto vem do julgamento de quem calibra. A comparação direta entre o braço único e o calibrado pelo autor altera vários fatores de uma vez e pode ser exibida, mas não constitui evidência de H1. Os quatro braços não exigem execução adicional do modelo: pela equivalência demonstrada na Seção \ref{sec:varredura}, o Professor é executado uma única vez com todas as sondas sobre cada chapa da amostra de avaliação, e os braços são filtros distintos do mesmo material.
 
 O braço que isola a seleção de sondas mede o tamanho de uma questão que o desenho não resolve: se uma única imagem de descoberta basta para escolher as sondas de uma litologia. Em litologias cujas feições variam ao longo do bloco, uma chapa distante da escolhida pode apresentar anomalias que nenhuma das sondas admitidas cobre. Se a seleção custar \textit{recall} demais, a alternativa é admitir todas as sondas e calibrar apenas o limiar --- decisão que depende do resultado medido e, por isso, não é antecipada.
 
 Cabe justificar por que o braço único não é definido como a mediana dos limiares calibrados, alternativa aparentemente natural. Se o fosse, o resultado seria quase aritmético: o valor ótimo de cada litologia supera a mediana dos valores ótimos \textbf{nos dados dessa mesma litologia} por construção, o que caracteriza regressão à média e não achado experimental --- além de tornar o controle uma função do tratamento. A regra aplicada ao material reunido é o contrafactual honesto: \textit{e se todas as litologias tivessem sido tratadas como uma só?}, que é precisamente o que H1 pergunta. Esse desenho admite resultado negativo, e é isso que torna a hipótese falseável.
 
-A avaliação de ambos os braços é feita contra o conjunto de referência da Seção \ref{sec:referencia}, reportando-se IoU, precisão, \textit{recall} e taxa de falso positivo, por braço e por litologia.
+Os quatro braços são avaliados pela auditoria cega da Seção \ref{sec:referencia}, reportando-se precisão e \textit{recall} relativo de cada um, para o conjunto das litologias e para os recortes de litologias movimentadas e demais (Seção \ref{sec:movimentadas}).
 
 \section{Experimento 2 --- Especialistas \textit{versus} Generalista}
 

@@ -14,14 +14,14 @@ A visão computacional é uma resposta natural a esse tipo de problema, e o seto
 
 O problema que este trabalho ataca não é a dificuldade técnica de detectar anomalias, e sim a \textbf{arbitrariedade não registrada do critério de marcação}. Não existe uma resposta absolutamente correta a ser descoberta: o que é defeito em uma litologia pode ser exatamente o padrão estético valorizado em outra. Admitir isso muda o que se pode legitimamente prometer. Um sistema automatizado não elimina a arbitrariedade da fronteira; o que ele pode fazer é retirá-la da cabeça do inspetor e colocá-la em um parâmetro inspecionável.
 
-Formula-se, assim, a seguinte pergunta de pesquisa: \textit{é possível materializar o critério de marcação de anomalias em chapas de rochas ornamentais como um conjunto de parâmetros explícito, versionável e específico por litologia --- e esse critério parametrizado produz marcações mais alinhadas a uma referência anotada do que um critério único aplicado a todas as rochas?}
+Formula-se, assim, a seguinte pergunta de pesquisa: \textit{é possível materializar o critério de marcação de anomalias em chapas de rochas ornamentais como um conjunto de parâmetros explícito, versionável e específico por litologia --- e esse critério parametrizado produz marcações mais alinhadas ao julgamento humano do que um critério único aplicado a todas as rochas?}
 
 \section{Hipóteses}
 
 Duas hipóteses orientam o trabalho:
 
 \begin{description}
-  \item[H1] Um critério de marcação parametrizado por litologia produz segmentações mais alinhadas ao critério de referência anotado do que um critério único e global.
+  \item[H1] Um critério de marcação parametrizado por litologia produz marcações mais alinhadas ao julgamento humano, medido em auditoria cega, do que um critério único e global.
   \item[H2] Modelos de segmentação especialistas --- um por litologia --- alinham-se melhor à referência do que um único modelo generalista, e esse ganho é função do volume de dados disponível por litologia.
 \end{description}
 
@@ -31,7 +31,7 @@ A segunda metade de H2 é uma pergunta de pesquisa por direito próprio: \textit
 
 \subsection{Objetivo Geral}
 
-Desenvolver e avaliar o ARIA (Análise e Reconhecimento Inteligente de Anomalias), um \textit{pipeline} hierárquico de visão computacional que materializa o critério de marcação de anomalias superficiais em chapas de rochas ornamentais como um conjunto explícito e versionável de parâmetros por litologia, e verificar se essa parametrização produz marcações mais alinhadas a uma referência anotada do que um critério único global.
+Desenvolver e avaliar o ARIA (Análise e Reconhecimento Inteligente de Anomalias), um \textit{pipeline} hierárquico de visão computacional que materializa o critério de marcação de anomalias superficiais em chapas de rochas ornamentais como um conjunto explícito e versionável de parâmetros por litologia, e verificar se essa parametrização produz marcações mais alinhadas ao julgamento humano do que um critério único global.
 
 \subsection{Objetivos Específicos}
 
@@ -39,7 +39,7 @@ Desenvolver e avaliar o ARIA (Análise e Reconhecimento Inteligente de Anomalias
   \item Selecionar, caracterizar e pré-processar um conjunto de dados público de imagens de chapas polidas de rochas ornamentais, descrevendo sua composição, o desbalanceamento entre litologias e o particionamento adotado.
   \item Definir um protocolo reprodutível de calibração que determine, para cada litologia, quais sondas textuais entram no conjunto e qual limiar de confiança cada uma recebe, de modo que a regra que produz o limiar seja a mesma para todas as litologias.
   \item Implementar o estágio Professor com um modelo de fundação guiado por texto, capaz de gerar polígonos de anomalia sem anotação humana prévia.
-  \item Construir um conjunto de referência anotado independentemente das saídas do modelo, para servir de gabarito quantitativo da avaliação.
+  \item Construir um protocolo de avaliação cega, em que avaliadores humanos julgam as marcações sem saber de que configuração vieram, para servir de referência quantitativa da avaliação.
   \item Avaliar experimentalmente a hipótese H1, comparando o critério parametrizado por litologia ao mesmo critério derivado do conjunto reunido de litologias.
   \item Especificar o desenho experimental que avalia a hipótese H2, treinando modelos Aluno especialistas e generalista estratificados por faixa de volume de dados.
 \end{enumerate}

@@ -137,16 +137,34 @@ Em quatro dos onze critérios, o autor registrou que as sondas disponíveis não
 Separar as litologias movimentadas (Seção \ref{sec:movimentadas}) das demais mostra onde está a dificuldade. A razão entre o limiar do autor e o da regra não distingue os dois grupos: sua mediana foi de 3,15 nos 18 pares das quatro litologias movimentadas e de 3,58 nos 27 pares das sete demais. Os critérios escritos, sim: três das quatro litologias movimentadas registraram sondas insuficientes, contra uma das sete demais. Nas rochas cujo desenho natural se confunde com defeito, a dificuldade não esteve em decidir \textit{quanto} marcar --- o ajuste do limiar seguiu o mesmo padrão das outras ---, mas \textit{o que} marcar. É uma questão de vocabulário, e não de limiar: ajustar o corte não faz uma sonda marcar o que ela não reconhece. O resultado aponta a ampliação do vocabulário de sondas como a alavanca seguinte para essas litologias (Seção \ref{sec:futuros}).
 
 \section{Experimento 1 --- Critério por Litologia \textit{versus} Critério Único}
+\label{sec:res_exp1}
 
-% TODO: executar e redigir. Depende da anotação do conjunto de referência
-% (Seção \ref{sec:referencia}), que passou a ser CONDICIONAL em 06/11/2026
-% (emenda da D7): sem ele, a avaliação fica na preferência pareada e a falta de
-% métrica quantitativa entra como limitação declarada. A calibração da faixa A
-% está pronta e reportada na Seção \ref{sec:res_calibracao}, inclusive a
-% concordância entre a regra e o autor, que saiu deste TODO.
-% Reportar, pelos quatro braços e por litologia: IoU, precisão, recall e taxa de
-% falso positivo; incluir o par de figuras "critério único x critério calibrado"
-% sobre a mesma chapa.
+Os quatro braços foram aplicados às 33 chapas da amostra de avaliação (Seção \ref{sec:referencia}). Os limiares da regra foram recalculados sobre a captura feita na mesma versão da biblioteca usada nessas chapas, em uma máquina diferente da que produziu a calibração. Nos 45 pares de litologia e sonda da calibração, o valor recalculado diferiu do registrado em no máximo 0,0002 em 43 casos, e em 0,0013 e 0,0125 nos outros dois: a regra mostrou-se reproduzível entre equipamentos e versões.
+
+O braço único, aplicado com o limiar obtido sobre as onze litologias reunidas, produziu de longe o maior volume de marcações (Tabela \ref{tab:exp1_volume}). Sobre o material reunido, o joelho das sondas \textit{crack} e \textit{Dark patches} caiu em 0,0071 e 0,0167, próximo ao piso de captura, e as duas respondem por 77\% das marcações desse braço. Tratar as litologias como uma só, portanto, empurra o limiar dessas sondas para perto do piso, o que não aconteceu em nenhuma das onze litologias tomadas uma a uma: nelas, o limiar da regra foi de 0,018 a 0,179 para \textit{crack} e de 0,018 a 0,238 para \textit{Dark patches}. Quanto desse volume corresponde a defeito é o que a auditoria responde.
+
+\begin{table}[ht]
+  \caption{Volume de marcações por braço nas 33 chapas da amostra de avaliação.}
+  \label{tab:exp1_volume}
+  \centering
+  \begin{tabular}{llrr}
+    \hline
+    \bfseries Braço & \bfseries Sondas & \bfseries Marcações & \bfseries Por chapa \\
+    \hline
+    Único                  & Todas                   & 11.964 & 362,5 \\
+    Regra, todas as sondas & Todas                   &  7.289 & 220,9 \\
+    Regra, sondas do autor & Admitidas na descoberta &  3.086 &  93,5 \\
+    Calibrado pelo autor   & Admitidas na descoberta &    474 &  14,4 \\
+    \hline
+  \end{tabular}
+  \legend{Fonte: elaborado pelo autor.}
+\end{table}
+
+% TODO (Claude): quando as respostas da auditoria chegarem (auditoria_analisar.py),
+% reportar aqui precisão e recall relativo por braço, com IC 95%, para todas as
+% litologias e para movimentadas x demais; as três diferenças da Tabela
+% \ref{tab:bracos_exp1}; a concordância entre os dois avaliadores (kappa); e o
+% par de figuras "critério único x calibrado" sobre a mesma chapa da amostra.
 % Figuras de exemplo (decisão do Henrique, 10/10/2026): o lado calibrado usa o
 % LIMIAR DE TRABALHO (braço "calibrado pelo autor"), a não ser que o joelho da
 % regra produza figura melhor. A legenda diz qual dos dois foi usado.
