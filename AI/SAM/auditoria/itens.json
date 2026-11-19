@@ -1,0 +1,6409 @@
+{
+ "pacote": "aria-auditoria-20261119",
+ "bracos": [
+  "unico",
+  "regra_todas",
+  "regra_autor",
+  "autor"
+ ],
+ "chapas": 33,
+ "tamanho_estrato": {
+  "0100": 2280,
+  "1110": 2072,
+  "1000": 7573,
+  "1111": 396,
+  "1100": 1923,
+  "0111": 78,
+  "0110": 540
+ },
+ "tamanho_estrato_por_litologia": {
+  "golden_storm": {
+   "0100": 22,
+   "1110": 166,
+   "1000": 892,
+   "1111": 30,
+   "1100": 4,
+   "0111": 21,
+   "0110": 63
+  },
+  "ipanema_beige": {
+   "1000": 260,
+   "0110": 9,
+   "1110": 4,
+   "1100": 45,
+   "0100": 203
+  },
+  "itaunas_white": {
+   "1110": 81,
+   "1000": 1032,
+   "1111": 6,
+   "1100": 22,
+   "0110": 16
+  },
+  "nevada_black": {
+   "1100": 529,
+   "1000": 758,
+   "1111": 78,
+   "1110": 334,
+   "0100": 215
+  },
+  "san_francisco_green": {
+   "0100": 807,
+   "1000": 830,
+   "1111": 30,
+   "1110": 83,
+   "0110": 27,
+   "1100": 213
+  },
+  "santa_cecilia": {
+   "0100": 29,
+   "1111": 35,
+   "1110": 135,
+   "1000": 768,
+   "0110": 26,
+   "1100": 18
+  },
+  "shadow_white": {
+   "1000": 393,
+   "1111": 80,
+   "1110": 546,
+   "0110": 114,
+   "0111": 57,
+   "1100": 2,
+   "0100": 13
+  },
+  "siena_white": {
+   "1000": 695,
+   "1100": 636,
+   "1111": 62,
+   "1110": 123,
+   "0100": 393
+  },
+  "ubatuba_green": {
+   "1110": 79,
+   "1000": 502,
+   "0110": 36,
+   "1100": 11,
+   "0100": 90,
+   "1111": 19
+  },
+  "white_mirage": {
+   "0100": 63,
+   "1110": 186,
+   "1000": 971,
+   "1111": 21,
+   "0110": 129
+  },
+  "white_olympus": {
+   "1111": 35,
+   "1110": 335,
+   "1000": 472,
+   "1100": 443,
+   "0100": 445,
+   "0110": 120
+  }
+ },
+ "limiares": "auditoria/limiares.json",
+ "itens": [
+  {
+   "id": "m001",
+   "rocha": "white_olympus",
+   "arquivo": "105.JPG",
+   "sonda": "Dark patches",
+   "indice": 33,
+   "score": 0.09315,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m002",
+   "rocha": "white_mirage",
+   "arquivo": "87.JPG",
+   "sonda": "crack",
+   "indice": 75,
+   "score": 0.04512,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m003",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "scratch",
+   "indice": 51,
+   "score": 0.02818,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m004",
+   "rocha": "siena_white",
+   "arquivo": "677.JPG",
+   "sonda": "Dark patches",
+   "indice": 29,
+   "score": 0.29645,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m005",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 20,
+   "score": 0.06868,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m006",
+   "rocha": "white_olympus",
+   "arquivo": "105.JPG",
+   "sonda": "Stain",
+   "indice": 110,
+   "score": 0.01321,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m007",
+   "rocha": "golden_storm",
+   "arquivo": "9.JPG",
+   "sonda": "light spot",
+   "indice": 0,
+   "score": 0.58019,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m008",
+   "rocha": "siena_white",
+   "arquivo": "175.JPG",
+   "sonda": "Stain",
+   "indice": 8,
+   "score": 0.29844,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m009",
+   "rocha": "white_mirage",
+   "arquivo": "87.JPG",
+   "sonda": "Stain",
+   "indice": 4,
+   "score": 0.50177,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m010",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "scratch",
+   "indice": 21,
+   "score": 0.03398,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m011",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "Dark patches",
+   "indice": 112,
+   "score": 0.0179,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m012",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "scratch",
+   "indice": 4,
+   "score": 0.07352,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m013",
+   "rocha": "ubatuba_green",
+   "arquivo": "69.JPG",
+   "sonda": "crack",
+   "indice": 125,
+   "score": 0.00895,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m014",
+   "rocha": "golden_storm",
+   "arquivo": "9.JPG",
+   "sonda": "Stain",
+   "indice": 2,
+   "score": 0.08605,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m015",
+   "rocha": "san_francisco_green",
+   "arquivo": "73.JPG",
+   "sonda": "white stain",
+   "indice": 134,
+   "score": 0.01086,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m016",
+   "rocha": "itaunas_white",
+   "arquivo": "190.JPG",
+   "sonda": "crack",
+   "indice": 177,
+   "score": 0.01512,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m017",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 40,
+   "score": 0.05015,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m018",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "light spot",
+   "indice": 11,
+   "score": 0.05918,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m019",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "white stain",
+   "indice": 18,
+   "score": 0.0066,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m020",
+   "rocha": "white_mirage",
+   "arquivo": "87.JPG",
+   "sonda": "Stain",
+   "indice": 1,
+   "score": 0.58062,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m021",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "Dark patches",
+   "indice": 125,
+   "score": 0.08651,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m022",
+   "rocha": "santa_cecilia",
+   "arquivo": "124.JPG",
+   "sonda": "Dark patches",
+   "indice": 183,
+   "score": 0.02121,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m023",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "crack",
+   "indice": 98,
+   "score": 0.06723,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m024",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 14,
+   "score": 0.09709,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m025",
+   "rocha": "san_francisco_green",
+   "arquivo": "73.JPG",
+   "sonda": "light spot",
+   "indice": 3,
+   "score": 0.39323,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m026",
+   "rocha": "siena_white",
+   "arquivo": "414.JPG",
+   "sonda": "scratch",
+   "indice": 79,
+   "score": 0.10418,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m027",
+   "rocha": "white_olympus",
+   "arquivo": "105.JPG",
+   "sonda": "white stain",
+   "indice": 3,
+   "score": 0.00607,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m028",
+   "rocha": "ubatuba_green",
+   "arquivo": "372.JPG",
+   "sonda": "Stain",
+   "indice": 1,
+   "score": 0.33093,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m029",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "Dark patches",
+   "indice": 4,
+   "score": 0.68526,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m030",
+   "rocha": "itaunas_white",
+   "arquivo": "190.JPG",
+   "sonda": "scratch",
+   "indice": 8,
+   "score": 0.18375,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m031",
+   "rocha": "san_francisco_green",
+   "arquivo": "205.JPG",
+   "sonda": "Stain",
+   "indice": 33,
+   "score": 0.19549,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m032",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 53,
+   "score": 0.07169,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m033",
+   "rocha": "white_mirage",
+   "arquivo": "87.JPG",
+   "sonda": "Dark patches",
+   "indice": 63,
+   "score": 0.14407,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m034",
+   "rocha": "san_francisco_green",
+   "arquivo": "28.JPG",
+   "sonda": "light spot",
+   "indice": 49,
+   "score": 0.02262,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m035",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 31,
+   "score": 0.0592,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m036",
+   "rocha": "white_mirage",
+   "arquivo": "87.JPG",
+   "sonda": "crack",
+   "indice": 99,
+   "score": 0.03846,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m037",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 38,
+   "score": 0.05287,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m038",
+   "rocha": "white_olympus",
+   "arquivo": "105.JPG",
+   "sonda": "Dark patches",
+   "indice": 82,
+   "score": 0.01836,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m039",
+   "rocha": "nevada_black",
+   "arquivo": "240.JPG",
+   "sonda": "crack",
+   "indice": 3,
+   "score": 0.03131,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m040",
+   "rocha": "white_mirage",
+   "arquivo": "132.JPG",
+   "sonda": "scratch",
+   "indice": 14,
+   "score": 0.08477,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m041",
+   "rocha": "nevada_black",
+   "arquivo": "240.JPG",
+   "sonda": "light spot",
+   "indice": 13,
+   "score": 0.16327,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m042",
+   "rocha": "siena_white",
+   "arquivo": "677.JPG",
+   "sonda": "scratch",
+   "indice": 148,
+   "score": 0.0349,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m043",
+   "rocha": "itaunas_white",
+   "arquivo": "190.JPG",
+   "sonda": "light spot",
+   "indice": 32,
+   "score": 0.04462,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m044",
+   "rocha": "san_francisco_green",
+   "arquivo": "73.JPG",
+   "sonda": "scratch",
+   "indice": 81,
+   "score": 0.02993,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m045",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 28,
+   "score": 0.06352,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m046",
+   "rocha": "nevada_black",
+   "arquivo": "294.JPG",
+   "sonda": "light spot",
+   "indice": 44,
+   "score": 0.11611,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m047",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "crack",
+   "indice": 1,
+   "score": 0.20545,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m048",
+   "rocha": "golden_storm",
+   "arquivo": "149.JPG",
+   "sonda": "Dark patches",
+   "indice": 65,
+   "score": 0.01931,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m049",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "light spot",
+   "indice": 12,
+   "score": 0.05701,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m050",
+   "rocha": "ipanema_beige",
+   "arquivo": "213.JPG",
+   "sonda": "white stain",
+   "indice": 51,
+   "score": 0.02529,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m051",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "scratch",
+   "indice": 15,
+   "score": 0.05117,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m052",
+   "rocha": "white_mirage",
+   "arquivo": "132.JPG",
+   "sonda": "Dark patches",
+   "indice": 32,
+   "score": 0.04255,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m053",
+   "rocha": "siena_white",
+   "arquivo": "175.JPG",
+   "sonda": "crack",
+   "indice": 41,
+   "score": 0.02705,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m054",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "white stain",
+   "indice": 54,
+   "score": 0.00342,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m055",
+   "rocha": "ubatuba_green",
+   "arquivo": "283.JPG",
+   "sonda": "crack",
+   "indice": 0,
+   "score": 0.03396,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m056",
+   "rocha": "siena_white",
+   "arquivo": "414.JPG",
+   "sonda": "Stain",
+   "indice": 7,
+   "score": 0.43971,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m057",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "scratch",
+   "indice": 5,
+   "score": 0.06691,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m058",
+   "rocha": "siena_white",
+   "arquivo": "677.JPG",
+   "sonda": "scratch",
+   "indice": 38,
+   "score": 0.17707,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m059",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "crack",
+   "indice": 3,
+   "score": 0.17579,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m060",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "light spot",
+   "indice": 29,
+   "score": 0.08789,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m061",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "Dark patches",
+   "indice": 173,
+   "score": 0.03238,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m062",
+   "rocha": "san_francisco_green",
+   "arquivo": "205.JPG",
+   "sonda": "light spot",
+   "indice": 47,
+   "score": 0.02474,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m063",
+   "rocha": "white_olympus",
+   "arquivo": "105.JPG",
+   "sonda": "white stain",
+   "indice": 2,
+   "score": 0.0061,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m064",
+   "rocha": "nevada_black",
+   "arquivo": "294.JPG",
+   "sonda": "light spot",
+   "indice": 36,
+   "score": 0.16907,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m065",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "light spot",
+   "indice": 72,
+   "score": 0.00604,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m066",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "vein",
+   "indice": 62,
+   "score": 0.08693,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m067",
+   "rocha": "santa_cecilia",
+   "arquivo": "124.JPG",
+   "sonda": "crack",
+   "indice": 124,
+   "score": 0.04456,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m068",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "scratch",
+   "indice": 9,
+   "score": 0.05143,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m069",
+   "rocha": "siena_white",
+   "arquivo": "414.JPG",
+   "sonda": "crack",
+   "indice": 70,
+   "score": 0.12562,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m070",
+   "rocha": "white_mirage",
+   "arquivo": "132.JPG",
+   "sonda": "scratch",
+   "indice": 26,
+   "score": 0.07335,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m071",
+   "rocha": "itaunas_white",
+   "arquivo": "174.JPG",
+   "sonda": "crack",
+   "indice": 185,
+   "score": 0.01576,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m072",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "Stain",
+   "indice": 38,
+   "score": 0.06522,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m073",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "Dark patches",
+   "indice": 150,
+   "score": 0.04974,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m074",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "scratch",
+   "indice": 13,
+   "score": 0.05422,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m075",
+   "rocha": "ubatuba_green",
+   "arquivo": "69.JPG",
+   "sonda": "light spot",
+   "indice": 17,
+   "score": 0.03467,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m076",
+   "rocha": "white_olympus",
+   "arquivo": "105.JPG",
+   "sonda": "vein",
+   "indice": 3,
+   "score": 0.24297,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m077",
+   "rocha": "nevada_black",
+   "arquivo": "240.JPG",
+   "sonda": "Dark patches",
+   "indice": 25,
+   "score": 0.05992,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m078",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "vein",
+   "indice": 37,
+   "score": 0.11862,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m079",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "Dark patches",
+   "indice": 113,
+   "score": 0.06529,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m080",
+   "rocha": "siena_white",
+   "arquivo": "414.JPG",
+   "sonda": "scratch",
+   "indice": 73,
+   "score": 0.111,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m081",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "white stain",
+   "indice": 69,
+   "score": 0.00298,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m082",
+   "rocha": "san_francisco_green",
+   "arquivo": "73.JPG",
+   "sonda": "crack",
+   "indice": 74,
+   "score": 0.06704,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m083",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "Stain",
+   "indice": 1,
+   "score": 0.46253,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m084",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 24,
+   "score": 0.10759,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m085",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 37,
+   "score": 0.08826,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m086",
+   "rocha": "santa_cecilia",
+   "arquivo": "124.JPG",
+   "sonda": "Stain",
+   "indice": 9,
+   "score": 0.14805,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m087",
+   "rocha": "golden_storm",
+   "arquivo": "9.JPG",
+   "sonda": "Dark patches",
+   "indice": 33,
+   "score": 0.03629,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m088",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "Dark patches",
+   "indice": 98,
+   "score": 0.11987,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m089",
+   "rocha": "white_mirage",
+   "arquivo": "87.JPG",
+   "sonda": "Stain",
+   "indice": 3,
+   "score": 0.51341,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m090",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "Dark patches",
+   "indice": 21,
+   "score": 0.15393,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m091",
+   "rocha": "ipanema_beige",
+   "arquivo": "37.JPG",
+   "sonda": "light spot",
+   "indice": 19,
+   "score": 0.02957,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m092",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "crack",
+   "indice": 20,
+   "score": 0.12184,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m093",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 9,
+   "score": 0.105,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m094",
+   "rocha": "siena_white",
+   "arquivo": "677.JPG",
+   "sonda": "crack",
+   "indice": 64,
+   "score": 0.0868,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m095",
+   "rocha": "siena_white",
+   "arquivo": "414.JPG",
+   "sonda": "scratch",
+   "indice": 99,
+   "score": 0.07765,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m096",
+   "rocha": "white_mirage",
+   "arquivo": "87.JPG",
+   "sonda": "Dark patches",
+   "indice": 40,
+   "score": 0.18869,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m097",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 51,
+   "score": 0.04074,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m098",
+   "rocha": "san_francisco_green",
+   "arquivo": "205.JPG",
+   "sonda": "Stain",
+   "indice": 1,
+   "score": 0.79965,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m099",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "scratch",
+   "indice": 49,
+   "score": 0.02849,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m100",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 11,
+   "score": 0.09952,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m101",
+   "rocha": "siena_white",
+   "arquivo": "414.JPG",
+   "sonda": "scratch",
+   "indice": 62,
+   "score": 0.1306,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m102",
+   "rocha": "golden_storm",
+   "arquivo": "149.JPG",
+   "sonda": "crack",
+   "indice": 31,
+   "score": 0.02838,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m103",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 2,
+   "score": 0.154,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m104",
+   "rocha": "nevada_black",
+   "arquivo": "294.JPG",
+   "sonda": "crack",
+   "indice": 9,
+   "score": 0.02599,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m105",
+   "rocha": "ubatuba_green",
+   "arquivo": "69.JPG",
+   "sonda": "vein",
+   "indice": 4,
+   "score": 0.00604,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m106",
+   "rocha": "santa_cecilia",
+   "arquivo": "124.JPG",
+   "sonda": "Dark patches",
+   "indice": 6,
+   "score": 0.33321,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m107",
+   "rocha": "white_mirage",
+   "arquivo": "87.JPG",
+   "sonda": "crack",
+   "indice": 93,
+   "score": 0.04057,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m108",
+   "rocha": "white_mirage",
+   "arquivo": "87.JPG",
+   "sonda": "Stain",
+   "indice": 51,
+   "score": 0.12572,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m109",
+   "rocha": "ipanema_beige",
+   "arquivo": "213.JPG",
+   "sonda": "white stain",
+   "indice": 64,
+   "score": 0.02245,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m110",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "Dark patches",
+   "indice": 149,
+   "score": 0.06348,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m111",
+   "rocha": "golden_storm",
+   "arquivo": "9.JPG",
+   "sonda": "scratch",
+   "indice": 1,
+   "score": 0.10606,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m112",
+   "rocha": "siena_white",
+   "arquivo": "677.JPG",
+   "sonda": "scratch",
+   "indice": 61,
+   "score": 0.12289,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m113",
+   "rocha": "golden_storm",
+   "arquivo": "9.JPG",
+   "sonda": "light spot",
+   "indice": 8,
+   "score": 0.14853,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m114",
+   "rocha": "white_mirage",
+   "arquivo": "132.JPG",
+   "sonda": "scratch",
+   "indice": 7,
+   "score": 0.10389,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m115",
+   "rocha": "nevada_black",
+   "arquivo": "294.JPG",
+   "sonda": "white stain",
+   "indice": 106,
+   "score": 0.04428,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m116",
+   "rocha": "itaunas_white",
+   "arquivo": "190.JPG",
+   "sonda": "Stain",
+   "indice": 0,
+   "score": 0.61924,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m117",
+   "rocha": "san_francisco_green",
+   "arquivo": "28.JPG",
+   "sonda": "vein",
+   "indice": 0,
+   "score": 0.01436,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m118",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 32,
+   "score": 0.05653,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m119",
+   "rocha": "siena_white",
+   "arquivo": "414.JPG",
+   "sonda": "scratch",
+   "indice": 44,
+   "score": 0.17036,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m120",
+   "rocha": "siena_white",
+   "arquivo": "175.JPG",
+   "sonda": "scratch",
+   "indice": 83,
+   "score": 0.08684,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m121",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 4,
+   "score": 0.20033,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m122",
+   "rocha": "white_olympus",
+   "arquivo": "105.JPG",
+   "sonda": "scratch",
+   "indice": 43,
+   "score": 0.11787,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m123",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 23,
+   "score": 0.06637,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m124",
+   "rocha": "itaunas_white",
+   "arquivo": "190.JPG",
+   "sonda": "crack",
+   "indice": 95,
+   "score": 0.03706,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m125",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "crack",
+   "indice": 131,
+   "score": 0.04429,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m126",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "white stain",
+   "indice": 30,
+   "score": 0.00537,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m127",
+   "rocha": "nevada_black",
+   "arquivo": "240.JPG",
+   "sonda": "crack",
+   "indice": 13,
+   "score": 0.02235,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m128",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 10,
+   "score": 0.10423,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m129",
+   "rocha": "white_olympus",
+   "arquivo": "105.JPG",
+   "sonda": "Dark patches",
+   "indice": 43,
+   "score": 0.06534,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m130",
+   "rocha": "nevada_black",
+   "arquivo": "294.JPG",
+   "sonda": "light spot",
+   "indice": 15,
+   "score": 0.34618,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m131",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "Stain",
+   "indice": 16,
+   "score": 0.08407,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m132",
+   "rocha": "itaunas_white",
+   "arquivo": "190.JPG",
+   "sonda": "Dark patches",
+   "indice": 21,
+   "score": 0.14308,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m133",
+   "rocha": "itaunas_white",
+   "arquivo": "190.JPG",
+   "sonda": "light spot",
+   "indice": 33,
+   "score": 0.044,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m134",
+   "rocha": "santa_cecilia",
+   "arquivo": "74.JPG",
+   "sonda": "crack",
+   "indice": 48,
+   "score": 0.0785,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m135",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "vein",
+   "indice": 3,
+   "score": 0.2078,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m136",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "scratch",
+   "indice": 9,
+   "score": 0.32778,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m137",
+   "rocha": "ipanema_beige",
+   "arquivo": "37.JPG",
+   "sonda": "light spot",
+   "indice": 61,
+   "score": 0.01278,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m138",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 25,
+   "score": 0.10589,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m139",
+   "rocha": "golden_storm",
+   "arquivo": "9.JPG",
+   "sonda": "crack",
+   "indice": 21,
+   "score": 0.07497,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m140",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 54,
+   "score": 0.0396,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m141",
+   "rocha": "nevada_black",
+   "arquivo": "240.JPG",
+   "sonda": "Dark patches",
+   "indice": 24,
+   "score": 0.06074,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m142",
+   "rocha": "nevada_black",
+   "arquivo": "240.JPG",
+   "sonda": "crack",
+   "indice": 8,
+   "score": 0.02591,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m143",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 22,
+   "score": 0.1091,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m144",
+   "rocha": "nevada_black",
+   "arquivo": "240.JPG",
+   "sonda": "crack",
+   "indice": 22,
+   "score": 0.01791,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m145",
+   "rocha": "siena_white",
+   "arquivo": "677.JPG",
+   "sonda": "white stain",
+   "indice": 48,
+   "score": 0.01455,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m146",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "Stain",
+   "indice": 0,
+   "score": 0.569,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m147",
+   "rocha": "ubatuba_green",
+   "arquivo": "69.JPG",
+   "sonda": "light spot",
+   "indice": 11,
+   "score": 0.04791,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m148",
+   "rocha": "itaunas_white",
+   "arquivo": "190.JPG",
+   "sonda": "Dark patches",
+   "indice": 132,
+   "score": 0.02909,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m149",
+   "rocha": "siena_white",
+   "arquivo": "414.JPG",
+   "sonda": "crack",
+   "indice": 141,
+   "score": 0.04423,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m150",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "Stain",
+   "indice": 6,
+   "score": 0.16594,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m151",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 16,
+   "score": 0.08119,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m152",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "white stain",
+   "indice": 15,
+   "score": 0.00727,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m153",
+   "rocha": "san_francisco_green",
+   "arquivo": "28.JPG",
+   "sonda": "scratch",
+   "indice": 73,
+   "score": 0.02313,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m154",
+   "rocha": "white_mirage",
+   "arquivo": "132.JPG",
+   "sonda": "white stain",
+   "indice": 1,
+   "score": 0.08393,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m155",
+   "rocha": "ubatuba_green",
+   "arquivo": "283.JPG",
+   "sonda": "Dark patches",
+   "indice": 41,
+   "score": 0.01875,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m156",
+   "rocha": "siena_white",
+   "arquivo": "414.JPG",
+   "sonda": "Dark patches",
+   "indice": 6,
+   "score": 0.48156,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m157",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "scratch",
+   "indice": 16,
+   "score": 0.05006,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m158",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "light spot",
+   "indice": 18,
+   "score": 0.00891,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m159",
+   "rocha": "santa_cecilia",
+   "arquivo": "124.JPG",
+   "sonda": "crack",
+   "indice": 30,
+   "score": 0.11054,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m160",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "Dark patches",
+   "indice": 37,
+   "score": 0.10701,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m161",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 75,
+   "score": 0.06053,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m162",
+   "rocha": "itaunas_white",
+   "arquivo": "190.JPG",
+   "sonda": "light spot",
+   "indice": 25,
+   "score": 0.05435,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m163",
+   "rocha": "san_francisco_green",
+   "arquivo": "205.JPG",
+   "sonda": "light spot",
+   "indice": 6,
+   "score": 0.07133,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m164",
+   "rocha": "san_francisco_green",
+   "arquivo": "205.JPG",
+   "sonda": "light spot",
+   "indice": 73,
+   "score": 0.01282,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m165",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 34,
+   "score": 0.05624,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m166",
+   "rocha": "san_francisco_green",
+   "arquivo": "73.JPG",
+   "sonda": "Dark patches",
+   "indice": 30,
+   "score": 0.17142,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m167",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "Dark patches",
+   "indice": 100,
+   "score": 0.08913,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m168",
+   "rocha": "siena_white",
+   "arquivo": "677.JPG",
+   "sonda": "Dark patches",
+   "indice": 0,
+   "score": 0.67062,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m169",
+   "rocha": "white_olympus",
+   "arquivo": "105.JPG",
+   "sonda": "Stain",
+   "indice": 4,
+   "score": 0.30665,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m170",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 49,
+   "score": 0.0742,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m171",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "Dark patches",
+   "indice": 88,
+   "score": 0.10353,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m172",
+   "rocha": "ipanema_beige",
+   "arquivo": "213.JPG",
+   "sonda": "Dark patches",
+   "indice": 32,
+   "score": 0.01767,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m173",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "Dark patches",
+   "indice": 1,
+   "score": 0.61186,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m174",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 23,
+   "score": 0.10776,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m175",
+   "rocha": "san_francisco_green",
+   "arquivo": "28.JPG",
+   "sonda": "white stain",
+   "indice": 16,
+   "score": 0.01788,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m176",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "scratch",
+   "indice": 22,
+   "score": 0.03258,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m177",
+   "rocha": "san_francisco_green",
+   "arquivo": "205.JPG",
+   "sonda": "Stain",
+   "indice": 9,
+   "score": 0.56094,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m178",
+   "rocha": "siena_white",
+   "arquivo": "677.JPG",
+   "sonda": "white stain",
+   "indice": 32,
+   "score": 0.01815,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m179",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "white stain",
+   "indice": 3,
+   "score": 0.31498,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m180",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "scratch",
+   "indice": 5,
+   "score": 0.07001,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m181",
+   "rocha": "nevada_black",
+   "arquivo": "240.JPG",
+   "sonda": "crack",
+   "indice": 16,
+   "score": 0.02019,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m182",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "crack",
+   "indice": 160,
+   "score": 0.01344,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m183",
+   "rocha": "itaunas_white",
+   "arquivo": "187.JPG",
+   "sonda": "Dark patches",
+   "indice": 59,
+   "score": 0.02343,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m184",
+   "rocha": "nevada_black",
+   "arquivo": "294.JPG",
+   "sonda": "white stain",
+   "indice": 7,
+   "score": 0.4365,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m185",
+   "rocha": "white_mirage",
+   "arquivo": "132.JPG",
+   "sonda": "light spot",
+   "indice": 11,
+   "score": 0.0483,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m186",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 30,
+   "score": 0.09859,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m187",
+   "rocha": "white_mirage",
+   "arquivo": "108.JPG",
+   "sonda": "Dark patches",
+   "indice": 37,
+   "score": 0.2018,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m188",
+   "rocha": "siena_white",
+   "arquivo": "677.JPG",
+   "sonda": "Dark patches",
+   "indice": 13,
+   "score": 0.42396,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m189",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "Stain",
+   "indice": 90,
+   "score": 0.03452,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m190",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 26,
+   "score": 0.102,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m191",
+   "rocha": "white_mirage",
+   "arquivo": "87.JPG",
+   "sonda": "Stain",
+   "indice": 59,
+   "score": 0.1131,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m192",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 8,
+   "score": 0.11311,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m193",
+   "rocha": "siena_white",
+   "arquivo": "677.JPG",
+   "sonda": "scratch",
+   "indice": 96,
+   "score": 0.07961,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m194",
+   "rocha": "san_francisco_green",
+   "arquivo": "28.JPG",
+   "sonda": "Dark patches",
+   "indice": 100,
+   "score": 0.05071,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m195",
+   "rocha": "siena_white",
+   "arquivo": "677.JPG",
+   "sonda": "scratch",
+   "indice": 60,
+   "score": 0.12326,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m196",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "crack",
+   "indice": 149,
+   "score": 0.03663,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m197",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "scratch",
+   "indice": 11,
+   "score": 0.05705,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m198",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 50,
+   "score": 0.07366,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m199",
+   "rocha": "santa_cecilia",
+   "arquivo": "124.JPG",
+   "sonda": "crack",
+   "indice": 1,
+   "score": 0.31601,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m200",
+   "rocha": "nevada_black",
+   "arquivo": "294.JPG",
+   "sonda": "white stain",
+   "indice": 46,
+   "score": 0.14178,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m201",
+   "rocha": "golden_storm",
+   "arquivo": "9.JPG",
+   "sonda": "crack",
+   "indice": 147,
+   "score": 0.03249,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m202",
+   "rocha": "white_olympus",
+   "arquivo": "105.JPG",
+   "sonda": "Stain",
+   "indice": 55,
+   "score": 0.03786,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m203",
+   "rocha": "ubatuba_green",
+   "arquivo": "372.JPG",
+   "sonda": "light spot",
+   "indice": 17,
+   "score": 0.07643,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m204",
+   "rocha": "ubatuba_green",
+   "arquivo": "372.JPG",
+   "sonda": "light spot",
+   "indice": 1,
+   "score": 0.43732,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m205",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "Stain",
+   "indice": 64,
+   "score": 0.03275,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m206",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "Dark patches",
+   "indice": 87,
+   "score": 0.02019,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m207",
+   "rocha": "white_mirage",
+   "arquivo": "132.JPG",
+   "sonda": "scratch",
+   "indice": 40,
+   "score": 0.0587,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m208",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "Dark patches",
+   "indice": 68,
+   "score": 0.02291,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m209",
+   "rocha": "siena_white",
+   "arquivo": "414.JPG",
+   "sonda": "Stain",
+   "indice": 22,
+   "score": 0.27743,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m210",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 37,
+   "score": 0.05427,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m211",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "Dark patches",
+   "indice": 71,
+   "score": 0.15019,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m212",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 3,
+   "score": 0.15362,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m213",
+   "rocha": "ubatuba_green",
+   "arquivo": "69.JPG",
+   "sonda": "crack",
+   "indice": 78,
+   "score": 0.01211,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m214",
+   "rocha": "san_francisco_green",
+   "arquivo": "73.JPG",
+   "sonda": "white stain",
+   "indice": 16,
+   "score": 0.09483,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m215",
+   "rocha": "siena_white",
+   "arquivo": "175.JPG",
+   "sonda": "scratch",
+   "indice": 151,
+   "score": 0.04069,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m216",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "scratch",
+   "indice": 25,
+   "score": 0.03099,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m217",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "scratch",
+   "indice": 9,
+   "score": 0.06027,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m218",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "vein",
+   "indice": 10,
+   "score": 0.18918,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m219",
+   "rocha": "white_mirage",
+   "arquivo": "108.JPG",
+   "sonda": "Dark patches",
+   "indice": 14,
+   "score": 0.39299,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m220",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 39,
+   "score": 0.0857,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m221",
+   "rocha": "san_francisco_green",
+   "arquivo": "73.JPG",
+   "sonda": "Stain",
+   "indice": 1,
+   "score": 0.12099,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m222",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "light spot",
+   "indice": 8,
+   "score": 0.01159,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m223",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "Dark patches",
+   "indice": 93,
+   "score": 0.02418,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m224",
+   "rocha": "siena_white",
+   "arquivo": "414.JPG",
+   "sonda": "vein",
+   "indice": 55,
+   "score": 0.07319,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m225",
+   "rocha": "san_francisco_green",
+   "arquivo": "73.JPG",
+   "sonda": "vein",
+   "indice": 16,
+   "score": 0.00862,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m226",
+   "rocha": "nevada_black",
+   "arquivo": "294.JPG",
+   "sonda": "white stain",
+   "indice": 11,
+   "score": 0.35359,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m227",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 41,
+   "score": 0.04986,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m228",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "Dark patches",
+   "indice": 154,
+   "score": 0.05938,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m229",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "Dark patches",
+   "indice": 39,
+   "score": 0.03539,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m230",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "vein",
+   "indice": 4,
+   "score": 0.19694,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m231",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 84,
+   "score": 0.0562,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m232",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "light spot",
+   "indice": 25,
+   "score": 0.03154,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m233",
+   "rocha": "ubatuba_green",
+   "arquivo": "372.JPG",
+   "sonda": "Stain",
+   "indice": 8,
+   "score": 0.11862,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m234",
+   "rocha": "ipanema_beige",
+   "arquivo": "37.JPG",
+   "sonda": "light spot",
+   "indice": 1,
+   "score": 0.06539,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m235",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "Dark patches",
+   "indice": 80,
+   "score": 0.12047,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m236",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 26,
+   "score": 0.06382,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m237",
+   "rocha": "nevada_black",
+   "arquivo": "240.JPG",
+   "sonda": "crack",
+   "indice": 67,
+   "score": 0.00979,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m238",
+   "rocha": "nevada_black",
+   "arquivo": "294.JPG",
+   "sonda": "light spot",
+   "indice": 37,
+   "score": 0.14989,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m239",
+   "rocha": "san_francisco_green",
+   "arquivo": "205.JPG",
+   "sonda": "scratch",
+   "indice": 8,
+   "score": 0.02799,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m240",
+   "rocha": "siena_white",
+   "arquivo": "414.JPG",
+   "sonda": "scratch",
+   "indice": 22,
+   "score": 0.25638,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m241",
+   "rocha": "nevada_black",
+   "arquivo": "240.JPG",
+   "sonda": "scratch",
+   "indice": 26,
+   "score": 0.14001,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m242",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 5,
+   "score": 0.1535,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m243",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "Dark patches",
+   "indice": 103,
+   "score": 0.0864,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m244",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "white stain",
+   "indice": 8,
+   "score": 0.0053,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m245",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 36,
+   "score": 0.055,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m246",
+   "rocha": "white_olympus",
+   "arquivo": "105.JPG",
+   "sonda": "Stain",
+   "indice": 18,
+   "score": 0.21295,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m247",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 12,
+   "score": 0.09865,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m248",
+   "rocha": "san_francisco_green",
+   "arquivo": "73.JPG",
+   "sonda": "vein",
+   "indice": 63,
+   "score": 0.00538,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m249",
+   "rocha": "golden_storm",
+   "arquivo": "9.JPG",
+   "sonda": "scratch",
+   "indice": 4,
+   "score": 0.06671,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m250",
+   "rocha": "nevada_black",
+   "arquivo": "294.JPG",
+   "sonda": "light spot",
+   "indice": 28,
+   "score": 0.20533,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m251",
+   "rocha": "white_mirage",
+   "arquivo": "87.JPG",
+   "sonda": "Dark patches",
+   "indice": 79,
+   "score": 0.10895,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m252",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "Dark patches",
+   "indice": 108,
+   "score": 0.09436,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m253",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 27,
+   "score": 0.10114,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m254",
+   "rocha": "ipanema_beige",
+   "arquivo": "37.JPG",
+   "sonda": "crack",
+   "indice": 69,
+   "score": 0.00807,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m255",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "Dark patches",
+   "indice": 0,
+   "score": 0.79852,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m256",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "Stain",
+   "indice": 1,
+   "score": 0.03571,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m257",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "Stain",
+   "indice": 3,
+   "score": 0.46124,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m258",
+   "rocha": "santa_cecilia",
+   "arquivo": "124.JPG",
+   "sonda": "light spot",
+   "indice": 7,
+   "score": 0.03967,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m259",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "Dark patches",
+   "indice": 155,
+   "score": 0.04684,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m260",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "white stain",
+   "indice": 55,
+   "score": 0.00339,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m261",
+   "rocha": "white_mirage",
+   "arquivo": "87.JPG",
+   "sonda": "Stain",
+   "indice": 7,
+   "score": 0.40705,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m262",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 25,
+   "score": 0.06478,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m263",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "white stain",
+   "indice": 6,
+   "score": 0.00994,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m264",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "crack",
+   "indice": 95,
+   "score": 0.10223,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m265",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "Stain",
+   "indice": 47,
+   "score": 0.17731,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m266",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "Dark patches",
+   "indice": 86,
+   "score": 0.02021,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m267",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "crack",
+   "indice": 92,
+   "score": 0.07032,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m268",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 15,
+   "score": 0.08475,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m269",
+   "rocha": "siena_white",
+   "arquivo": "677.JPG",
+   "sonda": "white stain",
+   "indice": 14,
+   "score": 0.02618,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m270",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "Dark patches",
+   "indice": 108,
+   "score": 0.06692,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m271",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "scratch",
+   "indice": 47,
+   "score": 0.02962,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m272",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "Stain",
+   "indice": 2,
+   "score": 0.43063,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m273",
+   "rocha": "white_mirage",
+   "arquivo": "108.JPG",
+   "sonda": "crack",
+   "indice": 11,
+   "score": 0.04384,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m274",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "Dark patches",
+   "indice": 84,
+   "score": 0.11393,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m275",
+   "rocha": "golden_storm",
+   "arquivo": "9.JPG",
+   "sonda": "scratch",
+   "indice": 0,
+   "score": 0.10845,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m276",
+   "rocha": "itaunas_white",
+   "arquivo": "174.JPG",
+   "sonda": "scratch",
+   "indice": 4,
+   "score": 0.19031,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m277",
+   "rocha": "white_mirage",
+   "arquivo": "108.JPG",
+   "sonda": "crack",
+   "indice": 4,
+   "score": 0.05544,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m278",
+   "rocha": "siena_white",
+   "arquivo": "677.JPG",
+   "sonda": "scratch",
+   "indice": 142,
+   "score": 0.03722,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m279",
+   "rocha": "san_francisco_green",
+   "arquivo": "205.JPG",
+   "sonda": "Stain",
+   "indice": 46,
+   "score": 0.1478,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m280",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "vein",
+   "indice": 1,
+   "score": 0.23397,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m281",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 19,
+   "score": 0.07135,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m282",
+   "rocha": "san_francisco_green",
+   "arquivo": "28.JPG",
+   "sonda": "Stain",
+   "indice": 6,
+   "score": 0.129,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m283",
+   "rocha": "itaunas_white",
+   "arquivo": "174.JPG",
+   "sonda": "Dark patches",
+   "indice": 0,
+   "score": 0.52515,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m284",
+   "rocha": "nevada_black",
+   "arquivo": "294.JPG",
+   "sonda": "Dark patches",
+   "indice": 137,
+   "score": 0.02471,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m285",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "Stain",
+   "indice": 52,
+   "score": 0.04503,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m286",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "vein",
+   "indice": 42,
+   "score": 0.09396,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m287",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "Dark patches",
+   "indice": 69,
+   "score": 0.15459,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m288",
+   "rocha": "santa_cecilia",
+   "arquivo": "45.JPG",
+   "sonda": "light spot",
+   "indice": 3,
+   "score": 0.05112,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m289",
+   "rocha": "golden_storm",
+   "arquivo": "9.JPG",
+   "sonda": "white stain",
+   "indice": 18,
+   "score": 0.04592,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m290",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "crack",
+   "indice": 20,
+   "score": 0.16279,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m291",
+   "rocha": "san_francisco_green",
+   "arquivo": "28.JPG",
+   "sonda": "light spot",
+   "indice": 90,
+   "score": 0.01339,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m292",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "Dark patches",
+   "indice": 125,
+   "score": 0.05887,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m293",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "scratch",
+   "indice": 10,
+   "score": 0.05769,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m294",
+   "rocha": "santa_cecilia",
+   "arquivo": "45.JPG",
+   "sonda": "Dark patches",
+   "indice": 9,
+   "score": 0.31507,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m295",
+   "rocha": "siena_white",
+   "arquivo": "414.JPG",
+   "sonda": "crack",
+   "indice": 83,
+   "score": 0.10824,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m296",
+   "rocha": "white_olympus",
+   "arquivo": "105.JPG",
+   "sonda": "Stain",
+   "indice": 45,
+   "score": 0.07043,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m297",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "crack",
+   "indice": 52,
+   "score": 0.09595,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m298",
+   "rocha": "ubatuba_green",
+   "arquivo": "283.JPG",
+   "sonda": "light spot",
+   "indice": 3,
+   "score": 0.03566,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m299",
+   "rocha": "white_mirage",
+   "arquivo": "132.JPG",
+   "sonda": "crack",
+   "indice": 189,
+   "score": 0.00771,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m300",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 30,
+   "score": 0.0613,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m301",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "Dark patches",
+   "indice": 3,
+   "score": 0.6515,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m302",
+   "rocha": "siena_white",
+   "arquivo": "414.JPG",
+   "sonda": "Dark patches",
+   "indice": 87,
+   "score": 0.07927,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m303",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "scratch",
+   "indice": 6,
+   "score": 0.06891,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m304",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "Dark patches",
+   "indice": 138,
+   "score": 0.07268,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m305",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "Dark patches",
+   "indice": 94,
+   "score": 0.02414,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m306",
+   "rocha": "san_francisco_green",
+   "arquivo": "28.JPG",
+   "sonda": "scratch",
+   "indice": 11,
+   "score": 0.07656,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m307",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "crack",
+   "indice": 3,
+   "score": 0.16735,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m308",
+   "rocha": "white_mirage",
+   "arquivo": "132.JPG",
+   "sonda": "white stain",
+   "indice": 30,
+   "score": 0.02122,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m309",
+   "rocha": "san_francisco_green",
+   "arquivo": "205.JPG",
+   "sonda": "white stain",
+   "indice": 26,
+   "score": 0.01701,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m310",
+   "rocha": "white_mirage",
+   "arquivo": "87.JPG",
+   "sonda": "Dark patches",
+   "indice": 27,
+   "score": 0.22173,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m311",
+   "rocha": "white_mirage",
+   "arquivo": "132.JPG",
+   "sonda": "scratch",
+   "indice": 34,
+   "score": 0.06645,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m312",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "scratch",
+   "indice": 17,
+   "score": 0.04868,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m313",
+   "rocha": "siena_white",
+   "arquivo": "414.JPG",
+   "sonda": "crack",
+   "indice": 135,
+   "score": 0.05104,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m314",
+   "rocha": "siena_white",
+   "arquivo": "414.JPG",
+   "sonda": "Dark patches",
+   "indice": 36,
+   "score": 0.18334,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m315",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "Stain",
+   "indice": 18,
+   "score": 0.30229,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m316",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 39,
+   "score": 0.05094,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m317",
+   "rocha": "white_olympus",
+   "arquivo": "105.JPG",
+   "sonda": "crack",
+   "indice": 43,
+   "score": 0.19241,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m318",
+   "rocha": "white_mirage",
+   "arquivo": "108.JPG",
+   "sonda": "Stain",
+   "indice": 36,
+   "score": 0.12972,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m319",
+   "rocha": "siena_white",
+   "arquivo": "175.JPG",
+   "sonda": "crack",
+   "indice": 29,
+   "score": 0.02979,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m320",
+   "rocha": "nevada_black",
+   "arquivo": "240.JPG",
+   "sonda": "vein",
+   "indice": 31,
+   "score": 0.08176,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m321",
+   "rocha": "nevada_black",
+   "arquivo": "294.JPG",
+   "sonda": "light spot",
+   "indice": 17,
+   "score": 0.3318,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m322",
+   "rocha": "ipanema_beige",
+   "arquivo": "37.JPG",
+   "sonda": "light spot",
+   "indice": 26,
+   "score": 0.02387,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m323",
+   "rocha": "ubatuba_green",
+   "arquivo": "69.JPG",
+   "sonda": "crack",
+   "indice": 5,
+   "score": 0.04635,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m324",
+   "rocha": "nevada_black",
+   "arquivo": "294.JPG",
+   "sonda": "crack",
+   "indice": 73,
+   "score": 0.00969,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m325",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 46,
+   "score": 0.07636,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m326",
+   "rocha": "santa_cecilia",
+   "arquivo": "74.JPG",
+   "sonda": "scratch",
+   "indice": 12,
+   "score": 0.12391,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m327",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "scratch",
+   "indice": 19,
+   "score": 0.1032,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m328",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "scratch",
+   "indice": 8,
+   "score": 0.0604,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m329",
+   "rocha": "siena_white",
+   "arquivo": "414.JPG",
+   "sonda": "Stain",
+   "indice": 29,
+   "score": 0.21475,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m330",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "scratch",
+   "indice": 4,
+   "score": 0.07507,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m331",
+   "rocha": "ipanema_beige",
+   "arquivo": "213.JPG",
+   "sonda": "white stain",
+   "indice": 57,
+   "score": 0.0241,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m332",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "white stain",
+   "indice": 3,
+   "score": 0.01224,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m333",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "Dark patches",
+   "indice": 57,
+   "score": 0.04888,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m334",
+   "rocha": "siena_white",
+   "arquivo": "677.JPG",
+   "sonda": "Dark patches",
+   "indice": 6,
+   "score": 0.53324,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m335",
+   "rocha": "san_francisco_green",
+   "arquivo": "205.JPG",
+   "sonda": "Stain",
+   "indice": 28,
+   "score": 0.21775,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m336",
+   "rocha": "itaunas_white",
+   "arquivo": "174.JPG",
+   "sonda": "Dark patches",
+   "indice": 40,
+   "score": 0.08899,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m337",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "scratch",
+   "indice": 8,
+   "score": 0.05216,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m338",
+   "rocha": "nevada_black",
+   "arquivo": "240.JPG",
+   "sonda": "vein",
+   "indice": 5,
+   "score": 0.14498,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m339",
+   "rocha": "white_olympus",
+   "arquivo": "105.JPG",
+   "sonda": "Stain",
+   "indice": 112,
+   "score": 0.01252,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m340",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "Dark patches",
+   "indice": 168,
+   "score": 0.0466,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m341",
+   "rocha": "san_francisco_green",
+   "arquivo": "205.JPG",
+   "sonda": "Dark patches",
+   "indice": 3,
+   "score": 0.83183,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m342",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "crack",
+   "indice": 58,
+   "score": 0.0466,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m343",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "white stain",
+   "indice": 66,
+   "score": 0.00304,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m344",
+   "rocha": "itaunas_white",
+   "arquivo": "190.JPG",
+   "sonda": "Dark patches",
+   "indice": 0,
+   "score": 0.50906,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m345",
+   "rocha": "siena_white",
+   "arquivo": "175.JPG",
+   "sonda": "scratch",
+   "indice": 68,
+   "score": 0.09717,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m346",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 21,
+   "score": 0.06831,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m347",
+   "rocha": "siena_white",
+   "arquivo": "677.JPG",
+   "sonda": "crack",
+   "indice": 99,
+   "score": 0.06114,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m348",
+   "rocha": "santa_cecilia",
+   "arquivo": "124.JPG",
+   "sonda": "light spot",
+   "indice": 3,
+   "score": 0.05073,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m349",
+   "rocha": "ubatuba_green",
+   "arquivo": "69.JPG",
+   "sonda": "Dark patches",
+   "indice": 7,
+   "score": 0.07593,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m350",
+   "rocha": "white_mirage",
+   "arquivo": "108.JPG",
+   "sonda": "Stain",
+   "indice": 11,
+   "score": 0.25788,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m351",
+   "rocha": "nevada_black",
+   "arquivo": "240.JPG",
+   "sonda": "light spot",
+   "indice": 8,
+   "score": 0.19022,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m352",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "crack",
+   "indice": 37,
+   "score": 0.00775,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m353",
+   "rocha": "white_mirage",
+   "arquivo": "87.JPG",
+   "sonda": "Stain",
+   "indice": 52,
+   "score": 0.12461,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m354",
+   "rocha": "white_mirage",
+   "arquivo": "132.JPG",
+   "sonda": "vein",
+   "indice": 30,
+   "score": 0.00614,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m355",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "crack",
+   "indice": 139,
+   "score": 0.04217,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m356",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 17,
+   "score": 0.08017,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m357",
+   "rocha": "itaunas_white",
+   "arquivo": "187.JPG",
+   "sonda": "vein",
+   "indice": 0,
+   "score": 0.10373,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m358",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "Dark patches",
+   "indice": 152,
+   "score": 0.04927,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m359",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "scratch",
+   "indice": 1,
+   "score": 0.09948,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m360",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "Dark patches",
+   "indice": 2,
+   "score": 0.67219,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m361",
+   "rocha": "san_francisco_green",
+   "arquivo": "28.JPG",
+   "sonda": "Dark patches",
+   "indice": 63,
+   "score": 0.07504,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m362",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "scratch",
+   "indice": 20,
+   "score": 0.12697,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m363",
+   "rocha": "ipanema_beige",
+   "arquivo": "37.JPG",
+   "sonda": "light spot",
+   "indice": 18,
+   "score": 0.03001,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m364",
+   "rocha": "san_francisco_green",
+   "arquivo": "205.JPG",
+   "sonda": "Stain",
+   "indice": 45,
+   "score": 0.14835,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m365",
+   "rocha": "white_mirage",
+   "arquivo": "108.JPG",
+   "sonda": "Dark patches",
+   "indice": 8,
+   "score": 0.44961,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m366",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "Dark patches",
+   "indice": 36,
+   "score": 0.10813,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m367",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 24,
+   "score": 0.06507,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m368",
+   "rocha": "white_olympus",
+   "arquivo": "105.JPG",
+   "sonda": "Stain",
+   "indice": 32,
+   "score": 0.10493,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m369",
+   "rocha": "santa_cecilia",
+   "arquivo": "124.JPG",
+   "sonda": "light spot",
+   "indice": 5,
+   "score": 0.04098,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m370",
+   "rocha": "santa_cecilia",
+   "arquivo": "74.JPG",
+   "sonda": "Dark patches",
+   "indice": 11,
+   "score": 0.03193,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m371",
+   "rocha": "siena_white",
+   "arquivo": "677.JPG",
+   "sonda": "Stain",
+   "indice": 1,
+   "score": 0.62112,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m372",
+   "rocha": "siena_white",
+   "arquivo": "175.JPG",
+   "sonda": "scratch",
+   "indice": 58,
+   "score": 0.10625,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m373",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "scratch",
+   "indice": 7,
+   "score": 0.06092,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m374",
+   "rocha": "siena_white",
+   "arquivo": "677.JPG",
+   "sonda": "light spot",
+   "indice": 1,
+   "score": 0.11931,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m375",
+   "rocha": "santa_cecilia",
+   "arquivo": "124.JPG",
+   "sonda": "light spot",
+   "indice": 6,
+   "score": 0.03991,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m376",
+   "rocha": "shadow_white",
+   "arquivo": "281.JPG",
+   "sonda": "Stain",
+   "indice": 10,
+   "score": 0.29643,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m377",
+   "rocha": "itaunas_white",
+   "arquivo": "187.JPG",
+   "sonda": "Dark patches",
+   "indice": 61,
+   "score": 0.02312,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m378",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "crack",
+   "indice": 19,
+   "score": 0.1916,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m379",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "Dark patches",
+   "indice": 84,
+   "score": 0.02599,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m380",
+   "rocha": "white_mirage",
+   "arquivo": "132.JPG",
+   "sonda": "white stain",
+   "indice": 5,
+   "score": 0.0531,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m381",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 35,
+   "score": 0.05586,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m382",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "white stain",
+   "indice": 63,
+   "score": 0.00312,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m383",
+   "rocha": "itaunas_white",
+   "arquivo": "190.JPG",
+   "sonda": "Dark patches",
+   "indice": 62,
+   "score": 0.08169,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m384",
+   "rocha": "white_mirage",
+   "arquivo": "108.JPG",
+   "sonda": "Stain",
+   "indice": 0,
+   "score": 0.58736,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m385",
+   "rocha": "san_francisco_green",
+   "arquivo": "73.JPG",
+   "sonda": "light spot",
+   "indice": 60,
+   "score": 0.05147,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m386",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 29,
+   "score": 0.09865,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m387",
+   "rocha": "white_olympus",
+   "arquivo": "105.JPG",
+   "sonda": "Dark patches",
+   "indice": 18,
+   "score": 0.15567,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m388",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "light spot",
+   "indice": 11,
+   "score": 0.14827,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m389",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "Stain",
+   "indice": 102,
+   "score": 0.0156,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m390",
+   "rocha": "white_mirage",
+   "arquivo": "108.JPG",
+   "sonda": "Dark patches",
+   "indice": 162,
+   "score": 0.03091,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m391",
+   "rocha": "white_olympus",
+   "arquivo": "52.JPG",
+   "sonda": "white stain",
+   "indice": 34,
+   "score": 0.00488,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m392",
+   "rocha": "san_francisco_green",
+   "arquivo": "28.JPG",
+   "sonda": "Dark patches",
+   "indice": 2,
+   "score": 0.30401,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m393",
+   "rocha": "san_francisco_green",
+   "arquivo": "28.JPG",
+   "sonda": "white stain",
+   "indice": 33,
+   "score": 0.01278,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m394",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "scratch",
+   "indice": 33,
+   "score": 0.03607,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m395",
+   "rocha": "santa_cecilia",
+   "arquivo": "124.JPG",
+   "sonda": "Dark patches",
+   "indice": 9,
+   "score": 0.2838,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m396",
+   "rocha": "nevada_black",
+   "arquivo": "10.JPG",
+   "sonda": "crack",
+   "indice": 32,
+   "score": 0.12763,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m397",
+   "rocha": "siena_white",
+   "arquivo": "414.JPG",
+   "sonda": "Dark patches",
+   "indice": 141,
+   "score": 0.03238,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m398",
+   "rocha": "shadow_white",
+   "arquivo": "68.JPG",
+   "sonda": "scratch",
+   "indice": 14,
+   "score": 0.05227,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m399",
+   "rocha": "white_olympus",
+   "arquivo": "105.JPG",
+   "sonda": "scratch",
+   "indice": 24,
+   "score": 0.14368,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m400",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 18,
+   "score": 0.07657,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m401",
+   "rocha": "white_olympus",
+   "arquivo": "105.JPG",
+   "sonda": "vein",
+   "indice": 2,
+   "score": 0.26852,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m402",
+   "rocha": "san_francisco_green",
+   "arquivo": "205.JPG",
+   "sonda": "Stain",
+   "indice": 29,
+   "score": 0.21017,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m403",
+   "rocha": "white_mirage",
+   "arquivo": "132.JPG",
+   "sonda": "crack",
+   "indice": 94,
+   "score": 0.01886,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m404",
+   "rocha": "santa_cecilia",
+   "arquivo": "45.JPG",
+   "sonda": "light spot",
+   "indice": 11,
+   "score": 0.03608,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m405",
+   "rocha": "san_francisco_green",
+   "arquivo": "205.JPG",
+   "sonda": "light spot",
+   "indice": 32,
+   "score": 0.03181,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m406",
+   "rocha": "san_francisco_green",
+   "arquivo": "73.JPG",
+   "sonda": "white stain",
+   "indice": 4,
+   "score": 0.13227,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m407",
+   "rocha": "white_olympus",
+   "arquivo": "105.JPG",
+   "sonda": "crack",
+   "indice": 132,
+   "score": 0.0964,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m408",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 34,
+   "score": 0.09422,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m409",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 54,
+   "score": 0.07133,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m410",
+   "rocha": "san_francisco_green",
+   "arquivo": "205.JPG",
+   "sonda": "Dark patches",
+   "indice": 1,
+   "score": 0.88742,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m411",
+   "rocha": "white_olympus",
+   "arquivo": "59.JPG",
+   "sonda": "vein",
+   "indice": 42,
+   "score": 0.11234,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m412",
+   "rocha": "san_francisco_green",
+   "arquivo": "73.JPG",
+   "sonda": "scratch",
+   "indice": 1,
+   "score": 0.11362,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m413",
+   "rocha": "siena_white",
+   "arquivo": "175.JPG",
+   "sonda": "scratch",
+   "indice": 177,
+   "score": 0.03089,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m414",
+   "rocha": "nevada_black",
+   "arquivo": "294.JPG",
+   "sonda": "white stain",
+   "indice": 14,
+   "score": 0.33152,
+   "estrato": "1100",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m415",
+   "rocha": "siena_white",
+   "arquivo": "414.JPG",
+   "sonda": "vein",
+   "indice": 9,
+   "score": 0.17683,
+   "estrato": "1110",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m416",
+   "rocha": "shadow_white",
+   "arquivo": "252.JPG",
+   "sonda": "scratch",
+   "indice": 81,
+   "score": 0.02889,
+   "estrato": "0110",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": false
+   }
+  },
+  {
+   "id": "m417",
+   "rocha": "san_francisco_green",
+   "arquivo": "73.JPG",
+   "sonda": "light spot",
+   "indice": 78,
+   "score": 0.04036,
+   "estrato": "0100",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": false,
+    "autor": false
+   }
+  },
+  {
+   "id": "m418",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "scratch",
+   "indice": 38,
+   "score": 0.08667,
+   "estrato": "0111",
+   "bracos": {
+    "unico": false,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m419",
+   "rocha": "san_francisco_green",
+   "arquivo": "205.JPG",
+   "sonda": "Stain",
+   "indice": 7,
+   "score": 0.60111,
+   "estrato": "1111",
+   "bracos": {
+    "unico": true,
+    "regra_todas": true,
+    "regra_autor": true,
+    "autor": true
+   }
+  },
+  {
+   "id": "m420",
+   "rocha": "golden_storm",
+   "arquivo": "27.JPG",
+   "sonda": "white stain",
+   "indice": 7,
+   "score": 0.07793,
+   "estrato": "1000",
+   "bracos": {
+    "unico": true,
+    "regra_todas": false,
+    "regra_autor": false,
+    "autor": false
+   }
+  }
+ ]
+}

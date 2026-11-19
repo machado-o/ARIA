@@ -1,0 +1,63 @@
+{
+  "semente": 20261119,
+  "por_litologia": 3,
+  "sorteado_em": "2026-11-19T15:19:13",
+  "particao": "test",
+  "chapas": {
+    "golden_storm": [
+      "149.JPG",
+      "27.JPG",
+      "9.JPG"
+    ],
+    "ipanema_beige": [
+      "213.JPG",
+      "37.JPG",
+      "377.JPG"
+    ],
+    "itaunas_white": [
+      "174.JPG",
+      "187.JPG",
+      "190.JPG"
+    ],
+    "nevada_black": [
+      "10.JPG",
+      "240.JPG",
+      "294.JPG"
+    ],
+    "san_francisco_green": [
+      "205.JPG",
+      "28.JPG",
+      "73.JPG"
+    ],
+    "santa_cecilia": [
+      "124.JPG",
+      "45.JPG",
+      "74.JPG"
+    ],
+    "shadow_white": [
+      "252.JPG",
+      "281.JPG",
+      "68.JPG"
+    ],
+    "siena_white": [
+      "175.JPG",
+      "414.JPG",
+      "677.JPG"
+    ],
+    "ubatuba_green": [
+      "283.JPG",
+      "372.JPG",
+      "69.JPG"
+    ],
+    "white_mirage": [
+      "108.JPG",
+      "132.JPG",
+      "87.JPG"
+    ],
+    "white_olympus": [
+      "105.JPG",
+      "52.JPG",
+      "59.JPG"
+    ]
+  }
+}

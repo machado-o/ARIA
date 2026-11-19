@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avaliação de marcações</title>
+<!--
+  Aplicativo da auditoria cega do Experimento 1 (docs/decisoes.md, D7 emenda de
+  19/11/2026). O auditoria_preparar.py copia este arquivo para pacote/index.html,
+  ao lado do itens.js e das imagens. Funciona aberto direto do disco (file://),
+  sem servidor e sem internet.
+
+  O pacote não leva nada que identifique o braço, a sonda, a litologia ou o
+  score de cada marcação: só a imagem, a caixa e os contornos.
+-->
+<style>
+  :root {
+    --fundo: #1c1e22;
+    --painel: #25282d;
+    --borda: #3a3e46;
+    --texto: #ececec;
+    --suave: #a8adb5;
+    --contorno: #ffd400;
+    --botao: #31363e;
+    --botao-hover: #3c424c;
+    --escolhido: #4f8fd6;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--fundo); color: var(--texto);
+    font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  [hidden] { display: none !important; }
+  button, input { font: inherit; color: inherit; }
+  button { background: var(--botao); border: 1px solid var(--borda); border-radius: 8px;
+    padding: 8px 14px; cursor: pointer; }
+  button:hover { background: var(--botao-hover); }
+  button:focus-visible, input:focus-visible { outline: 2px solid var(--escolhido); outline-offset: 2px; }
+  kbd { font: 12px ui-monospace, monospace; border: 1px solid var(--borda); border-bottom-width: 2px;
+    border-radius: 4px; padding: 0 5px; color: var(--suave); }
+
+  /* ── início ── */
+  #inicio { max-width: 720px; margin: 0 auto; padding: 32px 16px 48px; }
+  #inicio h1 { font-size: 24px; margin: 0 0 8px; }
+  .pergunta { font-size: 20px; font-weight: 600; background: var(--painel); border-left: 4px solid var(--contorno);
+    padding: 14px 18px; border-radius: 6px; margin: 18px 0; }
+  #inicio li { margin: 6px 0; }
+  .campo { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 24px; }
+  .campo input { background: var(--painel); border: 1px solid var(--borda); border-radius: 8px;
+    padding: 9px 12px; min-width: 240px; flex: 1; }
+  .principal { background: var(--escolhido); border-color: var(--escolhido); color: #fff; font-weight: 600; }
+  .principal:hover { background: #5d9be0; }
+  .aviso { color: var(--suave); font-size: 14px; min-height: 1.5em; margin-top: 8px; }
+  .discreto { color: var(--suave); font-size: 13px; }
+
+  /* ── avaliação ── */
+  #avaliacao { padding: 12px 16px 20px; max-width: 1280px; margin: 0 auto; }
+  .topo { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between;
+    margin-bottom: 10px; }
+  .topo .progresso { font-weight: 600; }
+  .barra { height: 4px; background: var(--painel); border-radius: 2px; overflow: hidden; margin-bottom: 12px; }
+  .barra div { height: 100%; background: var(--escolhido); width: 0; transition: width .2s; }
+  .area { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
+  .recorte-box { flex: 1 1 520px; min-width: 0; }
+  #recorte { display: block; width: 100%; max-width: min(74vh, 100%); aspect-ratio: 1 / 1; background: #000;
+    border-radius: 6px; margin: 0 auto; }
+  .lado { flex: 0 1 300px; min-width: 220px; display: flex; flex-direction: column; gap: 12px; }
+  #inteira { display: block; width: 100%; background: #000; border-radius: 6px; }
+  .legenda { color: var(--suave); font-size: 13px; margin: 2px 0 0; }
+  .ferramentas { display: flex; gap: 8px; flex-wrap: wrap; }
+  .ferramentas button { flex: 1; font-size: 14px; padding: 6px 10px; }
+  .pergunta-curta { font-weight: 600; font-size: 16px; margin: 14px 0 10px; text-align: center; }
+  .respostas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 640px; margin: 0 auto; }
+  .respostas button { padding: 14px 10px; font-size: 17px; font-weight: 600; }
+  .respostas button.escolhida { border-color: var(--escolhido); box-shadow: 0 0 0 2px var(--escolhido) inset; }
+  .respostas kbd { margin-left: 6px; }
+  .rodape { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 14px; }
+
+  /* ── fim ── */
+  #fim { max-width: 640px; margin: 0 auto; padding: 48px 16px; text-align: center; }
+  #fim h1 { font-size: 26px; }
+
+  @media (max-width: 640px) {
+    .respostas button { font-size: 15px; padding: 12px 6px; }
+    .respostas kbd { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<section id="inicio">
+  <h1>Avaliação de marcações em chapas de rocha</h1>
+  <p>Obrigado por ajudar! Cada tela mostra uma região de uma chapa polida, destacada por um
+     contorno amarelo. A pergunta é sempre a mesma:</p>
+  <div class="pergunta">Numa inspeção de qualidade, você marcaria esta região como defeito?</div>
+  <ul>
+    <li>Responda pelo que a região contornada cobre <strong>na maior parte</strong>. Se o contorno
+        pega um defeito, mas também muita área boa em volta, decida pelo que predomina.</li>
+    <li>O quadro menor mostra a chapa inteira e onde fica a região.</li>
+    <li>Para ver o que há por baixo do contorno, esconda-o com <kbd>C</kbd>. Para aproximar ou
+        afastar, use <kbd>+</kbd> e <kbd>−</kbd>.</li>
+    <li><strong>"Não sei"</strong> é uma resposta válida: use quando não der para decidir.</li>
+    <li>Não há resposta certa. O que interessa é o seu julgamento, então responda sem consultar
+        ninguém.</li>
+    <li>Pode parar quando quiser. O progresso fica salvo neste navegador, neste computador: para
+        continuar outro dia, abra o mesmo arquivo e digite o mesmo nome.</li>
+    <li>Ao parar ou terminar, clique em <strong>Exportar respostas</strong> e envie o arquivo
+        <code>.json</code> para o Henrique.</li>
+  </ul>
+  <p class="discreto">Teclas: <kbd>1</kbd> sim · <kbd>2</kbd> não · <kbd>3</kbd> não sei ·
+     <kbd>←</kbd> voltar · <kbd>C</kbd> contorno · <kbd>+</kbd>/<kbd>−</kbd> zoom</p>
+  <div class="campo">
+    <input id="nome" type="text" placeholder="Seu nome" autocomplete="name" aria-label="Seu nome">
+    <button id="comecar" class="principal">Começar</button>
+  </div>
+  <div id="aviso-nome" class="aviso"></div>
+  <p class="discreto" style="margin-top:28px">Mudou de computador? Importe um arquivo de respostas
+     exportado antes: <input id="importar" type="file" accept=".json,application/json"></p>
+</section>
+
+<section id="avaliacao" hidden>
+  <div class="topo">
+    <span class="progresso" id="progresso"></span>
+    <span class="discreto" id="salvo"></span>
+    <button id="exportar-topo">Exportar respostas</button>
+  </div>
+  <div class="barra"><div id="barra"></div></div>
+  <div class="area">
+    <div class="recorte-box">
+      <canvas id="recorte" aria-label="Região a avaliar, ampliada"></canvas>
+    </div>
+    <div class="lado">
+      <div>
+        <canvas id="inteira" aria-label="Chapa inteira"></canvas>
+        <p class="legenda">Chapa inteira. O quadro amarelo é a área ampliada ao lado.</p>
+      </div>
+      <div class="ferramentas">
+        <button id="contorno">Esconder contorno <kbd>C</kbd></button>
+      </div>
+      <div class="ferramentas">
+        <button id="aproximar">Aproximar <kbd>+</kbd></button>
+        <button id="afastar">Afastar <kbd>−</kbd></button>
+      </div>
+    </div>
+  </div>
+  <p class="pergunta-curta">Você marcaria esta região como defeito?</p>
+  <div class="respostas">
+    <button data-r="sim">Sim<kbd>1</kbd></button>
+    <button data-r="nao">Não<kbd>2</kbd></button>
+    <button data-r="nao_sei">Não sei<kbd>3</kbd></button>
+  </div>
+  <div class="rodape">
+    <button id="voltar">← Voltar</button>
+    <button id="pausar">Pausar</button>
+  </div>
+</section>
+
+<section id="fim" hidden>
+  <h1 id="fim-titulo">Terminou. Obrigado!</h1>
+  <p id="fim-texto">Clique abaixo para baixar o arquivo de respostas e envie para o Henrique.</p>
+  <p><button id="exportar-fim" class="principal">Exportar respostas</button></p>
+  <p><button id="revisar">Voltar às marcações</button></p>
+</section>
+
+<script src="itens.js"></script>
+<script>
+(function () {
+  'use strict';
+  var P = window.PACOTE;
+  if (!P || !P.itens) {
+    document.body.innerHTML = '<p style="padding:2em">Não encontrei o arquivo <code>itens.js</code>. ' +
+      'Extraia o .zip inteiro e abra o <code>index.html</code> de dentro da pasta.</p>';
+    return;
+  }
+  var ITENS = P.itens;
+  // Lado do recorte = maior lado da caixa × 2,2 (com piso de 25% da chapa), × o zoom.
+  // O piso existe porque, sem contexto, não dá para separar defeito do desenho da pedra.
+  var ZOOMS = [0.45, 0.65, 1, 1.5, 2.2, 3.2];
+  var ZOOM_INICIAL = 2;
+  var estado = null;          // { avaliador, respostas: {id: {r, t}}, pos, exportado }
+  var zoom = ZOOM_INICIAL;
+  var contorno = true;
+  var imagens = {};
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  // ── armazenamento (pode falhar: aba anônima, bloqueio de dados) ────────────
+  function chave(nome) { return 'aria-auditoria:' + P.id + ':' + nome.trim().toLowerCase(); }
+  function salvar() {
+    try { localStorage.setItem(chave(estado.avaliador), JSON.stringify(estado)); return true; }
+    catch (e) { return false; }
+  }
+  function ler(nome) {
+    try { var s = localStorage.getItem(chave(nome)); return s ? JSON.parse(s) : null; }
+    catch (e) { return null; }
+  }
+  function respondidas() { return Object.keys(estado.respostas).length; }
+  function primeiraPendente() {
+    for (var i = 0; i < ITENS.length; i++) if (!estado.respostas[ITENS[i].id]) return i;
+    return ITENS.length;
+  }
+
+  // ── telas ───────────────────────────────────────────────────────────────
+  function tela(id) {
+    ['inicio', 'avaliacao', 'fim'].forEach(function (t) { $(t).hidden = (t !== id); });
+  }
+
+  $('nome').addEventListener('input', function () {
+    var nome = this.value.trim();
+    var salvo = nome && ler(nome);
+    $('aviso-nome').textContent = salvo
+      ? 'Encontrei ' + Object.keys(salvo.respostas).length + ' respostas salvas com esse nome. ' +
+        'Clique para continuar de onde parou.'
+      : '';
+    $('comecar').textContent = salvo ? 'Continuar' : 'Começar';
+  });
+  $('nome').addEventListener('keydown', function (e) { if (e.key === 'Enter') comecar(); });
+  $('comecar').addEventListener('click', comecar);
+
+  function comecar() {
+    var nome = $('nome').value.trim();
+    if (!nome) { $('aviso-nome').textContent = 'Digite seu nome para começar.'; $('nome').focus(); return; }
+    estado = ler(nome) || { avaliador: nome, respostas: {}, pos: 0, exportado: null };
+    estado.pos = primeiraPendente();
+    if (!salvar()) {
+      $('aviso-nome').textContent = 'Atenção: este navegador não está salvando o progresso. ' +
+        'Exporte as respostas antes de fechar a página.';
+    }
+    abrir();
+  }
+
+  function abrir() {
+    zoom = ZOOM_INICIAL;
+    contorno = true;
+    if (estado.pos >= ITENS.length) return fim();
+    tela('avaliacao');
+    mostrar();
+  }
+
+  function fim() {
+    var n = respondidas();
+    $('fim-titulo').textContent = n >= ITENS.length ? 'Terminou. Obrigado!' : 'Pausado';
+    $('fim-texto').textContent = (n >= ITENS.length
+      ? 'Você respondeu todas as ' + ITENS.length + ' marcações. '
+      : 'Você respondeu ' + n + ' de ' + ITENS.length + ' marcações. ') +
+      'Clique abaixo para baixar o arquivo de respostas e envie para o Henrique.';
+    tela('fim');
+  }
+
+  // ── desenho ─────────────────────────────────────────────────────────────
+  function imagem(src) {
+    if (!imagens[src]) { var im = new Image(); im.src = src; imagens[src] = im; }
+    return imagens[src];
+  }
+
+  function regiao(it, W, H) {
+    var c = it.caixa, bw = (c[2] - c[0]) * W, bh = (c[3] - c[1]) * H;
+    var lado = Math.max(Math.max(bw, bh) * 2.2, 0.25 * Math.min(W, H)) * ZOOMS[zoom];
+    lado = Math.min(lado, Math.max(W, H));
+    var cx = (c[0] + c[2]) / 2 * W, cy = (c[1] + c[3]) / 2 * H;
+    function encaixar(centro, total) {
+      if (lado >= total) return (total - lado) / 2;
+      return Math.min(Math.max(centro - lado / 2, 0), total - lado);
+    }
+    return { sx: encaixar(cx, W), sy: encaixar(cy, H), lado: lado };
+  }
+
+  function prepararCanvas(cv, largura, altura) {
+    var dpr = window.devicePixelRatio || 1;
+    cv.width = Math.round(largura * dpr);
+    cv.height = Math.round(altura * dpr);
+    var ctx = cv.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.imageSmoothingQuality = 'high';
+    return ctx;
+  }
+
+  function desenhar(it, im) {
+    var W = im.naturalWidth, H = im.naturalHeight, r = regiao(it, W, H);
+
+    var cv = $('recorte'), C = cv.clientWidth || 600;
+    var ctx = prepararCanvas(cv, C, C);
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, C, C);
+    var esc = C / r.lado;
+    // Origem e destino recortados à imagem: nem todo navegador aceita origem fora dela.
+    var x0 = Math.max(r.sx, 0), y0 = Math.max(r.sy, 0);
+    var x1 = Math.min(r.sx + r.lado, W), y1 = Math.min(r.sy + r.lado, H);
+    ctx.drawImage(im, x0, y0, x1 - x0, y1 - y0,
+                  (x0 - r.sx) * esc, (y0 - r.sy) * esc, (x1 - x0) * esc, (y1 - y0) * esc);
+    if (contorno) {
+      ctx.lineJoin = 'round';
+      [['rgba(0,0,0,0.8)', 4], ['#ffd400', 2]].forEach(function (traco) {
+        ctx.strokeStyle = traco[0];
+        ctx.lineWidth = traco[1];
+        it.pecas.forEach(function (p) {
+          ctx.beginPath();
+          p.forEach(function (pt, k) {
+            var X = (pt[0] * W - r.sx) * esc, Y = (pt[1] * H - r.sy) * esc;
+            if (k) ctx.lineTo(X, Y); else ctx.moveTo(X, Y);
+          });
+          ctx.closePath();
+          ctx.stroke();
+        });
+      });
+    }
+
+    var cvi = $('inteira'), L = cvi.clientWidth || 280, A = L * H / W;
+    cvi.style.height = A + 'px';
+    var ci = prepararCanvas(cvi, L, A);
+    ci.drawImage(im, 0, 0, L, A);
+    var k = L / W;
+    ci.lineWidth = 2;
+    ci.strokeStyle = 'rgba(0,0,0,0.8)';
+    ci.strokeRect(r.sx * k, r.sy * k, r.lado * k, r.lado * k);
+    ci.strokeStyle = '#ffd400';
+    ci.lineWidth = 1.5;
+    ci.strokeRect(r.sx * k, r.sy * k, r.lado * k, r.lado * k);
+  }
+
+  function mostrar() {
+    var it = ITENS[estado.pos];
+    var im = imagem(it.img);
+    if (!im.complete || !im.naturalWidth) {
+      im.addEventListener('load', function () { if (ITENS[estado.pos] === it) mostrar(); }, { once: true });
+      return;
+    }
+    desenhar(it, im);
+    var n = respondidas();
+    $('progresso').textContent = 'Marcação ' + (estado.pos + 1) + ' de ' + ITENS.length +
+      ' · ' + n + ' respondidas';
+    $('barra').style.width = (100 * n / ITENS.length) + '%';
+    $('salvo').textContent = estado.exportado
+      ? 'Último export: ' + new Date(estado.exportado).toLocaleString('pt-BR')
+      : 'Ainda não exportado';
+    var atual = estado.respostas[it.id];
+    document.querySelectorAll('.respostas button').forEach(function (b) {
+      b.classList.toggle('escolhida', !!atual && atual.r === b.dataset.r);
+    });
+    $('voltar').disabled = estado.pos === 0;
+    $('contorno').firstChild.textContent = contorno ? 'Esconder contorno ' : 'Mostrar contorno ';
+    var prox = ITENS[estado.pos + 1];
+    if (prox) imagem(prox.img);       // pré-carrega a próxima chapa
+  }
+
+  // ── ações ───────────────────────────────────────────────────────────────
+  function responder(r) {
+    var it = ITENS[estado.pos];
+    estado.respostas[it.id] = { r: r, t: new Date().toISOString() };
+    estado.pos = estado.pos + 1;
+    zoom = ZOOM_INICIAL;
+    contorno = true;          // cada marcação nova abre com o contorno à vista
+    salvar();
+    if (estado.pos >= ITENS.length) estado.pos = primeiraPendente();
+    if (estado.pos >= ITENS.length) return fim();
+    mostrar();
+  }
+  function voltar() {
+    if (estado.pos > 0) { estado.pos--; zoom = ZOOM_INICIAL; contorno = true; mostrar(); }
+  }
+  function mudarZoom(d) {
+    var z = Math.min(Math.max(zoom + d, 0), ZOOMS.length - 1);
+    if (z !== zoom) { zoom = z; mostrar(); }
+  }
+  function alternarContorno() { contorno = !contorno; mostrar(); }
+
+  function exportar() {
+    var agora = new Date();
+    estado.exportado = agora.toISOString();
+    salvar();
+    var dados = {
+      pacote: P.id, avaliador: estado.avaliador, exportado_em: estado.exportado,
+      itens: ITENS.length, respondidas: respondidas(), respostas: estado.respostas
+    };
+    var nome = estado.avaliador.normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^A-Za-z0-9]+/g, '_').replace(/^_|_$/g, '') || 'avaliador';
+    var dia = agora.toISOString().slice(0, 16).replace(/[-:T]/g, '');
+    var blob = new Blob([JSON.stringify(dados, null, 1)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'respostas_' + nome + '_' + dia + '.json';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    if (!$('avaliacao').hidden) mostrar();
+  }
+
+  $('importar').addEventListener('change', function () {
+    var f = this.files && this.files[0];
+    if (!f) return;
+    var leitor = new FileReader();
+    leitor.onload = function () {
+      try {
+        var d = JSON.parse(leitor.result);
+        if (d.pacote !== P.id || !d.respostas || !d.avaliador) throw new Error('outro pacote');
+        estado = ler(d.avaliador) || { avaliador: d.avaliador, respostas: {}, pos: 0, exportado: null };
+        Object.keys(d.respostas).forEach(function (id) { estado.respostas[id] = d.respostas[id]; });
+        estado.pos = primeiraPendente();
+        salvar();
+        $('nome').value = d.avaliador;
+        abrir();
+      } catch (e) {
+        $('aviso-nome').textContent = 'Esse arquivo não é de respostas desta avaliação.';
+      }
+    };
+    leitor.readAsText(f);
+  });
+
+  document.querySelectorAll('.respostas button').forEach(function (b) {
+    b.addEventListener('click', function () { responder(b.dataset.r); });
+  });
+  $('voltar').addEventListener('click', voltar);
+  $('pausar').addEventListener('click', fim);
+  $('aproximar').addEventListener('click', function () { mudarZoom(-1); });
+  $('afastar').addEventListener('click', function () { mudarZoom(1); });
+  $('contorno').addEventListener('click', alternarContorno);
+  $('exportar-topo').addEventListener('click', exportar);
+  $('exportar-fim').addEventListener('click', exportar);
+  $('revisar').addEventListener('click', function () {
+    estado.pos = Math.min(primeiraPendente(), ITENS.length - 1);
+    tela('avaliacao');
+    mostrar();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if ($('avaliacao').hidden || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.target && e.target.tagName === 'INPUT') return;
+    var k = e.key;
+    if (k === '1' || k === 's' || k === 'S') responder('sim');
+    else if (k === '2' || k === 'n' || k === 'N') responder('nao');
+    else if (k === '3') responder('nao_sei');
+    else if (k === 'ArrowLeft' || k === 'Backspace') { e.preventDefault(); voltar(); }
+    else if (k === 'c' || k === 'C') alternarContorno();
+    else if (k === '+' || k === '=') mudarZoom(-1);
+    else if (k === '-' || k === '_') mudarZoom(1);
+    else return;
+    e.preventDefault();
+  });
+
+  var redesenho = null;
+  window.addEventListener('resize', function () {
+    if ($('avaliacao').hidden) return;
+    clearTimeout(redesenho);
+    redesenho = setTimeout(mostrar, 120);
+  });
+})();
+</script>
+</body>
+</html>

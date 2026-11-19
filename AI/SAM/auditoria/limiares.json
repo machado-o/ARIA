@@ -1,0 +1,337 @@
+{
+  "versao_ultralytics": "8.4.52",
+  "calculado_em": "2026-11-19T15:29:08",
+  "unico": {
+    "vein": 0.0554,
+    "crack": 0.0071,
+    "Stain": 0.1517,
+    "Dark patches": 0.0167,
+    "light spot": 0.0559,
+    "scratch": 0.1118,
+    "white stain": 0.0321
+  },
+  "litologias": {
+    "golden_storm": {
+      "admitidas": [
+        "crack",
+        "Dark patches",
+        "light spot",
+        "scratch",
+        "white stain"
+      ],
+      "regra": {
+        "vein": 0.01,
+        "crack": 0.056,
+        "Stain": 0.0796,
+        "Dark patches": 0.1257,
+        "light spot": 0.1387,
+        "scratch": 0.0507,
+        "white stain": 0.0983
+      },
+      "regra_registrada": {
+        "crack": 0.056,
+        "Dark patches": 0.1256,
+        "light spot": 0.1387,
+        "scratch": 0.0507,
+        "white stain": 0.0983
+      },
+      "autor": {
+        "crack": 0.1552,
+        "Dark patches": 0.4146,
+        "light spot": 0.5698,
+        "scratch": 0.0843,
+        "white stain": 0.4232
+      }
+    },
+    "ipanema_beige": {
+      "admitidas": [
+        "crack",
+        "Stain",
+        "Dark patches",
+        "scratch"
+      ],
+      "regra": {
+        "vein": 0.0107,
+        "crack": 0.0312,
+        "Stain": 0.0339,
+        "Dark patches": 0.0985,
+        "light spot": 0.012,
+        "scratch": 0.0308,
+        "white stain": 0.0152
+      },
+      "regra_registrada": {
+        "crack": 0.0312,
+        "Stain": 0.0338,
+        "Dark patches": 0.111,
+        "scratch": 0.0308
+      },
+      "autor": {
+        "crack": 0.155,
+        "Stain": 0.1211,
+        "Dark patches": 0.5,
+        "scratch": 0.1447
+      }
+    },
+    "itaunas_white": {
+      "admitidas": [
+        "crack",
+        "Stain",
+        "Dark patches",
+        "light spot",
+        "white stain"
+      ],
+      "regra": {
+        "vein": 0.1014,
+        "crack": 0.1791,
+        "Stain": 0.1818,
+        "Dark patches": 0.2383,
+        "light spot": 0.0406,
+        "scratch": 0.1618,
+        "white stain": 0.0323
+      },
+      "regra_registrada": {
+        "crack": 0.179,
+        "Stain": 0.1818,
+        "Dark patches": 0.2383,
+        "light spot": 0.0406,
+        "white stain": 0.0323
+      },
+      "autor": {
+        "crack": 0.5,
+        "Stain": 0.5244,
+        "Dark patches": 0.4012,
+        "light spot": 0.5,
+        "white stain": 0.35
+      }
+    },
+    "nevada_black": {
+      "admitidas": [
+        "crack",
+        "light spot"
+      ],
+      "regra": {
+        "vein": 0.0888,
+        "crack": 0.0183,
+        "Stain": 0.0125,
+        "Dark patches": 0.0377,
+        "light spot": 0.0567,
+        "scratch": 0.1733,
+        "white stain": 0.1016
+      },
+      "regra_registrada": {
+        "crack": 0.0183,
+        "light spot": 0.0567
+      },
+      "autor": {
+        "crack": 0.2402,
+        "light spot": 0.1463
+      }
+    },
+    "san_francisco_green": {
+      "admitidas": [
+        "Stain",
+        "Dark patches"
+      ],
+      "regra": {
+        "vein": 0.0053,
+        "crack": 0.0824,
+        "Stain": 0.1104,
+        "Dark patches": 0.208,
+        "light spot": 0.0082,
+        "scratch": 0.0207,
+        "white stain": 0.0085
+      },
+      "regra_registrada": {
+        "Stain": 0.1104,
+        "Dark patches": 0.208
+      },
+      "autor": {
+        "Stain": 0.3308,
+        "Dark patches": 0.5604
+      }
+    },
+    "santa_cecilia": {
+      "admitidas": [
+        "crack",
+        "Stain",
+        "Dark patches",
+        "light spot",
+        "white stain"
+      ],
+      "regra": {
+        "vein": 0.0185,
+        "crack": 0.0797,
+        "Stain": 0.1325,
+        "Dark patches": 0.2253,
+        "light spot": 0.0321,
+        "scratch": 0.0806,
+        "white stain": 0.0515
+      },
+      "regra_registrada": {
+        "crack": 0.0797,
+        "Stain": 0.1325,
+        "Dark patches": 0.2251,
+        "light spot": 0.0321,
+        "white stain": 0.0515
+      },
+      "autor": {
+        "crack": 0.2005,
+        "Stain": 0.7,
+        "Dark patches": 0.2629,
+        "light spot": 0.1825,
+        "white stain": 0.246
+      }
+    },
+    "shadow_white": {
+      "admitidas": [
+        "vein",
+        "crack",
+        "Stain",
+        "Dark patches",
+        "scratch"
+      ],
+      "regra": {
+        "vein": 0.0208,
+        "crack": 0.1241,
+        "Stain": 0.151,
+        "Dark patches": 0.0395,
+        "light spot": 0.0525,
+        "scratch": 0.0266,
+        "white stain": 0.0085
+      },
+      "regra_registrada": {
+        "vein": 0.0208,
+        "crack": 0.1241,
+        "Stain": 0.1511,
+        "Dark patches": 0.0395,
+        "scratch": 0.0266
+      },
+      "autor": {
+        "vein": 0.0272,
+        "crack": 0.134,
+        "Stain": 0.2586,
+        "Dark patches": 0.5422,
+        "scratch": 0.0479
+      }
+    },
+    "siena_white": {
+      "admitidas": [
+        "vein",
+        "Stain",
+        "Dark patches"
+      ],
+      "regra": {
+        "vein": 0.1453,
+        "crack": 0.0258,
+        "Stain": 0.2025,
+        "Dark patches": 0.2345,
+        "light spot": 0.0549,
+        "scratch": 0.0265,
+        "white stain": 0.0108
+      },
+      "regra_registrada": {
+        "vein": 0.1453,
+        "Stain": 0.2025,
+        "Dark patches": 0.2345
+      },
+      "autor": {
+        "vein": 0.3351,
+        "Stain": 0.392,
+        "Dark patches": 0.3966
+      }
+    },
+    "ubatuba_green": {
+      "admitidas": [
+        "crack",
+        "Stain",
+        "Dark patches",
+        "light spot",
+        "white stain"
+      ],
+      "regra": {
+        "vein": 0.0022,
+        "crack": 0.0283,
+        "Stain": 0.0973,
+        "Dark patches": 0.1252,
+        "light spot": 0.034,
+        "scratch": 0.0388,
+        "white stain": 0.0453
+      },
+      "regra_registrada": {
+        "crack": 0.0283,
+        "Stain": 0.0973,
+        "Dark patches": 0.1252,
+        "light spot": 0.034,
+        "white stain": 0.0453
+      },
+      "autor": {
+        "crack": 0.0385,
+        "Stain": 0.28,
+        "Dark patches": 0.52,
+        "light spot": 0.165,
+        "white stain": 0.2217
+      }
+    },
+    "white_mirage": {
+      "admitidas": [
+        "crack",
+        "Stain",
+        "Dark patches",
+        "light spot",
+        "scratch",
+        "white stain"
+      ],
+      "regra": {
+        "vein": 0.0046,
+        "crack": 0.1007,
+        "Stain": 0.1074,
+        "Dark patches": 0.1946,
+        "light spot": 0.0435,
+        "scratch": 0.058,
+        "white stain": 0.0212
+      },
+      "regra_registrada": {
+        "crack": 0.1007,
+        "Stain": 0.1073,
+        "Dark patches": 0.1946,
+        "light spot": 0.0435,
+        "scratch": 0.058,
+        "white stain": 0.0199
+      },
+      "autor": {
+        "crack": 0.2,
+        "Stain": 0.3648,
+        "Dark patches": 0.6545,
+        "light spot": 0.157,
+        "scratch": 0.1961,
+        "white stain": 0.0722
+      }
+    },
+    "white_olympus": {
+      "admitidas": [
+        "vein",
+        "crack",
+        "white stain"
+      ],
+      "regra": {
+        "vein": 0.0674,
+        "crack": 0.1516,
+        "Stain": 0.0098,
+        "Dark patches": 0.0176,
+        "light spot": 0.0058,
+        "scratch": 0.089,
+        "white stain": 0.0029
+      },
+      "regra_registrada": {
+        "vein": 0.0674,
+        "crack": 0.1516,
+        "white stain": 0.0029
+      },
+      "autor": {
+        "vein": 0.1592,
+        "crack": 0.4646,
+        "white stain": 0.052
+      }
+    }
+  }
+}

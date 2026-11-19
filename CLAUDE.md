@@ -104,6 +104,17 @@ Os demais rodam a partir de `AI/SAM/`, com o Python do venv em `AI/.venv` (`..\.
 ..\.venv\Scripts\python.exe figuras_regra_autor.py          # regra × autor na mesma chapa, do cache (sem GPU)
 ```
 
+Auditoria cega do Experimento 1 (**D7**, emenda de 19/11/2026), também a partir de `AI/SAM/`:
+
+```bash
+..\.venv\Scripts\python.exe auditoria_preparar.py   # amostra do test/, captura, limiares dos 4 braços, pacote .zip
+..\.venv\Scripts\python.exe auditoria_analisar.py   # precisão e recall relativo por braço, IC 95%, kappa
+```
+
+> O avaliador recebe o `auditoria/pacote_*.zip`, abre o `index.html` no navegador e devolve o
+> `.json` exportado, que vai para `auditoria/respostas/`. O pacote não leva braço, sonda,
+> litologia nem score — só a imagem e o contorno.
+
 > `figuras_regra_autor.py` grava em `apresentações/jacitec/` (figuras + `regra_x_autor.csv`).
 > Precisa do `_cache/` — na máquina sem cache, abrir cada litologia no calibrador e capturar
 > antes.
@@ -246,6 +257,14 @@ results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
   `conf` no piso, guarda scores + polígonos, e filtra sem GPU. Equivalência provada no fonte do
   ultralytics **e verificada empiricamente** — `python verificar_d18.py` compara a filtragem do
   cache com o SAM rodando de novo em cada limiar.
+- **O pacote da auditoria foi sorteado uma vez só (19/11/2026), e não se refaz.** Os ids das
+  marcações (`m001`…) valem para aquele sorteio, cuja ligação com os braços está em
+  `auditoria/itens.json`. Rodar o `auditoria_preparar.py` de novo — principalmente na outra
+  máquina, onde o SAM dá scores um pouco diferentes — sortearia outros itens e desligaria as
+  respostas dos braços; por isso o script para antes do sorteio se o `itens.json` existe
+  (`--refazer-itens` só antes de qualquer resposta). Para reenviar, use o `.zip` já gerado (ele
+  e o `pacote/` são gitignored e só existem na máquina em que o pacote foi montado). O Henrique
+  também é avaliador: ele não deve abrir `itens.json` nem `limiares.json` antes de julgar.
 - **O calibrador é o dono do limiar; o `inference.py` é o dono das máscaras finais.** O
   `calibrator.py` não escreve em `results/` nem gera `.txt` — ele decide sondas e limiar e grava
   `rock_prompts.json` + `calibracao.json`.

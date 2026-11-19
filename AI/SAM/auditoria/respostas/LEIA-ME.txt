@@ -1,0 +1,2 @@
+Arquivos .json exportados pelo aplicativo da auditoria (um por avaliador e por export).
+O auditoria_analisar.py lê todos daqui. Não editar à mão.

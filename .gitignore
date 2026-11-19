@@ -29,3 +29,9 @@ Thumbs.db
 
 results/
 AI/SAM/**/_cache/
+
+# Auditoria cega (D7): o pacote do avaliador leva cópias de imagens do dataset e
+# sai de novo, igual, do auditoria_preparar.py. Amostra, limiares, itens e
+# respostas vão para o git.
+AI/SAM/auditoria/pacote/
+AI/SAM/auditoria/*.zip
