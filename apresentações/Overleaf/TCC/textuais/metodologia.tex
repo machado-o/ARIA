@@ -30,7 +30,7 @@ A distribuição entre litologias é fortemente desbalanceada, variando de 106 a
     D & $<$ 200 imagens & 14 & Inclui as litologias de textura atípica \\
     \hline
   \end{tabularx}
-  \legend{Fonte: elaborado pelo autor.}
+  \legend{elaborado pelo autor}
 \end{quadro}
 
 A ordem de execução dos experimentos segue as faixas, da maior para a menor, e cada faixa constitui um marco entregável: ela é executada, avaliada e redigida antes que a seguinte comece. Em qualquer ponto de interrupção existe, assim, um resultado completo e reportável, e as faixas não alcançadas são declaradas como trabalho futuro.
@@ -43,7 +43,7 @@ O ARIA organiza-se em três estágios, descritos no Quadro \ref{quad:estagios}. 
   \caption{Estágios do \textit{pipeline} ARIA.}
   \label{quad:estagios}
   \centering
-  \begin{tabularx}{\textwidth}{llX}
+  \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{4.2cm}>{\raggedright\arraybackslash}X}
     \hline
     \bfseries Estágio & \bfseries Modelo & \bfseries Papel \\
     \hline
@@ -52,17 +52,19 @@ O ARIA organiza-se em três estágios, descritos no Quadro \ref{quad:estagios}. 
     3 --- Aluno & YOLO11-seg & Executa a inferência em produção, treinado sobre os polígonos do Professor \\
     \hline
   \end{tabularx}
-  \legend{Fonte: elaborado pelo autor.}
+  \legend{elaborado pelo autor}
 \end{quadro}
 
 A separação entre Professor e Aluno é o que torna o arranjo viável industrialmente: o custo de inferência do modelo de fundação é pago uma única vez, na geração do conjunto de treinamento, e não a cada chapa inspecionada. A Figura \ref{fig:arquitetura} mostra o fluxo nas duas fases: fora da linha, a seleção de imagens, a calibração e o Professor produzem o conjunto de treinamento do Aluno; em produção, o classificador identifica a litologia e encaminha a chapa ao Aluno correspondente.
+
+A versão do Aluno foi fixada no YOLO11-seg, a geração vigente quando o trabalho começou. Versões posteriores da família surgiram durante o desenvolvimento, mas trocar de versão no meio do trabalho tornaria incomparáveis os resultados obtidos antes e depois da troca, sem que isso respondesse a nenhuma das hipóteses. A comparação entre versões do Aluno não faz parte do escopo.
 
 \begin{figure}[ht]
   \caption{Fluxo de processamento do \textit{pipeline} ARIA.}
   \label{fig:arquitetura}
   \centering
   \includegraphics[width=\textwidth]{arquitetura_aria.png}
-  \legend{Fonte: elaborado pelo autor.}
+  \legend{elaborado pelo autor}
 \end{figure}
 
 \section{Estágio 1 --- Reprodução do Classificador de Litologias}
@@ -84,10 +86,16 @@ O classificador do primeiro estágio é uma \textbf{reprodução} do modelo Xcep
     Normalização  & Entrada em $[0, 1]$ & Entrada em $[-1, 1]$, a escala esperada pelos pesos do ImageNet \\
     \hline
   \end{tabularx}
-  \legend{Fonte: elaborado pelo autor.}
+  \legend{elaborado pelo autor}
 \end{quadro}
 
-A troca de arcabouço é de ordem prática. A alteração do particionamento é metodológica: com as partições originais, o classificador nunca é treinado sobre as imagens de teste das quais saem as chapas da avaliação (Seção \ref{sec:referencia}). A correção da normalização ajusta a entrada à escala para a qual os pesos pré-treinados foram produzidos. A fidelidade da reprodução foi conferida no código, inclusive pela contagem de parâmetros treináveis na fase de ajuste fino, idêntica à do modelo original.
+A troca de arcabouço é de ordem prática: as versões recentes do TensorFlow não oferecem aceleração por GPU no Windows, ambiente em que o trabalho foi executado, e o restante do \textit{pipeline} já é escrito em PyTorch. Os pesos iniciais são os mesmos, convertidos do Keras para a biblioteca \textit{timm}.
+
+A alteração do particionamento é metodológica, e tem duas razões. A primeira é a integridade da avaliação: com as partições originais, o classificador nunca é treinado sobre as imagens de teste das quais saem as chapas da avaliação (Seção \ref{sec:referencia}). A segunda é um defeito do procedimento original, observado na leitura dos cadernos de treinamento: as três partições eram fundidas e sorteadas de novo por imagem, e a separação entre validação e teste era feita sobre um conjunto que se reembaralha a cada passada, o que pode fazer as duas partições se sobreporem. A consequência desse sorteio é discutida na Seção \ref{sec:res_classificador}.
+
+A resolução foi mantida na de carregamento, sem a ampliação para 1.080 \textit{pixels}, porque a ampliação não acrescenta informação à imagem e multiplica o custo de treino; a regra adotada foi testar a ampliação apenas se a acurácia em 480 ficasse claramente abaixo da original, e o resultado da Seção \ref{sec:res_classificador} mostrou que a diferença não vinha da resolução. A correção da normalização ajusta a entrada à escala para a qual os pesos pré-treinados foram produzidos: o original dividia os \textit{pixels} por 255 e alimentava os pesos do ImageNet fora da faixa em que foram treinados.
+
+A fidelidade da reprodução foi conferida no código, e não apenas na receita. As ``últimas 50 camadas'' do Keras foram mapeadas para os módulos correspondentes da \textit{timm} e conferidas pela contagem de parâmetros treináveis na fase de ajuste fino --- 12.168.304, idêntica à do modelo original. A normalização em lote permanece em modo de inferência nas duas fases, como no original, e a camada de \textit{dropout} da cabeça de classificação foi montada explicitamente, porque a implementação do Xception na versão da \textit{timm} utilizada calcula o \textit{dropout} e descarta o resultado. Sem essa correção, a reprodução teria uma regularização a menos que o modelo original.
 
 O classificador é avaliado uma única vez sobre a partição de teste, ao final do treinamento, por acurácia, acurácia balanceada e F1 macro.
 
@@ -113,7 +121,7 @@ O Professor é guiado por um conjunto de palavras em inglês, aqui denominadas \
     \textit{white stain}  & 6 & Manchas brancas não marcadas por \textit{light spot} \\
     \hline
   \end{tabularx}
-  \legend{Fonte: elaborado pelo autor.}
+  \legend{elaborado pelo autor}
 \end{quadro}
 
 É necessário ser explícito quanto ao estatuto dessas palavras. Elas \textbf{não são afirmações sobre a natureza do que foi encontrado}: são chaves lexicais escolhidas por fazerem o modelo responder a certas assinaturas visuais. Afirmar que a região marcada pela sonda \textit{crack} \textit{é} uma fissura exigiria ter validado que o modelo distingue fissura de veio --- validação que este trabalho não realiza e, portanto, não pode alegar.
@@ -147,8 +155,10 @@ O protocolo adotado separa as duas tarefas em quatro imagens por litologia, desc
     \textit{limiar forte}  & O limiar & Feições marcantes, de alto contraste \\
     \hline
   \end{tabularx}
-  \legend{Fonte: elaborado pelo autor.}
+  \legend{elaborado pelo autor}
 \end{quadro}
+
+A imagem típica merece uma precisão, porque é a mais fácil de escolher errado. Ela não é a chapa com uma quantidade ``média'' de defeitos, e sim a chapa mais comum da litologia --- limpa, se a litologia costuma produzir chapas limpas. É essa imagem que impede o limiar de descer demais: um limiar que começa a marcar a matriz limpa da chapa típica está marcando o desenho da pedra, e não anomalias. Na revisão das primeiras litologias calibradas, uma imagem típica escolhida pelo critério de defeito médio foi substituída por esse motivo.
 
 Três observações completam o protocolo.
 
@@ -208,7 +218,7 @@ Formalmente, seja $V = \{\text{sutil}, \text{típica}, \text{forte}\}$ o conjunt
 
 A forma da regra foi escolhida entre duas alternativas. A outra fixaria o limiar como o maior valor que ainda marca uma fração mínima das feições anotadas nas imagens de limiar. Seria uma regra mais próxima do objetivo final, por medir acerto em vez de forma de curva, mas exigiria anotar manualmente as três imagens de limiar de cada litologia --- 135 imagens com polígonos desenhados à mão --- e ainda introduziria um parâmetro livre, a fração mínima. O joelho dispensa anotação e não tem parâmetro a fixar. Sua adequação é verificada sem custo adicional, pela mesma auditoria cega que avalia o Experimento 1 (Seção \ref{sec:referencia}).
 
-Três aspectos da regra são fixados deliberadamente. A imagem de \textit{descoberta} \textbf{não} entra no cálculo: escolhida por ser a mais rica em feições, ela puxaria o limiar para cima, reintroduzindo o viés de seleção por visibilidade que o protocolo existe para evitar. O eixo do limiar é tomado em escala \textbf{logarítmica}, porque os escores concentram-se na década baixa --- medidos entre 0,011 e 0,770 em uma litologia de referência, com mediana entre 0,040 e 0,080 --- e, em escala linear, o joelho recairia sistematicamente sobre o primeiro ponto da curva. Por fim, a regra \textbf{não possui parâmetro livre}: não há constante a ser fixada por inspeção, o que elimina a possibilidade de ajustá-la para favorecer um resultado.
+Três aspectos da regra são fixados deliberadamente. A imagem de \textit{descoberta} \textbf{não} entra no cálculo: escolhida por ser a mais rica em feições, ela puxaria o limiar para cima, reintroduzindo o viés de seleção por visibilidade que o protocolo existe para evitar. O eixo do limiar é tomado em escala \textbf{logarítmica}, porque os escores concentram-se na década baixa --- medidos entre 0,011 e 0,766 na imagem de descoberta da \textit{siena\_white}, com medianas entre 0,045 e 0,076 conforme a sonda (Tabela \ref{tab:escores}) --- e, em escala linear, o joelho recairia sistematicamente sobre o primeiro ponto da curva. Por fim, a regra \textbf{não possui parâmetro livre}: não há constante a ser fixada por inspeção, o que elimina a possibilidade de ajustá-la para favorecer um resultado.
 
 A regra é aplicada mecanicamente. Reconhece-se, porém, que uma curva pode enganar em casos particulares, e o autor pode divergir do valor produzido. Para que essa divergência não se torne invisível, a ferramenta de calibração registra \textbf{ambos} os valores --- o produzido pela regra e o adotado pelo autor --- junto de uma justificativa textual obrigatória. Na litologia \textit{siena\_white}, por exemplo, o critério registrado foi: ``Subi até o ponto em que a vaga típica para de marcar matriz limpa, aceitando perder feições mais fracas da vaga sutil; a vaga forte continua com todas as óbvias.'' A justificativa nomeia o que foi aceito perder, e é isso que a torna auditável: outra pessoa pode discordar do limiar sabendo exatamente que troca foi feita. Os dois valores têm papéis distintos no Experimento 1: o da regra alimenta os braços que testam a regra, e o adotado pelo autor ocupa um braço próprio, que mede o efeito do ajuste humano (Seção \ref{sec:exp1}). O valor adotado pelo autor é também o que rotula o conjunto de treinamento do Aluno, e deixá-lo fora do experimento significaria avaliar uma configuração que o sistema não usa. A taxa de concordância entre regra e autor é reportada como resultado à parte, e constitui evidência sobre a adequação da própria regra.
 
@@ -237,7 +247,7 @@ A ferramenta de seleção exibe, no navegador, a grade de todas as imagens da pa
   \label{fig:rock_viewer}
   \centering
   \includegraphics[width=\textwidth]{rock_viewer.png}
-  \legend{Fonte: elaborado pelo autor.}
+  \legend{elaborado pelo autor}
 \end{figure}
 
 Três propriedades do protocolo são garantidas pela ferramenta, e não pela disciplina de quem a opera. Somente imagens da partição de treinamento podem ser escolhidas; as das demais partições podem ser exibidas para estudo da variabilidade da rocha, mas aparecem bloqueadas e são recusadas. As litologias são oferecidas em ordem de volume de dados, da faixa A para a D, de modo que a ordem de trabalho é a própria prioridade do experimento. E cada escolha é copiada para um arquivo nomeado pelo papel da vaga, com a partição, o arquivo de origem e a data registrados nos metadados da litologia.
@@ -253,7 +263,7 @@ Na etapa de \textbf{descoberta} (Figura \ref{fig:calib_descoberta}), cada sonda 
   \label{fig:calib_descoberta}
   \centering
   \includegraphics[width=\textwidth]{calib_descoberta.png}
-  \legend{Fonte: elaborado pelo autor.}
+  \legend{elaborado pelo autor}
 \end{figure}
 
 Na etapa de \textbf{limiar} (Figura \ref{fig:calib_limiar}), um único controle de limiar por sonda governa quatro prévias simultâneas, uma por imagem, cada uma com sua contagem de marcações. É a forma visual do princípio da Seção \ref{sec:regra}: um limiar submetido a três casos, e não três limiares a serem combinados. Abaixo das prévias, a curva da Equação \ref{eq:curva} é traçada por imagem, em escala logarítmica, com o limiar corrente e o limiar da regra marcados. O controle parte do valor da regra; o autor diverge dele se quiser, e nunca o contrário.
@@ -263,7 +273,7 @@ Na etapa de \textbf{limiar} (Figura \ref{fig:calib_limiar}), um único controle 
   \label{fig:calib_limiar}
   \centering
   \includegraphics[width=\textwidth]{calib_limiar.png}
-  \legend{Fonte: elaborado pelo autor.}
+  \legend{elaborado pelo autor}
 \end{figure}
 
 Na etapa de \textbf{fechamento} (Figura \ref{fig:calib_fechar}), uma tabela reúne, por sonda, o limiar da regra, o adotado pelo autor, a divergência entre os dois e as marcações em cada imagem. O salvamento permanece bloqueado enquanto o campo do critério estiver vazio: não é possível gravar um limiar sem escrever por que ele foi escolhido.
@@ -273,14 +283,14 @@ Na etapa de \textbf{fechamento} (Figura \ref{fig:calib_fechar}), uma tabela reú
   \label{fig:calib_fechar}
   \centering
   \includegraphics[width=\textwidth]{calib_fechar.png}
-  \legend{Fonte: elaborado pelo autor.}
+  \legend{elaborado pelo autor}
 \end{figure}
 
 \subsection{O registro de calibração}
 
 O salvamento produz o registro de calibração da litologia, um arquivo de texto versionado junto do código. O Código \ref{lst:calibracao} mostra um trecho do registro da \textit{siena\_white}, com uma das três sondas do conjunto.
 
-\begin{lstlisting}[caption={Trecho do registro de calibração da litologia \textit{siena\_white}.}, label={lst:calibracao}, literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ã}{{\~a}}1 {õ}{{\~o}}1 {ç}{{\c{c}}}1 {â}{{\^a}}1 {ê}{{\^e}}1 {ô}{{\^o}}1]
+\begin{lstlisting}[caption={Trecho do registro de calibração da litologia \textit{siena\_white}.}, label={lst:calibracao}, float=htbp, linewidth=\textwidth, basicstyle=\footnotesize\ttfamily, literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ã}{{\~a}}1 {õ}{{\~o}}1 {ç}{{\c{c}}}1 {â}{{\^a}}1 {ê}{{\^e}}1 {ô}{{\^o}}1]
 {
   "rock": "siena_white",
   "faixa": "A",
@@ -356,13 +366,13 @@ O primeiro experimento avalia H1 e não envolve treinamento algum: compara confi
 
 O ponto delicado do desenho é a definição do braço de controle. Uma configuração única escolhida arbitrariamente tornaria a comparação vazia, pois o resultado dependeria dessa escolha. O braço de controle é, portanto, \textbf{derivado por regra}, e não selecionado: aplica-se a \textbf{mesma regra} da Seção \ref{sec:regra}, alterando-se o escopo do material sobre o qual ela é calculada. Sonda por sonda, reúnem-se os escores das três imagens de limiar de todas as litologias em um único conjunto, aplica-se a regra e obtém-se um limiar global por sonda.
 
-Comparar esse controle diretamente à configuração calibrada, contudo, alteraria duas coisas ao mesmo tempo. O controle usa todas as sondas cadastradas, enquanto a configuração calibrada usa apenas as que a imagem de descoberta admitiu naquela litologia; um ganho de \textit{recall} do controle não seria atribuível nem ao limiar nem à seleção de sondas. O experimento tem, por isso, quatro braços, cada um diferente do anterior em um único fator, conforme a Tabela \ref{tab:bracos_exp1}.
+Comparar esse controle diretamente à configuração calibrada, contudo, alteraria duas coisas ao mesmo tempo. O controle usa todas as sondas cadastradas, enquanto a configuração calibrada usa apenas as que a imagem de descoberta admitiu naquela litologia; um ganho de \textit{recall} do controle não seria atribuível nem ao limiar nem à seleção de sondas. O experimento tem, por isso, quatro braços, cada um diferente do anterior em um único fator, conforme o Quadro \ref{quad:bracos_exp1}.
 
-\begin{table}[ht]
+\begin{quadro}[ht]
   \caption{Braços do Experimento 1. Cada braço difere do anterior em um único fator.}
-  \label{tab:bracos_exp1}
+  \label{quad:bracos_exp1}
   \centering
-  \begin{tabularx}{\textwidth}{lllX}
+  \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X}
     \hline
     \bfseries Braço & \bfseries Sondas & \bfseries Limiar & \bfseries Mede, em relação ao anterior \\
     \hline
@@ -372,8 +382,8 @@ Comparar esse controle diretamente à configuração calibrada, contudo, alterar
     Calibrado pelo autor   & Admitidas na descoberta  & Adotado pelo autor                       & O ajuste humano do limiar \\
     \hline
   \end{tabularx}
-  \legend{Fonte: elaborado pelo autor.}
-\end{table}
+  \legend{elaborado pelo autor}
+\end{quadro}
 
 A comparação entre os dois primeiros braços é o teste de H1. As duas seguintes decompõem o conhecimento de domínio embutido na calibração: quanto do efeito vem de escolher as sondas por litologia e quanto vem do julgamento de quem calibra. A comparação direta entre o braço único e o calibrado pelo autor altera vários fatores de uma vez e pode ser exibida, mas não constitui evidência de H1. Os quatro braços não exigem execução adicional do modelo: pela equivalência demonstrada na Seção \ref{sec:varredura}, o Professor é executado uma única vez com todas as sondas sobre cada chapa da amostra de avaliação, e os braços são filtros distintos do mesmo material.
 
@@ -395,15 +405,15 @@ O segundo experimento avalia H2 e compara modelos Aluno treinados sobre as anota
     \hline
     \bfseries Braço & \bfseries Descrição \\
     \hline
-    Especialista & Um modelo por litologia, treinado apenas com as anotações daquela litologia \\
-    Generalista  & Um único modelo, treinado com as anotações de todas as litologias \\
-    Controle     & Um único modelo, treinado com anotações calibradas por litologia \\
+    Especialista & Um modelo por litologia, treinado apenas com as anotações daquela litologia, geradas pelo critério calibrado da própria litologia \\
+    Generalista  & Um único modelo, treinado com as anotações de todas as litologias, geradas pelo critério único \\
+    Controle     & Um único modelo, treinado com as anotações de todas as litologias, geradas pelo critério calibrado de cada uma \\
     \hline
   \end{tabularx}
-  \legend{Fonte: elaborado pelo autor.}
+  \legend{elaborado pelo autor}
 \end{quadro}
 
-O braço de controle existe por necessidade de desenho: sem ele, a comparação entre especialistas e generalista alteraria simultaneamente duas variáveis --- a quantidade de modelos e a especificidade das anotações --- e nenhum resultado seria atribuível a uma delas.
+O braço de controle existe por necessidade de desenho: sem ele, a comparação entre especialistas e generalista alteraria simultaneamente duas variáveis --- a quantidade de modelos e a especificidade das anotações --- e nenhum resultado seria atribuível a uma delas. Com ele, cada comparação muda uma coisa só. Especialistas contra controle mantêm as anotações e mudam o número de modelos; controle contra generalista mantém um único modelo e muda o critério que gerou as anotações.
 
 Os resultados são reportados \textbf{por faixa} de volume, e não agregados, o que responde à segunda metade de H2.
 
@@ -412,7 +422,7 @@ Cada modelo especialista é treinado com uma fração dos dados vistos pelo gene
 \section{Ambiente Experimental e Reprodutibilidade}
 \label{sec:verificacao}
 
-O trabalho foi executado em duas máquinas, com equipamento e versões de bibliotecas diferentes, descritas no Quadro \ref{quad:ambiente}. A diferença não foi uniformizada: o que importa para a validade dos resultados é a versão da biblioteca de modelos, e não a máquina, e por isso cada registro de calibração grava a versão sob a qual foi produzido.
+O trabalho foi executado em duas máquinas, com equipamento e versões de bibliotecas diferentes, descritas no Quadro \ref{quad:ambiente}. A diferença não foi uniformizada: o que importa para a validade dos resultados é a versão da biblioteca de modelos, e não a máquina, e por isso cada registro de calibração grava a versão sob a qual foi produzido. Os onze registros da faixa A foram gravados com a versão 8.4.61, e o treino e a avaliação do classificador foram executados na Máquina 1; a Máquina 2 serviu à verificação da varredura em uma segunda versão da biblioteca e à preparação da auditoria do Experimento 1 (Seção \ref{sec:res_exp1}).
 
 \begin{quadro}[ht]
   \caption{Ambientes de execução dos experimentos.}
@@ -425,10 +435,11 @@ O trabalho foi executado em duas máquinas, com equipamento e versões de biblio
     Linguagem             & Python 3.14 & Python 3.13 \\
     Arcabouço             & PyTorch 2.11 \cite{pytorch_paszke2019} com CUDA 12.8 & PyTorch 2.12 com CUDA 13.0 \\
     Biblioteca de modelos & Ultralytics 8.4.61 & Ultralytics 8.4.52 \\
+    Biblioteca do classificador & timm 1.0.27 & --- \\
     Processador gráfico   & NVIDIA GeForce RTX 5060 Ti, 16 GB & NVIDIA GeForce RTX 4060 \\
     \hline
   \end{tabularx}
-  \legend{Fonte: elaborado pelo autor.}
+  \legend{elaborado pelo autor}
 \end{quadro}
 
 A equivalência da varredura fora de linha, afirmada na Seção \ref{sec:varredura}, é verificada por um procedimento automatizado: para cada sonda e para uma amostra de limiares, compara-se o resultado de executar o Professor com aquele limiar ao resultado de filtrar o material armazenado no mesmo valor. A comparação é feita sobre o número de detecções, sobre os escores e sobre os vértices dos polígonos, \textbf{sem tolerância numérica}. O procedimento é parte do repositório do trabalho e deve ser reexecutado sempre que a versão da biblioteca de modelos mudar, uma vez que a equivalência é propriedade da implementação e não do método. Ele foi executado nas duas versões do Quadro \ref{quad:ambiente}, e o resultado de cada execução fica registrado no repositório junto da versão verificada.

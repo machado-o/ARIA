@@ -12,13 +12,13 @@ A proposta do ARIA não foi eliminar a arbitrariedade dessa fronteira, o que ser
 % achado legítimo e deve ser reportado como tal, não omitido: o desenho descrito
 % na Seção 3.8 foi construído justamente para admitir essa possibilidade.
 
-Independentemente do desfecho dos experimentos, dois resultados já se firmaram. O primeiro é a demonstração de que o limiar de confiança do Professor é um filtro aplicado após a inferência, o que torna a varredura de limiares fora de linha exatamente equivalente a reexecutar o modelo --- propriedade verificada experimentalmente, sem tolerância numérica, e que reduz o ciclo de calibração de minutos para milissegundos. O segundo é o próprio protocolo de calibração: a separação entre a imagem que descobre \textit{quais} sondas entram e as três que submetem um \textit{único} limiar a casos sutil, típico e forte, com a distinção explícita entre o valor do limiar, que varia por litologia, e a regra que o produz, que não varia.
+Independentemente do desfecho dos experimentos, dois resultados já se firmaram. O primeiro é a demonstração de que o limiar de confiança do Professor é um filtro aplicado após a inferência, o que torna a varredura de limiares fora de linha exatamente equivalente a reexecutar o modelo --- propriedade verificada experimentalmente, sem tolerância numérica, em duas versões da biblioteca, e que reduz o ciclo de calibração de minutos para milissegundos. O segundo é o próprio protocolo de calibração: a separação entre a imagem que descobre \textit{quais} sondas entram e as três que submetem um \textit{único} limiar a casos sutil, típico e forte, com a distinção explícita entre o valor do limiar, que varia por litologia, e a regra que o produz, que não varia.
 
 Um terceiro resultado veio da aplicação do protocolo às onze litologias da faixa A. O autor divergiu da regra em todos os 45 pares de litologia e sonda, sempre para cima, com o limiar adotado em torno de três vezes o da regra (Seção \ref{sec:res_calibracao}). O registro de cada divergência, com o critério escrito ao lado, é o que permite afirmar isso: no processo de marcação manual, uma divergência dessas não deixaria rastro.
 
 \section{Escopo}
 
-Os resultados desta versão cobrem a faixa A, as onze litologias com mais de mil imagens. O desenho executa as faixas de volume em sequência, cada uma como marco completo, e as demais são a continuação direta do trabalho (Seção \ref{sec:futuros}).
+Os resultados desta versão cobrem a faixa A, as onze litologias com mais de mil imagens. O desenho executa as faixas de volume em sequência, cada uma como marco completo, e as demais são a continuação direta do trabalho (Seção \ref{sec:futuros}). Todas as calibrações foram feitas pelo autor: o protocolo torna o critério explícito, mas a concordância entre calibradores diferentes, aplicando-o à mesma litologia, não foi medida.
 
 A auditoria cega compara os braços entre si, pela precisão e pelo \textit{recall} relativo ao conjunto de suas marcações, que é a pergunta da H1. A medida da qualidade do contorno contra polígonos desenhados à mão, e a ampliação do grupo de avaliadores para profissionais do setor, são a extensão natural dessa avaliação.
 
@@ -28,6 +28,8 @@ A auditoria cega compara os braços entre si, pela precisão e pelo \textit{reca
 \begin{description}
 
   \item[Vocabulário de sondas para litologias movimentadas] A calibração da faixa A indicou que, nas litologias movimentadas, o que limita a marcação é o vocabulário, e não o limiar (Seção \ref{sec:res_calibracao}). Sondas novas, compostas ou descritivas, registradas pelo mesmo mecanismo que admitiu a \textit{white stain}, e a opinião de especialistas em petrografia sobre essas rochas são a extensão mais direta do trabalho.
+
+  \item[Concordância entre calibradores] Repetir a calibração de uma mesma litologia com calibradores diferentes, sob o mesmo protocolo, mediria quanto do critério é do protocolo e quanto é de quem o aplica --- uma pergunta que só pode ser feita porque o critério passou a estar escrito.
 
   \item[Rotulagem multiclasse] Preservar a distinção entre sondas no treinamento do Aluno exigiria validar que cada sonda identifica o fenômeno que seu nome sugere. Como os identificadores por sonda já são gravados nos arquivos de anotação, a extensão não exige reprocessar o conjunto de dados.
 

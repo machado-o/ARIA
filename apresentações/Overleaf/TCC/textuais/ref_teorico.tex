@@ -18,11 +18,11 @@ A identificação automática de tipos de rocha a partir de imagens é tarefa es
 
 \section{Modelos de Fundação e Segmentação Guiada por Texto}
 
-Modelos de fundação são redes treinadas em conjuntos de dados de escala muito superior à de um domínio específico, capazes de executar tarefas para as quais não foram explicitamente treinadas --- a chamada capacidade \textit{zero-shot}. Em segmentação, o marco dessa mudança foi o \textit{Segment Anything Model}, que introduziu a segmentação condicionada por \textit{prompt}: em vez de aprender um conjunto fixo de classes, o modelo recebe uma indicação --- um ponto, uma caixa, um texto --- e devolve a máscara correspondente \cite{sam_kirillov2023}. Este trabalho emprega a terceira geração dessa família, que aceita \textit{prompt} textual de forma nativa e devolve as máscaras de todas as instâncias que correspondem ao conceito indicado \cite{sam3_carion2026}.
+Modelos de fundação são redes treinadas em conjuntos de dados de escala muito superior à de um domínio específico, capazes de executar tarefas para as quais não foram explicitamente treinadas --- a chamada capacidade \textit{zero-shot}. Em segmentação, o marco dessa mudança foi o \textit{Segment Anything Model}, que introduziu a segmentação condicionada por \textit{prompt}: em vez de aprender um conjunto fixo de classes, o modelo recebe uma indicação --- um ponto, uma caixa, um texto --- e devolve a máscara correspondente \cite{sam_kirillov2023}. Este trabalho emprega a terceira geração dessa família, que aceita \textit{prompt} textual de forma nativa e devolve as máscaras de todas as instâncias que correspondem ao conceito indicado \cite{sam3_carion2026}. Na implementação utilizada, o escore de cada detecção é o produto da probabilidade da detecção por um escore de presença, que estima se o conceito aparece na imagem. O escore não é, portanto, uma probabilidade calibrada de que a região seja aquilo que a palavra nomeia, e sua escala precisa ser medida em vez de presumida (Seção \ref{sec:regra}).
 
 A ponte entre texto e imagem é feita por representações multimodais alinhadas, treinadas de modo contrastivo sobre pares imagem--legenda \cite{clip_radford2021}. É essa representação compartilhada que permite que uma palavra selecione uma região da imagem sem nenhum treinamento supervisionado no domínio de destino.
 
-Um achado relevante do trabalho original sobre essas representações é que \textit{prompts} contextuais superam consistentemente palavras isoladas em tarefas \textit{zero-shot}: o modelo responde melhor a \textit{a photo of a \{classe\}} do que a \textit{\{classe\}} \cite{clip_radford2021}. A observação é diretamente aplicável ao domínio deste trabalho, em que termos como \textit{vein} são lexicalmente ambíguos.
+Um achado relevante do trabalho original sobre essas representações é que \textit{prompts} contextuais superam consistentemente palavras isoladas em tarefas \textit{zero-shot}: o modelo responde melhor a \textit{a photo of a \{classe\}} do que a \textit{\{classe\}} \cite{clip_radford2021}. A observação é diretamente aplicável ao domínio deste trabalho, em que termos como \textit{vein} são lexicalmente ambíguos: a palavra designa tanto o veio mineral quanto a veia sanguínea.
 
 \section{Professor--Aluno e Pseudo-rotulagem}
 
@@ -47,7 +47,7 @@ A segmentação semântica e de instâncias evoluiu de arquiteturas encoder--dec
 
 \section{Métricas de Avaliação}
 
-A sobreposição entre uma região predita e uma região de referência é medida pela \textit{Intersection over Union} (IoU), definida na Equação \ref{eq:iou} \cite{iou_mahmood2021}:
+A sobreposição entre uma região predita e uma região de referência é medida pela \textit{Intersection over Union} (IoU), definida na Equação \ref{eq:iou} \cite{voc_everingham2010}:
 
 \begin{equation}
   \mathrm{IoU}(A, B) = \frac{|A \cap B|}{|A \cup B|}
@@ -59,7 +59,7 @@ A sobreposição entre uma região predita e uma região de referência é medid
 \section{Trabalhos Relacionados e Posicionamento}
 \label{sec:relacionados}
 
-Em método, o trabalho mais próximo do aqui proposto emprega máscaras de um modelo de fundação como pseudo-rótulos para treinar um segmentador de defeitos industriais, tratando explicitamente o ruído dessas máscaras \cite{boxes2pixels_lendering2026}. A coincidência de estrutura é considerável: mesmo arranjo Professor--Aluno, mesma origem de rótulo, mesmo domínio geral de inspeção industrial.
+Em método, o trabalho mais próximo do aqui proposto emprega máscaras de um modelo de fundação como pseudo-rótulos para treinar um segmentador de defeitos industriais, tratando explicitamente o ruído dessas máscaras \cite{boxes2pixels_lendering2026}. Nele, caixas delimitadoras anotadas sobre os defeitos são convertidas pelo SAM em máscaras, que supervisionam um segmentador compacto. A coincidência de estrutura é considerável: mesmo arranjo Professor--Aluno, mesma origem de rótulo, mesmo domínio geral de inspeção industrial. A diferença de partida é o que guia o Professor: lá, uma caixa desenhada por uma pessoa sobre cada defeito; aqui, uma palavra e um limiar por litologia, sem anotação alguma por imagem.
 
 O que distingue o presente trabalho são dois pontos: \textbf{(i)} o \textit{prompt} do Professor é condicionado à classe do domínio, de modo que cada litologia recebe seu próprio conjunto de sondas e seus próprios limiares, em vez de uma configuração única para todo o conjunto de dados; e \textbf{(ii)} essa configuração é tratada como o artefato central do trabalho --- a materialização auditável de um critério que, no processo manual, não existe por escrito. O domínio de rochas ornamentais, em que a fronteira entre feição natural e defeito é convenção comercial e não propriedade física, é o que torna o ponto (ii) mais do que uma conveniência de engenharia.
 

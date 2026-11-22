@@ -10,19 +10,31 @@
 
 ---
 
-## ➡️ Retomada — por onde começar (atualizado em 19/11/2026)
+## ➡️ Retomada — por onde começar (atualizado em 22/11/2026)
 
-> Escrito em 11/10/2026 e revisto em 20/10, 06/11 e 19/11. Riscar cada item ao fechar; quando a
-> lista acabar, apagar a seção.
+> Escrito em 11/10/2026 e revisto em 20/10, 06/11, 19/11 e 22/11. Riscar cada item ao fechar;
+> quando a lista acabar, apagar a seção.
+>
+> **Sessão de 22/11 — as duas versões do TCC foram juntadas.** O texto de 06/11 (PC 1) nunca
+> teve commit, e o de 19/11 (PC 2) foi escrito sem ele. Ficou a versão de 19/11 como base, mais o
+> que só a de 06/11 tinha: correções de compilação (legendas, ficha catalográfica, larguras de
+> tabela, siglas protegidas no `.bib`, Quadro dos braços do Exp. 1), detalhes da reprodução do
+> Xception, a verificação da D18 nas duas versões, o efeito residual da D21, a precisão sobre a
+> imagem típica e a citação do IoU (VOC no lugar de `iou_mahmood2021`). Duplicatas descartadas:
+> o Apêndice A em `apendice.tex` e o segundo "terceiro resultado" da conclusão. A versão de 06/11
+> inteira está no branch local `wip-06-11`. Compilado aqui em 22/11 (60 páginas, sem erro).
+> As sobras de 06/11 foram decididas na mesma sessão (ver *Monografia — em aberto*). **Falta:**
+> subir ao Overleaf e ver se o título provisório cabe na capa.
 >
 > **Sessão de 19/11:** o texto avançou no que não dependia de decisão (ver *Escrita* → *revisão
 > de 19/11*): seção 4.5 *Calibração da Faixa A*, Apêndice A, referências completas (nenhum
 > `TODO-` sobrando), título provisório na capa e uma passada de tom no texto inteiro
-> (`diretrizes-escrita.md` §2.5). **Nada foi compilado.** Dar commit e push **antes** de
-> editar no Overleaf ou no outro PC.
+> (`diretrizes-escrita.md` §2.5). Dar commit e push **antes** de editar no Overleaf ou no outro
+> PC — em 06/11 isso não foi feito, e o texto divergiu (ver a sessão de 22/11, acima).
 >
 > **Auditoria cega do Experimento 1 — pronta para julgar (19/11/2026, emenda da D7).** O pacote
-> `AI/SAM/auditoria/pacote_aria-auditoria-20261119.zip` (16,8 MB, só nesta máquina) tem 420
+> `AI/SAM/auditoria/pacote_aria-auditoria-20261119.zip` (16,8 MB, gitignored; nas duas máquinas
+> desde 22/11, vindo pelo `ARIA_backup_20261119.zip`) tem 420
 > marcações de 33 chapas do `test/`, 60 por estrato. Próximos passos:
 >
 > 1. [ ] Mandar o `.zip` para a avaliadora (estudante de Engenharia de Minas). Ela extrai, abre o
@@ -57,10 +69,9 @@
   `san_francisco_green` ainda não dizem que a seleção saiu **sem conferência de especialista**,
   o que o `dataset.md` (*Litologias movimentadas*) pede. Ver o achado em *Código* → regra × autor.
 
-**3. Texto do TCC — compilar no Overleaf primeiro.** A revisão de 10/10 (ver *Escrita*, abaixo)
-**nunca foi compilada**. Três trechos são novos e podem quebrar: as equações do joelho
-(`eq:curva`, `eq:normalizacao`, `eq:joelho`), o `lstlisting` do `calibracao.json` com
-`literate` para acentos, e as caixas `\fbox` de "captura de tela pendente".
+**3. ~~Texto do TCC — compilar~~** — compilado em 06/11/2026 (ver *Escrita* → Compilar). As
+equações do joelho, o `lstlisting` com `literate` e as figuras saem corretos no PDF. Compilado de
+novo em 22/11, depois de juntar as versões de 06/11 e 19/11.
 
 **4. O que falta no texto, em ordem de peso** (resposta a "se pedirem o arquivo, falta muito?"):
 
@@ -442,6 +453,27 @@ o momento".
 
 ### 🟡 Monografia — em aberto
 
+- [x] ~~**Sobras da versão de 06/11**~~ — decididas pelo Claude em 22/11/2026, a pedido do
+  Henrique (texto completo de 06/11 no branch `wip-06-11`). **Entraram:**
+  - *Fundamentação, SAM 3:* o escore é o produto da probabilidade da detecção pelo escore de
+    presença, logo não é probabilidade calibrada (conferido em
+    `ultralytics/models/sam/predict.py`, linhas 2301–2302, na 8.4.61).
+  - *Fundamentação:* *vein* designa tanto o veio mineral quanto a veia sanguínea.
+  - *Fundamentação:* como o Boxes2Pixels funciona e a diferença de partida (caixa humana × palavra
+    e limiar por litologia).
+  - *Resultados, 4.5:* regra 4.093 × autor 572 marcações nas 33 imagens de limiar (o 572 confere
+    com a soma da Tabela `tab:calib_faixa_a`).
+  - *Conclusão:* no *Escopo*, uma frase dizendo que a concordância entre calibradores não foi
+    medida; em *Trabalhos futuros*, o item *Concordância entre calibradores*.
+
+  **Ficaram de fora:**
+  - Os números do próprio TCC do Moreira: em 19/11 o texto passou a usar só os do artigo
+    publicado, e os dois não batem.
+  - "As sondas não identificam o tipo da anomalia": a rotulagem binária é decisão (**D2**), e a
+    passada de tom a tirou das limitações.
+  - O critério de pertencimento às movimentadas, a frequência de cada sonda e a `nevada_black`
+    com `light spot`: detalhe sem peso no argumento.
+
 - [x] ~~**`TODO-fracstoneai`**~~ — `fracstoneai_oliveira2026`, montada do PDF final em 19/11/2026,
   com `note = {No prelo}`: os anais do Latinoware 2026 ainda não estavam no SOL/SBC (o último
   volume era o de 2025). **Quando saírem, trocar o `note` por páginas e DOI.** ⚠️ Os números que
@@ -482,18 +514,22 @@ o momento".
 - [ ] **Resumo e abstract:** acrescentar as frases de resultado e conclusão quando os
   experimentos rodarem.
 - [ ] **Conclusão §5.1:** sintetizar H1 e H2 — inclusive se o resultado for negativo.
-- [ ] **Escolher o título do TCC.** O `macros.tex` ainda tem o título antigo ("Redes Neurais
-  Convolucionais para o Controle de Qualidade de Rochas Ornamentais: Da Classificação à
-  Segmentação de Anomalias utilizando pipeline com abordagem *Teacher-Student*"), que não é
-  nenhuma das versões discutidas. As duas opções enxutas estão em `docs/Titulo TCC.txt`, um
-  arquivo que nenhum documento aponta — ele era a única cópia desta pendência. Quando escolher:
-  aplicar no `macros.tex` e fechar como decisão em `decisoes.md`.
+- [ ] **Escolher o título do TCC.** Desde 19/11 o `macros.tex` tem o título **provisório** (ver o
+  item *Título*, acima); o antigo ("…utilizando pipeline com abordagem *Teacher-Student*") ficou
+  comentado ali. As duas opções enxutas estão em `docs/Titulo TCC.txt`. **O Overleaf não lê o
+  git:** o título só aparece lá depois de subir os arquivos. Quando escolher: aplicar no
+  `macros.tex` e fechar como decisão em `decisoes.md`.
 - [ ] **Banca:** `macros.tex` ainda tem "Fulana/Cicrano de Tal"; a aprovação está comentada.
 - [ ] **Dedicatória, agradecimentos e epígrafe** continuam com texto do template, comentados.
-- [ ] **Compilar no Overleaf.** Não há LaTeX nesta máquina — a conferência feita aqui é
-  estrutural (`TCC/verificar_tex.py`: citação sem entrada, `
-ef` sem `\label`, ambiente
-  desbalanceado, figura ausente), **não** é compilação.
+- [x] ~~**Compilar.**~~ — compilado localmente em 06/11/2026 (TinyTeX nesta máquina, pdfLaTeX +
+  BibTeX): 63 páginas, sem erro, sem caixa estourando, sem referência indefinida. Corrigido na
+  compilação: "Fonte: Fonte:" em todas as legendas (o `\legend` da classe já escreve "Fonte:"),
+  tabelas largas, listagem partida, siglas em minúscula nas referências. O Overleaf continua
+  sendo a fonte; a compilação local é conferência. Para refazer: pdflatex com
+  `-output-directory` fora do repo e copiar o `.bib` para lá antes do bibtex (o bibtex não abre
+  caminho com acento) — ou copiar a pasta `TCC/` inteira para um caminho sem acento e compilar
+  lá (feito assim em 22/11: 60 páginas, sem erro, sem caixa estourando, sem referência
+  indefinida, BibTeX sem aviso). A capa com o título provisório não foi conferida visualmente.
 
 ### 🔴 Artigo de PD1 e LatinoWare2026 — nada feito
 

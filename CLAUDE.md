@@ -265,6 +265,12 @@ results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
   (`--refazer-itens` só antes de qualquer resposta). Para reenviar, use o `.zip` já gerado (ele
   e o `pacote/` são gitignored e só existem na máquina em que o pacote foi montado). O Henrique
   também é avaliador: ele não deve abrir `itens.json` nem `limiares.json` antes de julgar.
+  **Neste PC (desde 22/11/2026)** o `.zip` e as capturas das 33 chapas (`auditoria/<rocha>/_cache/`)
+  vieram da outra máquina (ultralytics 8.4.52), e o cache das vagas de lá, de onde saiu o
+  `limiares.json`, está em `auditoria/_vagas_maquina2/` — **não** em `selectRocks/*/_cache/`,
+  que aqui é o 8.4.61 das calibrações. Não rodar o `auditoria_preparar.py` aqui: a etapa 4
+  regrava o `limiares.json` (que está no git) com o cache das vagas desta máquina, **antes** da
+  trava do `itens.json`. Para analisar, só o `auditoria_analisar.py`, que não lê cache.
 - **O calibrador é o dono do limiar; o `inference.py` é o dono das máscaras finais.** O
   `calibrator.py` não escreve em `results/` nem gera `.txt` — ele decide sondas e limiar e grava
   `rock_prompts.json` + `calibracao.json`.
