@@ -143,7 +143,7 @@ selectRocks/<rock>/meta.json           ← de onde veio cada uma (reprodutibilid
 calibrator.py  →  SAM uma vez por (imagem, sonda) no piso de conf  (D18)
 selectRocks/<rock>/_cache/<vaga>__<sonda>.npz   ← scores + polígonos (gitignored)
         ↓  varredura de limiar offline, sem GPU
-rock_prompts.json                      ← { litologia: { sonda: limiar } }  — PROVISÓRIO (D15)
+rock_prompts.json                      ← { litologia: { sonda: limiar } }  — resumo; só litologia calibrada
 selectRocks/<rock>/calibracao.json     ← limiar + contagem por vaga + CRITÉRIO escrito
         ↓  o limiar do inference.py sai do calibracao.json, não do rock_prompts.json
 inference.py (SAM3SemanticPredictor)
@@ -268,9 +268,11 @@ results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
   **Neste PC (desde 22/11/2026)** o `.zip` e as capturas das 33 chapas (`auditoria/<rocha>/_cache/`)
   vieram da outra máquina (ultralytics 8.4.52), e o cache das vagas de lá, de onde saiu o
   `limiares.json`, está em `auditoria/_vagas_maquina2/` — **não** em `selectRocks/*/_cache/`,
-  que aqui é o 8.4.61 das calibrações. Não rodar o `auditoria_preparar.py` aqui: a etapa 4
-  regrava o `limiares.json` (que está no git) com o cache das vagas desta máquina, **antes** da
-  trava do `itens.json`. Para analisar, só o `auditoria_analisar.py`, que não lê cache.
+  que aqui é o 8.4.61 das calibrações. Até 22/11/2026 a trava do `itens.json` vinha só antes
+  da etapa 5, e a etapa 4 regravava o `limiares.json` (que está no git) com o cache das vagas
+  da máquina em que rodasse. Agora a trava vem antes da etapa 2: com `itens.json` presente, o
+  script não captura nem recalcula nada (verificado: `limiares.json` intacto). Mesmo assim não
+  há motivo para rodá-lo; para analisar, só o `auditoria_analisar.py`, que não lê cache.
 - **O calibrador é o dono do limiar; o `inference.py` é o dono das máscaras finais.** O
   `calibrator.py` não escreve em `results/` nem gera `.txt` — ele decide sondas e limiar e grava
   `rock_prompts.json` + `calibracao.json`.

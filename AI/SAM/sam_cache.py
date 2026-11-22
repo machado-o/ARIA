@@ -42,7 +42,7 @@ from pathlib import Path
 import numpy as np
 
 # Piso de confiança da captura. Baixo o bastante para não descartar nada que
-# qualquer limiar de trabalho plausível fosse querer (as configs vão de 0,007 a 0,3).
+# qualquer limiar de trabalho plausível fosse querer (nas 11 litologias calibradas, a regra vai de 0,003 a 0,24 e o autor, de 0,03 a 0,7).
 CONF_PISO = 0.001
 
 CACHE_DIRNAME = "_cache"
@@ -144,7 +144,7 @@ def curva_de_limiar(
 def limiares_sugeridos(scores: np.ndarray, n: int = 40) -> np.ndarray:
     """Grade de limiares útil para ESTES scores (log-espaçada entre o piso e o máximo).
 
-    Grade linear é inútil aqui: os limiares de trabalho vivem entre 0,007 e 0,3, então
+    Grade linear é inútil aqui: os limiares vivem entre ~0,003 e ~0,7, então
     quase todos os pontos de uma grade linear cairiam numa região sem detecção nenhuma.
     """
     if len(scores) == 0:

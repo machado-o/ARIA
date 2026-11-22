@@ -61,15 +61,19 @@ fundação é pago uma vez, não por chapa.
 
 As palavras usadas como prompt são **chaves lexicais de recall**, não classificações (**D2**).
 
-| Sonda | Cor na visualização | Escopo |
-|---|---|---|
-| `crack` | vermelho | todas |
-| `vein` | azul | todas |
-| `Stain` | laranja | todas |
-| `Dark patches` | magenta | rochas claras |
-| `light spot` | amarelo | rochas escuras |
-| `scratch` | verde | pontual |
-| `white stain` | ciano | em avaliação (desde 10/10/2026) |
+| Sonda | Cor na visualização | Admitida em (das 11 da faixa A) |
+|---|---|---:|
+| `crack` | vermelho | 9 |
+| `vein` | azul | 3 |
+| `Stain` | laranja | 8 |
+| `Dark patches` | magenta | 9 |
+| `light spot` | amarelo | 6 |
+| `scratch` | verde | 4 |
+| `white stain` | ciano | 6 (registrada em 10/10/2026 — **D8**) |
+
+> Quem decide se a sonda entra é a descoberta de cada litologia (**D17**), não a cor da rocha: a
+> coluna antiga dizia "rochas claras" para `Dark patches` e "rochas escuras" para `light spot`, e
+> as calibrações desmentiram as duas. Contagem dos `calibracao.json` em 22/11/2026.
 
 > As cores valem as de `AI/SAM/sondas.py` (`CORES`), que é a fonte; esta coluna é só leitura
 > rápida. Até 10/10/2026 ela ainda mostrava as cores de antes da unificação do cadastro.
@@ -81,7 +85,7 @@ tirado da cabeça do inspetor e colocado num arquivo auditável (**D3**).
 **Prompts contextuais — hipótese não testada:** o paper do CLIP mostra que o template
 `"a photo of a [X]"` supera consistentemente `"X"` isolado em zero-shot. Para rochas,
 `"crack on a stone surface"` poderia desambiguar melhor que `"crack"` (a palavra "vein" cobre
-tanto veia sanguínea quanto veio mineral). Testável via `rock_prompts.json` — candidato a análise
+tanto veia sanguínea quanto veio mineral). Testável como sonda exploratória no calibrador — candidato a análise
 de sensibilidade **se sobrar tempo**. O crédito do achado é do paper do CLIP, não deste trabalho.
 
 ### Configuração — `rock_prompts.json`
@@ -90,22 +94,23 @@ de sensibilidade **se sobrar tempo**. O crédito do achado é do paper do CLIP, 
 { "<litologia>": { "<sonda>": <limiar de confiança> } }
 ```
 
-Fallback: chave `"default"`. Se ela também faltar, `inference.py` usa
-`{ "crack": 0.1, "vein": 0.007, "Stain": 0.3 }` hardcoded.
+Quem escreve é só o calibrador, e só tem litologia calibrada: **quem não está no arquivo não foi
+calibrado.** Não há fallback — a entrada `"default"` e os 45 valores provisórios de antes da
+**D17** foram apagados em 09/10/2026 (**D15**; os valores antigos estão no histórico do git).
 
-> **Estado real: o conteúdo é PROVISÓRIO (D15).** O arquivo tem 46 entradas mas apenas **13
-> configurações distintas** — 18 litologias compartilham o mesmo conjunto. Não é calibração
-> validada. A recalibração será feita do zero, pela ordem das faixas de volume, e só depois se
-> decide se o critério é por litologia ou por grupo cromático. **Até lá, nenhum texto deve
-> afirmar nenhuma das duas coisas.**
+> O `inference.py` **não lê o limiar daqui**: lê do `selectRocks/<litologia>/calibracao.json`, que
+> tem limiar **e** critério escrito. Este arquivo é o resumo, e serve ao `--provisorio`.
 
 ### Fluxo de `inference.py`
 
 1. Lê imagens de `selectRocks/<litologia>/` (**4 por litologia** — D17).
-2. Carrega as sondas da litologia em `rock_prompts.json`.
-3. Roda o SAM3 uma vez por sonda, com o limiar configurado.
-4. Grava o resultado individual por sonda e a imagem combinada em `results/<litologia>/`.
-5. Grava os polígonos em `.txt` (YOLO, coords normalizadas 0–1).
+2. Carrega as sondas e os limiares do `calibracao.json` da litologia. Litologia sem calibração, ou
+   com calibração desatualizada (vaga trocada depois), é **recusada e listada** antes de o modelo
+   carregar — a não ser com `--provisorio`, que aceita o `rock_prompts.json` e registra isso.
+3. Grava `results/<litologia>/procedencia.json`: de onde veio cada limiar desta rodada.
+4. Roda o SAM3 uma vez por sonda, com o limiar configurado.
+5. Grava o resultado individual por sonda e a imagem combinada em `results/<litologia>/`.
+6. Grava os polígonos em `.txt` (YOLO, coords normalizadas 0–1), uma linha por peça (**D21**).
 
 > ⚠️ **Este script não produz conjunto de treino.** Ele processa só as imagens de calibração — é
 > ferramenta de **calibração**, não de produção de dataset. O `sam_batch.py` que roda sobre uma
@@ -150,8 +155,9 @@ falha silenciosamente** — sem exceção, sem saída. Não remover.
 
 ## Conexão entre os estágios
 
-Xception identifica a litologia → seleciona a configuração de sondas em `rock_prompts.json`
-(fase offline) e roteia para o Aluno especialista correspondente (fase online).
+Xception identifica a litologia → seleciona a configuração de sondas e limiares calibrada para
+ela (`calibracao.json`, fase offline) e roteia para o Aluno especialista correspondente (fase
+online).
 
 O desenho experimental que testa se essa hierarquia compensa está em **D5** (Experimento 1) e
 **D6** (Experimento 2).
@@ -162,7 +168,7 @@ O desenho experimental que testa se essa hierarquia compensa está em **D5** (Ex
 
 | Componente | Tecnologia |
 |---|---|
-| Linguagem | Python 3.14 |
+| Linguagem | Python 3 |
 | Deep learning | PyTorch + CUDA |
 | Classificador | Xception |
 | Professor | SAM3 via Ultralytics |

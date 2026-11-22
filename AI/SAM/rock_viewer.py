@@ -55,8 +55,9 @@ SELECT_ROCKS_DIR = SAM_DIR / "selectRocks"
 SPLITS = ("train", "val", "test")
 IMG_EXTS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff"}
 
-# Imagem de calibração SÓ pode sair do train/. O conjunto-ouro sai do test/ (D7):
-# calibrar num arquivo de test/ seria ajustar o limiar em cima da própria prova.
+# Imagem de calibração SÓ pode sair do train/. A auditoria do Experimento 1 sai
+# do test/ (D7): calibrar num arquivo de test/ seria ajustar o limiar em cima da
+# própria prova.
 # O val/ fica reservado para a validação do Aluno. Ver docs/decisoes.md D17.
 SPLIT_CALIBRACAO = "train"
 
@@ -713,7 +714,7 @@ def preencher_vaga(
         if split != SPLIT_CALIBRACAO:
             print(
                 f"  [BLOQUEADO] {split}/{chosen.name} não serve como imagem de calibração.\n"
-                f"  O conjunto-ouro sai do test/ e o val/ valida o Aluno — calibrar fora do\n"
+                f"  A auditoria sai do test/ e o val/ valida o Aluno — calibrar fora do\n"
                 f"  {SPLIT_CALIBRACAO}/ contamina a avaliação (docs/decisoes.md D17)."
             )
             continue

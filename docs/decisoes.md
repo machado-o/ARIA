@@ -6,7 +6,7 @@
 > ⚠️ **A numeração foi refeita em 2026-08-23.** Referências a "D1…D10" em textos antigos
 > (dentro de `apresentações/`) apontam para a numeração velha e **não valem**.
 >
-> Última atualização: 2026-11-06
+> Última atualização: 2026-11-22
 
 ---
 
@@ -145,8 +145,8 @@ Por quê: na `siena_white` o autor divergiu da regra nas três sondas, sempre pa
 cerca do dobro. O limiar de trabalho é o que vai para o `rock_prompts.json` e rotula o conjunto
 do Aluno — deixá-lo fora do experimento mediria uma configuração que o sistema não usa. Com três
 braços, o conhecimento de domínio aparece decomposto: quanto vem de tratar cada litologia à
-parte, e quanto vem do olho de quem calibra. Custo: uma inferência a mais por imagem do
-conjunto-ouro, nenhuma anotação adicional.
+parte, e quanto vem do olho de quem calibra. Custo: uma inferência a mais por imagem avaliada
+(desde 19/11, as chapas da auditoria cega — **D7**), nenhuma anotação adicional.
 
 O que **não** muda: o default continua saindo da regra sobre o material reunido, nunca de média
 (simples ou ponderada) dos limiares de trabalho — vale o parágrafo abaixo. E *default × calibrado
@@ -181,7 +181,9 @@ coisa:
 cadastro de `sondas.py` (**D8**), igual nos dois primeiros braços.
 
 Custo: nenhuma anotação a mais. Pela **D18**, o SAM roda uma vez com todas as sondas em cada
-imagem do conjunto-ouro e os quatro braços são filtros do mesmo cache.
+imagem avaliada e os quatro braços são filtros do mesmo cache — é isso que permite à auditoria
+cega (**D7**, emenda de 19/11) julgar cada detecção uma vez só para todos os braços. Nos scripts
+os braços se chamam `unico`, `regra_todas`, `regra_autor` e `autor`.
 
 **Figuras de exemplo (decisão do autor, 10/10/2026):** a figura "critério único × calibrado" usa,
 no lado calibrado, o **limiar de trabalho** (braço calibrado pelo autor), a não ser que o joelho
@@ -253,9 +255,20 @@ dataset de limitação em **variável do experimento** e responde à segunda met
 avaliada e **escrita** antes de a faixa B começar. Em qualquer ponto de corte existe um resultado
 completo e defensável; as faixas não alcançadas viram trabalho futuro declarado.
 
+> **Decidido em 22/11/2026 (Henrique): até a entrega de 01/12, tentar o Experimento 2 só na faixa
+> A.** As faixas B, C e D viram trabalho futuro. Consequência para a **H2**: com uma faixa só, a
+> primeira metade (especialista × generalista) pode ser respondida na faixa A, mas a segunda — o
+> ganho como **função do volume** — precisa de mais de uma faixa e passa a trabalho futuro. Se o
+> treino da faixa A não couber no prazo, o Experimento 2 inteiro vira trabalho futuro. Ainda
+> faltam, antes de treinar: o `sam_batch.py`, a regra de split do Aluno e contra o quê ele é
+> avaliado (ver `pendencias.md`).
+
 ---
 
 ## D7 — De onde vem a referência de avaliação
+
+> ⚠️ **Vigente para o Experimento 1: a emenda de 19/11/2026, no fim desta seção** (auditoria
+> cega). O texto abaixo é a decisão original, mantida como histórico.
 
 **Decisão:** duas fontes de referência, complementares:
 
@@ -478,9 +491,12 @@ recomeçou do zero com o protocolo de 4 vagas (**D17**), junto com a escolha de 
 primeiro. O `rock_viewer.py` já ordena as litologias por volume decrescente e mostra a faixa e o
 número de pendentes da faixa a cada iteração, para que a prioridade não dependa de disciplina.
 
-**Ainda em aberto:** se a calibração deve ser individual por litologia ou por grupo cromático. A
-decisão só será tomada depois que a faixa A estiver calibrada de fato, com base no que se
-observar. **Até lá, nenhum texto deve afirmar qualquer uma das duas coisas.**
+**Fechado em 22/11/2026 (Henrique): a calibração é por litologia**, não por grupo cromático
+(grupo de cor da rocha: brancas, beges, verdes...). A pergunta ficou em aberto até a faixa A
+estar calibrada; com as 11 feitas, a regra do joelho, que não tem parâmetro livre, produziu
+limiares diferentes dentro de um mesmo grupo de cor, e o texto do TCC já descreve a calibração
+por litologia. O agrupamento cromático de `dataset.md` fica como registro da configuração
+antiga.
 
 ---
 
@@ -544,7 +560,8 @@ O `meta.json` registra de onde veio cada imagem (`train/1234.JPG`) e quando foi 
 material do statement de reprodutibilidade do TCC. O `inference.py` já lê esse layout sem
 alteração.
 
-**Origem das imagens: somente `train/`.** O conjunto-ouro sai do `test/` (**D7**); calibrar sobre
+**Origem das imagens: somente `train/`.** A avaliação sai do `test/` (**D7**: a auditoria cega,
+desde 19/11; antes, o conjunto-ouro); calibrar sobre
 uma imagem de `test/` seria ajustar o limiar em cima da própria prova. O `val/` fica reservado
 para a validação do Aluno. O `rock_viewer.py` já restringe a seleção ao `train/`; a flag `--all`
 mostra os outros splits apenas para estudo, sem permitir seleção.
@@ -554,7 +571,7 @@ verificado foi só a **proporção** 70/15/15 em todas as 45 classes, não o sor
 Xception (**D19**, `pendencias.md`) mostrou que a numeração dos arquivos segue a sequência das
 chapas e que o `test/` de ao menos uma rocha (`white_superiore`) parece vir de outro bloco. Logo a
 restrição ao `train/` **tem custo**: fenômeno que só exista num bloco que caiu inteiro no `test/`
-não aparece na calibração. O mesmo fato torna a avaliação mais exigente — o conjunto-ouro mede a
+não aparece na calibração. O mesmo fato torna a avaliação mais exigente — a auditoria mede a
 marcação em chapa que a calibração não pôde antecipar. Para a faixa A o `train/` tem de 700 a 3.200
 imagens por litologia: o que limita a cobertura na seleção é a varredura do autor, não o split.
 
@@ -584,8 +601,10 @@ regra (aqui chamado de X) não é escolhível no abstrato, só se descobre a fai
 efeito uma vez em dados reais. Depois disso o X **congela** — se fosse reajustado a cada rocha,
 voltaria a ser escolha no olho e a regra deixaria de ser regra.
 
-**Verificação ao fim da faixa A:** conferir se a mesma regra se sustentou nas 11 litologias. Se
-não, o X passa a ser definido por grupo cromático — e isso é **resultado a reportar**, não falha.
+~~**Verificação ao fim da faixa A:** conferir se a mesma regra se sustentou nas 11 litologias. Se
+não, o X passa a ser definido por grupo cromático~~ — perdeu o objeto: a forma fechada da regra
+(o joelho, logo abaixo) não tem X. A mesma regra rodou nas 11 sem ajuste, e a calibração ficou
+por litologia (**D15**, 22/11/2026).
 
 **Forma da regra — FECHADA em 2026-09-26: opção (b), o joelho da curva.**
 
@@ -611,8 +630,10 @@ Três coisas que a regra fixa de propósito:
    os dois braços do Experimento 1 (**D5**): por litologia → calibrado; sobre todas reunidas →
    default.
 
-**Validação:** as ~50 imagens do conjunto-ouro (**D7**), que seriam anotadas de qualquer forma,
-testam se a regra produz bons limiares. Zero anotação adicional; o gabarito faz dois trabalhos.
+**Validação:** ~~as ~50 imagens do conjunto-ouro (**D7**), que seriam anotadas de qualquer forma,
+testam se a regra produz bons limiares.~~ Desde 19/11/2026 quem testa a regra é a auditoria cega
+(**D7**): os braços `regra_autor` × `autor` da **D5** comparam o limiar da regra com o do autor
+nas mesmas sondas. Zero anotação adicional.
 
 **Dois valores por sonda, com papéis distintos:**
 
@@ -699,7 +720,7 @@ sem pesos por classe.
 | | DeepStoneAI | ARIA |
 |---|---|---|
 | Framework | Keras / TensorFlow | PyTorch + `timm` (TensorFlow não usa GPU no Windows nas versões recentes) |
-| Split | `train/test/valid` fundidos e re-sorteados; `take/skip` sobre dataset embaralhado deixa validação e teste se sobreporem | **split oficial** `train/val/test` (70/15/15) — o mesmo da **D17**; o roteador nunca vê o `test/` do conjunto-ouro (**D7**) |
+| Split | `train/test/valid` fundidos e re-sorteados; `take/skip` sobre dataset embaralhado deixa validação e teste se sobreporem | **split oficial** `train/val/test` (70/15/15) — o mesmo da **D17**; o roteador nunca vê o `test/`, de onde sai a avaliação (**D7**) |
 | Resolução | carrega em 480, amplia para 1080 | **480 × 480, sem ampliar** |
 | Normalização | só divide por 255 → entrada em [0, 1] | **[-1, 1]**, a escala que os pesos do Xception esperam (`preprocess_input` do Keras) — o original alimentava os pesos do ImageNet fora da escala deles |
 
@@ -775,7 +796,8 @@ movimentadas, contra 1 das 7 demais). O pertencimento continua sendo a identific
 - um critério de pertencimento aplicável por outra pessoa (classificação petrográfica ou
   medida de imagem);
 - como a opinião externa é registrada quando vier (o `calibracao.json` hoje supõe um critério
-  escrito só pelo autor, e a **D7** diz que o gabarito é do autor).
+  escrito só pelo autor). Desde 19/11 a referência da H1 é uma avaliadora externa (**D7**), mas
+  ela julga marcações, não o pertencimento da litologia às movimentadas.
 
 ---
 

@@ -13,8 +13,8 @@
 > ⚠️ O `.EXT` do slug no Kaggle tem um typo de origem (`ornametais`, sem o "n"). Ao citar, usar a
 > URL exata acima — encurtá-la ou "corrigi-la" quebra o link.
 
-- [ ] **TODO:** confirmar se o DeepStoneAI usou este mesmo conjunto. Se sim, vira citação
-  obrigatória (ver `pendencias.md`).
+- [x] ~~**TODO:** confirmar se o DeepStoneAI usou este mesmo conjunto.~~ Confirmado: é o mesmo,
+  e citá-lo é obrigatório (**D9**).
 
 ---
 
@@ -120,9 +120,10 @@ Onde isso encosta no desenho do trabalho:
 - **D17 (calibração).** A vaga `descoberta` e o limiar de trabalho dependem do julgamento do
   autor. Numa movimentada, esse julgamento é o elo fraco: o `calibracao.json` sai, mas com um
   critério escrito em que o próprio autor confia menos.
-- **D7 (conjunto-ouro).** O gabarito é anotado pelo autor. Se ele não sabe o que é defeito numa
-  litologia, o IoU dela mede concordância com uma anotação incerta. O plano da Fase 2 usa 10 das
-  11 litologias da faixa A — e 3 das 11 já estão nesta lista.
+- **D7 (avaliação).** ~~O gabarito é anotado pelo autor.~~ Desde 19/11 a referência é a auditoria
+  cega, com uma avaliadora externa e o autor julgando a mesma amostra. Numa movimentada, a
+  concordância entre os dois (kappa) tende a ser menor — o que é medida da **D3**, não defeito da
+  avaliação. A amostra cobre as 11 litologias da faixa A, inclusive as 4 desta lista.
 - **D5 (braço calibrado pelo autor).** A divergência entre o limiar da regra e o do autor tende
   a significar outra coisa numa movimentada: menos "onde a curva engana", mais dúvida de quem ajusta.
 
@@ -215,9 +216,9 @@ desenho que se confunde com defeito. Três ressalvas:
 
 ## Agrupamento cromático
 
-Agrupamento **provisório** (**D15**), usado pela configuração atual de sondas em
-`rock_prompts.json`. Se a calibração final será por litologia ou por grupo ainda **não está
-decidido** — só depois que a faixa A estiver calibrada de fato.
+Só registro. Era o que a configuração antiga do `rock_prompts.json` seguia, antes de ela ser
+apagada (09/10/2026); hoje nada no código o usa. Em 22/11/2026 a calibração ficou **por
+litologia**, não por grupo (**D15**).
 
 | Grupo | Litologias |
 |---|---|
@@ -235,15 +236,19 @@ decidido** — só depois que a faixa A estiver calibrada de fato.
 **Não são rótulos.** São chaves lexicais escolhidas por fazerem o CLIP+SAM3 responder a certas
 assinaturas visuais; o objetivo do conjunto é **maximizar cobertura**, não classificar (**D2**).
 
-| Sonda | Assinatura visual que costuma disparar | Escopo típico |
-|---|---|---|
-| `crack` | descontinuidades lineares finas e escuras | todas |
-| `vein` | estrias e faixas contrastantes | todas |
-| `Stain` | variação de cor em mancha difusa | todas |
-| `Dark patches` | regiões escuras sobre fundo claro | rochas claras |
-| `light spot` | regiões claras sobre fundo escuro | rochas escuras |
-| `scratch` | riscos superficiais finos | pontual (`giallo_maracana`) |
-| `white stain` | manchas brancas que o `light spot` não pega | em avaliação (`san_francisco_green`) |
+| Sonda | Assinatura visual que costuma disparar |
+|---|---|
+| `crack` | descontinuidades lineares finas e escuras |
+| `vein` | estrias e faixas contrastantes |
+| `Stain` | variação de cor em mancha difusa |
+| `Dark patches` | regiões escuras sobre fundo claro |
+| `light spot` | regiões claras sobre fundo escuro |
+| `scratch` | riscos superficiais finos |
+| `white stain` | manchas brancas que o `light spot` não pega |
+
+> Em quantas litologias cada sonda foi admitida está em `arquitetura.md` → *Sondas, não rótulos*.
+> A coluna "escopo típico" que havia aqui ("rochas claras", "rochas escuras") foi desmentida pelas
+> calibrações da faixa A e saiu em 22/11/2026.
 
 Por isso todas as regiões recebem `class_id = 0` no treino: o projeto **não afirma** que uma
 região marcada por `"crack"` é uma fissura (**D2**). Multi-classe → trabalho futuro (**D12**).
@@ -258,8 +263,8 @@ região marcada por `"crack"` é uma fissura (**D2**). Multi-classe → trabalho
    acabamento.
 3. **Fronteira arbitrária** — o que é defeito numa rocha é estética em outra. É o problema central
    do TCC (**D3**), não um ruído a contornar.
-4. **Ausência de ground truth** — não há anotação humana preexistente. Daí o conjunto-ouro
-   anotado às cegas (**D7**).
+4. **Ausência de ground truth** — não há anotação humana preexistente. Daí a auditoria cega
+   do Experimento 1 (**D7**, emenda de 19/11/2026).
 5. **Texturas fora do padrão** — kalahari, ice_leke e quartzito_venom dificultam a generalização.
    As que o autor achou movimentadas ao selecionar as vagas estão em *Litologias movimentadas*,
    acima.

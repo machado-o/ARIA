@@ -3,13 +3,12 @@
 Lê o `calibracao.json` de cada litologia calibrada e o `_cache/` das vagas, e
 desenha três painéis lado a lado: a chapa, as marcações no limiar da regra
 (joelho) e no limiar de trabalho do autor. As sondas são as do autor nos dois
-painéis, então isto é o braço "regra com as sondas do autor" contra o
-"calibrado pelo autor" — não o "default" da D5, que só existe depois de as
-litologias reunidas estarem calibradas.
+painéis, então isto é o braço `regra_autor` contra o `autor` da D5 (os
+outros dois, `unico` e `regra_todas`, ficam com o `auditoria_preparar.py`).
 
 Não roda o SAM: filtra o cache (D18). As imagens das vagas são todas do
-`train/` (D17), então nenhuma figura toca o `test/`, de onde sai o
-conjunto-ouro (D7).
+`train/` (D17), então nenhuma figura toca o `test/`, de onde sai a
+auditoria do Experimento 1 (D7).
 
 Também grava `regra_x_autor.csv`, uma linha por (litologia, sonda).
 

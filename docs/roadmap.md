@@ -3,14 +3,15 @@
 Estado vivo do desenvolvimento e ordem de execução. As decisões que justificam esta ordem estão
 em [`decisoes.md`](decisoes.md).
 
-> Última atualização: 2026-11-19
+> Última atualização: 2026-11-22
 > **Prazos (19/11/2026, ainda sem confirmação):** defesa para a banca **até dezembro de 2026**,
 > publicação **até fevereiro de 2027**. O **01/12/2026** (data de trabalho de 06/11) fica como a
 > versão que vai à banca. Falta confirmar com o Rafael. A Jacitec (22/10) já passou.
 >
-> O cronograma abaixo foi montado sobre o 15/10. Ele assume que só o **Experimento 1** (Fase 2)
-> roda e que o conjunto-ouro vem antes dos treinos. Em 06/11 o Henrique propôs **adiantar os
-> treinos e a escrita**, porque o conjunto-ouro é trabalhoso. Ver `pendencias.md` → Retomada.
+> Em 19/11 o conjunto-ouro saiu: o Experimento 1 é avaliado por **auditoria cega** (emenda da
+> **D7**), com o pacote já montado. O que falta dele são os julgamentos. Em 22/11 ficou decidido
+> tentar o **Experimento 2 só na faixa A** até 01/12 (Fase 3.1); as faixas B a D viram trabalho
+> futuro (nota na **D6**). Ver `pendencias.md` → Retomada.
 
 ---
 
@@ -28,22 +29,20 @@ em [`decisoes.md`](decisoes.md).
 | Litologias com `calibracao.json` | 🟡 **11 de 45 — faixa A completa** (20/10/2026). Autor acima do joelho da regra em 45 de 45 sondas (ver `pendencias.md` → *Código*) |
 | `figuras_regra_autor.py` | ✅ **novo** (20/10/2026): regra × autor na mesma chapa, do cache, sem GPU |
 | Inferência em lote sobre o dataset | ❌ **não existe** |
-| Conjunto-ouro anotado | ❌ não existe |
-| Avaliação (IoU / mAP / falso positivo) | ❌ não existe |
+| Auditoria cega do Exp. 1 (`auditoria_preparar.py` / `auditoria_analisar.py`) | 🟡 pacote montado em 19/11/2026 (33 chapas do `test/`, 420 itens); **faltam os julgamentos** da avaliadora e do autor |
 | Treino e avaliação YOLO | ❌ não existe (`AI/YOLO/` está vazio) |
 | Integração Xception | 🟡 **treinado** (03/10, D19): 96,72% no `test/` (98,71% no `val/`), abaixo dos 99,21% do original. Com o sorteio por imagem do original, o mesmo modelo dá 99,92%: a diferença vem da divisão dos dados. Os dois números são reportados (D19, 06/10); falta só integrar o roteador. Ver Fase 4 |
-| **Monografia** (`Overleaf/TCC/`) | 🟡 **reestruturada em 26/09**, revista em 10/10 e 19/11: bibliografia (40 entradas), Introdução, Fundamentação, Metodologia e Conclusão escritas; Resultados com 5 seções medidas (a 4.5, *Calibração da Faixa A*, e o Apêndice A em 19/11). Faltam os Experimentos 1 e 2 |
+| **Monografia** (`Overleaf/TCC/`) | 🟡 **reestruturada em 26/09**, revista em 10/10 e 19/11: bibliografia (44 entradas), Introdução, Fundamentação, Metodologia e Conclusão escritas; Resultados com 5 seções medidas (a 4.5, *Calibração da Faixa A*, e o Apêndice A em 19/11). Compila (22/11: 60 páginas, sem erro). Faltam os números do Experimento 1 e o Experimento 2 |
 | Artigo de PD1 e LatinoWare2026 | 🔴 intocados — continuam desalinhados (**D13**). O da LatinoWare foi **recusado** (informado em 06/11/2026) |
 
-> ⚠️ A monografia **nunca foi compilada** depois da reestruturação: não há LaTeX na máquina de
-> desenvolvimento. `Overleaf/TCC/verificar_tex.py` faz a conferência estrutural possível
-> (citação sem entrada no `.bib`, `
-ef` sem `\label`, ambiente desbalanceado, figura ausente),
-> mas o veredito é do Overleaf.
+> A monografia compila no Overleaf e, nesta máquina, com TinyTeX copiando `TCC/` para um caminho
+> sem acento (ver `pendencias.md`). `Overleaf/TCC/verificar_tex.py` faz a conferência estrutural
+> rápida (citação sem entrada no `.bib`, `\ref` sem `\label`, ambiente desbalanceado, figura
+> ausente).
 
-**O buraco estrutural:** `inference.py` lê de `selectRocks/`, que tem **uma imagem por rocha**.
-Não existe caminho do Professor para um conjunto de treino do Aluno. É a primeira coisa a
-resolver na Fase 3.
+**O buraco estrutural:** `inference.py` lê de `selectRocks/`, que tem **as 4 imagens de
+calibração por rocha**. Não existe caminho do Professor para um conjunto de treino do Aluno. É a
+primeira coisa a resolver na Fase 3.
 
 ---
 
@@ -82,8 +81,8 @@ especialista**, que não veio. Elas, a `white_mirage` e a `golden_storm` são ro
 `siena_white` ✅, `nevada_black` ✅ (seleção), `ubatuba_green` ✅ (seleção), `ipanema_beige` ✅ (seleção), `shadow_white` ✅ (seleção), `itaunas_white` ✅ (seleção),
 `santa_cecilia` ✅ (seleção), `san_francisco_green` ✅ (seleção), `white_mirage` ✅ (seleção), `golden_storm` ✅ (seleção), `white_olympus` ✅ (seleção).
 
-> **A seleção da faixa A está completa** (44/44, em 08/10/2026). O que falta na faixa é
-> calibração, não seleção: em 09/10/2026, 8 das 11 litologias ainda não têm `calibracao.json`.
+> **A seleção da faixa A está completa** (44/44, em 08/10/2026), e a calibração também (11/11,
+> em 20/10/2026).
 
 ```bash
 cd AI/SAM
@@ -103,8 +102,8 @@ abas:
    três vagas de limiar, com o joelho marcado como **sugestão**;
 3. **Fechar** — a contagem por vaga, o **critério escrito** (obrigatório) e o salvamento.
 
-> **A faixa A está calibrada** (11/11, em 20/10/2026). O próximo passo — conjunto-ouro (Fase 2)
-> ou seleção da faixa B — é decisão em aberto em `pendencias.md`.
+> **A faixa A está calibrada** (11/11, em 20/10/2026). O passo seguinte foi a auditoria do
+> Experimento 1 (Fase 2); a seleção da faixa B não começou.
 
 > **Primeira observação (`siena_white`, 01/10/2026):** o autor divergiu da regra nas 3 sondas
 > admitidas (`vein`, `Stain`, `Dark patches`), sempre para cima — limiar de trabalho ≈ 2× o joelho.
@@ -113,25 +112,20 @@ abas:
 
 ---
 
-## Fase 2 — Experimento 1: SAM calibrado × SAM default
+## Fase 2 — Experimento 1: auditoria cega dos quatro braços
 
-Ver **D5** e **D7**. Não exige treino nenhum — é o caminho mais curto até um resultado real.
+Ver **D5** e **D7** (emenda de 19/11/2026, que trocou o conjunto-ouro e a preferência pareada pela
+auditoria). Não exige treino nenhum — é o caminho mais curto até um resultado real.
 
-1. **Montar o conjunto-ouro (~50 imagens).**
-   10 litologias da faixa A × 5 imagens cada, **retiradas do split `test/`** para nunca
-   contaminarem treino algum.
-2. **Anotar às cegas — antes de rodar qualquer inferência sobre essas imagens.**
-   A ordem é a metodologia: anotar depois de ver a máscara do modelo destrói a independência da
-   anotação. Ferramenta externa (LabelMe/CVAT), exportando polígono.
-3. **Rodar o Professor uma vez por imagem, com todas as sondas no piso, e filtrar os quatro
-   braços do cache** (**D18**) — `default`, regra com todas as sondas, regra com as sondas do
-   autor e calibrado pelo autor (**D5**, quarto braço acrescentado em 2026-10-10).
-4. **Avaliar contra o ouro:** IoU, precisão, recall e taxa de falso positivo (D7), por braço e
-   por litologia.
-5. **Preferência pareada cega com especialista** (D7): máscara A × B embaralhadas, sem
-   identificação. Produz a estatística de preferência.
-6. **Escrever o resultado.** Inclui o par de figuras *default × calibrado* na mesma chapa — a
-   evidência que hoje falta em todo o material escrito.
+1. ✅ **Sortear a amostra** — 3 chapas do `test/` por litologia calibrada (33), semente fixa.
+2. ✅ **Rodar o Professor uma vez por chapa, com todas as sondas no piso, e filtrar os quatro
+   braços do cache** (**D18**) — `unico`, `regra_todas`, `regra_autor` e `autor` (**D5**).
+3. ✅ **Montar o pacote** (19/11): 420 itens estratificados, intercalados, sem braço, sonda,
+   litologia nem score. `auditoria_preparar.py` — **não rodar de novo** (ver `CLAUDE.md`).
+4. [ ] **Julgamentos:** a avaliadora (estudante de Engenharia de Minas) e o autor, separados.
+5. [ ] **Analisar:** `auditoria_analisar.py` — precisão e recall relativo por braço, IC 95%,
+   kappa de Cohen entre os dois avaliadores.
+6. [ ] **Escrever o resultado** na Seção do Experimento 1 do TCC.
 
 **Entregável:** H1 respondida, com número e com figura. Fecha como contribuição mesmo se a Fase 2
 não terminar.
@@ -160,12 +154,14 @@ Ver **D6**. Executa faixa por faixa. **Cada faixa é escrita antes de a seguinte
   Henrique: **cada contorno é um polígono próprio**. `sam_cache.pecas_por_deteccao` é a fonte
   única, usada pelo cache do calibrador e pelo `inference.py`; o `sam_batch.py` deve usá-la
   também. Sobra desta frente a **área mínima** (item acima): separar expõe fragmentos minúsculos.
-- **`train.py` / `eval.py`** — treino dos Alunos e avaliação contra o conjunto-ouro da Fase 1.
+- **`train.py` / `eval.py`** — treino dos Alunos e avaliação. ⚠️ **Contra o quê, não está
+  decidido:** o conjunto-ouro saiu em 19/11 e a auditoria cega foi desenhada para o Experimento 1
+  (ver `pendencias.md`).
 
 ### 3.1 — Faixa A (≥1000 imagens · 11 litologias)
 
-Treinar os três braços (especialista, generalista, controle calibrado — D6), avaliar contra o
-ouro, **escrever**.
+Treinar os três braços (especialista, generalista, controle calibrado — D6), avaliar,
+**escrever**.
 
 ### 3.2 — Faixa B (500–999 · 6 litologias)
 ### 3.3 — Faixa C (200–499 · 14 litologias)

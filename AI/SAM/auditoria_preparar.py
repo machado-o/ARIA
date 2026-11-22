@@ -384,6 +384,18 @@ def main() -> None:
           f"em {len(amostra['chapas'])} litologias")
     if args.ate < 2:
         return
+    if (AUD / "itens.json").exists() and not args.refazer_itens:
+        # A trava vem ANTES da etapa 4, não só antes da 5: a etapa 4 regrava o
+        # `limiares.json` (que vai para o git) com o cache das vagas DESTA
+        # máquina. Rodado no outro PC, ou em outra versão do ultralytics, os
+        # limiares mudariam por baixo de um pacote já sorteado com os antigos,
+        # e o `auditoria_analisar.py` passaria a ler braços que não são os do
+        # sorteio. Os ids do pacote (m001…) só valem para ESTE sorteio.
+        print("\nitens.json já existe: o pacote já foi montado e pode ter respostas.\n"
+              "Nada foi capturado nem recalculado — o limiares.json ficou como está.\n"
+              "Para enviar de novo, use o .zip que já está em auditoria/. Só refaça\n"
+              "(--refazer-itens) se nenhuma resposta tiver sido dada ainda.")
+        return
     capturar(pendentes(amostra))
     if args.ate < 4:
         return
@@ -391,14 +403,6 @@ def main() -> None:
     conferir_regra(lim)
     print("limiar do braço único: " + ", ".join(f"{s} {t}" for s, t in lim["unico"].items()))
     if args.ate < 5:
-        return
-    if (AUD / "itens.json").exists() and not args.refazer_itens:
-        # Os ids do pacote (m001…) só valem para ESTE sorteio. Refazê-lo — de
-        # propósito ou rodando na outra máquina, onde o SAM dá scores um pouco
-        # diferentes — embaralharia a ligação entre as respostas e os braços.
-        print("\nitens.json já existe: o pacote já foi montado e pode ter respostas.\n"
-              "Para enviar de novo, use o .zip que já está em auditoria/. Só refaça\n"
-              "(--refazer-itens) se nenhuma resposta tiver sido dada ainda.")
         return
     conjunto = reunir(amostra, lim)
     itens, tamanhos = sortear_itens(conjunto)

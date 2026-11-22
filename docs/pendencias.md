@@ -6,7 +6,7 @@
 > Consolida o que antes estava espalhado em `auditoria.md`, `revisao-artigo.md` e
 > `artigo-sbc.md` (os três foram removidos em 2026-08-23).
 >
-> Última atualização: 2026-11-19
+> Última atualização: 2026-11-22
 
 ---
 
@@ -24,7 +24,16 @@
 > o Apêndice A em `apendice.tex` e o segundo "terceiro resultado" da conclusão. A versão de 06/11
 > inteira está no commit `e402f75`, segundo pai do merge. Compilado aqui em 22/11 (60 páginas, sem erro).
 > As sobras de 06/11 foram decididas na mesma sessão (ver *Monografia — em aberto*). **Falta:**
-> puxar no Overleaf (GitHub → Pull) e ver se o título provisório cabe na capa.
+> puxar no Overleaf (GitHub → Pull) e ver se o título provisório cabe na capa. Na mesma sessão,
+> uma revisão geral dos `.md` e do código de `AI/` tirou as menções vencidas ao conjunto-ouro, ao
+> `"default"` e aos limiares provisórios.
+>
+> **Plano do Henrique (22/11/2026), nesta ordem:**
+> 1. tratar as pendências que faltam, uma a uma;
+> 2. rever o texto parágrafo por parágrafo com o Claude;
+> 3. mandar uma versão ao Rafael — **sem** os resultados da auditoria, o que é aceitável (ele
+>    ainda não pediu nem deu data);
+> 4. o Henrique faz os julgamentos dele na auditoria, para comparar com os da avaliadora.
 >
 > **Sessão de 19/11:** o texto avançou no que não dependia de decisão (ver *Escrita* → *revisão
 > de 19/11*): seção 4.5 *Calibração da Faixa A*, Apêndice A, referências completas (nenhum
@@ -37,19 +46,32 @@
 > desde 22/11, vindo pelo `ARIA_backup_20261119.zip`) tem 420
 > marcações de 33 chapas do `test/`, 60 por estrato. Próximos passos:
 >
-> 1. [ ] Mandar o `.zip` para a avaliadora (estudante de Engenharia de Minas). Ela extrai, abre o
+> 1. [ ] Mandar o `.zip` para a avaliadora, **Marcelli da Fonseca Carvalho** (estudante de
+>    Engenharia de Minas). Ela extrai, abre o
 >    `index.html` no computador, julga quantas conseguir e devolve o `.json` exportado.
 > 2. [ ] O Henrique julga a mesma amostra, **separado**: cada um na sua tela, sem ver nem
 >    comentar a resposta do outro. Ele não abre `itens.json` nem `limiares.json` antes.
 > 3. [ ] Os `.json` vão para `AI/SAM/auditoria/respostas/`; rodar `auditoria_analisar.py`.
 > 4. [ ] Escrever o resultado na seção do Experimento 1 (o TODO está lá), mais a figura único ×
->    calibrado sobre uma chapa da amostra.
-> 5. [ ] Nome completo da avaliadora para os agradecimentos (pedido do Henrique).
+>    calibrado sobre uma chapa da amostra. ⚠️ **Só depois do julgamento do Henrique:** a chapa é
+>    do `test/` e está na amostra, e ver as marcações de um braço antes de julgar quebra o "às
+>    cegas" dele.
+> 5. [x] ~~Nome completo da avaliadora para os agradecimentos~~ — Marcelli da Fonseca Carvalho
+>    (Henrique, 22/11/2026). Entra nos agradecimentos quando eles forem escritos.
 >
 > O texto do TCC já descreve a auditoria (metodologia, H1, objetivos, escopo) e traz o que não
 > depende dos julgamentos: volume de marcações por braço e a reprodutibilidade da regra entre as
-> duas máquinas. **Ainda em aberto:** declarar o Experimento 2 como trabalho futuro (muda a
-> **D6** e a H2).
+> duas máquinas.
+>
+> **Experimento 2 — decidido em 22/11/2026: tentar só na faixa A até 01/12** (nota na **D6**). A
+> parte da H2 sobre o volume de dados passa a trabalho futuro, e o texto do TCC ainda precisa
+> dizer isso. Antes de treinar falta:
+> - [ ] `sam_batch.py` — o Professor sobre uma amostra do `train/`/`val/` de cada litologia da
+>   faixa A, com o pós-processamento (área mínima etc.; `roadmap.md` → Fase 3.0);
+> - [ ] a regra de split do Aluno (por sequência ou por sorteio — item em *Código*);
+> - [ ] **contra o quê o Aluno é avaliado**: o conjunto-ouro saiu e a auditoria foi desenhada
+>   para o Experimento 1.
+> Se não couber no prazo, o Experimento 2 inteiro vira trabalho futuro.
 >
 > **Prazos (informados em 19/11, "pelo que fiquei sabendo"):** defesa para a banca **até
 > dezembro**; publicação **até fevereiro de 2027**. Confirmar com o Rafael. O 01/12 de 06/11
@@ -75,9 +97,9 @@ novo em 22/11, depois de juntar as versões de 06/11 e 19/11.
 
 **4. O que falta no texto, em ordem de peso** (resposta a "se pedirem o arquivo, falta muito?"):
 
-- [ ] **Experimento 1 e Experimento 2** — as duas seções de resultados estão vazias. O 1 depende
-  da faixa A calibrada e do conjunto-ouro anotado (**D7**, ainda não começou); o 2, disso e do
-  treino dos Alunos. Não se resolve escrevendo.
+- [ ] **Experimento 1 e Experimento 2** — as duas seções de resultados estão sem número. O 1
+  depende só dos julgamentos da auditoria (pacote pronto, ver *Retomada*); o 2, do treino dos
+  Alunos, que não começou. Não se resolve escrevendo.
 - [ ] Por consequência: frases de resultado no resumo/abstract e a síntese de H1/H2 na conclusão.
 - [x] ~~**Figuras:** a do pipeline e as quatro capturas de tela~~ — feito em 20/10/2026.
   `figuras/arquitetura_aria.png` (citada no texto) e os quatro prints do Henrique, recortados
@@ -116,9 +138,10 @@ o momento".
   **prévia da Jacitec**, não o TCC.
 - [x] ~~**Confirmar se o DeepStoneAI usou este mesmo dataset.**~~ — sim, confirmado em
   2026-10-02 pelo artigo do SBAI (**D9**). Citação obrigatória.
-- [ ] **Contato do especialista do setor** para a preferência pareada cega (D7). Precisa de ~30
-  minutos dele, não mais. Em 06/11/2026 o Henrique disse que **provavelmente vai pedir a alguém
-  da faculdade de Minas** uma análise qualitativa. Falta o nome e o formato.
+- [x] ~~**Contato do especialista do setor** para a preferência pareada cega (D7)~~ — resolvido
+  em 19/11/2026 pela emenda da **D7**: a preferência pareada saiu, e a avaliadora da auditoria
+  cega é a Marcelli da Fonseca Carvalho, estudante de Engenharia de Minas. O formato é o pacote
+  da auditoria (ver *Retomada*).
 - [x] ~~**Versão final submetida ao Latinoware**~~ — **o artigo do TCC foi recusado** (informado
   em 06/11/2026). Ele seguiu na LatinoWare só com a versão do **projeto**, não com a do TCC.
 - [x] ~~**Parecer da LatinoWare**~~ — **encerrado pelo Henrique em 19/11/2026: não orienta mais o
@@ -148,20 +171,20 @@ o momento".
      19/11/2026:** entrou como limitação declarada na conclusão (*Contribuição do classificador
      não isolada*, com os ~3% de erro no `test/`). Rodar a ablação não está previsto.
   
-  A crítica 1 continua aberta: depende da decisão do conjunto-ouro (ver *Retomada*).
+  A crítica 1 continua aberta até os julgamentos da auditoria (ver *Retomada*): é a auditoria
+  que mede a taxa de falso positivo de cada braço.
 
 ---
 
-## 🧪 Avaliação — alternativas ao conjunto-ouro (decisão adiada)
+## 🧪 Avaliação — alternativas ao conjunto-ouro (decidido em 19/11/2026)
 
-> Levantado em 05/10/2026. O Henrique não sabe se terá tempo de anotar as ~50 imagens, nem se a
-> anotação dele ficará boa o bastante como referência. **A D7 segue valendo como está** — o
-> conjunto-ouro continua sendo o plano principal. O que está abaixo é o cardápio de saídas, para
-> decidir mais à frente. Trocar qualquer coisa aqui é revisão da **D7** (e da redação da **H1**,
-> que hoje diz "critério de referência anotado") e vai para o `decisoes.md`.
+> Levantado em 05/10/2026, quando o Henrique não sabia se teria tempo de anotar as ~50 imagens.
+> **Decidido em 19/11/2026 (emenda da D7, H1 reescrita):** auditoria por amostragem, com recall
+> relativo por *pooling* entre os braços e kappa entre dois avaliadores. A preferência pareada
+> saiu. O cardápio abaixo fica como registro do que foi considerado.
 
-- [ ] **Decidir se o conjunto-ouro se mantém, encolhe ou é substituído.** Nenhuma das saídas
-  elimina o julgamento humano; muda o custo e o que dá para afirmar no fim.
+- [x] ~~**Decidir se o conjunto-ouro se mantém, encolhe ou é substituído.**~~ — substituído pela
+  auditoria cega (**D7**).
 
 | Alternativa | Custo | O que mede | O que não mede |
 |---|---|---|---|
@@ -172,16 +195,9 @@ o momento".
 | **Consistência sem rótulo** — chapa espelhada/girada/reescalada deve dar a mesma máscara | baixo, automático | robustez | acerto (dá para errar de forma consistente) |
 | **Corrigir a máscara do modelo** em vez de anotar do zero | médio | IoU, precisão, recall | — mas a anotação fica ancorada no modelo; a D7 rejeita isso de propósito |
 
-- **Se o ouro for inviável**, a combinação mais defensável é auditoria por amostragem +
-  preferência pareada: precisão absoluta e comparação entre braços, com recall declarado como
-  limitação. A H1 teria de ser reescrita.
 - **Aluno contra os rótulos do SAM** não entra na lista: mede fidelidade da cópia, não acerto
   (D7). Serve como diagnóstico de treino.
-- **Em aberto, mesmo mantendo o ouro:** o plano do `roadmap.md` (Fase 2) é 10 litologias da
-  faixa A × 5 imagens — o resultado vale para a faixa A, não para as 45, e 5 imagens por litologia
-  dão intervalo largo no recorte por litologia. E IoU pune estrutura fina — em trinca e veio,
-  poucos pixels de deslocamento derrubam o número. Uma métrica com tolerância de borda seria
-  decisão nova.
+- O que vale ainda: o resultado do Experimento 1 cobre a faixa A (as 11 calibradas), não as 45.
 
 ---
 
@@ -200,7 +216,8 @@ o momento".
   **selecionadas sem ela** (a **D20** já dizia que não bloqueia). Continua valendo: serve para
   conferir a marcação dessas quatro movimentadas depois do fato, e vale pedir também a
   classificação *homogênea × movimentada* das litologias da faixa A — é o critério técnico que a
-  pesquisa encontrou.
+  pesquisa encontrou. **Decidido em 22/11/2026:** pedir à Marcelli **depois** da auditoria, se ela
+  topar mais uma tarefa — não junto do pacote.
 - [x] ~~**Decidir o termo.**~~ — decidido em 07/10/2026 (**D20**): "movimentada", não
   "exótica", que é categoria comercial (raridade e preço).
 - [ ] **Hipótese do autor sobre o desfecho (20/10/2026, levantada numa conversa com um amigo).**
@@ -214,7 +231,7 @@ o momento".
   Mas "infundado" é forte demais: o que o trabalho mede é **até onde** o prompt textual funciona,
   e o indício é que funciona razoavelmente nas homogêneas e piora nas movimentadas. A frase
   honesta seria algo como "o vocabulário textual é o gargalo, e isso piora com a heterogeneidade
-  da rocha". Cuidado: é hipótese até o Experimento 1 medir contra o conjunto-ouro — o recorte
+  da rocha". Cuidado: é hipótese até a auditoria do Experimento 1 medir — o recorte
   homogênea × movimentada (item abaixo) é o que a testaria. Na Jacitec entrou como hipótese
   (slide 9).
 - [ ] **Decidir o critério de pertencimento.** Hoje a lista é impressão do autor. Para virar
@@ -254,16 +271,13 @@ o momento".
   autor não ficou claramente melhor.
 - [ ] **Gerar as figuras *default × calibrado*** — não ficaram prontas para a prévia; passam para
   o **Experimento 1** (Fase 2). Os cuidados abaixo continuam valendo. São quatro braços desde
-  10/10 (**D5**): default, regra com todas as sondas, regra com as sondas do autor e calibrado
-  pelo autor. Três cuidados:
-  1. **Não usar o `"default"` atual do `rock_prompts.json` como baseline.** A **D5** o descarta:
-     foi escolhido no olho (`vein 0,007`, vinte vezes abaixo do joelho medido na `siena_white`).
-     O baseline é a regra da **D17** aplicada sobre as litologias reunidas, e só existe depois
-     que elas estiverem calibradas. Se só a faixa A estiver pronta, apresentar como default
-     **preliminar**, calculado sobre essas litologias e não sobre as 45.
-  2. **Tirar os exemplos de `train/` ou `val/`, nunca do `test/`.** O conjunto-ouro sai do
-     `test/` e é anotado antes de o SAM rodar naquelas imagens; gerar figura com candidata ao
-     ouro quebra o "às cegas" da **D7**.
+  10/10 (**D5**): `unico`, `regra_todas`, `regra_autor` e `autor`. Três cuidados:
+  1. ~~**Não usar o `"default"` do `rock_prompts.json` como baseline.**~~ — a entrada foi apagada
+     em 09/10, e o braço `unico` já existe: está no `auditoria/limiares.json`, calculado pela
+     regra sobre as 11 da faixa A (não sobre as 45 — dizer isso na legenda).
+  2. **Chapa do `test/` só depois do julgamento do Henrique.** A amostra da auditoria sai do
+     `test/`; ver as marcações de um braço numa chapa dela antes de julgar quebra o "às cegas"
+     dele (**D7**). Antes disso, usar `train/` ou `val/`.
   3. **Apresentar como exemplos ilustrativos, não como evidência.** Um par em que o calibrado
      ficou melhor não prova a **H1**, e a pergunta "foram escolhidos a dedo?" é previsível.
      Incluir também um caso de empate ou em que o calibrado piora.
@@ -280,20 +294,20 @@ o momento".
 - [ ] 💡 **Opcional, só se sobrar tempo antes de 01/12: comparar com o YOLOE** (ideia de
   06/11/2026). O YOLOE é um YOLO de segmentação da Ultralytics que recebe a classe como texto,
   como o SAM3, quase na velocidade de um YOLO comum. Rodado **sem treino**, com as mesmas
-  sondas, ele vira mais um braço: SAM3 calibrado × YOLOE. Para dar **número** a essa comparação
-  é preciso o conjunto-ouro; sem ele, dá para incluí-lo na preferência pareada cega (**D7**,
-  item 2). Antes de qualquer coisa, conferir se a versão do `ultralytics` de cada máquina tem
-  o YOLOE. Esperado: o mesmo limite de vocabulário textual do SAM3 (hipótese de 20/10/2026).
+  sondas, ele vira mais um braço: SAM3 calibrado × YOLOE. Para dar **número** a essa comparação,
+  as detecções do YOLOE teriam de entrar numa auditoria nova — o pacote de 19/11 não se refaz
+  (ver `CLAUDE.md`). Antes de qualquer coisa, conferir se a versão do `ultralytics` de cada
+  máquina tem o YOLOE. Esperado: o mesmo limite de vocabulário textual do SAM3 (hipótese de 20/10/2026).
 
 - [x] ~~**Calibrar `siena_white` no calibrador**~~ — feito em 2026-10-01 (`calibracao.json`).
   Primeira litologia calibrada de fato: **1 de 45**. Entraram 3 sondas — `vein`, `Stain` e
   `Dark patches`.
-- [ ] **Achado (20/10/2026): na faixa A inteira, o autor ficou acima do joelho em 45 de 45
+- [x] **Achado (20/10/2026): na faixa A inteira, o autor ficou acima do joelho em 45 de 45
   sondas**, com razão autor/regra mediana de **3,3×** (de 1,1× no crack da `shadow_white` a
   17,9× na white stain da `white_olympus`). Nas vagas típica e forte, a regra produz de 7 a 228
   marcações por chapa; o autor, de 0 a 46. A divergência que a `siena_white` sugeria (abaixo)
-  se repetiu em todas: é o *"onde a curva engana"* da **D17**. Falta decidir como isso entra na
-  monografia (seção de resultados e a tabela regra × autor, em *Escrita*). Registro original:
+  se repetiu em todas: é o *"onde a curva engana"* da **D17**. ~~Falta decidir como isso entra na
+  monografia~~ — entrou em 19/11/2026: seção 4.5 e Apêndice A (ver *Escrita*). Registro original:
 - [x] **Observar: o autor divergiu da regra nas 3 sondas da `siena_white`**, e sempre para cima
   (limiar de trabalho ≈ 2× o joelho: `vein` 0,145 → 0,335; `Stain` 0,203 → 0,392 — era 0,414
   até a recalibração de 09/10/2026, feita já com a preview sem pontes da **D21**;
@@ -310,8 +324,8 @@ o momento".
   veio — as quatro movimentadas estão na lista em `dataset.md` → *Litologias movimentadas*.
 - [x] ~~**Calibrar as quatro litologias da faixa A que faltavam**~~ — feito em 20/10/2026.
   **11 de 45** com `calibracao.json`: a faixa A inteira.
-- [ ] **Decidir o próximo passo depois da faixa A**: começar o conjunto-ouro (**D7**, Fase 2)
-  ou avançar a seleção para a faixa B. É decisão do Henrique.
+- [x] ~~**Decidir o próximo passo depois da faixa A**~~ — foi o Experimento 1, com a auditoria
+  cega (19/11/2026). A seleção da faixa B não começou.
 - [ ] **Decidir a regra de split do Aluno** (por sequência ou por sorteio), adiada pelo
   Henrique. O que se sabe sobre sequência e blocos está no item do Xception, logo abaixo.
 - [x] ~~**Decidir o que fazer com o resultado do Xception no `test/`**~~ — decidido em
@@ -396,7 +410,7 @@ o momento".
 - [x] "Constituir o banco" → "selecionar, caracterizar e pré-processar um conjunto público"
   (**D9**); mAP explicado como AP por causa da classe única (**D2**).
 
-### ✅ Monografia — revisão de 2026-10-10 (não compilada)
+### ✅ Monografia — revisão de 2026-10-10 (compilada em 06/11)
 
 - [x] Experimento 1 com os **quatro braços** da **D5**; o limiar do autor ganhou papel próprio.
 - [x] Classificador tratado como **reprodução** (**D19**): seção na metodologia, resultados com
@@ -410,7 +424,7 @@ o momento".
   calibração em `lstlisting`). `\lstlistingname` do template: "Algoritimo" → "Código".
 - [x] `verificar_tex.py` reconhece o `label=` do `lstlisting`.
 
-### ✅ Monografia — revisão de 2026-11-19 (não compilada)
+### ✅ Monografia — revisão de 2026-11-19 (compilada em 22/11)
 
 - [x] **Seção 4.5 *Calibração da Faixa A*** (`resultados.tex`, `sec:res_calibracao`): sondas
   admitidas (2 a 6 por litologia, 45 pares), regra × autor (45/45 para cima, razão mediana 3,3,
@@ -496,15 +510,13 @@ o momento".
   defeitos com **anotação manual** e 4 classes semânticas, métricas modestas por ruído de
   anotação. O ARIA responde exatamente a esse ponto — Professor (SAM3) no lugar da anotação
   manual, critério parametrizado (**D3**), rótulo binário (**D2**). Material em
-  `Projects/ARIA - Análise e Reconhecimento Inteligente de Anomalias/DeepStoneAI/`; entrada do
-  `.bib` ainda não criada. Também citar o artigo do SBAI 2025 (**D9**).
-  - **Números para a motivação (D3)** — vêm do **FracStoneAI** (a etapa YOLO desse trabalho,
-    com artigo na LatinoWare 2026; repo em `…/FracStoneAI-main/`): YOLO11-seg sobre anotação
-    manual de 4 classes em **1.088 imagens deste mesmo dataset** (conferido por hash) deu
-    **mask mAP50-95 de 0,04 a 0,21**; os próprios autores apontam ruído de rótulo e defeitos
-    omitidos na anotação. É o problema que o ARIA ataca, medido por um trabalho vizinho —
-    usar na introdução para responder de antemão *"por que não anotar à mão e treinar o
-    YOLO?"*. Fonte dos números: `docs/NEXT-STEPS.md` e `docs/Latinoware2026/Artigo/` do repo.
+  `Projects/ARIA - Análise e Reconhecimento Inteligente de Anomalias/DeepStoneAI/`. Entradas do
+  `.bib` criadas (`moreira_tcc2025`, `fracstoneai_oliveira2026`); o artigo do SBAI 2025 também é
+  citado (**D9**).
+  - **Números para a motivação (D3)** — vêm do **FracStoneAI**, citado com os números do artigo
+    publicado (ver o item `TODO-fracstoneai`, acima). ⚠️ Os "mask mAP50-95 de 0,04 a 0,21" que
+    este item registrava vinham do repositório (`docs/NEXT-STEPS.md`) e **não batem** com o
+    artigo; não usar.
 
 - [x] ~~**`\cite{TODO-sam3}`** em `ref_teorico.tex`~~ — `sam3_carion2026`, em 19/11/2026.
 - [x] ~~**Conferir a entrada `boxes2pixels_lendering2026`**~~ — conferida no arXiv em 19/11/2026;
@@ -535,8 +547,7 @@ o momento".
 ### 🔴 Artigo de PD1 e LatinoWare2026 — nada feito
 
 > O artigo da LatinoWare2026 **foi recusado** (06/11/2026), e a lista abaixo só importa para
-> ele se houver nova submissão. Os pareceres dos avaliadores ainda vão chegar (ver
-> *Bloqueadores*).
+> ele se houver nova submissão. O parecer chegou e foi encerrado em 19/11 (ver *Bloqueadores*).
 
 Continuam valendo, agora só para essas duas pastas: orientador desatualizado, "SAM" onde é SAM3,
 "constituir o banco de imagens" (**D9**), "45 especialistas" sem estratificação (**D6**), o
@@ -551,13 +562,12 @@ ser portado para lá quando chegar a vez.
 
 ## 📁 Organização do repo
 
-- [ ] **`LatinoWare2026/artigo-overleaf.zip`** — 5,8 MB de binário versionado duplicando o que já
-  está extraído ao lado. Zip não tem diff útil e infla o histórico.
-- [ ] **`LatinoWare2026/Exemplo_do_IEEE_adaptado_para_o_Latin_Science_2026 (1)/`** — o `" (1)"` é
-  marca de download repetido. É template de referência; renomear ou remover.
-- [ ] **Três pastas chamadas "artigo"** sem distinção no nome (SBC, IEEE, template cru).
-- [ ] Convenção de nomes inconsistente no topo: `AI`, `docs`, `Overleaf`, `apresentacao`,
-  `LatinoWare2026`.
+- [x] ~~**`LatinoWare2026/artigo-overleaf.zip`**~~ — não existe mais (conferido em 22/11/2026).
+- [ ] **`apresentações/Overleaf/artigo LatinoWare2026/Exemplo_do_IEEE_adaptado_para_o_Latin_Science_2026 (1)/`**
+  — o `" (1)"` é marca de download repetido. É template de referência; renomear ou remover.
+- [x] ~~**Três pastas chamadas "artigo"** e a convenção de nomes do topo~~ — a reorganização em
+  `apresentações/` (`Overleaf/TCC`, `Overleaf/artigo de PD1`, `Overleaf/artigo LatinoWare2026`,
+  `apresentacao de PD1`, `jacitec`) resolveu as duas (conferido em 22/11/2026).
 
 ---
 

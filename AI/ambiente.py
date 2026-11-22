@@ -5,7 +5,7 @@ por isso o índice CUDA, a versão do torch e a do ultralytics *são diferentes 
 propósito* — não há nada a "acertar". O problema nunca foi a diferença: foi
 escrever o número de uma das máquinas num documento compartilhado, como se fosse
 verdade das duas. Foi o que aconteceu com o `CLAUDE.md` e com a **D18**, que
-afirmavam `ultralytics 8.4.61` sendo que o venv deste PC tem a 8.4.52.
+afirmavam `ultralytics 8.4.61` sendo que o venv de uma das máquinas tinha a 8.4.52.
 
 A regra que resolve: **documento compartilhado não guarda número de máquina.**
 Quando precisar saber, rode isto:

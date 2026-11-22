@@ -154,7 +154,7 @@ def gravar_calib(rocha: str, sondas: dict[str, float], regra: dict[str, float | 
                  marcacoes_por_sonda: dict, criterio: str) -> None:
     """Registra os DOIS limiares, o efeito de cada um e o critério do autor.
 
-    `limiar_regra` é o joelho puro (**D17**) — é ele que vai para os dois braços
+    `limiar_regra` é o joelho puro (**D17**) — é dele que saem os braços de regra
     do Experimento 1 (**D5**), porque comparar regra contra regra mantém uma
     variável só. `limiar_trabalho` é o que o autor de fato escolheu, e é o que
     vai para produção. Gravar os dois torna a divergência **medível**: a taxa de
@@ -484,7 +484,7 @@ def limiar_da_regra(rocha: str, sonda: str) -> float | None:
 
     Constrói a própria grade em vez de reaproveitar a do slider: o valor da regra
     não pode depender do que o autor escolheu, senão deixa de ser reproduzível.
-    É este número que vai para os dois braços do Experimento 1 (**D5**).
+    É deste número que saem os braços de regra do Experimento 1 (**D5**).
     """
     scores = scores_reunidos(rocha, sonda, PAPEIS_LIMIAR)
     if len(scores) == 0:
@@ -837,7 +837,7 @@ def aba_limiar(rocha: str) -> None:
     if j:
         delta = conf - j
         legenda += (f" Tracejado âmbar: o **limiar da regra** — o joelho das três vagas "
-                    f"(**{FORMATO % j}**). É o valor da regra que vai para os dois braços "
+                    f"(**{FORMATO % j}**). É dele que saem os braços de regra "
                     "do Experimento 1 (D5); o de trabalho é o que vai para produção.")
         if abs(delta) < 1e-9:
             legenda += " Você está **na regra**."

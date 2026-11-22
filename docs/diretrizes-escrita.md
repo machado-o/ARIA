@@ -3,7 +3,7 @@
 > Contrato de comportamento para a escrita do TCC em LaTeX (Overleaf, sincronizado via Git).
 > Cláusulas numeradas. Em caso de conflito, **o que o Henrique disser na conversa vence.**
 >
-> Última atualização: 2026-08-23
+> Última atualização: 2026-11-22
 
 ---
 
@@ -19,9 +19,11 @@ se em **lista**, `itemize`/`enumerate`. Evitar parágrafo corrido onde o templat
 estrutura. Ressalva: o corpo argumentativo (introdução, discussão) é prosa — listas servem
 para fatos enumeráveis, não para substituir o raciocínio.
 
-1.4. **Tempo verbal:** proposta e metodologia no futuro ("o modelo será treinado"); resultados
-já obtidos no passado ("obteve-se", "a segmentação identificou"). Não misturar os dois para o
-mesmo fato.
+1.4. **Tempo verbal — o de TCC, não o de proposta.** O trabalho está feito: a metodologia vai
+no presente ou no passado ("o limiar é escolhido pela regra", "o classificador foi treinado") e os
+resultados, no passado ("obteve-se", "a segmentação identificou"). O futuro fica só para
+*Trabalhos futuros*. Não misturar os dois para o mesmo fato. (Até 22/11/2026 esta cláusula pedia
+a metodologia no futuro — regra do PD1, quando o texto era proposta.)
 
 1.5. **Formatação numérica (pt-BR):** vírgula como separador decimal (mAP de 0,85; IoU de 0,72)
 e ponto como separador de milhar (34.630 imagens). Unidades com espaço antes (60 FPS, 10 ms).
@@ -67,7 +69,8 @@ Henrique para decidir junto, não resolvido em silêncio.
 tornar esse critério explícito e parametrizado. **Não** escrever "reduzir falsos positivos" como
 tese central — falso positivo é medido (**D7**), não é o enunciado.
 
-3.3. São **dois** experimentos: Professor calibrado × default (**D5**) e Alunos especialistas ×
+3.3. São **dois** experimentos: os quatro braços do Professor — limiar único, regra por litologia
+com todas as sondas, regra com as sondas do autor, limiar do autor (**D5**) — e Alunos especialistas ×
 generalista × controle, estratificados por faixa de volume (**D6**). Nunca escrever "45
 especialistas" sem a estratificação, nem afirmar que a comparação "isola a variável da
 hierarquia" — é superafirmação, e o braço de controle existe justamente por causa disso.
@@ -83,10 +86,11 @@ consultar lá antes de escrever.
 
 ## 4. Formato LaTeX
 
-4.1. **Dois alvos, dois templates.** A monografia (`apresentações/Overleaf/TCC/`) usa
-`iftex.cls` + `macros.tex` e citações `abntex2-alf`. O artigo SBC (`apresentações/Overleaf/artigo de PD1/`) usa `sbc-template.sty` + `sbc.bst` e
-citações com `\cite` — **nunca** `\citeonline` (é comando do `abntex2`; no SBC gera "Undefined
-control sequence"). Saída sempre em **LaTeX puro** pronto pro Overleaf — sem markdown, sem blocos
+4.1. **O alvo é a monografia** (`apresentações/Overleaf/TCC/`): `iftex.cls` + `macros.tex` e
+citações `abntex2-alf`. O artigo SBC de PD1 (`apresentações/Overleaf/artigo de PD1/`) foi entregue
+em junho de 2026 e é saída antiga (**D13**); se algum dia voltar a ser editado, lembrar que ele usa
+`sbc-template.sty` + `sbc.bst` e `\cite` — **nunca** `\citeonline` (é comando do `abntex2`; no SBC
+gera "Undefined control sequence"). Saída sempre em **LaTeX puro** pronto pro Overleaf — sem markdown, sem blocos
 ` ```latex `.
 
 4.2. Citações como `\cite{TODO-chave}` quando a referência ainda não existe no `.bib`; o
@@ -94,9 +98,9 @@ Henrique preenche depois (ou pedimos pra popular `bibliografia.bib`).
 
 4.3. Fórmulas e métricas (mAP, IoU, FPS) viram `\begin{equation}` formal.
 
-4.4. Antes de escrever uma seção nova, conferir o trecho correspondente da entrega
-(`apresentações/Overleaf/TCC/textuais/`, `apresentações/Overleaf/TCC/pre_textuais/`,
-ou `apresentações/Overleaf/artigo de PD1/main.tex`) para casar com a estrutura existente.
+4.4. Antes de escrever uma seção nova, conferir o trecho correspondente da monografia
+(`apresentações/Overleaf/TCC/textuais/`, `apresentações/Overleaf/TCC/pre_textuais/`) para casar
+com a estrutura existente.
 
 4.5. **Mecânica de citação na monografia (abntex2-alf, autor-data):** usar `\citeonline{chave}` quando o autor
 é sujeito da frase ("segundo \citeonline{...}, ...") e `\cite{chave}` para citação parentética
@@ -108,6 +112,10 @@ três linhas, entre aspas no corpo. Enquanto a referência não existe no `.bib`
 `\label` no padrão (`fig:`, `tab:`, `quad:`, `eq:`), ser **referenciada no texto** antes de
 aparecer ("a Figura \ref{...} ilustra...") e indicar a **fonte** via `\source`/`\legend`
 (ABNT — "Fonte: elaborado pelo autor" quando própria). Nenhum float órfão.
+
+    ⚠️ No `iftex.cls`, o `\legend{#1}` já imprime "Fonte: #1." — escrever
+    `\legend{elaborado pelo autor}` (ou `\legend{elaborado pelo autor. Nota: ...}`), nunca
+    `\legend{Fonte: ...}`, que sai "Fonte: Fonte: ...". Corrigido no texto em 06/11/2026.
 
 ---
 
@@ -143,15 +151,15 @@ merge).
 7.1. **Terminologia canônica:** o termo padrão para os defeitos superficiais é **"anomalia"**.
 "Irregularidade" e "avaria" podem ser usados pontualmente para evitar repetição, mas "anomalia"
 é a referência — não tratar "defeito"/"avaria"/"anomalia" como conceitos distintos sem
-necessidade. (O título atual usa "avarias"; alinhar quando revisarmos o título — ver
-`pendencias.md`.)
+necessidade. (O título provisório, de 19/11/2026, já usa "anomalias"; o título final ainda está
+em aberto — ver `pendencias.md`.)
 
 7.2. **Nomenclatura (D1):** **ARIA** nomeia o pipeline/método, e é o único nome de sistema no
 texto. O projeto é isolado — **nenhuma** menção a plataforma, produto ou empresa.
 
 7.3. **Siglas:** definir por extenso na primeira ocorrência, com a sigla entre parênteses —
 "Redes Neurais Convolucionais (CNN)" — e usar só a sigla depois. Na monografia, registrar cada
-sigla em `../apresentações/Overleaf/TCC/pre_textuais/siglas.tex` (o artigo SBC não usa
+sigla em `apresentações/Overleaf/TCC/pre_textuais/siglas.tex` (o artigo SBC não usa
 lista de siglas).
 
 7.4. **Estrangeirismos:** termos em língua estrangeira sempre em itálico (`\textit{}`) —

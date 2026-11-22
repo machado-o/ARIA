@@ -44,9 +44,11 @@ fissura seria uma afirmação que este trabalho não valida.
 ## O experimento
 
 **Experimento 1 — o critério explícito funciona?**
-Professor com sondas calibradas por litologia × Professor com configuração única global. Sem
-treinamento nenhum, avaliado por preferência pareada cega de um especialista do setor e, se houver
-tempo para anotá-lo, contra um conjunto-ouro anotado às cegas.
+Quatro configurações do Professor, cada uma diferindo da anterior em uma coisa só: limiar único
+para todas as rochas → limiar da regra por litologia → só as sondas que o autor admitiu → limiar
+ajustado pelo autor. Sem treinamento nenhum, avaliado por **auditoria cega**: o avaliador vê uma
+marcação por vez, sem saber de que configuração veio, e diz se a marcaria como defeito. Mede
+precisão e recall relativo de cada configuração ([D5 e D7](docs/decisoes.md)).
 
 **Experimento 2 — a especialização compensa, e a partir de quantos dados?**
 Alunos especialistas (um por litologia) × Aluno generalista × Aluno de controle (único, treinado
