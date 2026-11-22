@@ -15,9 +15,8 @@
 > Escrito em 11/10/2026 e revisto em 20/10 e 06/11. Riscar cada item ao fechar; quando a lista
 > acabar, apagar a seção.
 >
-> **Próxima sessão (combinado em 06/11):** compilar o TCC no Overleaf (item 3) e, na mesma
-> passada, discutir o **parecer da LatinoWare** (ver *Bloqueadores*) e ajustar as críticas 2
-> ("satisfatório" sem critério) e 3 ("zero-shot") no texto. Em seguida, os
+> **Próxima sessão (combinado em 06/11):** o TCC já compila (item 3, feito em 06/11). O parecer
+> da LatinoWare **não será discutido** (decisão do Henrique, 06/11). Em seguida, os
 > treinos dos Alunos da faixa A (Fase 3.0 do `roadmap.md`), sem esperar o conjunto-ouro, que
 > agora é condicional (emenda da **D7**, 06/11/2026). Entrega: **01/12/2026**.
 
@@ -35,10 +34,8 @@
   `san_francisco_green` ainda não dizem que a seleção saiu **sem conferência de especialista**,
   o que o `dataset.md` (*Litologias movimentadas*) pede. Ver o achado em *Código* → regra × autor.
 
-**3. Texto do TCC — compilar no Overleaf primeiro.** A revisão de 10/10 (ver *Escrita*, abaixo)
-**nunca foi compilada**. Três trechos são novos e podem quebrar: as equações do joelho
-(`eq:curva`, `eq:normalizacao`, `eq:joelho`), o `lstlisting` do `calibracao.json` com
-`literate` para acentos, e as caixas `\fbox` de "captura de tela pendente".
+**3. ~~Texto do TCC — compilar~~** — compilado em 06/11/2026 (ver *Escrita* → Compilar). As
+equações do joelho, o `lstlisting` com `literate` e as figuras saem corretos no PDF.
 
 **4. O que falta no texto, em ordem de peso** (resposta a "se pedirem o arquivo, falta muito?"):
 
@@ -50,10 +47,10 @@
   `figuras/arquitetura_aria.png` (citada no texto) e os quatro prints do Henrique, recortados
   sem a barra do navegador e a do Windows. Os originais ficam fora do repo, na pasta acima do
   `ARIA/`. Falta conferir no Overleaf se cabem na página.
-- [ ] **Referências fora do `.bib`:** `TODO-sam3` e `TODO-movimentada` (a pesquisa do termo está
+- [x] ~~**Referências fora do `.bib`:** `TODO-sam3` e `TODO-movimentada`~~ — feito em 06/11/2026: SAM 3 (Carion et al., ICLR 2026) e Meyer (2003) *apud* Camargo, Artur e Silveira (2015) (a pesquisa do termo está
   em `dataset.md` → *Litologias movimentadas*).
 - [ ] **Pré-textuais:** dedicatória, agradecimentos, epígrafe, banca e data da defesa.
-- [ ] **Tabela regra × autor** nos resultados — a faixa A fechou em 20/10/2026, então já pode
+- [x] ~~**Tabela regra × autor** nos resultados~~ — escrita em 06/11/2026 (`resultados.tex`, seção 4.5, e Apêndice A com os 45 pares) — a faixa A fechou em 20/10/2026, então já pode
   ser escrita. Os números estão em `apresentações/jacitec/regra_x_autor.csv` (gerado por
   `AI/SAM/figuras_regra_autor.py`): o autor ficou acima do joelho em **45 de 45** sondas.
 - [ ] **Outros trechos de código** no texto — o Henrique disse que pensaria depois; hoje só o
@@ -84,7 +81,9 @@ o momento".
   da faculdade de Minas** uma análise qualitativa. Falta o nome e o formato.
 - [x] ~~**Versão final submetida ao Latinoware**~~ — **o artigo do TCC foi recusado** (informado
   em 06/11/2026). Ele seguiu na LatinoWare só com a versão do **projeto**, não com a do TCC.
-- [ ] **Parecer da LatinoWare (submissão #34865, recusa de 14/09/2026)** — recebido em 06/11/2026.
+- [x] ~~**Parecer da LatinoWare (submissão #34865, recusa de 14/09/2026)**~~ — **encerrado sem
+  discussão** (Henrique, 06/11/2026: o artigo não foi aceito e o assunto acabou). A leitura abaixo
+  fica só como registro. Recebido em 06/11/2026.
   Veio só o *Review 1*. Ele abre dizendo que a premissa é "muito interessante" e o texto "bem
   escrito", e faz quatro críticas. Elas servem de revisão externa da monografia. Primeira leitura
   de cada uma contra o estado atual, ainda **não discutida com o Henrique**:
@@ -322,7 +321,7 @@ o momento".
   em 2026-10-09 (**D21**): cada contorno é um polígono próprio, na preview e no `.txt`.
 - [ ] **Decidir se a curva da regra conta detecções ou peças** (em aberto na **D21**, com a
   primeira medição). Hoje conta detecções.
-- [ ] **Seção 4.3 da monografia** (`resultados.tex`, *Geometria dos Polígonos*) diz que o
+- [x] ~~**Seção 4.3 da monografia**~~ (já estava reescrita com a D21; conferido em 06/11/2026) (`resultados.tex`, *Geometria dos Polígonos*) diz que o
   tratamento da ponte é "etapa a definir". Reescrever com a **D21**.
 
 ---
@@ -366,7 +365,7 @@ o momento".
 
 ### 🟡 Monografia — em aberto
 
-- [ ] **Citar e posicionar o TCC do Pedro Lucas Brito Moreira** (IFES, 2025, *Redes Neurais
+- [x] ~~**Citar e posicionar o TCC do Pedro Lucas Brito Moreira**~~ — feito em 06/11/2026 (§2.8.1, com o FracStoneAI; conferir o nome dos anais do Latin.Science no `.bib`) (IFES, 2025, *Redes Neurais
   Convolucionais para Segmentação e Classificação de Rochas Ornamentais*, **mesmo orientador**).
   É o trabalho mais próximo do ARIA: mesmo dataset, Xception (99,21%) + YOLO de segmentação de
   defeitos com **anotação manual** e 4 classes semânticas, métricas modestas por ruído de
@@ -382,9 +381,9 @@ o momento".
     usar na introdução para responder de antemão *"por que não anotar à mão e treinar o
     YOLO?"*. Fonte dos números: `docs/NEXT-STEPS.md` e `docs/Latinoware2026/Artigo/` do repo.
 
-- [ ] **`\cite{TODO-sam3}`** em `ref_teorico.tex`: falta a referência do **SAM3**. É a única
+- [x] ~~**`\cite{TODO-sam3}`**~~ (feito em 06/11/2026) em `ref_teorico.tex`: falta a referência do **SAM3**. É a única
   citação sem entrada no `.bib`.
-- [ ] **Conferir a entrada `boxes2pixels_lendering2026`** — foi montada a partir do registro
+- [x] ~~**Conferir a entrada `boxes2pixels_lendering2026`**~~ — conferida no arXiv em 06/11/2026: os primeiros nomes estavam errados (Camile Lendering, Erkut Akdag) — foi montada a partir do registro
   neste arquivo, não de consulta à fonte. Confirmar autores, título e número do arXiv.
 - [x] ~~**Figura da arquitetura**~~ — `figuras/arquitetura_aria.png`, descomentada e citada
   no texto em 20/10/2026.
@@ -399,10 +398,13 @@ o momento".
   aplicar no `macros.tex` e fechar como decisão em `decisoes.md`.
 - [ ] **Banca:** `macros.tex` ainda tem "Fulana/Cicrano de Tal"; a aprovação está comentada.
 - [ ] **Dedicatória, agradecimentos e epígrafe** continuam com texto do template, comentados.
-- [ ] **Compilar no Overleaf.** Não há LaTeX nesta máquina — a conferência feita aqui é
-  estrutural (`TCC/verificar_tex.py`: citação sem entrada, `
-ef` sem `\label`, ambiente
-  desbalanceado, figura ausente), **não** é compilação.
+- [x] ~~**Compilar.**~~ — compilado localmente em 06/11/2026 (TinyTeX nesta máquina, pdfLaTeX +
+  BibTeX): 63 páginas, sem erro, sem caixa estourando, sem referência indefinida. Corrigido na
+  compilação: "Fonte: Fonte:" em todas as legendas (o `\legend` da classe já escreve "Fonte:"),
+  tabelas largas, listagem partida, siglas em minúscula nas referências. O Overleaf continua
+  sendo a fonte; a compilação local é conferência. Para refazer: pdflatex com
+  `-output-directory` fora do repo e copiar o `.bib` para lá antes do bibtex (o bibtex não abre
+  caminho com acento).
 
 ### 🔴 Artigo de PD1 e LatinoWare2026 — nada feito
 

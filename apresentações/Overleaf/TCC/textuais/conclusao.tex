@@ -12,7 +12,9 @@ A proposta do ARIA não foi eliminar a arbitrariedade dessa fronteira, o que ser
 % achado legítimo e deve ser reportado como tal, não omitido: o desenho descrito
 % na Seção 3.8 foi construído justamente para admitir essa possibilidade.
 
-Independentemente do desfecho dos experimentos, dois resultados já se firmaram. O primeiro é a demonstração de que o limiar de confiança do Professor é um filtro aplicado após a inferência, o que torna a varredura de limiares fora de linha exatamente equivalente a reexecutar o modelo --- propriedade verificada experimentalmente, sem tolerância numérica, e que reduz o ciclo de calibração de minutos para milissegundos. O segundo é o próprio protocolo de calibração: a separação entre a imagem que descobre \textit{quais} sondas entram e as três que submetem um \textit{único} limiar a casos sutil, típico e forte, com a distinção explícita entre o valor do limiar, que varia por litologia, e a regra que o produz, que não varia.
+Independentemente do desfecho dos experimentos, três resultados já se firmaram. O primeiro é a demonstração de que o limiar de confiança do Professor é um filtro aplicado após a inferência, o que torna a varredura de limiares fora de linha exatamente equivalente a reexecutar o modelo --- propriedade verificada experimentalmente, sem tolerância numérica, em duas versões da biblioteca, e que reduz o ciclo de calibração de minutos para milissegundos. O segundo é o próprio protocolo de calibração: a separação entre a imagem que descobre \textit{quais} sondas entram e as três que submetem um \textit{único} limiar a casos sutil, típico e forte, com a distinção explícita entre o valor do limiar, que varia por litologia, e a regra que o produz, que não varia. O protocolo foi aplicado às onze litologias da faixa A e produziu, para cada uma, um registro de calibração com o critério escrito --- o artefato que o trabalho propõe como materialização do critério de marcação.
+
+O terceiro é o que esses registros revelaram sobre a regra. Em todos os 45 pares de litologia e sonda, o autor adotou um limiar acima do produzido pelo joelho da curva, com razão mediana de 3,3, e o número de marcações nas imagens de limiar caiu a cerca de um sétimo. A regra sem parâmetro livre cumpriu o papel de ponto de partida reprodutível, mas não o de ponto de chegada: o julgamento de quem calibra deslocou o critério sempre na mesma direção, a de marcar menos. Como o trabalho registrou os dois valores e a justificativa de cada divergência, esse deslocamento deixou de ser um ajuste invisível e passou a ser um dado. Se ele melhora ou piora a marcação é a pergunta que o Experimento 1 responde.
 
 \section{Limitações}
 
@@ -20,7 +22,11 @@ O trabalho reconhece as seguintes limitações.
 
 \begin{description}
 
-  \item[Independência parcial da referência] O conjunto de referência foi anotado antes de qualquer inferência sobre as mesmas imagens, o que impede que a anotação seja cópia da máscara do modelo. Isso não equivale a neutralidade: o autor desenvolveu o protocolo observando saídas do Professor, e essa exposição molda sua noção de anomalia. A referência é independente da predição, não do processo que a gerou.
+  \item[Referência condicional e de independência parcial] O conjunto de referência anotado depende de tempo e de ajuda disponíveis no prazo do trabalho. Se ele não for construído, os experimentos são avaliados apenas pela preferência pareada, que indica qual marcação é preferida, mas não quanto cada uma acerta, e o trabalho não reporta IoU, precisão, \textit{recall} nem taxa de falso positivo. Se for construído, a anotação antes de qualquer inferência sobre as mesmas imagens impede que ela seja cópia da máscara do modelo, mas isso não equivale a neutralidade: o autor desenvolveu o protocolo observando saídas do Professor, e essa exposição molda sua noção de anomalia. A referência é independente da predição, não do processo que a gerou.
+
+  \item[Um único calibrador] Todas as calibrações foram feitas pelo autor. O protocolo torna o critério explícito, mas não mede quanto ele mudaria nas mãos de outra pessoa; a concordância entre calibradores diferentes, aplicando o mesmo protocolo à mesma litologia, não foi medida. Nas quatro litologias percebidas como movimentadas, a seleção e a calibração foram feitas sem a conferência de um especialista do setor.
+
+  \item[Vocabulário de sondas] O Professor só marca o que alguma sonda faz o modelo responder. Em quatro das onze litologias calibradas, o critério escrito registra que as sondas disponíveis pareceram insuficientes para marcar o que se pretendia. O trabalho mede o efeito do limiar e da seleção de sondas, mas não a cobertura do vocabulário: uma anomalia que nenhuma palavra ativa fica fora de todos os braços experimentais.
 
   \item[As sondas não identificam o tipo da anomalia] O sistema marca regiões que responderam a determinada chave lexical. Ele não afirma, e este trabalho não valida, que a região marcada por \textit{crack} seja uma fissura. Toda a rotulagem é binária, e qualquer leitura semântica das sondas extrapola o que foi verificado.
 
@@ -45,6 +51,10 @@ O trabalho reconhece as seguintes limitações.
   \item[Faixas de volume remanescentes] A execução das faixas não alcançadas completa a curva que relaciona o ganho da especialização ao volume de dados por litologia, que é a resposta à segunda metade de H2.
 
   \item[Sensibilidade a \textit{prompts} contextuais] O trabalho que originou as representações multimodais empregadas reporta que \textit{prompts} contextuais superam palavras isoladas em tarefas \textit{zero-shot} \cite{clip_radford2021}. Como as sondas aqui adotadas são majoritariamente palavras isoladas, e algumas são lexicalmente ambíguas, uma análise de sensibilidade comparando as duas formulações é extensão natural e de baixo custo --- bastaria alterar o arquivo de configuração.
+
+  \item[Vocabulário e litologias movimentadas] Testar se o desempenho do Professor cai nas litologias movimentadas, como sugerem os critérios escritos da faixa A, exige um critério de pertencimento aplicável por terceiros --- uma classificação petrográfica ou uma medida de heterogeneidade tirada da imagem ---, que este trabalho não estabeleceu.
+
+  \item[Concordância entre calibradores] Repetir a calibração de uma mesma litologia com calibradores diferentes, sob o mesmo protocolo, mediria quanto do critério é do protocolo e quanto é de quem o aplica --- uma pergunta que só pode ser feita porque o critério passou a estar escrito.
 
   \item[Integração de ponta a ponta e medição de latência] Implementar o roteamento automático entre os três estágios e medir a latência real do sistema completo, substituindo afirmações qualitativas de velocidade por números.
 

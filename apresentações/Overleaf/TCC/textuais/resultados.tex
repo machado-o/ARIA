@@ -3,21 +3,21 @@
 Este capítulo reporta os resultados obtidos até o momento. Ele começa pelas verificações que sustentam o método descrito no Capítulo 3 --- e que são pré-requisito para que os experimentos façam sentido --- e prossegue para os resultados dos experimentos propriamente ditos.
 
 % =====================================================================
-% TODO (estrutura): este capítulo está completo apenas nas seções 4.1 a 4.4.
-% As seções do Experimento 1 e do Experimento 2 aguardam execução. Ver
-% docs/roadmap.md no repositório para o estado corrente.
+% Estado: seções 4.1 a 4.5 completas. Os Experimentos 1 e 2 aguardam
+% execução (ver docs/roadmap.md no repositório).
 % =====================================================================
 
 \section{Verificação da Equivalência da Varredura Fora de Linha}
+\label{sec:res_d18}
 
 A Seção \ref{sec:varredura} afirma que executar o Professor uma única vez com o limiar no piso e filtrar o material armazenado é exatamente equivalente a reexecutar o modelo em cada limiar. Como todo o protocolo de calibração depende dessa afirmação, ela foi verificada por execução, e não apenas por inspeção do código.
 
-O procedimento fixou uma imagem e, para cada uma de quatro sondas, comparou duas grandezas em oito limiares distribuídos entre 0,005 e 0,500: o resultado de executar o Professor com aquele limiar e o resultado de filtrar, naquele mesmo valor, o material capturado com o limiar no piso de 0,001. A comparação abrangeu o número de detecções, os escores e os vértices dos polígonos, \textbf{sem tolerância numérica}.
+O procedimento fixou uma imagem e, para cada uma de quatro sondas --- \textit{crack}, \textit{vein}, \textit{Stain} e \textit{Dark patches} ---, comparou duas grandezas em oito limiares distribuídos entre 0,005 e 0,500: o resultado de executar o Professor com aquele limiar e o resultado de filtrar, naquele mesmo valor, o material capturado com o limiar no piso de 0,001. A comparação abrangeu o número de detecções, os escores e os vértices dos polígonos, \textbf{sem tolerância numérica}.
 
-As 32 comparações resultaram idênticas em todas as três grandezas. Não houve divergência em nenhum limiar, nem no número de regiões, nem em qualquer coordenada de polígono. A Tabela \ref{tab:d18} resume o número de detecções sobreviventes em cada configuração --- valor que, por ser idêntico nos dois métodos, é reportado em coluna única.
+A verificação foi executada três vezes. A primeira, sobre a imagem de descoberta da \textit{siena\_white}, primeira litologia selecionada, antes do início da calibração. As outras duas, sobre a imagem de descoberta da \textit{golden\_storm}, uma em cada versão da biblioteca de modelos do Quadro \ref{quad:ambiente}; estas são as registradas no repositório, e a segunda delas já incorpora a mudança no tratamento dos contornos descrita na Seção \ref{sec:res_contornos}. Nas três, as 32 comparações resultaram idênticas em todas as três grandezas. Não houve divergência em nenhum limiar, nem no número de regiões, nem em qualquer coordenada de polígono. A Tabela \ref{tab:d18} resume o número de detecções sobreviventes em cada configuração na primeira execução --- valor que, por ser idêntico nos dois métodos, é reportado em coluna única.
 
 \begin{table}[ht]
-  \caption{Detecções sobreviventes por limiar, idênticas entre execução real e varredura fora de linha.}
+  \caption{Detecções sobreviventes por limiar na imagem de descoberta da \textit{siena\_white}, idênticas entre execução real e varredura fora de linha.}
   \label{tab:d18}
   \centering
   \begin{tabular}{lrrrrrrrr}
@@ -30,7 +30,7 @@ As 32 comparações resultaram idênticas em todas as três grandezas. Não houv
     \textit{Dark patches} & 194 & 175 & 120 & 73 & 52 & 25 & 9 & 6 \\
     \hline
   \end{tabular}
-  \legend{Fonte: elaborado pelo autor.}
+  \legend{elaborado pelo autor}
 \end{table}
 
 O resultado tem duas consequências. A primeira é prática: o ciclo de calibração deixa de custar minutos de GPU por iteração e passa a custar milissegundos, o que é o que viabiliza submeter um mesmo limiar às quatro imagens da litologia simultaneamente. A segunda é metodológica: a varredura fora de linha não introduz aproximação alguma, de modo que nenhum resultado obtido por ela precisa ser qualificado como estimativa.
@@ -38,8 +38,9 @@ O resultado tem duas consequências. A primeira é prática: o ciclo de calibra�
 Ressalva necessária: a equivalência é propriedade da \textbf{implementação} verificada, não do método em abstrato. Uma versão futura da biblioteca que aplicasse o limiar antes da supressão de não-máximos, ou que o incorporasse ao próprio modelo, invalidaria a conclusão. Por isso o procedimento de verificação integra o repositório e deve ser reexecutado a cada atualização de versão.
 
 \section{Caracterização dos Escores do Professor}
+\label{sec:res_escores}
 
-A escolha da escala logarítmica na regra de limiar (Seção \ref{sec:regra}) decorre da distribuição observada dos escores, medida sobre a imagem de descoberta de uma litologia da faixa A e reportada na Tabela \ref{tab:escores}.
+A escolha da escala logarítmica na regra de limiar (Seção \ref{sec:regra}) decorre da distribuição observada dos escores, medida sobre a imagem de descoberta da \textit{siena\_white} --- a mesma da Tabela \ref{tab:d18} --- e reportada na Tabela \ref{tab:escores}.
 
 \begin{table}[ht]
   \caption{Distribuição dos escores do Professor por sonda, com o limiar no piso.}
@@ -55,7 +56,7 @@ A escolha da escala logarítmica na regra de limiar (Seção \ref{sec:regra}) de
     \textit{Dark patches} & 194 & 0,011 & 0,061 & 0,766 \\
     \hline
   \end{tabular}
-  \legend{Fonte: elaborado pelo autor.}
+  \legend{elaborado pelo autor}
 \end{table}
 
 Os escores percorrem quase duas ordens de grandeza, de 0,011 a 0,766, mas a mediana situa-se entre 0,045 e 0,076 em todas as sondas: a massa da distribuição concentra-se na década baixa e a cauda superior é rala. Em uma grade linear de limiares, portanto, a quase totalidade dos pontos cairia em região sem detecção alguma, e o joelho da curva recairia sistematicamente sobre seu primeiro ponto --- daí a normalização logarítmica do eixo.
@@ -63,14 +64,17 @@ Os escores percorrem quase duas ordens de grandeza, de 0,011 a 0,766, mas a medi
 O dado também recomenda cautela na transposição de valores da literatura de pseudo-rotulagem. Os limiares elevados ali reportados referem-se a escores de detectores supervisionados calibrados, cuja escala não corresponde à observada aqui. O que se transporta daquela literatura é a direção do compromisso --- privilegiar precisão --- e não a magnitude do corte.
 
 \section{Geometria dos Polígonos Produzidos pelo Professor}
+\label{sec:res_contornos}
 
 A conversão das máscaras do Professor em polígonos no formato de anotação apresenta uma particularidade com consequência sobre a qualidade do rótulo. Quando a máscara de uma detecção possui mais de um contorno desconexo, a implementação utilizada funde todos eles em uma única poligonal, ligando-os por trajetos de ida e volta.
 
-A medição sobre a imagem de descoberta de uma litologia da faixa A, com a sonda \textit{crack} no limiar de 0,08, encontrou 45 detecções com mais de um contorno em um total de 76. Como os trajetos de ligação têm área praticamente nula, o efeito agregado é pequeno: a área total dos polígonos supera a das máscaras em 2,4\%, e a sobreposição entre a união das máscaras e a união dos polígonos atinge IoU de 0,928. O caso individual, porém, não é igualmente benigno: em uma detecção composta por 18 contornos, a área do polígono alcançou 2,5 vezes a da máscara correspondente.
+A medição sobre a imagem de descoberta da \textit{siena\_white}, com a sonda \textit{crack} no limiar de 0,08, encontrou 45 detecções com mais de um contorno em um total de 76. Como os trajetos de ligação têm área praticamente nula, o efeito agregado é pequeno: a área total dos polígonos supera a das máscaras em 2,4\%, e a sobreposição entre a união das máscaras e a união dos polígonos atinge IoU de 0,928. O caso individual, porém, não é igualmente benigno: em uma detecção composta por 18 contornos, a área do polígono alcançou 2,5 vezes a da máscara correspondente.
 
 A implicação é que o efeito é desprezível quando se avalia a cobertura agregada, mas não quando uma detecção fragmentada é tomada isoladamente como instância de treinamento. Os trajetos de ligação também se mostraram visíveis na prática: durante a calibração, cada um aparecia como uma reta atravessando a chapa.
 
-Adotou-se, por isso, a separação: \textbf{cada contorno da máscara torna-se um polígono próprio}, sem trajeto de ligação, tanto no material de calibração quanto nos arquivos de anotação. A alternativa de reter apenas o maior contorno foi descartada porque elimina área efetivamente marcada pelo Professor. A separação aumenta o número de polígonos por imagem, mas não altera a unidade sobre a qual a regra de limiar opera: o escore pertence à detecção, e os contornos de uma mesma detecção entram e saem juntos na varredura. Uma marcação, na curva da Seção \ref{sec:regra}, continua sendo uma detecção do Professor. Verificou-se, nas litologias calibradas à época, que as contagens por imagem no limiar adotado e o limiar produzido pela regra permaneceram idênticos após a mudança.
+Adotou-se, por isso, a separação: \textbf{cada contorno da máscara torna-se um polígono próprio}, sem trajeto de ligação, tanto no material de calibração quanto nos arquivos de anotação. A alternativa de reter apenas o maior contorno foi descartada porque elimina área efetivamente marcada pelo Professor. A separação aumenta o número de polígonos por imagem, mas não altera a unidade sobre a qual a regra de limiar opera: o escore pertence à detecção, e os contornos de uma mesma detecção entram e saem juntos na varredura. Uma marcação, na curva da Seção \ref{sec:regra}, continua sendo uma detecção do Professor. Verificou-se, nas três litologias calibradas à época, que as contagens por imagem no limiar adotado (36 pares de imagem e sonda) e o limiar produzido pela regra (nove sondas) permaneceram idênticos após a mudança, e a verificação da Seção \ref{sec:res_d18} foi repetida com o mesmo resultado.
+
+A mudança tem um efeito residual no piso de confiança. Um contorno com menos de três pontos não forma polígono e é descartado; uma detecção composta apenas de contornos assim deixa de existir, quando antes a fusão reunia seus pontos e ela sobrevivia. Em 168 pares de imagem e sonda medidos, 15 perderam uma única detecção no piso de 0,001, e nenhum perdeu detecção acima do limiar adotado pelo autor.
 
 Duas questões permanecem em aberto no pós-processamento: a área mínima abaixo da qual um fragmento é descartado, e se a curva da regra deveria contar contornos em vez de detecções. Esta segunda questão só surgiu depois de a forma da regra ter sido fixada; caso seja adotada, os resultados serão reportados nas duas versões, com a indicação de que a segunda foi definida posteriormente.
 
@@ -85,7 +89,65 @@ Para isolar o efeito do particionamento, o mesmo modelo foi treinado com a mesma
 
 Os dois números descrevem cenários de uso distintos, e nenhum é tratado como erro do outro. O de 99,92\% corresponde a classificar chapas de um bloco já visto, situação comum na indústria, em que um mesmo bloco gera dezenas de chapas. O de 96,72\% aproxima-se de classificar chapas de um bloco novo. O valor do DeepStoneAI não é diretamente comparável a nenhum dos dois, por adotar particionamento próprio. O modelo empregado no \textit{pipeline} é o treinado sobre as partições originais.
 
+\section{Calibração da Faixa A: a Regra e o Autor}
+\label{sec:res_calibracao}
+
+As onze litologias da faixa A foram selecionadas e calibradas pelo protocolo do Capítulo 3: 44 imagens, todas da partição de treinamento, e onze registros de calibração com critério escrito. Esta seção reporta o que esses registros mostram sobre a regra do joelho --- a taxa de concordância entre a regra e o autor que a Seção \ref{sec:regra} anunciou como resultado à parte. Ela não substitui o Experimento 1: descreve os limiares escolhidos, e não se a marcação resultante acerta.
+
+\subsection{Sondas admitidas}
+
+A imagem de descoberta admitiu de duas a seis sondas por litologia, 45 pares de litologia e sonda no total. As mais frequentes foram \textit{crack} e \textit{Dark patches}, em nove litologias cada, seguidas de \textit{Stain} (oito), \textit{light spot} e \textit{white stain} (seis cada), \textit{scratch} (quatro) e \textit{vein} (três). Os onze conjuntos formam nove combinações distintas: três litologias --- \textit{ubatuba\_green}, \textit{itaunas\_white} e \textit{santa\_cecilia} --- admitiram exatamente as mesmas cinco sondas. A única litologia escura da faixa, \textit{nevada\_black}, admitiu \textit{light spot} e não \textit{Dark patches}, coerente com a assinatura visual que cada sonda costuma ativar (Quadro \ref{quad:sondas}).
+
+A sonda \textit{white stain}, registrada durante a calibração da faixa (Seção \ref{sec:sondas}), entrou em seis das onze litologias. Uma sonda criada porque nenhuma palavra existente marcava certas manchas brancas acabou admitida em mais da metade da faixa --- indício de que o vocabulário inicial de sondas não cobria uma assinatura visual comum.
+
+\subsection{O autor divergiu da regra em todas as sondas}
+
+A regra não foi aceita sem ajuste em nenhum dos 45 pares. Em todos, o limiar adotado pelo autor ficou \textbf{acima} do produzido pela regra, nunca abaixo. A razão entre os dois tem mediana de 3,3 e vai de 1,08 (\textit{crack} na \textit{shadow\_white}) a 17,9 (\textit{white stain} na \textit{white\_olympus}). A Tabela \ref{tab:regra_autor} resume os valores por litologia; os 45 pares estão no Apêndice \ref{apendice:regra_autor}.
+
+\begin{table}[ht]
+  \caption{Limiar da regra e limiar do autor na faixa A: razão entre os dois e marcações produzidas nas três imagens de limiar.}
+  \label{tab:regra_autor}
+  \centering
+  \small
+  \setlength{\tabcolsep}{3.5pt}
+  \begin{tabular}{lcccc}
+    \hline
+    \bfseries Litologia & \bfseries Sondas & \bfseries Razão (mín.--máx.) & \bfseries Regra & \bfseries Autor \\
+     & & \bfseries e mediana & \bfseries sutil/típica/forte & \bfseries sutil/típica/forte \\
+    \hline
+    \textit{siena\_white}             & 3 & 1,69--2,31 \quad 1,94  & 72/92/71    & 30/23/22 \\
+    \textit{nevada\_black}            & 2 & 2,58--13,13 \quad 7,85 & 190/185/219 & 8/8/12   \\
+    \textit{ubatuba\_green}           & 5 & 1,36--4,89 \quad 4,15  & 90/106/148  & 28/12/19 \\
+    \textit{ipanema\_beige}           & 4 & 3,58--4,97 \quad 4,60  & 217/9/23    & 12/0/4   \\
+    \textit{shadow\_white}$^{*}$      & 5 & 1,08--13,73 \quad 1,71 & 270/201/202 & 48/19/24 \\
+    \textit{itaunas\_white}           & 5 & 1,68--12,32 \quad 2,88 & 218/69/44   & 15/15/7  \\
+    \textit{santa\_cecilia}           & 5 & 1,17--5,69 \quad 4,78  & 20/53/228   & 4/18/46  \\
+    \textit{san\_francisco\_green}$^{*}$ & 2 & 2,69--3,00 \quad 2,85 & 67/93/47 & 14/28/9  \\
+    \textit{white\_mirage}$^{*}$      & 6 & 1,99--3,63 \quad 3,39  & 145/189/167 & 11/26/9  \\
+    \textit{golden\_storm}$^{*}$      & 5 & 1,66--4,31 \quad 3,30  & 138/52/117  & 18/16/9  \\
+    \textit{white\_olympus}           & 3 & 2,36--17,93 \quad 3,06 & 166/7/178   & 25/0/33  \\
+    \hline
+    \bfseries Faixa A                 & 45 & 1,08--17,93 \quad 3,30 & 1.593/1.056/1.444 & 213/165/194 \\
+    \hline
+  \end{tabular}
+  \legend{elaborado pelo autor. Nota: razão é o limiar do autor dividido pelo limiar da regra, por sonda; marcações são as detecções somadas sobre as sondas admitidas em cada imagem de limiar; $^{*}$litologia percebida pelo autor como movimentada; litologias em ordem decrescente de volume de dados}
+\end{table}
+
+A diferença em número de marcações é maior que a diferença nos limiares. Somadas as 33 imagens de limiar, a regra produz 4.093 marcações e o autor, 572 --- cerca de sete vezes menos. Nas imagens típica e forte, a regra produz de 7 a 228 marcações por chapa; o autor, de 0 a 46. Como os escores se concentram na década baixa (Seção \ref{sec:res_escores}), multiplicar o limiar por três atravessa justamente a região em que está a maior parte das detecções.
+
+Os critérios escritos explicam a direção. O mais recorrente é a matriz limpa: o autor sobe o limiar até que a imagem típica pare de marcar a superfície sem anomalia --- formulação presente nos registros da \textit{siena\_white}, da \textit{shadow\_white} e da \textit{itaunas\_white}. O da \textit{siena\_white} nomeia o custo da escolha: ``aceitando perder feições mais fracas da vaga sutil; a vaga forte continua com todas as óbvias''. Na \textit{ipanema\_beige}, cuja imagem típica não tinha anomalia aparente segundo o registro, o limiar do autor deixa essa imagem com zero marcações, enquanto o da regra marca nove regiões nela; o mesmo ocorre na \textit{white\_olympus}, com zero contra sete.
+
+A leitura que os números autorizam é limitada, e convém delimitá-la. O joelho da curva identifica onde a contagem de detecções deixa de cair rapidamente --- onde termina a massa de detecções de escore muito baixo. Os registros mostram que, nesse ponto, ainda restam dezenas a centenas de marcações por chapa, incluindo matriz que o autor considera limpa. A regra produz, portanto, um ponto de operação sistematicamente mais permissivo que o do autor: é o caso de ``curva que engana'' que a Seção \ref{sec:regra} previa, e que se repetiu em todas as sondas, e não apenas em algumas. A direção da divergência coincide com a recomendação da literatura de pseudo-rotulagem, de cortar mais apertado na dúvida \cite{softteacher_xu2021}. O que os registros \textbf{não} dizem é qual dos dois pontos de operação marca melhor. Um limiar mais alto troca \textit{recall} por precisão, e quem decide se a troca compensa é a referência do Experimento 1, que compara justamente o braço da regra com o braço calibrado pelo autor. A divergência também não invalida o uso da regra no braço de controle: o que o Experimento 1 exige dela é ser idêntica nos dois escopos comparados, e não coincidir com o autor.
+
+\subsection{O que os critérios escritos registram além do limiar}
+
+Quatro dos onze critérios registram que as sondas disponíveis pareceram insuficientes para marcar o que o autor pretendia: os da \textit{golden\_storm}, da \textit{san\_francisco\_green}, da \textit{white\_mirage} e da \textit{white\_olympus}. Três dessas quatro são litologias que o autor percebeu como movimentadas; a quarta movimentada, \textit{shadow\_white}, não registrou essa queixa, e a \textit{white\_olympus} não está entre as movimentadas. Na \textit{white\_mirage}, por exemplo, o registro diz: ``Não consegui marcar tudo que queria com essas sondas, mas os limiares foram suficientes para marcar as partes mais evidentes''.
+
+O dado sugere uma hipótese, que este trabalho registra sem afirmar: o gargalo da marcação guiada por texto estaria no vocabulário de sondas, e não no limiar, e esse gargalo se agravaria com a heterogeneidade da rocha. Três observações a apoiam --- as quatro queixas, a criação de uma sonda nova por falta de palavra e sua adoção em seis litologias --- mas nenhuma delas mede acerto. A hipótese só pode ser testada contra uma referência, comparando o desempenho do Professor entre litologias homogêneas e movimentadas, o que exige ainda um critério de pertencimento aplicável por outra pessoa que não o autor.
+
 \section{Experimento 1 --- Critério por Litologia \textit{versus} Critério Único}
+
+Este experimento não foi executado até a presente versão. Os insumos de calibração estão completos para a faixa A --- as onze litologias têm limiar da regra e limiar do autor registrados (Seção \ref{sec:res_calibracao}) ---, e o braço único pode ser derivado delas aplicando a regra ao material reunido das onze, como versão preliminar restrita à faixa A. Falta a avaliação: o conjunto de referência anotado ou, na sua ausência, a preferência pareada (Seção \ref{sec:referencia}).
 
 % TODO: executar e redigir. Depende da calibração das litologias da faixa A e da
 % anotação do conjunto de referência (Seção \ref{sec:referencia}).
@@ -97,6 +159,8 @@ Os dois números descrevem cenários de uso distintos, e nenhum é tratado como 
 % regra produza figura melhor. A legenda diz qual dos dois foi usado.
 
 \section{Experimento 2 --- Especialistas \textit{versus} Generalista}
+
+Este experimento não foi executado até a presente versão. Sua execução depende de três etapas que ainda não existem: a geração do conjunto de treinamento pelo Professor sobre uma amostra de imagens de cada litologia, já que o Professor até aqui processou apenas as imagens de calibração; o pós-processamento dos polígonos discutido na Seção \ref{sec:res_contornos}, em particular a área mínima dos fragmentos; e o treinamento dos três braços do Quadro \ref{quad:bracos_exp2}, começando pela faixa A.
 
 % TODO: executar e redigir, faixa por faixa. Depende da geração do conjunto de
 % treinamento pelo Professor, do pós-processamento discutido na Seção 4.3 e do
