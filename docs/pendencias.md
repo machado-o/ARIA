@@ -24,7 +24,7 @@
 > o Apêndice A em `apendice.tex` e o segundo "terceiro resultado" da conclusão. A versão de 06/11
 > inteira está no commit `e402f75`, segundo pai do merge. Compilado aqui em 22/11 (60 páginas, sem erro).
 > As sobras de 06/11 foram decididas na mesma sessão (ver *Monografia — em aberto*). **Falta:**
-> subir ao Overleaf e ver se o título provisório cabe na capa.
+> puxar no Overleaf (GitHub → Pull) e ver se o título provisório cabe na capa.
 >
 > **Sessão de 19/11:** o texto avançou no que não dependia de decisão (ver *Escrita* → *revisão
 > de 19/11*): seção 4.5 *Calibração da Faixa A*, Apêndice A, referências completas (nenhum
@@ -516,8 +516,9 @@ o momento".
 - [ ] **Conclusão §5.1:** sintetizar H1 e H2 — inclusive se o resultado for negativo.
 - [ ] **Escolher o título do TCC.** Desde 19/11 o `macros.tex` tem o título **provisório** (ver o
   item *Título*, acima); o antigo ("…utilizando pipeline com abordagem *Teacher-Student*") ficou
-  comentado ali. As duas opções enxutas estão em `docs/Titulo TCC.txt`. **O Overleaf não lê o
-  git:** o título só aparece lá depois de subir os arquivos. Quando escolher: aplicar no
+  comentado ali. As duas opções enxutas estão em `docs/Titulo TCC.txt`. **O Overleaf é ligado
+  ao GitHub (`machado-o/ARIA`), mas não puxa sozinho:** commit novo só aparece lá depois de
+  *Menu → GitHub → Pull*. Quando escolher: aplicar no
   `macros.tex` e fechar como decisão em `decisoes.md`.
 - [ ] **Banca:** `macros.tex` ainda tem "Fulana/Cicrano de Tal"; a aprovação está comentada.
 - [ ] **Dedicatória, agradecimentos e epígrafe** continuam com texto do template, comentados.
