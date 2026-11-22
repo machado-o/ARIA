@@ -22,7 +22,7 @@
 > Xception, a verificação da D18 nas duas versões, o efeito residual da D21, a precisão sobre a
 > imagem típica e a citação do IoU (VOC no lugar de `iou_mahmood2021`). Duplicatas descartadas:
 > o Apêndice A em `apendice.tex` e o segundo "terceiro resultado" da conclusão. A versão de 06/11
-> inteira está no branch local `wip-06-11`. Compilado aqui em 22/11 (60 páginas, sem erro).
+> inteira está no commit `e402f75`, segundo pai do merge. Compilado aqui em 22/11 (60 páginas, sem erro).
 > As sobras de 06/11 foram decididas na mesma sessão (ver *Monografia — em aberto*). **Falta:**
 > subir ao Overleaf e ver se o título provisório cabe na capa.
 >
@@ -454,7 +454,7 @@ o momento".
 ### 🟡 Monografia — em aberto
 
 - [x] ~~**Sobras da versão de 06/11**~~ — decididas pelo Claude em 22/11/2026, a pedido do
-  Henrique (texto completo de 06/11 no branch `wip-06-11`). **Entraram:**
+  Henrique (texto completo de 06/11 no commit `e402f75`). **Entraram:**
   - *Fundamentação, SAM 3:* o escore é o produto da probabilidade da detecção pelo escore de
     presença, logo não é probabilidade calibrada (conferido em
     `ultralytics/models/sam/predict.py`, linhas 2301–2302, na 8.4.61).
