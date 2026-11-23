@@ -263,6 +263,15 @@ completo e defensável; as faixas não alcançadas viram trabalho futuro declara
 > faltam, antes de treinar: o `sam_batch.py`, a regra de split do Aluno e contra o quê ele é
 > avaliado (ver `pendencias.md`).
 
+> **Fechado em 23/11/2026 (Henrique): o Experimento 2 inteiro vira trabalho futuro, e a H2 com
+> ele.** O TCC mede só o Experimento 1 (os quatro braços do Professor). Motivo: sem referência de
+> verdade para o Aluno, medi-lo contra os rótulos do próprio SAM mostraria só que ele imita o
+> Professor, o que não responde à H2. E o custo (`sam_batch.py`, pós-processamento, SAM sobre
+> milhares de chapas, ~13 treinos) competia com o que fecha o trabalho: a auditoria e o texto. O
+> YOLO continua na arquitetura descrita; a destilação e a H2 entram como trabalho futuro, como
+> **escopo**, não como falha (diretrizes 2.5). Opcional, só se sobrar tempo: um YOLO generalista
+> como **demonstração** de que o pipeline fecha (figuras SAM × YOLO e FPS), sem hipótese.
+
 ---
 
 ## D7 — De onde vem a referência de avaliação

@@ -9,9 +9,9 @@ em [`decisoes.md`](decisoes.md).
 > versão que vai à banca. Falta confirmar com o Rafael. A Jacitec (22/10) já passou.
 >
 > Em 19/11 o conjunto-ouro saiu: o Experimento 1 é avaliado por **auditoria cega** (emenda da
-> **D7**), com o pacote já montado. O que falta dele são os julgamentos. Em 22/11 ficou decidido
-> tentar o **Experimento 2 só na faixa A** até 01/12 (Fase 3.1); as faixas B a D viram trabalho
-> futuro (nota na **D6**). Ver `pendencias.md` → Retomada.
+> **D7**), com o pacote já montado. O que falta dele são os julgamentos. Em 23/11 o **Experimento 2
+> inteiro virou trabalho futuro**, com a H2 (nota na **D6**): a Fase 3 sai do caminho da
+> entrega. Ver `pendencias.md` → Retomada.
 
 ---
 
@@ -133,6 +133,9 @@ não terminar.
 ---
 
 ## Fase 3 — Experimento 2: especialistas × generalista, por faixa
+
+> ⏸️ **Fora da entrega de 01/12** (23/11/2026, **D6**): tudo abaixo é trabalho futuro. Fica como
+> registro do que seria preciso construir.
 
 Ver **D6**. Executa faixa por faixa. **Cada faixa é escrita antes de a seguinte começar.**
 

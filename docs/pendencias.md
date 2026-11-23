@@ -63,15 +63,13 @@
 > depende dos julgamentos: volume de marcações por braço e a reprodutibilidade da regra entre as
 > duas máquinas.
 >
-> **Experimento 2 — decidido em 22/11/2026: tentar só na faixa A até 01/12** (nota na **D6**). A
-> parte da H2 sobre o volume de dados passa a trabalho futuro, e o texto do TCC ainda precisa
-> dizer isso. Antes de treinar falta:
-> - [ ] `sam_batch.py` — o Professor sobre uma amostra do `train/`/`val/` de cada litologia da
->   faixa A, com o pós-processamento (área mínima etc.; `roadmap.md` → Fase 3.0);
-> - [ ] a regra de split do Aluno (por sequência ou por sorteio — item em *Código*);
-> - [ ] **contra o quê o Aluno é avaliado**: o conjunto-ouro saiu e a auditoria foi desenhada
->   para o Experimento 1.
-> Se não couber no prazo, o Experimento 2 inteiro vira trabalho futuro.
+> **Experimento 2 — fechado em 23/11/2026: vira trabalho futuro inteiro, com a H2** (nota na
+> **D6**; em 22/11 a decisão tinha sido tentar só a faixa A). Com isso saem do caminho o
+> `sam_batch.py`, a regra de split do Aluno e o "contra o quê avaliar".
+> - [ ] **Próxima sessão (combinado em 23/11):** listar os trechos do TCC que tratam o
+>   Experimento 2 e a H2 como parte do trabalho (objetivos, metodologia, escopo, talvez o título)
+>   e mostrar ao Henrique **antes** de editar.
+> - Opcional, só se sobrar tempo: um YOLO generalista como demonstração (figuras + FPS).
 >
 > **Prazos (informados em 19/11, "pelo que fiquei sabendo"):** defesa para a banca **até
 > dezembro**; publicação **até fevereiro de 2027**. Confirmar com o Rafael. O 01/12 de 06/11
