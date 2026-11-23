@@ -6,7 +6,7 @@
 > Consolida o que antes estava espalhado em `auditoria.md`, `revisao-artigo.md` e
 > `artigo-sbc.md` (os três foram removidos em 2026-08-23).
 >
-> Última atualização: 2026-11-22
+> Última atualização: 2026-11-23
 
 ---
 
@@ -44,7 +44,15 @@
 > **Auditoria cega do Experimento 1 — pronta para julgar (19/11/2026, emenda da D7).** O pacote
 > `AI/SAM/auditoria/pacote_aria-auditoria-20261119.zip` (16,8 MB, gitignored; nas duas máquinas
 > desde 22/11, vindo pelo `ARIA_backup_20261119.zip`) tem 420
-> marcações de 33 chapas do `test/`, 60 por estrato. Próximos passos:
+> marcações, 60 por estrato. Elas caem em 32 das 33 chapas sorteadas do `test/`: uma chapa foi
+> para a pasta `imgs/`, mas nenhuma marcação dela saiu no sorteio.
+>
+> **23/11: o aplicativo do pacote passou a afastar até a chapa inteira.** Antes a escala parava
+> em 3,2×, e em 357 das 420 telas o afastar máximo não chegava à chapa inteira (na tela 41,
+> mostrava 48% da largura). O `.zip` do PC 2 foi refeito com
+> `auditoria_preparar.py --atualizar-app`: o `itens.js` e as imagens são os mesmos, só o
+> `index.html` mudou. ⚠️ **No PC 1, depois do pull, rodar o `--atualizar-app` antes de enviar o
+> `.zip` de lá**, porque o de lá ainda tem o aplicativo antigo. Próximos passos:
 >
 > 1. [ ] Mandar o `.zip` para a avaliadora, **Marcelli da Fonseca Carvalho** (estudante de
 >    Engenharia de Minas). Ela extrai, abre o

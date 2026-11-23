@@ -108,6 +108,7 @@ Auditoria cega do Experimento 1 (**D7**, emenda de 19/11/2026), também a partir
 
 ```bash
 ..\.venv\Scripts\python.exe auditoria_preparar.py   # amostra do test/, captura, limiares dos 4 braços, pacote .zip
+..\.venv\Scripts\python.exe auditoria_preparar.py --atualizar-app   # só troca o aplicativo do pacote e refaz o .zip
 ..\.venv\Scripts\python.exe auditoria_analisar.py   # precisão e recall relativo por braço, IC 95%, kappa
 ```
 
@@ -263,7 +264,10 @@ results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
   máquina, onde o SAM dá scores um pouco diferentes — sortearia outros itens e desligaria as
   respostas dos braços; por isso o script para antes do sorteio se o `itens.json` existe
   (`--refazer-itens` só antes de qualquer resposta). Para reenviar, use o `.zip` já gerado (ele
-  e o `pacote/` são gitignored e só existem na máquina em que o pacote foi montado). O Henrique
+  e o `pacote/` são gitignored e só existem na máquina em que o pacote foi montado). Se só o
+  `auditoria_app.html` mudou, `--atualizar-app` recopia o aplicativo para o `pacote/` e refaz o
+  `.zip` sem tocar no sorteio: `itens.js`, imagens e ids ficam iguais, e o progresso salvo no
+  navegador do avaliador continua valendo. O Henrique
   também é avaliador: ele não deve abrir `itens.json` nem `limiares.json` antes de julgar.
   **Neste PC (desde 22/11/2026)** o `.zip` e as capturas das 33 chapas (`auditoria/<rocha>/_cache/`)
   vieram da outra máquina (ultralytics 8.4.52), e o cache das vagas de lá, de onde saiu o

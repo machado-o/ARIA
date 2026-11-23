@@ -33,6 +33,7 @@
   button { background: var(--botao); border: 1px solid var(--borda); border-radius: 8px;
     padding: 8px 14px; cursor: pointer; }
   button:hover { background: var(--botao-hover); }
+  button:disabled { opacity: .4; cursor: default; background: var(--botao); }
   button:focus-visible, input:focus-visible { outline: 2px solid var(--escolhido); outline-offset: 2px; }
   kbd { font: 12px ui-monospace, monospace; border: 1px solid var(--borda); border-bottom-width: 2px;
     border-radius: 4px; padding: 0 5px; color: var(--suave); }
@@ -96,7 +97,8 @@
         pega um defeito, mas também muita área boa em volta, decida pelo que predomina.</li>
     <li>O quadro menor mostra a chapa inteira e onde fica a região.</li>
     <li>Para ver o que há por baixo do contorno, esconda-o com <kbd>C</kbd>. Para aproximar ou
-        afastar, use <kbd>+</kbd> e <kbd>−</kbd>.</li>
+        afastar, use <kbd>+</kbd> e <kbd>−</kbd>. Afastando até o fim, aparece a chapa inteira
+        com o contorno.</li>
     <li><strong>"Não sei"</strong> é uma resposta válida: use quando não der para decidir.</li>
     <li>Não há resposta certa. O que interessa é o seu julgamento, então responda sem consultar
         ninguém.</li>
@@ -173,7 +175,10 @@
   var ITENS = P.itens;
   // Lado do recorte = maior lado da caixa × 2,2 (com piso de 25% da chapa), × o zoom.
   // O piso existe porque, sem contexto, não dá para separar defeito do desenho da pedra.
-  var ZOOMS = [0.45, 0.65, 1, 1.5, 2.2, 3.2];
+  // O último nível é a chapa inteira (o lado é limitado ao maior lado da chapa): até
+  // 23/11/2026 a escala parava em 3,2, e em 357 das 420 marcações o afastar máximo não
+  // chegava à chapa inteira. O afastar para quando a chapa inteira já está à vista.
+  var ZOOMS = [0.45, 0.65, 1, 1.5, 2.2, 3.2, 4.7, 7, Infinity];
   var ZOOM_INICIAL = 2;
   var estado = null;          // { avaliador, respostas: {id: {r, t}}, pos, exportado }
   var zoom = ZOOM_INICIAL;
@@ -263,6 +268,11 @@
     return { sx: encaixar(cx, W), sy: encaixar(cy, H), lado: lado };
   }
 
+  function chapaInteira(it, im) {
+    var W = im.naturalWidth, H = im.naturalHeight;
+    return regiao(it, W, H).lado >= Math.max(W, H);
+  }
+
   function prepararCanvas(cv, largura, altura) {
     var dpr = window.devicePixelRatio || 1;
     cv.width = Math.round(largura * dpr);
@@ -336,6 +346,8 @@
       b.classList.toggle('escolhida', !!atual && atual.r === b.dataset.r);
     });
     $('voltar').disabled = estado.pos === 0;
+    $('aproximar').disabled = zoom === 0;
+    $('afastar').disabled = chapaInteira(it, im);
     $('contorno').firstChild.textContent = contorno ? 'Esconder contorno ' : 'Mostrar contorno ';
     var prox = ITENS[estado.pos + 1];
     if (prox) imagem(prox.img);       // pré-carrega a próxima chapa
@@ -357,6 +369,9 @@
     if (estado.pos > 0) { estado.pos--; zoom = ZOOM_INICIAL; contorno = true; mostrar(); }
   }
   function mudarZoom(d) {
+    var it = ITENS[estado.pos], im = imagem(it.img);
+    if (!im.naturalWidth) return;
+    if (d > 0 && chapaInteira(it, im)) return;   // nada mais a afastar: não gasta a tecla
     var z = Math.min(Math.max(zoom + d, 0), ZOOMS.length - 1);
     if (z !== zoom) { zoom = z; mostrar(); }
   }

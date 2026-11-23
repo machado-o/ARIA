@@ -35,6 +35,12 @@ Uso, a partir de AI/SAM/:
 
     ..\\.venv\\Scripts\\python.exe auditoria_preparar.py            # tudo
     ..\\.venv\\Scripts\\python.exe auditoria_preparar.py --ate 4    # para antes do pacote
+    ..\\.venv\\Scripts\\python.exe auditoria_preparar.py --atualizar-app
+
+`--atualizar-app` só copia o `auditoria_app.html` para `pacote/index.html` e
+refaz o .zip. Não sorteia, não captura e não recalcula nada: o `itens.js`, as
+imagens e os ids (m001…) ficam como estão, e o progresso salvo no navegador do
+avaliador continua valendo (a chave dele é o id do pacote, não o aplicativo).
 """
 
 # ── Monkey-patch CLIP antes de qualquer import do SAM — ver inference.py ──────
@@ -350,12 +356,27 @@ def montar_pacote(amostra: dict, itens: list[dict], tamanhos: dict[str, int],
          "limiares": "auditoria/limiares.json", "itens": privados},
         indent=1, ensure_ascii=False), encoding="utf-8")
 
+    return zipar(ident)
+
+
+def zipar(ident: str) -> Path:
     zip_arq = AUD / f"pacote_{ident}.zip"
     with zipfile.ZipFile(zip_arq, "w", zipfile.ZIP_DEFLATED) as z:
         for f in sorted(PACOTE.rglob("*")):
             if f.is_file():
                 z.write(f, Path("auditoria_aria") / f.relative_to(PACOTE))
     return zip_arq
+
+
+def atualizar_app() -> None:
+    """Troca só o aplicativo do pacote já montado e refaz o .zip."""
+    if not (PACOTE / "itens.js").exists():
+        print(f"Não há pacote montado em {PACOTE}: nada a atualizar.")
+        return
+    shutil.copyfile(SAM_DIR / "auditoria_app.html", PACOTE / "index.html")
+    zip_arq = zipar(f"aria-auditoria-{SEMENTE}")
+    print(f"aplicativo atualizado; itens.js e imagens intactos.\n"
+          f"pacote: {zip_arq}  ({zip_arq.stat().st_size / 1e6:.1f} MB)")
 
 
 def resumo(conjunto: list[dict], itens: list[dict], tamanhos: dict[str, int]) -> None:
@@ -377,7 +398,13 @@ def main() -> None:
     ap.add_argument("--ate", type=int, default=5, help="parar depois da etapa N (1 a 5)")
     ap.add_argument("--refazer-itens", action="store_true",
                     help="sortear os itens e montar o pacote de novo (invalida respostas já dadas)")
+    ap.add_argument("--atualizar-app", action="store_true",
+                    help="só recopiar o auditoria_app.html para o pacote e refazer o .zip")
     args = ap.parse_args()
+
+    if args.atualizar_app:
+        atualizar_app()
+        return
 
     amostra = sortear_chapas()
     print(f"amostra: {sum(len(v) for v in amostra['chapas'].values())} chapas do test/ "
