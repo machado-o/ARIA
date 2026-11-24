@@ -16,16 +16,15 @@ O problema que este trabalho ataca não é a dificuldade técnica de detectar an
 
 Formula-se, assim, a seguinte pergunta de pesquisa: \textit{é possível materializar o critério de marcação de anomalias em chapas de rochas ornamentais como um conjunto de parâmetros explícito, versionável e específico por litologia --- e esse critério parametrizado produz marcações mais alinhadas ao julgamento humano do que um critério único aplicado a todas as rochas?}
 
-\section{Hipóteses}
+\section{Hipótese}
 
-Duas hipóteses orientam o trabalho:
+A hipótese que orienta o trabalho é:
 
 \begin{description}
   \item[H1] Um critério de marcação parametrizado por litologia produz marcações mais alinhadas ao julgamento humano, medido em auditoria cega, do que um critério único e global.
-  \item[H2] Modelos de segmentação especialistas --- um por litologia --- alinham-se melhor à referência do que um único modelo generalista, e esse ganho é função do volume de dados disponível por litologia.
 \end{description}
 
-A segunda metade de H2 é uma pergunta de pesquisa por direito próprio: \textit{quantas imagens uma litologia precisa ter para que a especialização compense o custo de manter um modelo dedicado?} O conjunto de dados utilizado apresenta desbalanceamento acentuado entre litologias, o que permite tratar o volume de dados como variável do experimento em vez de limitação a ser contornada.
+A hipótese trata do critério que gera as marcações, e não do modelo que depois aprende a reproduzi-las. A pergunta seguinte --- se segmentadores especializados por litologia superam um único modelo treinado sobre todas, e a partir de quantas imagens a especialização compensa o custo de manter um modelo dedicado --- depende de as marcações já estarem calibradas e avaliadas, e fica registrada como continuação do trabalho (Seção \ref{sec:futuros}).
 
 \section{Objetivos}
 
@@ -37,11 +36,11 @@ Desenvolver e avaliar o ARIA (Análise e Reconhecimento Inteligente de Anomalias
 
 \begin{enumerate}
   \item Selecionar, caracterizar e pré-processar um conjunto de dados público de imagens de chapas polidas de rochas ornamentais, descrevendo sua composição, o desbalanceamento entre litologias e o particionamento adotado.
+  \item Reproduzir, sobre as partições originais desse conjunto, o classificador de litologias de trabalho anterior, que identifica a rocha e seleciona a configuração de marcação correspondente.
   \item Definir um protocolo reprodutível de calibração que determine, para cada litologia, quais sondas textuais entram no conjunto e qual limiar de confiança cada uma recebe, de modo que a regra que produz o limiar seja a mesma para todas as litologias.
   \item Implementar o estágio Professor com um modelo de fundação guiado por texto, capaz de gerar polígonos de anomalia sem anotação humana prévia.
   \item Construir um protocolo de avaliação cega, em que avaliadores humanos julgam as marcações sem saber de que configuração vieram, para servir de referência quantitativa da avaliação.
   \item Avaliar experimentalmente a hipótese H1, comparando o critério parametrizado por litologia ao mesmo critério derivado do conjunto reunido de litologias.
-  \item Especificar o desenho experimental que avalia a hipótese H2, treinando modelos Aluno especialistas e generalista estratificados por faixa de volume de dados.
 \end{enumerate}
 
 \section{Justificativa}
@@ -54,4 +53,4 @@ Por fim, o uso de um conjunto de dados público \cite{dataset_araujo2023} garant
 
 \section{Organização do Trabalho}
 
-O restante deste documento está organizado da seguinte forma. O Capítulo 2 apresenta a fundamentação teórica, cobrindo a inspeção de qualidade no setor de rochas ornamentais, redes neurais convolucionais aplicadas à classificação de litologias, modelos de fundação com segmentação guiada por texto, a arquitetura Professor--Aluno com pseudo-rotulagem, segmentação em tempo real, e os trabalhos relacionados contra os quais a contribuição se posiciona. O Capítulo 3 detalha a metodologia: o conjunto de dados, a arquitetura do \textit{pipeline}, o protocolo de calibração, a regra que produz o limiar, a estratégia de varredura de limiares fora de linha, a referência de avaliação e o desenho dos dois experimentos. O Capítulo 4 apresenta os resultados obtidos: as verificações que sustentam o método, a reprodução do classificador e a calibração das litologias de maior volume. O Capítulo 5 traz as considerações finais, as limitações reconhecidas e os desdobramentos deixados como trabalho futuro. O Apêndice A lista os limiares de todas as combinações de litologia e sonda calibradas.
+O restante deste documento está organizado da seguinte forma. O Capítulo 2 apresenta a fundamentação teórica, cobrindo a inspeção de qualidade no setor de rochas ornamentais, redes neurais convolucionais aplicadas à classificação de litologias, modelos de fundação com segmentação guiada por texto, a arquitetura Professor--Aluno com pseudo-rotulagem, segmentação em tempo real, e os trabalhos relacionados contra os quais a contribuição se posiciona. O Capítulo 3 detalha a metodologia: o conjunto de dados, a arquitetura do \textit{pipeline}, o protocolo de calibração, a regra que produz o limiar, a estratégia de varredura de limiares fora de linha, a avaliação por auditoria cega e o desenho do experimento. O Capítulo 4 apresenta os resultados obtidos: as verificações que sustentam o método, a reprodução do classificador, a calibração das litologias de maior volume e o experimento. O Capítulo 5 traz as considerações finais, as limitações reconhecidas e os desdobramentos deixados como trabalho futuro. O Apêndice A lista os limiares de todas as combinações de litologia e sonda calibradas.

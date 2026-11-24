@@ -1,10 +1,10 @@
 \chapter[METODOLOGIA]{METODOLOGIA}
 
-Este capítulo descreve o conjunto de dados, a arquitetura do \textit{pipeline}, o protocolo de calibração, a regra que produz os limiares, a referência adotada para avaliação e o desenho dos dois experimentos.
+Este capítulo descreve o conjunto de dados, a arquitetura do \textit{pipeline}, o protocolo de calibração, a regra que produz os limiares, a avaliação por auditoria cega e o desenho do experimento.
 
 \section{Caracterização da Pesquisa}
 
-O trabalho classifica-se como pesquisa aplicada, de natureza experimental e abordagem predominantemente quantitativa. É aplicada porque endereça um problema concreto da indústria de rochas ornamentais. É experimental porque manipula variáveis controladas --- o escopo sobre o qual a regra de calibração é aplicada e a quantidade de modelos treinados --- e observa seu efeito sobre a precisão e a cobertura das marcações, julgadas por avaliadores humanos.
+O trabalho classifica-se como pesquisa aplicada, de natureza experimental e abordagem predominantemente quantitativa. É aplicada porque endereça um problema concreto da indústria de rochas ornamentais. É experimental porque manipula variáveis controladas --- o escopo sobre o qual a regra de calibração é aplicada, a seleção de sondas e o ajuste humano do limiar --- e observa seu efeito sobre a precisão e a cobertura das marcações, julgadas por avaliadores humanos.
 
 \section{Conjunto de Dados}
 
@@ -14,7 +14,7 @@ O conjunto reúne 34.630 imagens de chapas polidas, distribuídas em 45 litologi
 
 Uma única alteração foi feita sobre o conjunto original: a pasta de uma litologia, grafada \textit{whte\_liberdade} na fonte, foi renomeada para \textit{white\_liberdade}. A correção não é apenas estética. O índice de classe é a posição do nome na ordem alfabética, e a grafia original deslocava sete classes; quem reproduzir o trabalho a partir da fonte pública precisa repetir a renomeação.
 
-A distribuição entre litologias é fortemente desbalanceada, variando de 106 a 4.588 imagens. Em vez de equalizar artificialmente essa distribuição, o trabalho a converte em variável do experimento, agrupando as litologias em quatro faixas de volume, conforme o Quadro \ref{quad:faixas}.
+A distribuição entre litologias é fortemente desbalanceada, variando de 106 a 4.588 imagens. Em vez de equalizar artificialmente essa distribuição, o trabalho agrupa as litologias em quatro faixas de volume, conforme o Quadro \ref{quad:faixas}, que definem a ordem de trabalho.
 
 \begin{quadro}[ht]
   \caption{Faixas de volume de dados e respectivo número de litologias.}
@@ -24,7 +24,7 @@ A distribuição entre litologias é fortemente desbalanceada, variando de 106 a
     \hline
     \bfseries Faixa & \bfseries Critério & \bfseries Litologias & \bfseries Observação \\
     \hline
-    A & $\geq$ 1.000 imagens & 11 & Faixa de execução prioritária \\
+    A & $\geq$ 1.000 imagens & 11 & Calibrada e avaliada neste trabalho \\
     B & 500 a 999 imagens & 6 & \\
     C & 200 a 499 imagens & 14 & \\
     D & $<$ 200 imagens & 14 & Inclui as litologias de textura atípica \\
@@ -33,7 +33,7 @@ A distribuição entre litologias é fortemente desbalanceada, variando de 106 a
   \legend{elaborado pelo autor}
 \end{quadro}
 
-A ordem de execução dos experimentos segue as faixas, da maior para a menor, e cada faixa constitui um marco entregável: ela é executada, avaliada e redigida antes que a seguinte comece. Em qualquer ponto de interrupção existe, assim, um resultado completo e reportável, e as faixas não alcançadas são declaradas como trabalho futuro.
+A calibração e a avaliação seguem as faixas, da maior para a menor, e cada faixa constitui um marco completo: ela é calibrada, avaliada e redigida antes que a seguinte comece. Em qualquer ponto de interrupção existe, assim, um resultado reportável. Este trabalho cobre a faixa A, que reúne 11 litologias e 24.128 imagens; as demais faixas são a continuação direta (Seção \ref{sec:futuros}).
 
 \section{Arquitetura do \textit{Pipeline}}
 
@@ -55,9 +55,9 @@ O ARIA organiza-se em três estágios, descritos no Quadro \ref{quad:estagios}. 
   \legend{elaborado pelo autor}
 \end{quadro}
 
-A separação entre Professor e Aluno é o que torna o arranjo viável industrialmente: o custo de inferência do modelo de fundação é pago uma única vez, na geração do conjunto de treinamento, e não a cada chapa inspecionada. A Figura \ref{fig:arquitetura} mostra o fluxo nas duas fases: fora da linha, a seleção de imagens, a calibração e o Professor produzem o conjunto de treinamento do Aluno; em produção, o classificador identifica a litologia e encaminha a chapa ao Aluno correspondente.
+A separação entre Professor e Aluno é o que torna o arranjo viável industrialmente: o custo de inferência do modelo de fundação é pago uma única vez, na geração do conjunto de treinamento, e não a cada chapa inspecionada. A Figura \ref{fig:arquitetura} mostra o fluxo nas duas fases: fora da linha, a seleção de imagens, a calibração e o Professor produzem o conjunto de treinamento do Aluno; em produção, o classificador identifica a litologia e encaminha a chapa ao Aluno correspondente. Este trabalho implementa o classificador, o Professor e a calibração que o adapta a cada litologia, e avalia as marcações que eles produzem; o treinamento do Aluno, que depende de o Professor processar o conjunto de dados inteiro sob o critério calibrado, é a continuação direta (Seção \ref{sec:futuros}).
 
-A versão do Aluno foi fixada no YOLO11-seg, a geração vigente quando o trabalho começou. Versões posteriores da família surgiram durante o desenvolvimento, mas trocar de versão no meio do trabalho tornaria incomparáveis os resultados obtidos antes e depois da troca, sem que isso respondesse a nenhuma das hipóteses. A comparação entre versões do Aluno não faz parte do escopo.
+A versão do Aluno foi fixada no YOLO11-seg, a geração vigente quando o trabalho começou. Versões posteriores da família surgiram durante o desenvolvimento, mas trocar de versão no meio do trabalho tornaria incomparáveis os resultados obtidos antes e depois da troca, sem que isso respondesse à hipótese do trabalho. A comparação entre versões do Aluno não faz parte do escopo.
 
 \begin{figure}[ht]
   \caption{Fluxo de processamento do \textit{pipeline} ARIA.}
@@ -216,11 +216,11 @@ Formalmente, seja $V = \{\text{sutil}, \text{típica}, \text{forte}\}$ o conjunt
   \label{eq:joelho}
 \end{equation}
 
-A forma da regra foi escolhida entre duas alternativas. A outra fixaria o limiar como o maior valor que ainda marca uma fração mínima das feições anotadas nas imagens de limiar. Seria uma regra mais próxima do objetivo final, por medir acerto em vez de forma de curva, mas exigiria anotar manualmente as três imagens de limiar de cada litologia --- 135 imagens com polígonos desenhados à mão --- e ainda introduziria um parâmetro livre, a fração mínima. O joelho dispensa anotação e não tem parâmetro a fixar. Sua adequação é verificada sem custo adicional, pela mesma auditoria cega que avalia o Experimento 1 (Seção \ref{sec:referencia}).
+A forma da regra foi escolhida entre duas alternativas. A outra fixaria o limiar como o maior valor que ainda marca uma fração mínima das feições anotadas nas imagens de limiar. Seria uma regra mais próxima do objetivo final, por medir acerto em vez de forma de curva, mas exigiria anotar manualmente as três imagens de limiar de cada litologia --- 135 imagens com polígonos desenhados à mão --- e ainda introduziria um parâmetro livre, a fração mínima. O joelho dispensa anotação e não tem parâmetro a fixar. Sua adequação é verificada sem custo adicional, pela mesma auditoria cega que avalia o experimento (Seção \ref{sec:referencia}).
 
 Três aspectos da regra são fixados deliberadamente. A imagem de \textit{descoberta} \textbf{não} entra no cálculo: escolhida por ser a mais rica em feições, ela puxaria o limiar para cima, reintroduzindo o viés de seleção por visibilidade que o protocolo existe para evitar. O eixo do limiar é tomado em escala \textbf{logarítmica}, porque os escores concentram-se na década baixa --- medidos entre 0,011 e 0,766 na imagem de descoberta da \textit{siena\_white}, com medianas entre 0,045 e 0,076 conforme a sonda (Tabela \ref{tab:escores}) --- e, em escala linear, o joelho recairia sistematicamente sobre o primeiro ponto da curva. Por fim, a regra \textbf{não possui parâmetro livre}: não há constante a ser fixada por inspeção, o que elimina a possibilidade de ajustá-la para favorecer um resultado.
 
-A regra é aplicada mecanicamente. Reconhece-se, porém, que uma curva pode enganar em casos particulares, e o autor pode divergir do valor produzido. Para que essa divergência não se torne invisível, a ferramenta de calibração registra \textbf{ambos} os valores --- o produzido pela regra e o adotado pelo autor --- junto de uma justificativa textual obrigatória. Na litologia \textit{siena\_white}, por exemplo, o critério registrado foi: ``Subi até o ponto em que a vaga típica para de marcar matriz limpa, aceitando perder feições mais fracas da vaga sutil; a vaga forte continua com todas as óbvias.'' A justificativa nomeia o que foi aceito perder, e é isso que a torna auditável: outra pessoa pode discordar do limiar sabendo exatamente que troca foi feita. Os dois valores têm papéis distintos no Experimento 1: o da regra alimenta os braços que testam a regra, e o adotado pelo autor ocupa um braço próprio, que mede o efeito do ajuste humano (Seção \ref{sec:exp1}). O valor adotado pelo autor é também o que rotula o conjunto de treinamento do Aluno, e deixá-lo fora do experimento significaria avaliar uma configuração que o sistema não usa. A taxa de concordância entre regra e autor é reportada como resultado à parte, e constitui evidência sobre a adequação da própria regra.
+A regra é aplicada mecanicamente. Reconhece-se, porém, que uma curva pode enganar em casos particulares, e o autor pode divergir do valor produzido. Para que essa divergência não se torne invisível, a ferramenta de calibração registra \textbf{ambos} os valores --- o produzido pela regra e o adotado pelo autor --- junto de uma justificativa textual obrigatória. Na litologia \textit{siena\_white}, por exemplo, o critério registrado foi: ``Subi até o ponto em que a vaga típica para de marcar matriz limpa, aceitando perder feições mais fracas da vaga sutil; a vaga forte continua com todas as óbvias.'' A justificativa nomeia o que foi aceito perder, e é isso que a torna auditável: outra pessoa pode discordar do limiar sabendo exatamente que troca foi feita. Os dois valores têm papéis distintos no experimento: o da regra alimenta os braços que testam a regra, e o adotado pelo autor ocupa um braço próprio, que mede o efeito do ajuste humano (Seção \ref{sec:exp1}). O valor adotado pelo autor é também o que o Professor aplica ao gerar as anotações, e deixá-lo fora do experimento significaria avaliar uma configuração que o sistema não usa. A taxa de concordância entre regra e autor é reportada como resultado à parte, e constitui evidência sobre a adequação da própria regra.
 
 \section{Varredura de Limiares Fora de Linha}
 \label{sec:varredura}
@@ -324,7 +324,7 @@ Toda métrica de acerto exige uma referência externa ao modelo. Usar a saída d
 
 \subsection{Procedimento}
 
-A amostra de avaliação reúne três chapas por litologia da faixa A, sorteadas com semente fixa da partição de \textbf{teste}: 33 chapas que nenhuma etapa da calibração viu. O Professor é executado uma única vez sobre cada uma, com todas as sondas e o limiar no piso, e os quatro braços do Experimento 1 (Seção \ref{sec:exp1}) são aplicados como filtros desse material. O \textbf{conjunto reunido} é formado por toda detecção que ao menos um braço marcaria.
+A amostra de avaliação reúne três chapas por litologia da faixa A, sorteadas com semente fixa da partição de \textbf{teste}: 33 chapas que nenhuma etapa da calibração viu. O Professor é executado uma única vez sobre cada uma, com todas as sondas e o limiar no piso, e os quatro braços do experimento (Seção \ref{sec:exp1}) são aplicados como filtros desse material. O \textbf{conjunto reunido} é formado por toda detecção que ao menos um braço marcaria.
 
 As detecções são apresentadas ao avaliador uma a uma, em um aplicativo desenvolvido para este fim, que exibe a região contornada, ampliada, ao lado da chapa inteira, e faz sempre a mesma pergunta: \textit{numa inspeção de qualidade, você marcaria esta região como defeito?} As respostas possíveis são sim, não e não sei. O aplicativo não informa de que braço, de que sonda ou de que litologia vem cada marcação, nem o seu escore. Como os braços são filtros do mesmo material, uma detecção pertence em geral a vários deles, e o julgamento de cada detecção vale para todos os braços que a contêm --- de modo que a auditoria é cega quanto ao braço por construção.
 
@@ -359,17 +359,17 @@ A avaliação principal é feita por uma estudante de Engenharia de Minas, que n
 
 A concordância tem papel próprio no trabalho: ela mede, entre duas pessoas e sobre as mesmas marcações, a arbitrariedade do critério de marcação que o Capítulo 1 descreve.
 
-\section{Experimento 1 --- Critério por Litologia \textit{versus} Critério Único}
+\section{Experimento --- Critério por Litologia \textit{versus} Critério Único}
 \label{sec:exp1}
 
-O primeiro experimento avalia H1 e não envolve treinamento algum: compara configurações do Professor sobre as mesmas imagens, no mesmo modelo e no mesmo equipamento.
+O experimento avalia H1 e não envolve treinamento algum: compara configurações do Professor sobre as mesmas imagens, no mesmo modelo e no mesmo equipamento.
 
 O ponto delicado do desenho é a definição do braço de controle. Uma configuração única escolhida arbitrariamente tornaria a comparação vazia, pois o resultado dependeria dessa escolha. O braço de controle é, portanto, \textbf{derivado por regra}, e não selecionado: aplica-se a \textbf{mesma regra} da Seção \ref{sec:regra}, alterando-se o escopo do material sobre o qual ela é calculada. Sonda por sonda, reúnem-se os escores das três imagens de limiar de todas as litologias em um único conjunto, aplica-se a regra e obtém-se um limiar global por sonda.
 
 Comparar esse controle diretamente à configuração calibrada, contudo, alteraria duas coisas ao mesmo tempo. O controle usa todas as sondas cadastradas, enquanto a configuração calibrada usa apenas as que a imagem de descoberta admitiu naquela litologia; um ganho de \textit{recall} do controle não seria atribuível nem ao limiar nem à seleção de sondas. O experimento tem, por isso, quatro braços, cada um diferente do anterior em um único fator, conforme o Quadro \ref{quad:bracos_exp1}.
 
 \begin{quadro}[ht]
-  \caption{Braços do Experimento 1. Cada braço difere do anterior em um único fator.}
+  \caption{Braços do experimento. Cada braço difere do anterior em um único fator.}
   \label{quad:bracos_exp1}
   \centering
   \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X}
@@ -393,39 +393,13 @@ Cabe justificar por que o braço único não é definido como a mediana dos limi
 
 Os quatro braços são avaliados pela auditoria cega da Seção \ref{sec:referencia}, reportando-se precisão e \textit{recall} relativo de cada um, para o conjunto das litologias e para os recortes de litologias movimentadas e demais (Seção \ref{sec:movimentadas}).
 
-\section{Experimento 2 --- Especialistas \textit{versus} Generalista}
-
-O segundo experimento avalia H2 e compara modelos Aluno treinados sobre as anotações do Professor, em três braços, descritos no Quadro \ref{quad:bracos_exp2}.
-
-\begin{quadro}[ht]
-  \caption{Braços do Experimento 2.}
-  \label{quad:bracos_exp2}
-  \centering
-  \begin{tabularx}{\textwidth}{lX}
-    \hline
-    \bfseries Braço & \bfseries Descrição \\
-    \hline
-    Especialista & Um modelo por litologia, treinado apenas com as anotações daquela litologia, geradas pelo critério calibrado da própria litologia \\
-    Generalista  & Um único modelo, treinado com as anotações de todas as litologias, geradas pelo critério único \\
-    Controle     & Um único modelo, treinado com as anotações de todas as litologias, geradas pelo critério calibrado de cada uma \\
-    \hline
-  \end{tabularx}
-  \legend{elaborado pelo autor}
-\end{quadro}
-
-O braço de controle existe por necessidade de desenho: sem ele, a comparação entre especialistas e generalista alteraria simultaneamente duas variáveis --- a quantidade de modelos e a especificidade das anotações --- e nenhum resultado seria atribuível a uma delas. Com ele, cada comparação muda uma coisa só. Especialistas contra controle mantêm as anotações e mudam o número de modelos; controle contra generalista mantém um único modelo e muda o critério que gerou as anotações.
-
-Os resultados são reportados \textbf{por faixa} de volume, e não agregados, o que responde à segunda metade de H2.
-
-Cada modelo especialista é treinado com uma fração dos dados vistos pelo generalista, de modo que a comparação mede o efeito \textbf{líquido} da especialização em cada volume de dados --- e é a estratificação por faixa que torna esse efeito interpretável.
-
 \section{Ambiente Experimental e Reprodutibilidade}
 \label{sec:verificacao}
 
-O trabalho foi executado em duas máquinas, com equipamento e versões de bibliotecas diferentes, descritas no Quadro \ref{quad:ambiente}. A diferença não foi uniformizada: o que importa para a validade dos resultados é a versão da biblioteca de modelos, e não a máquina, e por isso cada registro de calibração grava a versão sob a qual foi produzido. Os onze registros da faixa A foram gravados com a versão 8.4.61, e o treino e a avaliação do classificador foram executados na Máquina 1; a Máquina 2 serviu à verificação da varredura em uma segunda versão da biblioteca e à preparação da auditoria do Experimento 1 (Seção \ref{sec:res_exp1}).
+O trabalho foi executado em duas máquinas, com equipamento e versões de bibliotecas diferentes, descritas no Quadro \ref{quad:ambiente}. A diferença não foi uniformizada: o que importa para a validade dos resultados é a versão da biblioteca de modelos, e não a máquina, e por isso cada registro de calibração grava a versão sob a qual foi produzido. Os onze registros da faixa A foram gravados com a versão 8.4.61, e o treino e a avaliação do classificador foram executados na Máquina 1; a Máquina 2 serviu à verificação da varredura em uma segunda versão da biblioteca e à preparação da auditoria do experimento (Seção \ref{sec:res_exp1}).
 
 \begin{quadro}[ht]
-  \caption{Ambientes de execução dos experimentos.}
+  \caption{Ambientes de execução.}
   \label{quad:ambiente}
   \centering
   \begin{tabularx}{\textwidth}{lXX}

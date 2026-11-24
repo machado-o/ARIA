@@ -74,9 +74,13 @@
 > **Experimento 2 — fechado em 23/11/2026: vira trabalho futuro inteiro, com a H2** (nota na
 > **D6**; em 22/11 a decisão tinha sido tentar só a faixa A). Com isso saem do caminho o
 > `sam_batch.py`, a regra de split do Aluno e o "contra o quê avaliar".
-> - [ ] **Próxima sessão (combinado em 23/11):** listar os trechos do TCC que tratam o
->   Experimento 2 e a H2 como parte do trabalho (objetivos, metodologia, escopo, talvez o título)
->   e mostrar ao Henrique **antes** de editar.
+> - [x] ~~Listar e reescrever os trechos do TCC que tratam o Experimento 2 e a H2~~ — feito em
+>   23/11/2026 (o Henrique pediu para reescrever direto). Hipótese única (H1); o objetivo da H2
+>   deu lugar à reprodução do classificador; a seção do Exp. 2 saiu da metodologia e dos
+>   resultados; "Experimento 1" virou "o experimento"; o desenho de três braços do Aluno foi para
+>   os trabalhos futuros (*Treinamento do Aluno e especialização por litologia*). Resumo e
+>   abstract com um experimento só. O título ficou: "pseudo-rotulagem" continua valendo, porque o
+>   Professor gera os rótulos. Compilado: 59 páginas, sem erro.
 > - Opcional, só se sobrar tempo: um YOLO generalista como demonstração (figuras + FPS).
 >
 > **Prazos (informados em 19/11, "pelo que fiquei sabendo"):** defesa para a banca **até
@@ -93,9 +97,9 @@
   `golden_storm` e `white_olympus`, em 20/10/2026. **A faixa A está calibrada: 11 de 45.** Os
   quatro critérios escritos dizem que **parece faltar sonda** para marcar o que o autor queria.
   Três delas são movimentadas (**D20**); a `white_olympus` não é, e a quarta movimentada, a
-  `shadow_white`, não registrou essa queixa. Os critérios da `shadow_white` e da
-  `san_francisco_green` ainda não dizem que a seleção saiu **sem conferência de especialista**,
-  o que o `dataset.md` (*Litologias movimentadas*) pede. Ver o achado em *Código* → regra × autor.
+  `shadow_white`, não registrou essa queixa. Nenhuma litologia teve conferência de especialista
+  (Henrique, 23/11/2026); isso fica registrado no `dataset.md` e no texto do TCC, e os critérios
+  escritos não são retocados depois da calibração. Ver o achado em *Código* → regra × autor.
 
 **3. ~~Texto do TCC — compilar~~** — compilado em 06/11/2026 (ver *Escrita* → Compilar). As
 equações do joelho, o `lstlisting` com `literate` e as figuras saem corretos no PDF. Compilado de
@@ -103,10 +107,9 @@ novo em 22/11, depois de juntar as versões de 06/11 e 19/11.
 
 **4. O que falta no texto, em ordem de peso** (resposta a "se pedirem o arquivo, falta muito?"):
 
-- [ ] **Experimento 1 e Experimento 2** — as duas seções de resultados estão sem número. O 1
-  depende só dos julgamentos da auditoria (pacote pronto, ver *Retomada*); o 2, do treino dos
-  Alunos, que não começou. Não se resolve escrevendo.
-- [ ] Por consequência: frases de resultado no resumo/abstract e a síntese de H1/H2 na conclusão.
+- [ ] **Experimento** — a seção de resultados está sem número; depende só dos julgamentos da
+  auditoria (pacote pronto, ver *Retomada*). O Experimento 2 saiu do escopo em 23/11 (**D6**).
+- [ ] Por consequência: frase de resultado no resumo/abstract e a síntese de H1 na conclusão.
 - [x] ~~**Figuras:** a do pipeline e as quatro capturas de tela~~ — feito em 20/10/2026.
   `figuras/arquitetura_aria.png` (citada no texto) e os quatro prints do Henrique, recortados
   sem a barra do navegador e a do Windows. Os originais ficam fora do repo, na pasta acima do
@@ -115,7 +118,10 @@ novo em 22/11, depois de juntar as versões de 06/11 e 19/11.
   `sam3_carion2026` (ICLR 2026, conferido no arXiv) e `camargo_geociencias2015`, com a definição
   atribuída a Meyer (2003) no texto, porque Meyer foi lido em segunda mão. Entrou um TODO novo,
   `TODO-fracstoneai` (ver *Escrita*).
-- [ ] **Pré-textuais:** dedicatória, agradecimentos, epígrafe, banca e data da defesa.
+- [ ] **Pré-textuais:** ~~agradecimentos~~ (escritos em 23/11/2026 e ligados no `main.tex`);
+  dedicatória fica sem, por ora (Henrique); epígrafe de Box (24/11); banca no `macros.tex`
+  (Everson e Igor, 24/11); falta só a data da defesa
+  (o Henrique passa quando tiver).
 - [x] ~~**Tabela regra × autor** nos resultados~~ — feito em 19/11/2026: seção 4.5 *Calibração
   da Faixa A* (`tab:calib_faixa_a`, por litologia) e o Apêndice A
   (`pos_textuais/apendice_limiares.tex`, os 45 pares), gerado do `regra_x_autor.csv`. Se uma
@@ -252,7 +258,10 @@ o momento".
   `shadow_white` e `san_francisco_green` (08/10). São os casos para observar, na calibração, se a
   dificuldade aparece em número (distância entre o limiar da regra e o do autor). O autor
   registrou que a seleção das duas antes puladas **foi difícil**, e saiu sem conferência de
-  especialista — isso precisa estar no critério escrito do `calibracao.json` de cada uma.
+  especialista. ~~Isso precisa estar no critério escrito do `calibracao.json`~~ — fechado em
+  23/11/2026: **nenhuma** litologia teve especialista (Henrique), e o critério escrito é o registro
+  datado do que o autor escreveu ao calibrar; acrescentar uma frase depois o tornaria menos
+  confiável, não mais. O fato fica no `dataset.md`.
 
 ---
 
@@ -409,7 +418,7 @@ o momento".
   escritos do zero. `testes.tex` e `Texto Inicial.tex` removidos.
 - [x] Resumo e abstract reais (faltam só as frases de resultado).
 - [x] Título: typo "Convulacionais" e "avarias" corrigidos; ficha catalográfica com as tags reais
-  e o orientador certo; `\local`, `pprovaldate` e palavras-chave preenchidos.
+  e o orientador certo; `\local`, `\approvaldate` e palavras-chave preenchidos.
 - [x] TAM / Difusão de Inovações / Teoria Sociotécnica **fora** (**D16**) — as três entradas
   ficaram no `.bib` sem citação, o que o bibtex simplesmente ignora.
 - [x] Boxes2Pixels citado e posicionado (§2.7) sem alegar lacuna na literatura.
@@ -457,8 +466,8 @@ o momento".
 - [x] **Corrigido — o texto afirmava o que não era verdade:** a subseção *Litologias
   movimentadas* dizia que "o registro de calibração de cada uma o declara" (a falta de
   especialista). Nenhum dos quatro critérios diz isso. O texto passou a dizer que **o trabalho**
-  o declara, e na passada de tom do mesmo dia a frase saiu. O pedido do `dataset.md` (o critério do `calibracao.json` dizer) continua aberto,
-  e só o calibrador pode atendê-lo.
+  o declara, e na passada de tom do mesmo dia a frase saiu. O pedido do `dataset.md` (o critério do `calibracao.json` dizer)
+  foi retirado em 23/11/2026 (ver *Litologias movimentadas*).
 - [x] **Corrigido:** a limitação *Independência parcial da referência* dizia que o
   conjunto-ouro "foi anotado", o que ainda não aconteceu (e agora é condicional). Passou ao
   presente.
@@ -538,8 +547,12 @@ o momento".
   ao GitHub (`machado-o/ARIA`), mas não puxa sozinho:** commit novo só aparece lá depois de
   *Menu → GitHub → Pull*. Quando escolher: aplicar no
   `macros.tex` e fechar como decisão em `decisoes.md`.
-- [ ] **Banca:** `macros.tex` ainda tem "Fulana/Cicrano de Tal"; a aprovação está comentada.
-- [ ] **Dedicatória, agradecimentos e epígrafe** continuam com texto do template, comentados.
+- [x] ~~**Banca**~~ — Prof. Dr. Everson Scherrer Borges e Prof. Dr. Igor Henrique Beloti Pizetta
+  (Henrique, 24/11/2026), no `macros.tex`. A folha de aprovação segue comentada até a data da
+  defesa (`\approvaldate`, hoje um valor fictício de 15/10/2026).
+- [x] ~~**Dedicatória, agradecimentos e epígrafe**~~ — agradecimentos (23/11); epígrafe de Box e Draper,
+  *Empirical Model-Building and Response Surfaces*, 1987 (24/11; conferir a página na fonte, ~p. 424
+  — Kelvin foi descartado por soar como "só vale o que é número", contra a D3); dedicatória sem, por ora.
 - [x] ~~**Compilar.**~~ — compilado localmente em 06/11/2026 (TinyTeX nesta máquina, pdfLaTeX +
   BibTeX): 63 páginas, sem erro, sem caixa estourando, sem referência indefinida. Corrigido na
   compilação: "Fonte: Fonte:" em todas as legendas (o `\legend` da classe já escreve "Fonte:"),

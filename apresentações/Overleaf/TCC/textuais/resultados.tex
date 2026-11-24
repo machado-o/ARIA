@@ -1,12 +1,12 @@
 \chapter[RESULTADOS]{RESULTADOS}
 
-Este capítulo começa pelas verificações que sustentam o método descrito no Capítulo 3 --- e que são pré-requisito para que os experimentos façam sentido ---, apresenta o resultado do classificador e da calibração da faixa A, e prossegue para os experimentos propriamente ditos.
+Este capítulo começa pelas verificações que sustentam o método descrito no Capítulo 3 --- e que são pré-requisito para que o experimento faça sentido ---, apresenta o resultado do classificador e da calibração da faixa A, e termina no experimento propriamente dito.
 
 % =====================================================================
-% TODO (estrutura): este capítulo está completo apenas nas seções 4.1 a 4.5
-% (a 4.5, Calibração da Faixa A, entrou em 19/11/2026).
-% As seções do Experimento 1 e do Experimento 2 aguardam execução. Ver
-% docs/roadmap.md no repositório para o estado corrente.
+% TODO (estrutura): este capítulo está completo nas seções 4.1 a 4.5.
+% A seção do experimento aguarda os julgamentos da auditoria cega.
+% O Experimento 2 (Alunos especialistas x generalista, H2) saiu do escopo em
+% 23/11/2026 e virou trabalho futuro (docs/decisoes.md, D6).
 % =====================================================================
 
 \section{Verificação da Equivalência da Varredura Fora de Linha}
@@ -133,7 +133,7 @@ A diferença pesa na marcação. Nas imagens típica e forte, somadas as sondas 
 
 Os critérios escritos indicam de onde vem a divergência. Em sete das onze litologias, o critério gira em torno de uma mesma condição: subir o limiar até que a imagem típica --- em uma delas, a sutil --- deixe de marcar a matriz limpa da rocha. Na \textit{itaunas\_white}, por exemplo, o registro diz: ``Subi até não marcar a rocha limpa, tudo que devia marcar foi marcado''. A regra não tem acesso a essa condição. O joelho depende apenas da forma da curva de contagem, e não do conteúdo do que é marcado. A divergência para cima é coerente com um critério de precisão que a curva não enxerga, e com a direção que a literatura de pseudo-rotulagem recomenda (Seção \ref{sec:ruidosos}).
 
-O resultado é o caso previsto na Seção \ref{sec:regra}, em que a curva engana, agora com uma regularidade que uma única litologia não permitiria afirmar: a divergência foi sistemática e de mesmo sinal. É também exatamente o que o protocolo foi desenhado para capturar. Sem o registro dos dois valores, o ajuste do autor seria invisível; com ele, a troca fica escrita --- o critério da \textit{siena\_white}, por exemplo, aceita perder feições fracas da imagem sutil para manter limpa a típica. Qual dos dois limiares marca melhor é a pergunta que o Experimento 1 responde, ao comparar os braços que usam as sondas do autor com o limiar da regra e com o do autor.
+O resultado é o caso previsto na Seção \ref{sec:regra}, em que a curva engana, agora com uma regularidade que uma única litologia não permitiria afirmar: a divergência foi sistemática e de mesmo sinal. É também exatamente o que o protocolo foi desenhado para capturar. Sem o registro dos dois valores, o ajuste do autor seria invisível; com ele, a troca fica escrita --- o critério da \textit{siena\_white}, por exemplo, aceita perder feições fracas da imagem sutil para manter limpa a típica. Qual dos dois limiares marca melhor é a pergunta que o experimento responde, ao comparar os braços que usam as sondas do autor com o limiar da regra e com o do autor.
 
 \subsection{Litologias movimentadas: o que marcar, e não quanto}
 
@@ -141,7 +141,7 @@ Em quatro dos onze critérios, o autor registrou que as sondas disponíveis não
 
 Separar as litologias movimentadas (Seção \ref{sec:movimentadas}) das demais mostra onde está a dificuldade. A razão entre o limiar do autor e o da regra não distingue os dois grupos: sua mediana foi de 3,15 nos 18 pares das quatro litologias movimentadas e de 3,58 nos 27 pares das sete demais. Os critérios escritos, sim: três das quatro litologias movimentadas registraram sondas insuficientes, contra uma das sete demais. Nas rochas cujo desenho natural se confunde com defeito, a dificuldade não esteve em decidir \textit{quanto} marcar --- o ajuste do limiar seguiu o mesmo padrão das outras ---, mas \textit{o que} marcar. É uma questão de vocabulário, e não de limiar: ajustar o corte não faz uma sonda marcar o que ela não reconhece. O resultado aponta a ampliação do vocabulário de sondas como a alavanca seguinte para essas litologias (Seção \ref{sec:futuros}).
 
-\section{Experimento 1 --- Critério por Litologia \textit{versus} Critério Único}
+\section{Experimento --- Critério por Litologia \textit{versus} Critério Único}
 \label{sec:res_exp1}
 
 Os quatro braços foram aplicados às 33 chapas da amostra de avaliação (Seção \ref{sec:referencia}). Os limiares da regra foram recalculados sobre a captura feita na mesma versão da biblioteca usada nessas chapas, em uma máquina diferente da que produziu a calibração. Nos 45 pares de litologia e sonda da calibração, o valor recalculado diferiu do registrado em no máximo 0,0002 em 43 casos, e em 0,0013 e 0,0125 nos outros dois: a regra mostrou-se reproduzível entre equipamentos e versões.
@@ -173,11 +173,3 @@ O braço único, aplicado com o limiar obtido sobre as onze litologias reunidas,
 % Figuras de exemplo (decisão do Henrique, 10/10/2026): o lado calibrado usa o
 % LIMIAR DE TRABALHO (braço "calibrado pelo autor"), a não ser que o joelho da
 % regra produza figura melhor. A legenda diz qual dos dois foi usado.
-
-\section{Experimento 2 --- Especialistas \textit{versus} Generalista}
-
-Este experimento não foi executado até a presente versão. Sua execução depende de três etapas que ainda não existem: a geração do conjunto de treinamento pelo Professor sobre uma amostra de imagens de cada litologia, já que o Professor até aqui processou apenas as imagens de calibração e as chapas da amostra de avaliação; o pós-processamento dos polígonos discutido na Seção \ref{sec:res_contornos}, em particular a área mínima dos fragmentos; e o treinamento dos três braços do Quadro \ref{quad:bracos_exp2}, começando pela faixa A.
-
-% TODO: executar e redigir, faixa por faixa. Depende da geração do conjunto de
-% treinamento pelo Professor, do pós-processamento discutido na Seção 4.3 e do
-% treinamento dos três braços descritos no Quadro \ref{quad:bracos_exp2}.

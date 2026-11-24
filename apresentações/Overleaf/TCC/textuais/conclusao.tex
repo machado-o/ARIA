@@ -6,19 +6,19 @@ Este trabalho partiu de uma constatação sobre a inspeção de chapas de rochas
 
 A proposta do ARIA não foi eliminar a arbitrariedade dessa fronteira, o que seria promessa que nenhum sistema pode cumprir, dado que a fronteira depende de convenção comercial e não de propriedade física. A proposta foi \textbf{deslocá-la}: retirá-la da cabeça do inspetor e materializá-la em um conjunto de sondas textuais e limiares de confiança por litologia, gravado em arquivo versionável, produzido por uma regra idêntica para todas as litologias e acompanhado do registro de cada divergência entre a regra e o julgamento do autor.
 
-% TODO: acrescentar aqui, quando os experimentos rodarem, dois a três parágrafos
-% sintetizando os resultados de H1 e H2 -- inclusive se o resultado for negativo.
+% TODO: acrescentar aqui, quando a auditoria for julgada, dois a três parágrafos
+% sintetizando o resultado de H1 -- inclusive se o resultado for negativo.
 % Resultado negativo em H1 (critério calibrado equivalente ao critério único) é
 % achado legítimo e deve ser reportado como tal, não omitido: o desenho descrito
-% na Seção 3.8 foi construído justamente para admitir essa possibilidade.
+% na seção do experimento (sec:exp1) foi construído justamente para admitir essa possibilidade.
 
-Independentemente do desfecho dos experimentos, dois resultados já se firmaram. O primeiro é a demonstração de que o limiar de confiança do Professor é um filtro aplicado após a inferência, o que torna a varredura de limiares fora de linha exatamente equivalente a reexecutar o modelo --- propriedade verificada experimentalmente, sem tolerância numérica, em duas versões da biblioteca, e que reduz o ciclo de calibração de minutos para milissegundos. O segundo é o próprio protocolo de calibração: a separação entre a imagem que descobre \textit{quais} sondas entram e as três que submetem um \textit{único} limiar a casos sutil, típico e forte, com a distinção explícita entre o valor do limiar, que varia por litologia, e a regra que o produz, que não varia.
+Independentemente do desfecho do experimento, dois resultados já se firmaram. O primeiro é a demonstração de que o limiar de confiança do Professor é um filtro aplicado após a inferência, o que torna a varredura de limiares fora de linha exatamente equivalente a reexecutar o modelo --- propriedade verificada experimentalmente, sem tolerância numérica, em duas versões da biblioteca, e que reduz o ciclo de calibração de minutos para milissegundos. O segundo é o próprio protocolo de calibração: a separação entre a imagem que descobre \textit{quais} sondas entram e as três que submetem um \textit{único} limiar a casos sutil, típico e forte, com a distinção explícita entre o valor do limiar, que varia por litologia, e a regra que o produz, que não varia.
 
 Um terceiro resultado veio da aplicação do protocolo às onze litologias da faixa A. O autor divergiu da regra em todos os 45 pares de litologia e sonda, sempre para cima, com o limiar adotado em torno de três vezes o da regra (Seção \ref{sec:res_calibracao}). O registro de cada divergência, com o critério escrito ao lado, é o que permite afirmar isso: no processo de marcação manual, uma divergência dessas não deixaria rastro.
 
 \section{Escopo}
 
-Os resultados desta versão cobrem a faixa A, as onze litologias com mais de mil imagens. O desenho executa as faixas de volume em sequência, cada uma como marco completo, e as demais são a continuação direta do trabalho (Seção \ref{sec:futuros}). Todas as calibrações foram feitas pelo autor: o protocolo torna o critério explícito, mas a concordância entre calibradores diferentes, aplicando-o à mesma litologia, não foi medida.
+Os resultados desta versão cobrem a faixa A, as onze litologias com mais de mil imagens. O desenho executa as faixas de volume em sequência, cada uma como marco completo, e as demais são a continuação direta do trabalho (Seção \ref{sec:futuros}). A avaliação trata das marcações do Professor, que são o lugar onde o critério se materializa; o Aluno, que aprende a reproduzi-las em produção, faz parte da arquitetura descrita, e o seu treinamento é o passo seguinte. Todas as calibrações foram feitas pelo autor: o protocolo torna o critério explícito, mas a concordância entre calibradores diferentes, aplicando-o à mesma litologia, não foi medida.
 
 A auditoria cega compara os braços entre si, pela precisão e pelo \textit{recall} relativo ao conjunto de suas marcações, que é a pergunta da H1. A medida da qualidade do contorno contra polígonos desenhados à mão, e a ampliação do grupo de avaliadores para profissionais do setor, são a extensão natural dessa avaliação.
 
@@ -35,7 +35,9 @@ A auditoria cega compara os braços entre si, pela precisão e pelo \textit{reca
 
   \item[Aprendizado ativo] O arranjo Professor--Aluno admite um ciclo em que o Professor reexamina, fora de linha, as predições de baixa confiança do Aluno em produção, realimentando o conjunto de treinamento.
 
-  \item[Faixas de volume remanescentes] A execução das faixas não alcançadas completa a curva que relaciona o ganho da especialização ao volume de dados por litologia, que é a resposta à segunda metade de H2.
+  \item[Treinamento do Aluno e especialização por litologia] Gerar, com o Professor e o critério calibrado, as anotações do conjunto de dados inteiro, definir a área mínima dos fragmentos (Seção \ref{sec:res_contornos}) e treinar o Aluno. Com ele, cabe a pergunta que o FracStoneAI deixou em aberto: se modelos especialistas, um por litologia, superam um modelo generalista. O desenho que torna essa comparação atribuível tem três braços --- especialistas, generalista treinado sob o critério único e um controle generalista treinado sob o critério calibrado de cada litologia ---, de modo que cada comparação muda um único fator: o número de modelos ou o critério que gerou as anotações. Reportada por faixa de volume, a comparação mostra a partir de quantas imagens a especialização compensa o custo de manter um modelo dedicado. A avaliação do Aluno pede uma referência própria, já que medi-lo contra as anotações do Professor mostraria apenas o quanto ele as imita; a auditoria cega aqui descrita é o ponto de partida.
+
+  \item[Faixas de volume remanescentes] Calibrar e auditar as faixas B, C e D, que reúnem as 34 litologias com menos de mil imagens, sob o mesmo protocolo.
 
   \item[Sensibilidade a \textit{prompts} contextuais] O trabalho que originou as representações multimodais empregadas reporta que \textit{prompts} contextuais superam palavras isoladas em tarefas \textit{zero-shot} \cite{clip_radford2021}. Como as sondas aqui adotadas são majoritariamente palavras isoladas, e algumas são lexicalmente ambíguas, uma análise de sensibilidade comparando as duas formulações é extensão natural e de baixo custo --- bastaria alterar o arquivo de configuração.
 

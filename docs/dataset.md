@@ -98,8 +98,13 @@ A lista cresce conforme a seleção avança, e por enquanto só cobre a faixa A.
 **sem a opinião de especialista** — a ajuda foi pedida na faculdade e até essa data não veio, e a
 **D20** já havia decidido que ela não bloqueia a calibração. O autor registrou que a seleção
 dessas duas **foi difícil**. É isso que a calibração precisa medir: nas quatro movimentadas, o
-limiar escolhido pelo autor é o elo frouxo, e o critério escrito de cada `calibracao.json` deve
-dizer que a marcação saiu sem conferência de quem conhece rocha.
+limiar escolhido pelo autor é o elo frouxo.
+
+> **Nenhuma litologia teve conferência de especialista** (Henrique, 23/11/2026) — nem as
+> movimentadas, nem as demais. Este parágrafo pedia que o critério de cada `calibracao.json`
+> dissesse isso; o pedido foi retirado. O critério escrito é o registro datado do que o autor
+> escreveu no momento da calibração, e retocá-lo depois o tornaria menos confiável. O fato
+> mora aqui.
 
 ### Por que isto é um tópico, e não só um atraso
 
