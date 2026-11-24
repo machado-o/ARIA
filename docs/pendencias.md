@@ -51,8 +51,11 @@
 > em 3,2×, e em 357 das 420 telas o afastar máximo não chegava à chapa inteira (na tela 41,
 > mostrava 48% da largura). O `.zip` do PC 2 foi refeito com
 > `auditoria_preparar.py --atualizar-app`: o `itens.js` e as imagens são os mesmos, só o
-> `index.html` mudou. ⚠️ **No PC 1, depois do pull, rodar o `--atualizar-app` antes de enviar o
-> `.zip` de lá**, porque o de lá ainda tem o aplicativo antigo. Próximos passos:
+> `index.html` mudou. ~~No PC 1, rodar o `--atualizar-app` antes de enviar o `.zip`~~ — feito em
+> 24/11/2026: lá não havia `pacote/`, só o `.zip`; ele foi extraído em `auditoria/pacote/` e o
+> `--atualizar-app` refez o `.zip`. Conferido por hash: os 35 arquivos são os mesmos e só o
+> `index.html` mudou (igual ao `auditoria_app.html` atual). **Os dois PCs têm agora o mesmo
+> pacote.** Próximos passos:
 >
 > 1. [ ] Mandar o `.zip` para a avaliadora, **Marcelli da Fonseca Carvalho** (estudante de
 >    Engenharia de Minas). Ela extrai, abre o
