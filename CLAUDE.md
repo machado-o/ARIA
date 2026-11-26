@@ -117,6 +117,13 @@ Classificador (**D19**), a partir de `AI/Xception/`:
 ..\.venv\Scripts\python.exe roteador.py chapa.jpg     # litologia + confiança + top-3
 ```
 
+Revisão do texto em PDF, a partir da raiz:
+
+```bash
+revisao/revisao_pdf.html                                  # abrir no navegador, grifar por cor
+AI\.venv\Scripts\python.exe revisao\mapear.py marcas.json # cada marca → arquivo.tex:linha (.json ou .txt colado)
+```
+
 `runs/` (config, histórico, métricas em JSON) vai para o git; o `.pt` não. Para teste de fumaça,
 `--limite N` e `--dir-runs/--dir-modelos` apontando para fora do repositório.
 

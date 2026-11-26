@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisão do PDF</title>
+<!-- pdf.js 3.11 (build UMD): o worker vem do mesmo CDN e o pdf.js o embrulha
+     num blob sozinho, então funciona abrindo este arquivo direto (file://). -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1115; --painel: #171a21; --linha: #2a2f3a; --texto: #e7e9ee;
+    --apagado: #8d95a5; --acento: #7aa2ff; --fundo-pdf: #3a3f4b;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { background: var(--bg); color: var(--texto);
+         font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+         display: flex; flex-direction: column; overflow: hidden; }
+  button { font: inherit; color: var(--texto); background: #232836; border: 1px solid var(--linha);
+           border-radius: 7px; padding: 6px 11px; cursor: pointer; }
+  button:hover { border-color: var(--acento); }
+  button.primario { background: var(--acento); color: #0b0d12; border-color: var(--acento); font-weight: 650; }
+  button:disabled { opacity: .45; cursor: default; }
+  kbd { font: 11px ui-monospace, Consolas, monospace; padding: 0 5px; border-radius: 4px;
+        border: 1px solid var(--linha); border-bottom-width: 2px; color: var(--apagado); }
+
+  header { display: flex; align-items: center; gap: 8px; padding: 9px 14px;
+           border-bottom: 1px solid var(--linha); background: var(--painel); flex-wrap: wrap; }
+  .titulo { font-weight: 700; letter-spacing: -.01em; margin-right: 6px; }
+  #nomePdf { color: var(--apagado); font-weight: 500; font-family: ui-monospace, Consolas, monospace; font-size: 12px; }
+  .zoom { display: flex; align-items: center; gap: 4px; }
+  .zoom span { min-width: 46px; text-align: center; color: var(--apagado); font-size: 12px; }
+  .spacer { flex: 1; }
+  #status { color: var(--apagado); font-size: 12px; }
+
+  main { flex: 1; display: flex; min-height: 0; }
+  #visor { flex: 1; overflow: auto; background: var(--fundo-pdf); position: relative; }
+  #paginas { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 18px 12px 60px; }
+  #vazio { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+           flex-direction: column; gap: 12px; color: #c8ccd6; text-align: center; padding: 20px; }
+  #vazio .caixa { border: 2px dashed #6b7280; border-radius: 14px; padding: 36px 44px; max-width: 520px; }
+  #vazio h2 { margin: 0 0 6px; font-size: 18px; }
+  #vazio.arrastando .caixa { border-color: var(--acento); background: rgba(122,162,255,.08); }
+
+  .pagina { position: relative; background: #fff; box-shadow: 0 2px 14px rgba(0,0,0,.45); flex: none; }
+  .pagina .canvasBox, .pagina .hl, .pagina .textLayer { position: absolute; inset: 0; }
+  .pagina canvas { display: block; }
+  .pagina .hl { z-index: 1; pointer-events: none; }
+  .pagina .numPag { position: absolute; right: -38px; top: 0; color: #c8ccd6; font-size: 12px; }
+  .hlr { position: absolute; mix-blend-mode: multiply; border-radius: 2px; opacity: .42; }
+  .hlr.apagada { opacity: .08; }
+  .hlr.piscar { animation: piscar 1.1s ease-out 2; }
+  @keyframes piscar { 0%,100% { opacity: .42 } 50% { opacity: .9 } }
+
+  /* camada de texto do pdf.js (o essencial do pdf_viewer.css 3.11) */
+  .textLayer { overflow: hidden; line-height: 1; text-align: initial; opacity: 1; z-index: 2;
+               -webkit-text-size-adjust: none; text-size-adjust: none; forced-color-adjust: none;
+               transform-origin: 0 0; }
+  .textLayer span, .textLayer br { color: transparent; position: absolute; white-space: pre;
+                                   cursor: text; transform-origin: 0% 0%; }
+  .textLayer span.markedContent { top: 0; height: 0; }
+  .textLayer ::selection { background: rgba(40, 90, 255, .28); }
+  .textLayer br::selection { background: transparent; }
+  .textLayer .endOfContent { display: block; position: absolute; inset: 100% 0 0; z-index: -1;
+                             cursor: default; user-select: none; }
+  .textLayer.selecionando .endOfContent { top: 0; }
+
+  aside { flex: none; background: var(--painel); display: flex; flex-direction: column; min-height: 0; }
+  #esq { width: 250px; border-right: 1px solid var(--linha); overflow: auto; }
+  #dir { width: 340px; border-left: 1px solid var(--linha); }
+  .contagem { color: var(--apagado); font-size: 12px; margin-top: 10px; line-height: 1.6; }
+
+  /* barras de rolagem */
+  #visor, #lista, #esq, #editor .citacao, .modal textarea { scrollbar-width: thin; scrollbar-color: #4b5263 transparent; }
+  ::-webkit-scrollbar { width: 11px; height: 11px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #4b5263; border-radius: 8px; border: 3px solid transparent; background-clip: padding-box; }
+  ::-webkit-scrollbar-thumb:hover { background-color: #6b7386; }
+  ::-webkit-scrollbar-corner { background: transparent; }
+  #visor::-webkit-scrollbar-thumb { background-color: #5a6072; }
+  #visor::-webkit-scrollbar-thumb:hover { background-color: var(--acento); }
+  .secao { padding: 12px 14px; border-bottom: 1px solid var(--linha); }
+  .secao h3 { margin: 0 0 8px; font-size: 11px; text-transform: uppercase; letter-spacing: .09em; color: var(--apagado); }
+  #legenda { display: flex; flex-direction: column; gap: 4px; }
+  .cat { display: grid; grid-template-columns: 14px 1fr auto auto auto; align-items: center; column-gap: 8px;
+         row-gap: 1px; padding: 6px 7px; border-radius: 7px; cursor: pointer;
+         border: 1px solid transparent; user-select: none; }
+  .cat .desc { grid-column: 2 / -1; white-space: normal !important; line-height: 1.3; }
+  .cat:hover { border-color: var(--linha); }
+  .cat.fora { opacity: .4; }
+  .cat .cor { width: 14px; height: 14px; border-radius: 4px; background: var(--c); flex: none; }
+  .cat .nome { font-weight: 600; }
+  .cat .desc { color: var(--apagado); font-size: 12px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cat .n { color: var(--apagado); font-size: 12px; font-variant-numeric: tabular-nums; }
+  .cat .x { color: var(--apagado); padding: 0 4px; border-radius: 4px; }
+  .cat .x:hover { color: #f87171; }
+  .dica { color: var(--apagado); font-size: 12px; margin-top: 8px; }
+  #lista { overflow: auto; flex: 1; padding: 6px 8px 30px; }
+  .item { padding: 8px 9px 8px 12px; border-radius: 8px; cursor: pointer; border-left: 4px solid var(--c);
+          margin: 4px 0; background: #1d212b; }
+  .item:hover { background: #232836; }
+  .item .cab { display: flex; gap: 8px; font-size: 12px; color: var(--apagado); }
+  .item .cab b { color: var(--texto); }
+  .item .trecho { margin-top: 3px; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .item .nota { margin-top: 4px; color: #ffd98a; font-size: 13px; white-space: pre-wrap; }
+  .vazioLista { color: var(--apagado); padding: 14px 6px; }
+
+  .flutuante { position: fixed; z-index: 50; background: #1b1f29; border: 1px solid #3a4152;
+               border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.5); }
+  #barra { display: flex; gap: 4px; padding: 5px; flex-wrap: wrap; max-width: 560px; }
+  #barra button, #editor .cats button { display: flex; align-items: center; gap: 6px; padding: 5px 9px;
+           border-color: color-mix(in srgb, var(--c) 55%, transparent); }
+  #barra button::before, #editor .cats button::before { content: ""; width: 10px; height: 10px; border-radius: 3px; background: var(--c); }
+  #editor { width: 400px; padding: 11px; }
+  #editor .cats { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+  #editor .cats button.ativo { background: color-mix(in srgb, var(--c) 30%, #1b1f29); border-color: var(--c); }
+  #editor .citacao { color: var(--apagado); font-size: 12px; max-height: 64px; overflow: auto; margin-bottom: 8px;
+                     border-left: 3px solid var(--linha); padding-left: 8px; }
+  #editor textarea, .modal textarea, .modal input[type=text] { width: 100%; background: #0f1218; color: var(--texto);
+           border: 1px solid var(--linha); border-radius: 7px; padding: 8px; font: inherit; resize: vertical; }
+  #editor textarea { min-height: 64px; }
+  #editor .acoes { display: flex; gap: 6px; margin-top: 8px; align-items: center; }
+  #editor .acoes .spacer { flex: 1; }
+  #btnApagar:hover { border-color: #f87171; color: #fca5a5; }
+  [hidden] { display: none !important; }
+
+  .fundoModal { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 80; display: flex;
+                align-items: center; justify-content: center; padding: 16px; }
+  .modal { background: var(--painel); border: 1px solid var(--linha); border-radius: 12px; padding: 16px;
+           width: min(620px, 100%); }
+  .modal h2 { margin: 0 0 10px; font-size: 16px; }
+  .modal label { display: block; margin: 8px 0 4px; color: var(--apagado); font-size: 12px; }
+  .modal .acoes { display: flex; justify-content: flex-end; gap: 6px; margin-top: 12px; }
+  .aviso { background: #3b2f12; color: #fde68a; border-bottom: 1px solid #6b5517; padding: 8px 14px;
+           display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .aviso .spacer { flex: 1; }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="titulo">Revisão do PDF</span>
+  <span id="nomePdf">nenhum PDF aberto</span>
+  <button id="btnAbrir">Abrir PDF</button>
+  <input type="file" id="inPdf" accept="application/pdf,.pdf" hidden>
+  <div class="zoom">
+    <button id="zMenos" title="Diminuir (Ctrl −)">−</button>
+    <span id="zVal">125%</span>
+    <button id="zMais" title="Aumentar (Ctrl +)">+</button>
+  </div>
+  <span class="spacer"></span>
+  <span id="status"></span>
+  <button id="btnImportar" title="Carregar trechos de um .json exportado (de outro PC, por exemplo)">Importar</button>
+  <input type="file" id="inJson" accept=".json,application/json" hidden>
+  <button id="btnExportar">Exportar .json</button>
+  <button id="btnCopiar" class="primario" title="Copia os trechos como texto, pronto para colar na conversa">Copiar para o Claude</button>
+</header>
+<div id="avisoVersao" class="aviso" hidden>
+  <span id="avisoTexto"></span><span class="spacer"></span>
+  <button id="avisoManter">Manter os trechos</button>
+  <button id="avisoLimpar">Exportar e começar do zero</button>
+</div>
+
+<main>
+  <aside id="esq">
+    <div class="secao" style="border-bottom:0">
+      <h3>Cores</h3>
+      <div id="legenda"></div>
+      <div class="dica">Clique numa cor para mostrar ou esconder os trechos dela.</div>
+      <button id="btnNovaCat" style="margin-top:8px">+ cor nova</button>
+      <div class="contagem" id="contagem"></div>
+    </div>
+  </aside>
+
+  <section id="visor">
+    <div id="vazio">
+      <div class="caixa">
+        <h2>Arraste o PDF para cá</h2>
+        <div>ou use <b>Abrir PDF</b>. Selecione um trecho e aperte <kbd>1</kbd>–<kbd>9</kbd> para grifar.</div>
+      </div>
+    </div>
+    <div id="paginas"></div>
+  </section>
+
+  <aside id="dir">
+    <div class="secao" style="padding-bottom:6px"><h3 id="tituloLista">Trechos</h3></div>
+    <div id="lista"></div>
+  </aside>
+</main>
+
+<div id="barra" class="flutuante" hidden></div>
+
+<div id="editor" class="flutuante" hidden>
+  <div class="cats" id="editorCats"></div>
+  <div class="citacao" id="editorCitacao"></div>
+  <textarea id="editorNota" placeholder="Nota (opcional): o que mudar, por quê, como deveria ficar…"></textarea>
+  <div class="acoes">
+    <span class="dica" style="margin:0"><kbd>Enter</kbd> salva · <kbd>Shift</kbd>+<kbd>Enter</kbd> quebra linha</span>
+    <span class="spacer"></span>
+    <button id="btnApagar">Apagar</button>
+    <button id="btnPronto" class="primario">Pronto</button>
+  </div>
+</div>
+
+<div id="modalCat" class="fundoModal" hidden>
+  <div class="modal">
+    <h2>Cor nova</h2>
+    <label for="catNome">Nome (curto)</label>
+    <input type="text" id="catNome" placeholder="ex.: Figura">
+    <label for="catDesc">O que ela quer dizer (vai junto para o Claude)</label>
+    <input type="text" id="catDesc" placeholder="ex.: aqui caberia uma figura ou um exemplo visual">
+    <label for="catCor">Cor</label>
+    <input type="color" id="catCor" value="#14b8a6">
+    <div class="acoes"><button id="catCancelar">Cancelar</button><button id="catSalvar" class="primario">Criar</button></div>
+  </div>
+</div>
+
+<div id="modalTexto" class="fundoModal" hidden>
+  <div class="modal">
+    <h2 id="modalTextoTitulo">Texto para o Claude</h2>
+    <textarea id="modalTextoArea" rows="16" readonly></textarea>
+    <div class="acoes"><button id="modalTextoFechar" class="primario">Fechar</button></div>
+  </div>
+</div>
+
+<script>
+"use strict";
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+const $ = (id) => document.getElementById(id);
+const CHAVE = "aria-revisao";
+
+const CATS_PADRAO = [
+  { id: "sair",        nome: "Sair",        cor: "#ef4444", descricao: "remover o trecho" },
+  { id: "mudar",       nome: "Mudar",       cor: "#facc15", descricao: "reescrever; a nota diz como ou por quê" },
+  { id: "explicar",    nome: "Explicar",    cor: "#3b82f6", descricao: "não ficou claro: explicar melhor, dar exemplo ou analogia" },
+  { id: "conferir",    nome: "Conferir",    cor: "#a855f7", descricao: "conferir fato, número ou fonte" },
+  { id: "acrescentar", nome: "Acrescentar", cor: "#f97316", descricao: "falta algo aqui; a nota diz o quê" },
+  { id: "manter",      nome: "Manter",      cor: "#22c55e", descricao: "está bom, não mexer" },
+  { id: "figura",      nome: "Figura",      cor: "#14b8a6", descricao: "aqui caberia uma figura ou um exemplo visual" },
+];
+
+const S = {
+  pdf: null, nome: "", impressao: "", escala: 2,
+  paginas: [], visiveis: new Set(),
+  marcas: [], cats: [], ocultas: new Set(),
+  pendente: null, editando: null,
+};
+
+// ── armazenamento (só conveniência deste navegador; o que vale é o export) ──
+function ler(k, padrao) {
+  try { const v = localStorage.getItem(`${CHAVE}:${k}`); return v ? JSON.parse(v) : padrao; }
+  catch (e) { return padrao; }
+}
+function gravar(k, v) {
+  try { localStorage.setItem(`${CHAVE}:${k}`, JSON.stringify(v)); return true; }
+  catch (e) { return false; }
+}
+function salvarMarcas() {
+  const ok = S.nome ? gravar(`pdf:${S.nome}`, { impressao: S.impressao, marcas: S.marcas }) : false;
+  atualizarStatus(ok);
+}
+function salvarCats() { gravar("cats", S.cats); }
+
+S.cats = ler("cats", null) || [];
+// Cor padrão que ainda não está na lista guardada (ex.: uma acrescentada numa versão nova) entra no fim.
+for (const c of CATS_PADRAO) if (!S.cats.some((x) => x.id === c.id)) S.cats.push({ ...c });
+S.escala = Number(ler("zoom", 2)) || 2;
+const catDe = (id) => S.cats.find((c) => c.id === id) || { id, nome: id, cor: "#9ca3af", descricao: "" };
+
+function atualizarStatus(ok = true) {
+  const n = S.marcas.length;
+  $("status").textContent = !S.pdf ? "" :
+    `${n} trecho${n === 1 ? "" : "s"} · ` + (ok ? "salvo neste navegador" : "não deu para salvar aqui: exporte o .json");
+}
+
+// ── abrir o PDF ──────────────────────────────────────────────────────────────
+async function abrirPdf(arquivo) {
+  if (!arquivo) return;
+  esconderFlutuantes();
+  const dados = new Uint8Array(await arquivo.arrayBuffer());
+  let pdf;
+  try { pdf = await pdfjsLib.getDocument({ data: dados }).promise; }
+  catch (e) { mostrarTexto("Não consegui abrir", `O arquivo não abriu como PDF.\n\n${e.message || e}`); return; }
+  if (S.pdf) S.pdf.destroy();
+  S.pdf = pdf;
+  S.nome = arquivo.name;
+  S.impressao = (pdf.fingerprints && pdf.fingerprints[0]) || `${arquivo.name}:${arquivo.size}`;
+  $("nomePdf").textContent = `${arquivo.name} · ${pdf.numPages} páginas`;
+  $("vazio").hidden = true;
+  carregarMarcasSalvas();
+  await montarPaginas();
+}
+
+function carregarMarcasSalvas() {
+  const salvo = ler(`pdf:${S.nome}`, null);
+  S.marcas = salvo ? salvo.marcas || [] : [];
+  $("avisoVersao").hidden = true;
+  if (salvo && salvo.impressao !== S.impressao && S.marcas.length) {
+    $("avisoTexto").textContent =
+      `Os ${S.marcas.length} trechos grifados em "${S.nome}" foram marcados em outra versão deste PDF. ` +
+      `Se o texto mudou de lugar, elas podem aparecer deslocadas.`;
+    $("avisoVersao").hidden = false;
+  }
+  salvarMarcas();
+  desenharLegenda(); desenharLista();
+}
+
+let observador = null;
+async function montarPaginas() {
+  const cont = $("paginas");
+  cont.replaceChildren();
+  S.paginas = []; S.visiveis.clear();
+  if (observador) observador.disconnect();
+  observador = new IntersectionObserver(aoCruzar, { root: $("visor"), rootMargin: "1200px 0px" });
+  for (let n = 1; n <= S.pdf.numPages; n++) {
+    const page = await S.pdf.getPage(n);
+    const vp = page.getViewport({ scale: 1 });
+    const div = document.createElement("div");
+    div.className = "pagina"; div.dataset.p = n;
+    div.innerHTML = `<div class="canvasBox"></div><div class="hl"></div><div class="textLayer"></div><div class="numPag">${n}</div>`;
+    cont.append(div);
+    const p = { n, page, w: vp.width, h: vp.height, div,
+                canvasBox: div.children[0], hl: div.children[1], texto: div.children[2],
+                estado: 0, tarefa: null };
+    S.paginas.push(p);
+    observador.observe(div);
+  }
+  aplicarEscala();
+}
+
+function aplicarEscala() {
+  $("zVal").textContent = `${Math.round(S.escala * 100)}%`;
+  gravar("zoom", S.escala);
+  for (const p of S.paginas) {
+    liberar(p);
+    // Tamanho inteiro em pixels CSS: com tamanho fracionário o navegador reescala
+    // o canvas na hora de pintar, e é isso que deixava as letras borradas.
+    p.div.style.width = `${Math.floor(p.w * S.escala)}px`;
+    p.div.style.height = `${Math.floor(p.h * S.escala)}px`;
+  }
+  desenharMarcas();
+  for (const n of S.visiveis) renderizar(S.paginas[n - 1]);
+}
+
+function aoCruzar(entradas) {
+  for (const e of entradas) {
+    const n = Number(e.target.dataset.p), p = S.paginas[n - 1];
+    if (e.isIntersecting) { S.visiveis.add(n); renderizar(p); }
+    else { S.visiveis.delete(n); liberar(p); }
+  }
+}
+
+function liberar(p) {
+  if (p.tarefa) { try { p.tarefa.cancel(); } catch (e) {} p.tarefa = null; }
+  p.canvasBox.replaceChildren(); p.texto.replaceChildren();
+  p.estado = 0;
+}
+
+async function renderizar(p) {
+  if (!p || p.estado) return;
+  p.estado = 1;
+  const escala = S.escala;
+  const vp = p.page.getViewport({ scale: escala });
+  const dpr = window.devicePixelRatio || 1;
+  const W = Math.floor(p.w * escala), H = Math.floor(p.h * escala);   // = tamanho do div da página
+  const canvas = document.createElement("canvas");
+  // Um pixel do canvas para cada pixel físico da tela, sem sobra: o navegador
+  // pinta o canvas sem reescalar e as letras saem nítidas em qualquer zoom.
+  canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+  canvas.style.width = `${W}px`; canvas.style.height = `${H}px`;
+  const vpCanvas = p.page.getViewport({ scale: canvas.width / p.w });
+  p.tarefa = p.page.render({ canvasContext: canvas.getContext("2d", { alpha: false }), viewport: vpCanvas });
+  try { await p.tarefa.promise; }
+  catch (e) { return; }                         // cancelada (saiu da tela ou mudou o zoom)
+  if (escala !== S.escala || p.estado !== 1) return;
+  p.tarefa = null;
+  p.canvasBox.replaceChildren(canvas);
+
+  const conteudo = await p.page.getTextContent();
+  if (escala !== S.escala || p.estado !== 1) return;
+  const tl = p.texto;
+  tl.replaceChildren();
+  tl.style.setProperty("--scale-factor", escala);
+  await pdfjsLib.renderTextLayer({ textContentSource: conteudo, container: tl, viewport: vp, textDivs: [] }).promise;
+  const fim = document.createElement("div"); fim.className = "endOfContent"; tl.append(fim);
+  p.estado = 2;
+}
+
+// O zoom do navegador (Ctrl + roda do mouse) e a troca de monitor mudam o
+// devicePixelRatio: sem redesenhar, o canvas antigo fica esticado e borrado.
+function vigiarDensidade() {
+  const mq = matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+  mq.addEventListener("change", () => { if (S.pdf) aplicarEscala(); vigiarDensidade(); }, { once: true });
+}
+vigiarDensidade();
+
+function mudarZoom(fator) {
+  if (!S.pdf) return;
+  const visor = $("visor"), rel = visor.scrollTop / Math.max(1, visor.scrollHeight);
+  S.escala = Math.min(4, Math.max(0.5, Math.round(S.escala * fator * 100) / 100));
+  aplicarEscala();
+  visor.scrollTop = rel * visor.scrollHeight;
+}
+
+// ── seleção → marca ──────────────────────────────────────────────────────────
+function limparTexto(s) {
+  return s.normalize("NFKC").replace(/-\s*\n\s*/g, "").replace(/\s+/g, " ").trim();
+}
+
+function rectsDaSelecao(range) {
+  const brutos = [...range.getClientRects()].filter((r) => r.width > 0.5 && r.height > 0.5);
+  const saida = [];
+  for (const p of S.paginas) {
+    if (!p.estado) continue;
+    const b = p.div.getBoundingClientRect();
+    const dentro = brutos.filter((r) => {
+      const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      return cx >= b.left && cx <= b.right && cy >= b.top && cy <= b.bottom && r.height < b.height * 0.15;
+    });
+    if (!dentro.length) continue;
+    // Junta os pedaços de cada linha num retângulo só: o pdf.js cria um span por
+    // trecho de texto, e sem isso a marca vira uma fileira de retângulos sobrepostos.
+    dentro.sort((a, c) => (a.top + a.height / 2) - (c.top + c.height / 2) || a.left - c.left);
+    const linhas = [];
+    for (const r of dentro) {
+      const cy = r.top + r.height / 2;
+      const l = linhas.find((x) => Math.abs(x.cy - cy) < Math.min(x.h, r.height) * 0.5);
+      if (l) l.rs.push(r); else linhas.push({ cy, h: r.height, rs: [r] });
+    }
+    for (const l of linhas) {
+      l.rs.sort((a, c) => a.left - c.left);
+      let cur = null;
+      for (const r of l.rs) {
+        if (cur && r.left <= cur.right + r.height * 0.9) {
+          cur.right = Math.max(cur.right, r.right); cur.top = Math.min(cur.top, r.top);
+          cur.bottom = Math.max(cur.bottom, r.bottom);
+        } else {
+          if (cur) saida.push(norm(cur, b, p.n));
+          cur = { left: r.left, right: r.right, top: r.top, bottom: r.bottom };
+        }
+      }
+      if (cur) saida.push(norm(cur, b, p.n));
+    }
+  }
+  return saida;
+}
+function norm(r, b, n) {
+  const f = (v) => Math.round(v * 10000) / 10000;
+  return { p: n, x: f((r.left - b.left) / b.width), y: f((r.top - b.top) / b.height),
+           w: f((r.right - r.left) / b.width), h: f((r.bottom - r.top) / b.height) };
+}
+
+function aoSoltar(e) {
+  if (e.target.closest("#barra, #editor, aside, header, .fundoModal, .aviso")) return;
+  for (const p of S.paginas) p.texto.classList.remove("selecionando");
+  setTimeout(() => {
+    const sel = window.getSelection();
+    const texto = sel && !sel.isCollapsed ? sel.toString() : "";
+    if (!texto.trim()) {
+      esconder($("barra")); S.pendente = null;
+      const pg = e.target.closest && e.target.closest(".pagina");
+      if (pg) cliqueEmMarca(Number(pg.dataset.p), e.clientX, e.clientY);
+      return;
+    }
+    const range = sel.getRangeAt(0);
+    if (!$("paginas").contains(range.commonAncestorContainer)) return;
+    const rects = rectsDaSelecao(range);
+    if (!rects.length) return;
+    S.pendente = { texto: limparTexto(texto), rects };
+    esconder($("editor"));
+    mostrarBarra(e.clientX, e.clientY);
+  }, 0);
+}
+
+function mostrarBarra(x, y) {
+  const barra = $("barra");
+  barra.replaceChildren(...S.cats.map((c, i) => {
+    const b = document.createElement("button");
+    b.style.setProperty("--c", c.cor);
+    b.title = c.descricao;
+    b.innerHTML = (i < 9 ? `<kbd>${i + 1}</kbd> ` : "") + escapar(c.nome);
+    b.addEventListener("mousedown", (ev) => ev.preventDefault());   // não perder a seleção
+    b.addEventListener("click", () => criarMarca(c.id));
+    return b;
+  }));
+  barra.hidden = false;
+  posicionar(barra, x, y + 14);
+}
+
+function criarMarca(catId) {
+  if (!S.pendente) return;
+  const m = {
+    id: "m" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    pagina: S.pendente.rects[0].p,
+    categoria: catId,
+    texto: S.pendente.texto,
+    comentario: "",
+    rects: S.pendente.rects,
+    criada_em: new Date().toISOString(),
+  };
+  S.marcas.push(m);
+  S.pendente = null;
+  window.getSelection().removeAllRanges();
+  esconder($("barra"));
+  salvarMarcas(); desenharMarcas(); desenharLegenda(); desenharLista();
+  abrirEditor(m);
+}
+
+function cliqueEmMarca(n, cx, cy) {
+  const p = S.paginas[n - 1], b = p.div.getBoundingClientRect();
+  const x = (cx - b.left) / b.width, y = (cy - b.top) / b.height;
+  const achadas = S.marcas.filter((m) => !S.ocultas.has(m.categoria) &&
+    m.rects.some((r) => r.p === n && x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h));
+  if (achadas.length) abrirEditor(achadas[achadas.length - 1]);
+  else esconder($("editor"));
+}
+
+// ── editor de uma marca ──────────────────────────────────────────────────────
+function abrirEditor(m) {
+  S.editando = m;
+  const ed = $("editor");
+  $("editorCats").replaceChildren(...S.cats.map((c) => {
+    const b = document.createElement("button");
+    b.style.setProperty("--c", c.cor);
+    b.textContent = c.nome; b.title = c.descricao;
+    if (c.id === m.categoria) b.classList.add("ativo");
+    b.addEventListener("click", () => {
+      m.categoria = c.id; salvarMarcas(); desenharMarcas(); desenharLegenda(); desenharLista(); abrirEditor(m);
+    });
+    return b;
+  }));
+  $("editorCitacao").textContent = `p. ${m.pagina} · “${m.texto}”`;
+  $("editorNota").value = m.comentario || "";
+  ed.hidden = false;
+  const r = m.rects[m.rects.length - 1], p = S.paginas[r.p - 1];
+  const b = p.div.getBoundingClientRect();
+  posicionar(ed, b.left + (r.x + r.w) * b.width - 200, b.top + (r.y + r.h) * b.height + 10);
+  setTimeout(() => $("editorNota").focus(), 0);
+}
+function fecharEditor() {
+  const m = S.editando;
+  if (m) { m.comentario = $("editorNota").value.trim(); salvarMarcas(); desenharLista(); }
+  S.editando = null; esconder($("editor"));
+}
+function apagarMarca() {
+  const m = S.editando; if (!m) return;
+  S.marcas = S.marcas.filter((x) => x !== m);
+  S.editando = null; esconder($("editor"));
+  salvarMarcas(); desenharMarcas(); desenharLegenda(); desenharLista();
+}
+
+// ── desenho ──────────────────────────────────────────────────────────────────
+function desenharMarcas() {
+  for (const p of S.paginas) p.hl.replaceChildren();
+  for (const m of S.marcas) {
+    const c = catDe(m.categoria);
+    for (const r of m.rects) {
+      const p = S.paginas[r.p - 1]; if (!p) continue;
+      const d = document.createElement("div");
+      d.className = "hlr" + (S.ocultas.has(m.categoria) ? " apagada" : "");
+      d.dataset.id = m.id;
+      Object.assign(d.style, { left: `${r.x * 100}%`, top: `${r.y * 100}%`,
+                               width: `${r.w * 100}%`, height: `${r.h * 100}%`, background: c.cor });
+      p.hl.append(d);
+    }
+  }
+}
+
+function ordenadas() {
+  return [...S.marcas].sort((a, b) => a.pagina - b.pagina || a.rects[0].y - b.rects[0].y || a.rects[0].x - b.rects[0].x);
+}
+
+function desenharLegenda() {
+  const cont = $("legenda");
+  cont.replaceChildren(...S.cats.map((c, i) => {
+    const n = S.marcas.filter((m) => m.categoria === c.id).length;
+    const d = document.createElement("div");
+    d.className = "cat" + (S.ocultas.has(c.id) ? " fora" : "");
+    d.style.setProperty("--c", c.cor);
+    d.title = c.descricao;
+    const padrao = CATS_PADRAO.some((x) => x.id === c.id);
+    d.innerHTML = `<span class="cor"></span><span class="nome">${escapar(c.nome)}</span>` +
+      `<span class="n">${n}</span>` +
+      (i < 9 ? `<kbd>${i + 1}</kbd>` : "<span></span>") +
+      (!padrao && n === 0 ? `<span class="x" title="Remover esta cor">×</span>` : "<span></span>") +
+      `<span class="desc">${escapar(c.descricao)}</span>`;
+    d.addEventListener("click", (ev) => {
+      if (ev.target.classList.contains("x")) {
+        S.cats = S.cats.filter((x) => x.id !== c.id); salvarCats(); desenharLegenda(); return;
+      }
+      if (S.ocultas.has(c.id)) S.ocultas.delete(c.id); else S.ocultas.add(c.id);
+      desenharMarcas(); desenharLegenda(); desenharLista();
+    });
+    return d;
+  }));
+  const n = S.marcas.length, pags = new Set(S.marcas.map((m) => m.pagina)).size;
+  const notas = S.marcas.filter((m) => m.comentario).length;
+  $("contagem").textContent = !n ? "" :
+    `${n} trecho${n === 1 ? "" : "s"} em ${pags} página${pags === 1 ? "" : "s"} · ${notas} com nota`;
+}
+
+function desenharLista() {
+  const lista = $("lista");
+  const vis = ordenadas().filter((m) => !S.ocultas.has(m.categoria));
+  $("tituloLista").textContent = `Trechos (${vis.length}${vis.length !== S.marcas.length ? ` de ${S.marcas.length}` : ""})`;
+  if (!vis.length) {
+    lista.innerHTML = `<div class="vazioLista">${S.pdf ? "Nenhum trecho grifado ainda. Selecione um trecho no PDF." : "Abra um PDF para começar."}</div>`;
+    return;
+  }
+  lista.replaceChildren(...vis.map((m) => {
+    const c = catDe(m.categoria);
+    const d = document.createElement("div");
+    d.className = "item"; d.style.setProperty("--c", c.cor);
+    d.innerHTML = `<div class="cab"><b>${escapar(c.nome)}</b><span>p. ${m.pagina}</span></div>` +
+      `<div class="trecho">“${escapar(m.texto)}”</div>` +
+      (m.comentario ? `<div class="nota">${escapar(m.comentario)}</div>` : "");
+    d.addEventListener("click", () => irPara(m));
+    return d;
+  }));
+}
+
+function irPara(m) {
+  const r = m.rects[0], p = S.paginas[r.p - 1]; if (!p) return;
+  const visor = $("visor");
+  visor.scrollTop = p.div.offsetTop + r.y * p.div.offsetHeight - visor.clientHeight / 3;
+  requestAnimationFrame(() => {
+    for (const d of document.querySelectorAll(`.hlr[data-id="${m.id}"]`)) {
+      d.classList.remove("piscar"); void d.offsetWidth; d.classList.add("piscar");
+    }
+    abrirEditor(m);
+  });
+}
+
+// ── saída: texto para o Claude e .json ───────────────────────────────────────
+function textoParaClaude() {
+  const ms = ordenadas();
+  const usadas = S.cats.filter((c) => ms.some((m) => m.categoria === c.id));
+  const linhas = [
+    `Revisão de "${S.nome}" — ${ms.length} trecho${ms.length === 1 ? "" : "s"} (${new Date().toLocaleString("pt-BR")}).`,
+    "Legenda:",
+    ...usadas.map((c) => `- ${c.nome.toUpperCase()}: ${c.descricao}`),
+    "",
+  ];
+  ms.forEach((m, i) => {
+    linhas.push(`${i + 1}. [${catDe(m.categoria).nome.toUpperCase()}] p. ${m.pagina}: "${m.texto}"`);
+    if (m.comentario) linhas.push(`   nota: ${m.comentario.replace(/\n/g, "\n         ")}`);
+  });
+  return linhas.join("\n");
+}
+
+async function copiar() {
+  if (!S.marcas.length) { mostrarTexto("Nada para copiar", "Ainda não há trechos grifados."); return; }
+  const t = textoParaClaude();
+  try {
+    await navigator.clipboard.writeText(t);
+    const b = $("btnCopiar"), antes = b.textContent;
+    b.textContent = "Copiado ✓"; setTimeout(() => (b.textContent = antes), 1600);
+  } catch (e) {
+    mostrarTexto("Copie este texto (Ctrl+C)", t);
+  }
+}
+
+function exportar() {
+  if (!S.pdf) return;
+  const dados = { formato: "aria-revisao/1", pdf: S.nome, impressao: S.impressao,
+                  exportado_em: new Date().toISOString(), categorias: S.cats, marcas: ordenadas() };
+  const blob = new Blob([JSON.stringify(dados, null, 1)], { type: "application/json" });
+  const a = document.createElement("a");
+  const dia = new Date().toISOString().slice(0, 16).replace(/[T:]/g, "-");
+  a.href = URL.createObjectURL(blob);
+  a.download = `revisao_${S.nome.replace(/\.pdf$/i, "")}_${dia}.json`;
+  document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+
+async function importar(arquivo) {
+  if (!arquivo) return;
+  let d;
+  try { d = JSON.parse(await arquivo.text()); }
+  catch (e) { mostrarTexto("Não consegui importar", "O arquivo não é um .json válido."); return; }
+  if (!d || !Array.isArray(d.marcas)) { mostrarTexto("Não consegui importar", "O .json não tem marcas."); return; }
+  for (const c of d.categorias || []) if (!S.cats.some((x) => x.id === c.id)) S.cats.push(c);
+  const ids = new Set(S.marcas.map((m) => m.id));
+  let novas = 0;
+  for (const m of d.marcas) if (!ids.has(m.id)) { S.marcas.push(m); novas++; }
+  salvarCats(); salvarMarcas(); desenharMarcas(); desenharLegenda(); desenharLista();
+  mostrarTexto("Importado", `${novas} trecho(s) novo(s) de "${d.pdf || arquivo.name}"; os repetidos foram ignorados.`);
+}
+
+// ── utilidades de interface ──────────────────────────────────────────────────
+function escapar(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function esconder(el) { el.hidden = true; }
+function esconderFlutuantes() { esconder($("barra")); if (S.editando) fecharEditor(); else esconder($("editor")); }
+function posicionar(el, x, y) {
+  const w = el.offsetWidth, h = el.offsetHeight;
+  el.style.left = `${Math.max(8, Math.min(x, innerWidth - w - 8))}px`;
+  el.style.top = `${y + h > innerHeight - 8 ? Math.max(8, y - h - 40) : y}px`;
+}
+function mostrarTexto(titulo, texto) {
+  $("modalTextoTitulo").textContent = titulo;
+  $("modalTextoArea").value = texto;
+  $("modalTexto").hidden = false;
+  $("modalTextoArea").select();
+}
+
+// ── eventos ──────────────────────────────────────────────────────────────────
+$("btnAbrir").onclick = () => $("inPdf").click();
+$("inPdf").onchange = (e) => { abrirPdf(e.target.files[0]); e.target.value = ""; };
+$("btnImportar").onclick = () => $("inJson").click();
+$("inJson").onchange = (e) => { importar(e.target.files[0]); e.target.value = ""; };
+$("btnExportar").onclick = exportar;
+$("btnCopiar").onclick = copiar;
+$("zMenos").onclick = () => mudarZoom(1 / 1.15);
+$("zMais").onclick = () => mudarZoom(1.15);
+$("btnPronto").onclick = fecharEditor;
+$("btnApagar").onclick = apagarMarca;
+$("modalTextoFechar").onclick = () => esconder($("modalTexto"));
+$("avisoManter").onclick = () => esconder($("avisoVersao"));
+$("avisoLimpar").onclick = () => {
+  exportar(); S.marcas = []; salvarMarcas(); desenharMarcas(); desenharLegenda(); desenharLista();
+  esconder($("avisoVersao"));
+};
+
+$("btnNovaCat").onclick = () => { $("catNome").value = ""; $("catDesc").value = ""; $("modalCat").hidden = false; $("catNome").focus(); };
+$("catCancelar").onclick = () => esconder($("modalCat"));
+$("catSalvar").onclick = () => {
+  const nome = $("catNome").value.trim(); if (!nome) { $("catNome").focus(); return; }
+  let id = nome.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "_") || "cor";
+  while (S.cats.some((c) => c.id === id)) id += "_";
+  S.cats.push({ id, nome, cor: $("catCor").value, descricao: $("catDesc").value.trim() || nome });
+  salvarCats(); desenharLegenda(); esconder($("modalCat"));
+};
+
+$("editorNota").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); fecharEditor(); }
+  if (e.key === "Escape") { e.preventDefault(); fecharEditor(); }
+});
+
+document.addEventListener("mouseup", aoSoltar);
+document.addEventListener("mousedown", (e) => {
+  const tl = e.target.closest && e.target.closest(".textLayer");
+  if (tl) tl.classList.add("selecionando");     // evita a seleção "pular" para o fim da página
+  if (!$("editor").hidden && !e.target.closest("#editor")) fecharEditor();   // salva a nota ao sair
+});
+
+document.addEventListener("keydown", (e) => {
+  const digitando = /^(TEXTAREA|INPUT)$/.test(document.activeElement.tagName);
+  if (!$("barra").hidden && /^[1-9]$/.test(e.key) && !digitando) {
+    const c = S.cats[Number(e.key) - 1]; if (c) { e.preventDefault(); criarMarca(c.id); }
+    return;
+  }
+  if (e.key === "Escape") {
+    esconder($("barra")); esconder($("modalCat")); esconder($("modalTexto"));
+    if (!digitando) fecharEditor();
+  }
+  if ((e.ctrlKey || e.metaKey) && (e.key === "+" || e.key === "=")) { e.preventDefault(); mudarZoom(1.15); }
+  if ((e.ctrlKey || e.metaKey) && e.key === "-") { e.preventDefault(); mudarZoom(1 / 1.15); }
+});
+
+// arrastar e soltar o PDF (ou um .json de marcas)
+const vazio = $("vazio");
+window.addEventListener("dragover", (e) => { e.preventDefault(); vazio.classList.add("arrastando"); });
+window.addEventListener("dragleave", (e) => { if (!e.relatedTarget) vazio.classList.remove("arrastando"); });
+window.addEventListener("drop", (e) => {
+  e.preventDefault(); vazio.classList.remove("arrastando");
+  const f = e.dataTransfer.files[0]; if (!f) return;
+  if (/\.json$/i.test(f.name)) importar(f); else abrirPdf(f);
+});
+$("visor").addEventListener("scroll", () => { esconder($("barra")); }, { passive: true });
+
+desenharLegenda(); desenharLista(); atualizarStatus();
+</script>
+</body>
+</html>
