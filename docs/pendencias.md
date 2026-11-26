@@ -47,8 +47,6 @@ O sorteio não se refaz (ver `CLAUDE.md`).
 - [ ] Os `.json` vão para `AI/SAM/auditoria/respostas/`; rodar `auditoria_analisar.py`.
 - [ ] Rodar também as análises secundárias registradas na emenda de 25/11 da **D4** (exploratórias).
 - [ ] Escrever o resultado na seção do experimento (o TODO está em `resultados.tex`).
-- [ ] Pôr na metodologia do TCC **como a H1 é decidida** (emenda de 25/11 na **D4**: dominância, e a
-  precisão desempata se houver troca). Dá para escrever antes dos julgamentos.
 
 **Previsão do Henrique, registrada antes dos julgamentos (25/11):** a Marcelli deve marcar menos
 coisas como defeito do que ele.
@@ -82,21 +80,25 @@ depois de *Menu → GitHub → Pull*.
 - [ ] Ver se as figuras (arquitetura e as quatro capturas de tela) cabem na página.
 - [ ] Ver se o Apêndice A cabe agora: em 25/11 a tabela foi dividida em duas (parte 1 e parte 2),
   porque 45 linhas num float só não quebram de página.
+- [ ] Conferir as figuras novas de 26/11 (as 4 imagens de calibração, a curva com o joelho, o
+  gráfico regra × autor, os 3 exemplos no capítulo 4 e o Apêndice B com as 11 rochas). Compilado
+  localmente: 78 páginas, sem erro.
+- [ ] Ler a seção *Adjustment and Anchoring* de Tversky e Kahneman (1974), citada desde 26/11 na
+  ferramenta de calibração (ancoragem do controle no valor da regra).
 
 ### Melhorias aceitas ou a decidir
 
-- [ ] **Figuras.** O Henrique quer o texto com mais figuras explicativas e exemplos de marcação (até
-  uma por rocha da faixa A), sem se preocupar com o tamanho (ver `diretrizes-escrita.md`, §1.6).
-  Candidatas: gráfico de pontos regra × autor; curva com o joelho; braços aninhados; marcações
-  regra × autor por rocha (do `train/`, já geradas em `apresentações/jacitec/figuras/`).
+- [ ] **Figuras que ainda faltam.** Feitas em 26/11 (`AI/SAM/figuras_tcc.py`): as quatro imagens de
+  calibração, a curva com o joelho, regra × autor, exemplos por rocha (capítulo 4 e Apêndice B).
+  Candidata que falta: um desenho dos braços que se encaixam.
 - [ ] **Figura "critério único × calibrado"** sobre uma chapa da amostra. Cuidados:
   1. o braço único foi calculado sobre as 11 rochas da faixa A, não sobre as 45: a legenda diz isso;
   2. chapa do `test/` **só depois do julgamento do Henrique** (antes disso, usar `train/` ou `val/`);
   3. é ilustração, não evidência da H1: incluir também um caso de empate ou em que o calibrado piora.
-- [ ] **Parágrafos sugeridos em `reflexao.md`**: por que o critério único desaba quando as rochas
-  são misturadas (4.3); a regra acerta a ordem e erra a escala (4.1); uma frase sobre a ancoragem
-  do calibrador (seção 3); os braços que se encaixam (5.1); o trabalho seguindo a própria ideia
-  (seção 2); o esforço humano comparado ao FracStoneAI (ideia G); no máximo uma leitura conceitual.
+- [ ] **Parágrafos sugeridos em `reflexao.md`** que ainda não entraram: o trabalho seguindo a
+  própria ideia (seção 2); o esforço humano comparado ao FracStoneAI (ideia G); no máximo uma
+  leitura conceitual. Entraram em 26/11: a mistura no critério único (4.3), ordem × patamar (4.1),
+  a ancoragem (seção 3) e os braços que se encaixam (5.1).
 - [ ] **Outros trechos de código no texto.** Hoje só o `calibracao.json` entra. Candidatos: a
   filtragem fora de linha, o joelho, os contornos (D21). O Henrique decide.
 - [ ] **`fracstoneai_oliveira2026`** está com `note = {No prelo}`. Quando os anais do Latinoware
@@ -192,3 +194,4 @@ Só os marcos, para orientar quem procura no git. Os fatos que importam estão n
 | 23/11 | Experimento 2 e H2 viram trabalho futuro; agradecimentos | D6 |
 | 24/11 | Epígrafe e banca (Everson e Igor) no `macros.tex` | `macros.tex` |
 | 25/11 | Regra de decisão da H1; `reflexao.md`; apêndice dividido; documentos reorganizados | D4 |
+| 26/11 | Revisão do TCC inteiro; regra da H1 na metodologia; 6 figuras novas e Apêndice B | `figuras_tcc.py` |

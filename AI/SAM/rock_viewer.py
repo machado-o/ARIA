@@ -94,7 +94,8 @@ PAPEIS = (
         "limiar_tipica",
         "Limiar · típica",
         "A chapa mais comum desta rocha — o que você mais vê. "
-        "Nem a mais limpa, nem a mais problemática. É o caso médio.",
+        "Não é a de defeito 'médio': se a rocha costuma sair limpa, a típica é "
+        "limpa. É ela que impede o limiar de descer até a matriz.",
         "#4ade80",
     ),
     (

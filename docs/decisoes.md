@@ -655,7 +655,7 @@ Xception (**D19**, `pendencias.md`) mostrou que a numeração dos arquivos segue
 chapas e que o `test/` de ao menos uma rocha (`white_superiore`) parece vir de outro bloco. Logo a
 restrição ao `train/` **tem custo**: fenômeno que só exista num bloco que caiu inteiro no `test/`
 não aparece na calibração. O mesmo fato torna a avaliação mais exigente — a auditoria mede a
-marcação em chapa que a calibração não pôde antecipar. Para a faixa A o `train/` tem de 700 a 3.200
+marcação em chapa que a calibração não pôde antecipar. Para a faixa A o `train/` tem de 808 a 3.212
 imagens por litologia: o que limita a cobertura na seleção é a varredura do autor, não o split.
 
 **Para que lado errar:** a literatura de pseudo-rotulagem tende a limiar **alto** / viés de

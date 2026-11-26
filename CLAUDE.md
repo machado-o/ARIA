@@ -94,12 +94,16 @@ rock_viewer.py <rock_name>     # litologia específica (se já 4/4, abre em revi
 inference.py                   # Professor: lê selectRocks/, grava em results/
 verificar_d18.py               # prova que a varredura offline é exata (D18)
 figuras_regra_autor.py         # regra × autor na mesma chapa, do cache, sem GPU
+figuras_tcc.py                 # figuras da monografia (joelho, regra × autor, vagas, exemplos)
 auditoria_analisar.py          # precisão e recall relativo por braço, IC 95%, kappa
 auditoria_preparar.py --atualizar-app   # só troca o aplicativo do pacote e refaz o .zip
 ```
 
 - `figuras_regra_autor.py` grava em `apresentações/jacitec/` (figuras + `regra_x_autor.csv`) e
   precisa do `_cache/`. Na máquina sem cache, capturar cada litologia no calibrador antes.
+- `figuras_tcc.py` grava em `apresentações/Overleaf/TCC/figuras/` e copia os exemplos do
+  `figuras_regra_autor.py`. Só usa imagens do `train/`. Ele recalcula o joelho e para se o valor não
+  bater com o `calibracao.json` (detecção sem peça não conta, como no calibrador).
 - Auditoria: o avaliador recebe o `auditoria/pacote_*.zip`, abre o `index.html` e devolve o `.json`
   exportado, que vai para `auditoria/respostas/`. O pacote não leva braço, sonda, litologia nem
   score. **Não rodar o `auditoria_preparar.py` sem `--atualizar-app`** (ver *Auditoria*, abaixo).
