@@ -3,7 +3,7 @@
 > Contrato de comportamento para a escrita do TCC em LaTeX (Overleaf, sincronizado via Git).
 > Cláusulas numeradas. Em caso de conflito, **o que o Henrique disser na conversa vence.**
 >
-> Última atualização: 2026-11-22
+> Última atualização: 2026-11-25
 
 ---
 
@@ -27,6 +27,16 @@ a metodologia no futuro — regra do PD1, quando o texto era proposta.)
 
 1.5. **Formatação numérica (pt-BR):** vírgula como separador decimal (mAP de 0,85; IoU de 0,72)
 e ponto como separador de milhar (34.630 imagens). Unidades com espaço antes (60 FPS, 10 ms).
+
+1.6. **Tamanho e figuras** (pedido do Henrique, 25/11/2026). O texto pode crescer: não se corta
+conteúdo para caber num número de páginas. Sempre que um conceito for visual, propor uma figura
+(a curva com o joelho, os braços que se encaixam, regra × autor num gráfico de pontos, exemplos
+de marcação). Exemplos de marcação são bem-vindos, inclusive uma chapa por rocha da faixa A.
+Figura com chapa do `test/` só depois do julgamento do Henrique na auditoria (**D7**).
+
+1.7. **Vícios de texto de IA.** Na revisão, a skill `humanizer` pode ser usada só na parte que tira
+os vícios (travessão demais, "não é X, é Y", trios forçados, palavras infladas, negrito mecânico).
+A parte dela que pede primeira pessoa e personalidade **não** vale aqui: o TCC segue a §1.1.
 
 ---
 
@@ -58,6 +68,12 @@ isso não muda nenhuma conclusão (ex.: "a opinião de especialista foi pedida e
 continua inegociável é a seção 2: nada se inventa, e um furo que mude uma conclusão é levado ao
 Henrique para decidir junto, não resolvido em silêncio.
 
+2.6. **Armadilhas conhecidas de números.** Os números do FracStoneAI vêm do **artigo publicado**
+(precisão de máscara até 0,744; mAP@0,5 de máscara de 0,10 a 0,36). Os "mAP50-95 de 0,04 a 0,21"
+do repositório do projeto (`docs/NEXT-STEPS.md` de lá) **não batem** com o artigo e não se usam.
+Pelo mesmo motivo, os números do TCC do Moreira ficaram fora: não batem com os do artigo do SBAI.
+O texto usa só os dos artigos publicados.
+
 ---
 
 ## 3. Escopo (ver `decisoes.md`)
@@ -69,11 +85,13 @@ Henrique para decidir junto, não resolvido em silêncio.
 tornar esse critério explícito e parametrizado. **Não** escrever "reduzir falsos positivos" como
 tese central — falso positivo é medido (**D7**), não é o enunciado.
 
-3.3. São **dois** experimentos: os quatro braços do Professor — limiar único, regra por litologia
-com todas as sondas, regra com as sondas do autor, limiar do autor (**D5**) — e Alunos especialistas ×
-generalista × controle, estratificados por faixa de volume (**D6**). Nunca escrever "45
-especialistas" sem a estratificação, nem afirmar que a comparação "isola a variável da
-hierarquia" — é superafirmação, e o braço de controle existe justamente por causa disso.
+3.3. Desde 23/11/2026 o trabalho tem **um** experimento e **uma** hipótese (H1): os quatro braços
+do Professor, que são limiar único, regra por litologia com todas as sondas, regra com as sondas
+do autor e limiar do autor (**D5**). No texto ele é "o experimento", não "Experimento 1". A H1 se
+decide pela regra da emenda de 25/11 na **D4** (dominância; a precisão desempata). Os Alunos
+especialistas × generalista × controle (**D6**) aparecem só em *Trabalhos futuros*, sempre com a
+estratificação por volume: nunca "45 especialistas", e nunca dizer que a comparação "isola a
+variável da hierarquia", que é superafirmação (o braço de controle existe por causa disso).
 
 3.4. As sondas (`crack`, `vein`...) **não são rótulos semânticos** (**D2**). Nunca escrever que o
 sistema "identifica fissuras" ou "distingue veio de trinca" — ele marca regiões que responderam a
@@ -116,6 +134,18 @@ aparecer ("a Figura \ref{...} ilustra...") e indicar a **fonte** via `\source`/`
     ⚠️ No `iftex.cls`, o `\legend{#1}` já imprime "Fonte: #1." — escrever
     `\legend{elaborado pelo autor}` (ou `\legend{elaborado pelo autor. Nota: ...}`), nunca
     `\legend{Fonte: ...}`, que sai "Fonte: Fonte: ...". Corrigido no texto em 06/11/2026.
+
+4.7. **Tabela longa não cabe num float.** Um `table` não quebra de página: com muitas linhas, ele
+some da página ou estoura a margem. Dividir em partes ("parte 1 de 2"), como no Apêndice A desde
+25/11/2026.
+
+4.8. **Conferir e compilar.** `apresentações/Overleaf/TCC/verificar_tex.py` faz a conferência
+rápida (citação sem entrada no `.bib`, `\ref` sem `\label`, ambiente desbalanceado, figura
+ausente); rodar com o Python do venv. O veredito final é o Overleaf. Para compilar localmente
+(TinyTeX, pdfLaTeX + BibTeX): o BibTeX não abre caminho com acento, e o caminho deste projeto tem
+acento. Ou se copia a pasta `TCC/` inteira para um caminho sem acento e se compila lá (feito assim
+em 22/11/2026: 60 páginas, sem erro), ou se usa `-output-directory` fora do repositório e se copia
+o `.bib` para lá antes do BibTeX.
 
 ---
 

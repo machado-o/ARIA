@@ -1,29 +1,31 @@
-# Dataset — ARIA
+# Dataset
 
 ## Visão geral
 
-| Característica | Valor |
+| | |
 |---|---|
-| Total de imagens | **34.630** (train 24.263 · val 5.214 · test 5.153) |
+| Imagens | **34.630** (train 24.263 · val 5.214 · test 5.153) |
 | Litologias | 45 |
-| Origem | **Conjunto público no Kaggle:** *Chapas polidas de rochas ornamentais*, de `joovictorcostaaraujo` — [kaggle.com/datasets/joovictorcostaaraujo/chapas-polidas-de-rochas-ornametais](https://www.kaggle.com/datasets/joovictorcostaaraujo/chapas-polidas-de-rochas-ornametais) |
-| Constituição | O autor **não** constituiu o banco: selecionou, caracterizou e pré-processou um conjunto existente (**D9**) |
-| Desbalanceamento | Natural, não equalizado — e tratado como **variável do experimento** (**D6**) |
+| Origem | conjunto público do Kaggle, *Chapas polidas de rochas ornamentais*, de `joovictorcostaaraujo`: <https://www.kaggle.com/datasets/joovictorcostaaraujo/chapas-polidas-de-rochas-ornametais> |
+| Quem montou | não foi o autor: ele selecionou, caracterizou e pré-processou um conjunto existente (**D9**) |
+| Desbalanceamento | natural, de 106 a 4.588 imagens por litologia, não equalizado |
+| Alteração local | uma pasta renomeada, `whte_liberdade` → `white_liberdade` (**D9**); refazer em toda máquina |
 
-> ⚠️ O `.EXT` do slug no Kaggle tem um typo de origem (`ornametais`, sem o "n"). Ao citar, usar a
-> URL exata acima — encurtá-la ou "corrigi-la" quebra o link.
+> O slug do Kaggle tem um typo de origem (`ornametais`, sem o "n"). Ao citar, usar a URL exata
+> acima: "corrigi-la" quebra o link.
 
-- [x] ~~**TODO:** confirmar se o DeepStoneAI usou este mesmo conjunto.~~ Confirmado: é o mesmo,
-  e citá-lo é obrigatório (**D9**).
+É o mesmo conjunto do DeepStoneAI (artigo do SBAI 2025), e citá-lo é obrigatório (**D9**).
 
 ---
 
-## Faixas de volume — a estratificação do Experimento 2
+## Faixas de volume
 
-O experimento central roda **por faixa**, da maior para a menor, e reporta resultado **por faixa**
-(**D6**). Contagens reais em disco (train + val + test), verificadas em 2026-08-23.
+Agrupam as litologias pelo número de imagens (train + val + test, contado em 23/08/2026). Hoje
+elas são **a ordem de trabalho da calibração**: a faixa A primeiro, e o `rock_viewer.py` entrega as
+rochas nessa ordem. No Experimento 2, que virou trabalho futuro (**D6**), elas seriam também a
+variável do experimento.
 
-### Faixa A — ≥ 1000 imagens · 11 litologias
+### Faixa A — 1.000 imagens ou mais · 11 litologias (calibradas)
 
 | Litologia | Imagens | | Litologia | Imagens |
 |---|---:|---|---|---:|
@@ -54,7 +56,7 @@ O experimento central roda **por faixa**, da maior para a menor, e reporta resul
 | white_himalaya | 360 | | white_superiore | 246 |
 | tabaco_red | 346 | | olympios | 209 |
 
-### Faixa D — < 200 · 14 litologias
+### Faixa D — menos de 200 · 14 litologias
 
 | Litologia | Imagens | | Litologia | Imagens |
 |---|---:|---|---|---:|
@@ -67,130 +69,127 @@ O experimento central roda **por faixa**, da maior para a menor, e reporta resul
 | | | | white_samoa | 106 |
 | | | | quartzito_verde_sauipe | 106 |
 
-> ⚠️ A **`ice_leke`**, litologia usada como demonstração em todo o material escrito, está na
-> **faixa D** — é uma das mais pobres do conjunto (113 imagens). Vale saber disso antes de a
-> banca perguntar.
+> A `ice_leke`, usada como demonstração no material antigo e em `AI/SAM/samples/`, está na faixa D:
+> é uma das mais pobres do conjunto. Bom saber antes de a banca perguntar.
 
 ---
 
-## Litologias movimentadas — as mais difíceis de julgar
+## Sequência e blocos: o que se sabe sobre as divisões
 
-Registro do autor, feito durante a seleção manual das vagas (**D17**): rochas de padrão
-movimentado, em que é mais difícil dizer o que é defeito e o que é desenho da pedra. A lista é
-**observação do autor** — nenhuma das quatro teve a classificação petrográfica confirmada (ver a
-pesquisa abaixo); o que se decidiu fazer com essas litologias está na **D20**.
+Isto saiu da investigação do classificador (**D19**, 02 a 06/10/2026) e afeta qualquer uso das
+divisões `train/val/test`.
 
-> **Sobre o termo.** O autor as chamou primeiro de "exóticas". Em 07/10/2026 o termo passou a
-> ser **"movimentadas"** (**D20**): "exótico" é categoria comercial do setor, ligada a raridade
-> e preço, e não descreve a dificuldade observada. "Exótico" só aparece abaixo quando o assunto
-> é o termo de mercado.
+**A numeração dos arquivos segue a ordem das chapas.** Chapas seguidas são cortadas do mesmo bloco
+e têm os mesmos veios. Numa sondagem grosseira (miniaturas 32 × 32, diferença absoluta média, só
+cor e brilho, 5 rochas), imagens consecutivas do `train/` ficaram a 4,0 uma da outra, contra 12,5
+para pares sorteados (`white_superiore`); na `ipanema_beige`, 4,0 contra 15,3.
 
-A lista cresce conforme a seleção avança, e por enquanto só cobre a faixa A.
+**O `test/` de algumas rochas parece vir de outro bloco.** A `white_superiore` acertou 35 de 37 no
+`val/` e 0 de 36 no `test/`. As imagens do `test/` são acinzentadas, com veios lineares e
+paralelos; as do `train/` e do `val/` são brancas, com veios ramificados. O `test/` dela é mais
+escuro (brilho 188, contra 213 no `train/` e 226 no `val/`) e fica mais longe do treino que o
+`val/` (6,1 contra 3,0). **Isso não vale para toda rocha:** na `ipanema_beige` o `test/` está tão
+perto do treino quanto o `val/` (3,2 e 3,8), e na `white_himalaya` o `val/` também está longe
+(35,6; `test/` 22,6).
 
-| Litologia | Faixa | Situação na seleção | Anotado em |
-|---|---|---|---|
-| shadow_white | A | ✅ 4/4 — pulada em 03/10/2026, selecionada em 08/10/2026 | 03/10/2026 |
-| san_francisco_green | A | ✅ 4/4 — pulada em 07/10/2026, selecionada em 08/10/2026 | 07/10/2026 |
-| white_mirage | A | ✅ 4/4 selecionadas, mesmo sendo movimentada | 07/10/2026 |
-| golden_storm | A | ✅ 4/4 selecionadas, mesmo sendo movimentada | 08/10/2026 |
+**O sorteio por imagem vaza.** O DeepStoneAI juntou `train/`, `valid/` e `test/` numa pasta por
+rocha (`organize2.ipynb`) e sorteou por imagem (`validation_split=0.3`, seed 123), cortando a
+validação ao meio em val e test (15% cada; o artigo diz 25%). Assim, chapas vizinhas das de treino
+caem no teste. Agravante provável, não confirmado: `take`/`skip` sobre um dataset que reembaralha a
+cada passada faz val e test se sobreporem. Com a mesma receita, o mesmo modelo dá **96,72%** no
+`test/` oficial e **99,92%** com o sorteio por imagem; 70% do teste sorteado veio do `train/`
+original.
 
-**As quatro estão selecionadas.** As duas que tinham sido puladas foram feitas em 08/10/2026
-**sem a opinião de especialista** — a ajuda foi pedida na faculdade e até essa data não veio, e a
-**D20** já havia decidido que ela não bloqueia a calibração. O autor registrou que a seleção
-dessas duas **foi difícil**. É isso que a calibração precisa medir: nas quatro movimentadas, o
-limiar escolhido pelo autor é o elo frouxo.
+**Consequências:**
 
-> **Nenhuma litologia teve conferência de especialista** (Henrique, 23/11/2026) — nem as
-> movimentadas, nem as demais. Este parágrafo pedia que o critério de cada `calibracao.json`
-> dissesse isso; o pedido foi retirado. O critério escrito é o registro datado do que o autor
-> escreveu no momento da calibração, e retocá-lo depois o tornaria menos confiável. O fato
-> mora aqui.
+- os dois números do classificador descrevem dois cenários de uso, bloco já visto e bloco novo, e
+  ambos vão para o TCC (**D19**);
+- calibrar só no `train/` tem custo: um fenômeno que só exista num bloco que caiu inteiro no `test/`
+  não aparece na calibração (**D17**). O mesmo fato torna a auditoria mais exigente;
+- quem usar este dataset com divisão aleatória por imagem vai medir resultados otimistas. Isso
+  está na seção 4.4 dos resultados do TCC e é candidato a nota curta (`reflexao.md`, seção 11);
+- a divisão do Aluno (por sequência ou por sorteio) ficou com o Experimento 2, como trabalho futuro.
+
+---
+
+## Rochas movimentadas
+
+Registro do autor durante a seleção das vagas (**D17**): rochas de padrão movimentado, em que é
+mais difícil dizer o que é defeito e o que é desenho da pedra. A lista é observação do autor;
+nenhuma das quatro teve a classificação petrográfica confirmada. O que se decidiu está na **D20**.
+
+| Litologia | Situação | Anotada em |
+|---|---|---|
+| shadow_white | pulada em 03/10/2026, selecionada em 08/10 | 03/10/2026 |
+| san_francisco_green | pulada em 07/10/2026, selecionada em 08/10 | 07/10/2026 |
+| white_mirage | selecionada mesmo sendo movimentada | 07/10/2026 |
+| golden_storm | selecionada mesmo sendo movimentada | 08/10/2026 |
+
+As duas puladas foram selecionadas sem a opinião de especialista: a ajuda foi pedida na faculdade e
+não veio, e a **D20** já dizia que ela não bloqueia. O autor registrou que a seleção delas foi
+difícil. **Nenhuma litologia teve conferência de especialista**, nem as movimentadas, nem as
+demais (Henrique, 23/11/2026). Os critérios escritos nos `calibracao.json` não foram retocados
+para dizer isso: eles são o registro datado do que o autor escreveu ao calibrar.
+
+O primeiro nome que o autor usou foi "exóticas". Em 07/10/2026 passou a ser **"movimentadas"**
+(**D20**), porque "exótico" é categoria comercial (raridade e preço) e não descreve a dificuldade.
 
 ### Por que isto é um tópico, e não só um atraso
 
-Nas litologias comuns o autor olha a chapa e consegue dizer o que marcaria. Nas movimentadas, não:
-o desenho natural da pedra já tem manchas, veios e contrastes fortes, e a mesma feição pode ser
-o que valoriza a chapa ou o que a desclassifica. A marcação fica **mais pessoal** — depende mais
-de quem olha do que da imagem.
-
-A dúvida do autor, registrada como ele a colocou (07/10/2026): **não se sabe se é realmente
-possível marcar uma rocha dessas de forma correta.**
+Nas rochas comuns, o autor olha a chapa e sabe o que marcaria. Nas movimentadas, o desenho natural
+já tem manchas, veios e contrastes fortes, e a mesma feição pode valorizar uma chapa ou
+desclassificá-la. A marcação depende mais de quem olha. A dúvida do autor, como ele a colocou em
+07/10/2026: **não se sabe se é realmente possível marcar uma rocha dessas de forma correta.**
 
 Onde isso encosta no desenho do trabalho:
 
-- **D3 (fronteira arbitrária).** A D3 já diz que não existe um "certo" absoluto, e que a
-  contribuição é tornar o critério explícito. As movimentadas são o caso-limite: aqui o autor não
-  consegue nem formar o critério sozinho. Leitura a confirmar — a pergunta talvez não seja "dá
-  para marcar certo?", e sim "dá para escrever um critério que outra pessoa aplicaria igual?".
-- **D17 (calibração).** A vaga `descoberta` e o limiar de trabalho dependem do julgamento do
-  autor. Numa movimentada, esse julgamento é o elo fraco: o `calibracao.json` sai, mas com um
-  critério escrito em que o próprio autor confia menos.
-- **D7 (avaliação).** ~~O gabarito é anotado pelo autor.~~ Desde 19/11 a referência é a auditoria
-  cega, com uma avaliadora externa e o autor julgando a mesma amostra. Numa movimentada, a
-  concordância entre os dois (kappa) tende a ser menor — o que é medida da **D3**, não defeito da
-  avaliação. A amostra cobre as 11 litologias da faixa A, inclusive as 4 desta lista.
-- **D5 (braço calibrado pelo autor).** A divergência entre o limiar da regra e o do autor tende
-  a significar outra coisa numa movimentada: menos "onde a curva engana", mais dúvida de quem ajusta.
+- **D3:** é o caso-limite da fronteira arbitrária. Talvez a pergunta certa não seja "dá para marcar
+  certo?", e sim "dá para escrever um critério que outra pessoa aplicaria igual?".
+- **D17:** a vaga de descoberta e o limiar do autor dependem do julgamento dele, e nas movimentadas
+  ele mesmo confia menos nesse julgamento.
+- **D7:** a amostra da auditoria cobre as 11 rochas da faixa A, inclusive estas quatro. A
+  concordância entre a avaliadora e o autor tende a ser menor aqui, e isso é medida da D3, não
+  defeito da avaliação.
+- **Resultado já em mãos (seção 4.5 do TCC):** a razão autor/regra não separa os grupos (mediana
+  3,15 nas movimentadas contra 3,58 nas demais), mas os critérios escritos sim: "falta sonda" em 3
+  das 4 movimentadas, contra 1 das 7 demais. A dificuldade está em **o que** marcar, não em
+  **quanto**.
 
-O que foi decidido sobre isso está na **D20**: as movimentadas são calibradas como as demais, e a
-opinião externa é buscada em paralelo. O que segue em aberto está em `pendencias.md` →
-*Litologias movimentadas*.
+### Existe critério para "exótica"? Pesquisa de 07/10/2026
 
-### Existe critério para "exótica"? — pesquisa de 07/10/2026
+"Exótico" é palavra de mercado, sem critério mensurável. O conceito técnico que descreve a
+dificuldade observada aqui é outro: rocha **movimentada**, em oposição a **homogênea**.
 
-**Resumo: "exótico" é palavra de mercado, sem critério mensurável. O conceito técnico que
-descreve a dificuldade observada aqui é outro — rocha *movimentada*, em oposição a *homogênea*.**
+**"Exótico" no setor é categoria comercial, definida por lista e por valor.** Chiodi Filho (2007,
+p. 37) fala nos *"denominados 'materiais exóticos', que abrangem granitos pegmatóides e pegmatitos,
+granitos infiltrados (oxidados), quartzitos coloridos, rochas de derivação vulcânica, jaspes,
+cherts, silexitos, conglomerados, brechas sedimentares e tectônicas, além de itabiritos e xistos
+diversos"*: uma enumeração, não uma regra. O Informe ABIROCHAS 05/2018 trata as *"rochas exóticas,
+de alto valor agregado"* (p. 6) como grupo de exportação, *"com destaque para pegmatitos e rochas
+quartzíticas"* (p. 12), e diz que o Espírito Santo se destaca por *"granitos homogêneos,
+especialmente amarelos, verdes e negros, bem como de mármores e alguns poucos materiais exóticos"*
+(p. 30). Nenhuma fonte lida dá um limite ou um teste, e nenhuma fala em dificuldade de marcar.
 
-**1. "Exótico" no setor é categoria comercial, definida por lista e por valor.**
+**O critério técnico que existe: homogêneo × movimentado.** Meyer (2003), citado por Camargo, Artur
+e Silveira (2015, p. 920): *"o padrão textural e estrutural classificam os materiais rochosos em
+dois grupos: os homogêneos e os movimentados"*. Os homogêneos têm *"estruturas isotrópicas, sem
+orientação mineral definida"*; os movimentados *"apresentam algum tipo de estrutura ou textura
+definida pela concentração ou orientação preferencial de seus constituintes minerais"* (bandamento,
+foliação, estruturas migmatíticas). É o que mais se aproxima do que o autor percebeu: a chapa tem
+desenho próprio, e é esse desenho que se confunde com defeito. Ressalvas:
 
-- Chiodi Filho (2007, p. 37) fala nos *"denominados 'materiais exóticos', que abrangem granitos
-  pegmatóides e pegmatitos, granitos infiltrados (oxidados), quartzitos coloridos, rochas de
-  derivação vulcânica, jaspes, cherts, silexitos, conglomerados, brechas sedimentares e
-  tectônicas, além de itabiritos e xistos diversos"*. É uma enumeração de tipos de rocha, não uma
-  regra.
-- O Informe ABIROCHAS 05/2018 trata as *"rochas exóticas, de alto valor agregado"* (p. 6) como
-  grupo de exportação, *"com destaque para pegmatitos e rochas quartzíticas"* (p. 12), e diz que o
-  Espírito Santo se destaca por *"granitos homogêneos, especialmente amarelos, verdes e negros,
-  bem como de mármores e alguns poucos materiais exóticos"* (p. 30).
-- Nenhuma das fontes lidas dá um limite ou um teste: o termo fala de raridade, preço e tipo
-  geológico. **Não diz nada sobre ser difícil de marcar.**
+- a definição é petrográfica, escrita para granitos, e não é uma medida tirada da imagem;
+- foi lida em segunda mão: a dissertação de Meyer não foi consultada (no TCC, a definição vai
+  atribuída a Meyer via Camargo et al.);
+- nenhuma fonte classifica `shadow_white`, `san_francisco_green` ou `white_mirage`. Sites de
+  fornecedores descrevem o Verde San Francisco como granito de ondas e estrias intensas, o que bate
+  com "movimentado", mas é texto de venda.
 
-**2. O critério técnico que existe: homogêneo × movimentado.**
-
-Meyer (2003), citado por Camargo, Artur e Silveira (2015, p. 920): *"o padrão textural e
-estrutural classificam os materiais rochosos em dois grupos: os homogêneos e os movimentados"*.
-Os homogêneos têm *"estruturas isotrópicas, sem orientação mineral definida"*; os movimentados
-*"apresentam algum tipo de estrutura ou textura definida pela concentração ou orientação
-preferencial de seus constituintes minerais"* — bandamento, foliação, estruturas migmatíticas.
-
-É o que mais se aproxima do que o autor chamou de exótico: a chapa tem desenho próprio, e é esse
-desenho que se confunde com defeito. Três ressalvas:
-
-- a definição é petrográfica e foi escrita para "granitos" (rochas silicáticas); não é uma medida
-  tirada da imagem;
-- foi lida em segunda mão — a dissertação de Meyer (2003) **não foi consultada**; citar exige
-  buscar o original ou usar *apud*;
-- nenhuma fonte foi encontrada classificando `shadow_white`, `san_francisco_green` ou
-  `white_mirage`. Sites de fornecedores descrevem o *Verde San Francisco* como granito de ondas e
-  estrias intensas, o que bate com "movimentado", mas é texto de venda, não fonte.
-
-**3. Medir pela imagem é possível, mas não há régua pronta para chapa polida.**
-
-- Há uma linha de pesquisa em caracterização estética de chapas por análise de imagem (Univ. de
-  Bolonha), com medidas de densidade, cor e geometria de veios a partir de variogramas e
-  morfologia matemática. **Só o resumo foi visto** — o texto não abriu.
-- Silva et al. (2025) propõem uma medida de heterogeneidade textural por entropia em
-  subvolumes, validada contra 4 especialistas em 175 amostras. É microtomografia de rocha de
-  reservatório, não chapa ornamental: vale como método análogo, não como régua aplicável.
-
-**O que saiu da pesquisa:**
-
-- **decidido em 07/10/2026 (D20):** o termo do trabalho é **"movimentada"**, não "exótica" —
-  "exótica" tem sentido comercial estabelecido (preço e raridade) e alguém do setor pode
-  contestar o uso;
-- **em aberto:** a lista acima continua sendo julgamento do autor. Para virar recorte de resultado, o critério
-  precisa ser aplicável por outra pessoa: ou a classificação petrográfica vinda de quem conhece
-  rocha (a mesma opinião externa já pedida), ou uma medida de imagem, que seria decisão nova.
+**Medir pela imagem é possível, mas não há régua pronta para chapa polida.** Há uma linha de
+pesquisa em caracterização estética de chapas por análise de imagem (Univ. de Bolonha), com
+variogramas e morfologia matemática, da qual só o resumo foi visto. Silva et al. (2025) propõem uma
+medida de heterogeneidade textural por entropia, validada contra 4 especialistas em 175 amostras,
+mas é microtomografia de rocha de reservatório: método análogo, não régua aplicável.
 
 **Fontes**
 
@@ -207,23 +206,48 @@ desenho que se confunde com defeito. Três ressalvas:
   p. 919–937, 2015 —
   <https://periodicos.rc.biblioteca.unesp.br/index.php/geociencias/article/download/10587/6979/56488>
 - MEYER, A. P. *Influência da petrografia no comportamento tecnológico de rochas ornamentais do
-  Complexo Socorro (SP) e maciço Pedra Branca (MG).* Dissertação (Mestrado), UNESP Rio Claro,
-  2003. **Não consultada** — referência tirada de Camargo et al. (2015).
+  Complexo Socorro (SP) e maciço Pedra Branca (MG).* Dissertação (Mestrado), UNESP Rio Claro, 2003.
+  **Não consultada** (referência tirada de Camargo et al., 2015).
 - SILVA, L. C. V. et al. *Entropy-based measure of rock sample heterogeneity derived from micro-CT
   images.* 2025 — <https://arxiv.org/abs/2502.01665>
 - Caracterização estética de chapas por análise de imagem (Univ. de Bolonha), só resumo —
   <https://cris.unibo.it/handle/11585/60081>
 
-> ⚠️ Os trechos entre aspas foram conferidos no texto dos PDFs em 07/10/2026. O que está marcado
-> como "só resumo" ou "não consultada" **não pode ser citado** antes de ser lido.
+> Os trechos entre aspas foram conferidos no texto dos PDFs em 07/10/2026. O que está marcado como
+> "só resumo" ou "não consultada" não pode ser citado antes de ser lido.
 
 ---
 
-## Agrupamento cromático
+## Sondas de detecção
 
-Só registro. Era o que a configuração antiga do `rock_prompts.json` seguia, antes de ela ser
-apagada (09/10/2026); hoje nada no código o usa. Em 22/11/2026 a calibração ficou **por
-litologia**, não por grupo (**D15**).
+Não são rótulos. São palavras escolhidas porque fazem o CLIP + SAM3 reagir a certas aparências; o
+objetivo do conjunto é cobrir o máximo de regiões anômalas, não classificá-las (**D2**). O cadastro
+(id e cor) mora em `AI/SAM/sondas.py` (**D8**).
+
+| Sonda | Aparência que costuma disparar |
+|---|---|
+| `crack` | descontinuidades lineares finas e escuras |
+| `vein` | estrias e faixas contrastantes |
+| `Stain` | variação de cor em mancha difusa |
+| `Dark patches` | regiões escuras sobre fundo claro |
+| `light spot` | regiões claras sobre fundo escuro |
+| `scratch` | riscos superficiais finos |
+| `white stain` | manchas brancas que a `light spot` não pega |
+
+Em quantas litologias cada sonda entrou está em `arquitetura.md`. A ideia antiga de que
+`Dark patches` seria "para rochas claras" e `light spot` "para rochas escuras" foi desmentida pelas
+calibrações da faixa A: quem decide é a imagem de descoberta de cada rocha, não a cor.
+
+Por isso todas as regiões recebem `class_id = 0` no treino: o projeto não afirma que uma região
+marcada por `crack` é uma fissura (**D2**). Multiclasse é trabalho futuro (**D12**).
+
+---
+
+## Agrupamento por cor (só registro)
+
+Era o que a configuração antiga do `rock_prompts.json` seguia, antes de ela ser apagada
+(09/10/2026). Nada no código usa isto. A calibração é **por litologia**, não por grupo de cor
+(**D15**, 22/11/2026).
 
 | Grupo | Litologias |
 |---|---|
@@ -236,56 +260,28 @@ litologia**, não por grupo (**D15**).
 
 ---
 
-## Sondas de detecção
+## Desafios do conjunto
 
-**Não são rótulos.** São chaves lexicais escolhidas por fazerem o CLIP+SAM3 responder a certas
-assinaturas visuais; o objetivo do conjunto é **maximizar cobertura**, não classificar (**D2**).
-
-| Sonda | Assinatura visual que costuma disparar |
-|---|---|
-| `crack` | descontinuidades lineares finas e escuras |
-| `vein` | estrias e faixas contrastantes |
-| `Stain` | variação de cor em mancha difusa |
-| `Dark patches` | regiões escuras sobre fundo claro |
-| `light spot` | regiões claras sobre fundo escuro |
-| `scratch` | riscos superficiais finos |
-| `white stain` | manchas brancas que o `light spot` não pega |
-
-> Em quantas litologias cada sonda foi admitida está em `arquitetura.md` → *Sondas, não rótulos*.
-> A coluna "escopo típico" que havia aqui ("rochas claras", "rochas escuras") foi desmentida pelas
-> calibrações da faixa A e saiu em 22/11/2026.
-
-Por isso todas as regiões recebem `class_id = 0` no treino: o projeto **não afirma** que uma
-região marcada por `"crack"` é uma fissura (**D2**). Multi-classe → trabalho futuro (**D12**).
+1. **Desbalanceamento:** de 106 a 4.588 imagens por litologia. Reflete a realidade industrial e
+   define a ordem de calibração.
+2. **Variação dentro da mesma rocha:** muda com o bloco, a iluminação e o acabamento (ver
+   *Sequência e blocos*).
+3. **Fronteira arbitrária:** o que é defeito numa rocha é estética em outra. É o problema central do
+   TCC (**D3**), não um ruído a contornar.
+4. **Sem gabarito:** não há anotação humana preexistente. Daí a auditoria cega (**D7**).
+5. **Texturas fora do padrão:** kalahari, ice_leke e quartzito_venom, além das movimentadas.
 
 ---
 
-## Desafios
-
-1. **Desbalanceamento** — de 106 a 4.588 imagens por litologia. Reflete a realidade industrial e,
-   neste trabalho, virou variável medida (**D6**), não limitação.
-2. **Variabilidade intra-classe** — mesma rocha muda de aparência conforme lote, iluminação e
-   acabamento.
-3. **Fronteira arbitrária** — o que é defeito numa rocha é estética em outra. É o problema central
-   do TCC (**D3**), não um ruído a contornar.
-4. **Ausência de ground truth** — não há anotação humana preexistente. Daí a auditoria cega
-   do Experimento 1 (**D7**, emenda de 19/11/2026).
-5. **Texturas fora do padrão** — kalahari, ice_leke e quartzito_venom dificultam a generalização.
-   As que o autor achou movimentadas ao selecionar as vagas estão em *Litologias movimentadas*,
-   acima.
-
----
-
-## Formato de anotação (saída do Professor → entrada do Aluno)
+## Formato de anotação (saída do Professor, entrada do Aluno)
 
 ```
 <class_id> <x1> <y1> <x2> <y2> ... <xN> <yN>
 ```
 
-Coordenadas normalizadas (0–1), um polígono por linha, formato de segmentação de instâncias do
-YOLO — sem conversão intermediária.
+Coordenadas normalizadas (0 a 1), um polígono por linha, formato de segmentação do YOLO. Desde a
+**D21**, cada contorno solto de uma detecção é uma linha própria.
 
-> **Atenção ao volume:** no único exemplo existente (`AI/SAM/samples/ice_leke.txt`) são **107
-> polígonos numa única imagem**, com até 1.742 pontos cada. O pós-processamento do Professor
-> (área mínima, teto de instâncias, simplificação) é etapa obrigatória antes do treino — ver
-> `roadmap.md` → Fase 3.0.
+> No único exemplo antigo (`AI/SAM/samples/ice_leke.txt`) são **107 polígonos numa imagem**, com até
+> 1.742 pontos cada, gerados antes do protocolo atual. Treinar um Aluno exigiria pós-processamento
+> (área mínima, teto de instâncias, simplificação), que ficou com o Experimento 2 (**D6**).

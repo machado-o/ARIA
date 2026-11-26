@@ -50,8 +50,11 @@ fundação é pago uma vez, não por chapa.
 
 ## Estágio 2 — Professor: SAM3
 
-- **Modelo:** SAM3 (Segment Anything Model 3) via Ultralytics — modelo de fundação com
-  capacidade zero-shot.
+- **Modelo:** SAM3 (Segment Anything Model 3) via Ultralytics, modelo de fundação com capacidade
+  zero-shot. O ARIA **não** se descreve como zero-shot: a calibração por litologia é uma adaptação
+  ao domínio, e o texto do TCC diz isso (resposta ao parecer da LatinoWare).
+- **Score:** é a probabilidade da detecção multiplicada por um escore de presença; não é uma
+  probabilidade calibrada, e a escala precisa ser medida (fica na década baixa, 0,01 a 0,77).
 - **Embeddings de texto:** OpenAI CLIP.
 - **Papel:** gerar polígonos de anomalia sem anotação humana, processando o dataset **offline**.
 - **Entrada:** imagem + conjunto de sondas de texto com limiar de confiança por litologia.
@@ -81,6 +84,9 @@ As palavras usadas como prompt são **chaves lexicais de recall**, não classifi
 **O que a calibração realmente faz:** para cada litologia, define *quais* sondas entram e *com que
 limiar*. Esse limiar é a materialização do critério arbitrário que separa feição de defeito —
 tirado da cabeça do inspetor e colocado num arquivo auditável (**D3**).
+
+**Exemplo visual no lugar de palavra:** segundo o Henrique (25/11/2026), já se tentou guiar o SAM
+por um exemplo visual, e pareceu marcar pior. Ainda sem registro de como foi (ver `pendencias.md`).
 
 **Prompts contextuais — hipótese não testada:** o paper do CLIP mostra que o template
 `"a photo of a [X]"` supera consistentemente `"X"` isolado em zero-shot. Para rochas,
@@ -143,13 +149,15 @@ falha silenciosamente** — sem exceção, sem saída. Não remover.
 
 ## Estágio 2 — Aluno: YOLO11-seg
 
+> ⏸️ **Trabalho futuro desde 23/11/2026 (D6).** O Aluno faz parte da arquitetura descrita no TCC,
+> mas não foi treinado nesta versão. O que segue é o desenho previsto.
+
 - **Versão:** YOLO11-seg (**D10**).
-- **Papel:** motor de inferência rápida para a linha de produção.
-- **Entrada:** polígonos do Professor, `class_id = 0`.
-- **Quantidade:** um modelo por litologia (especialista) × um modelo único (generalista) × um
-  modelo único treinado com anotações calibradas (controle) — **D6**. Executado por faixas de
-  volume de dados, não de uma vez.
-- **Estado:** ❌ não iniciado. `AI/YOLO/` está vazio.
+- **Papel:** inferência rápida na linha de produção.
+- **Entrada:** polígonos do Professor, todos com `class_id = 0` (**D2**).
+- **Desenho previsto (D6):** um modelo por litologia (especialista), um modelo único (generalista)
+  e um modelo único treinado com as anotações calibradas (controle), executados por faixa de volume.
+- **Estado:** `AI/YOLO/` está vazio.
 
 ---
 
@@ -159,8 +167,9 @@ Xception identifica a litologia → seleciona a configuração de sondas e limia
 ela (`calibracao.json`, fase offline) e roteia para o Aluno especialista correspondente (fase
 online).
 
-O desenho experimental que testa se essa hierarquia compensa está em **D5** (Experimento 1) e
-**D6** (Experimento 2).
+O experimento desta versão (**D5**) testa só o Estágio 2 do Professor: se o critério por litologia
+marca melhor que um critério único. Se a especialização dos Alunos compensa é a pergunta do
+trabalho futuro (**D6**).
 
 ---
 

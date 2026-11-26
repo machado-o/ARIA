@@ -6,7 +6,37 @@
 > ⚠️ **A numeração foi refeita em 2026-08-23.** Referências a "D1…D10" em textos antigos
 > (dentro de `apresentações/`) apontam para a numeração velha e **não valem**.
 >
-> Última atualização: 2026-11-22
+> Última atualização: 2026-11-25
+>
+> **Como ler.** Cada decisão guarda o texto original e as emendas datadas, e nada é apagado: o
+> registro de *quando* cada coisa foi decidida é o que mostra que o desenho não foi ajustado depois
+> de ver resultado. Para saber só o que vale hoje, use o resumo abaixo.
+
+## Resumo: o que vale hoje
+
+| | Decisão | O que vale hoje |
+|---|---|---|
+| D1 | Escopo | O TCC é o ARIA, isolado de qualquer empresa ou produto |
+| D2 | Sondas | As palavras são instrumentos de busca, não rótulos; rótulo único (`class_id = 0`) |
+| D3 | Problema | A arbitrariedade não escrita do critério de marcação, não o falso positivo |
+| D4 | Hipótese | **Só a H1** (a H2 saiu em 23/11). Decidida por dominância, com a precisão desempatando (emenda de 25/11) |
+| D5 | Experimento | Quatro braços do Professor (`unico`, `regra_todas`, `regra_autor`, `autor`); o teste da H1 é `unico` × `regra_todas` |
+| D6 | Experimento 2 | **Trabalho futuro** desde 23/11, com a H2 |
+| D7 | Referência | Auditoria cega (emenda de 19/11): avaliadora externa como referência, o autor julga à parte, kappa entre os dois |
+| D8 | Cadastro de sondas | 7 sondas em `AI/SAM/sondas.py`; sonda nova entra no fim |
+| D9 | Dataset | Público, do Kaggle; uma pasta renomeada (`white_liberdade`) |
+| D10 | Aluno | YOLO11-seg (no trabalho futuro) |
+| D11 | Aprendizado ativo | Trabalho futuro |
+| D12 | Multiclasse | Trabalho futuro |
+| D13 | `apresentações/` | Não é fonte de verdade (a monografia foi realinhada; os artigos, não) |
+| D14 | Nome | ARIA |
+| D15 | Calibração antiga | Apagada; quem não está no `rock_prompts.json` não foi calibrado; calibração por litologia |
+| D16 | Teorias de adoção | Fora do texto |
+| D17 | Protocolo | 1 imagem de descoberta + 3 de limiar, só do `train/`; regra do joelho em escala log; critério escrito |
+| D18 | Varredura | SAM uma vez no piso, limiar filtrado sem GPU; equivalência exata, verificada por versão |
+| D19 | Classificador | Reprodução do Xception; reportar 96,72% (`test/` oficial) e 99,92% (sorteio por imagem) |
+| D20 | Movimentadas | Calibradas como as demais; termo "movimentada"; recorte à parte nos resultados |
+| D21 | Contornos | Cada contorno solto é um polígono; a unidade da regra continua sendo a detecção |
 
 ---
 
@@ -76,6 +106,9 @@ código (a sonda `vein` está ativa em todas as configurações) e que fica **de
 
 ## D4 — Hipóteses
 
+> **Vigente:** a H1, na redação de 19/11/2026 (a última nota do item abaixo), decidida pela regra
+> da emenda de 25/11/2026 (fim desta seção). A H2 saiu do escopo em 23/11/2026.
+
 - **H1 (Experimento 1 — D5):** um critério de marcação **parametrizado por litologia** produz
   segmentações mais alinhadas ao **critério de referência anotado** (**D7**) do que um critério
   **único e global**.
@@ -97,6 +130,39 @@ código (a sonda `vein` está ativa em todas as configurações) e que fica **de
 
 A segunda metade de H2 é uma pergunta de pesquisa por direito próprio: *quantas imagens uma
 litologia precisa para que a especialização compense?* (ver D6).
+
+> **A H2 saiu do escopo em 23/11/2026**, com o Experimento 2 inteiro (**D6**). O TCC tem uma
+> hipótese só, a H1.
+
+> **Emenda de 25/11/2026 (Henrique): como a H1 é decidida.** Registrada **antes** de qualquer
+> julgamento da auditoria: o pacote ainda não tinha sido enviado à avaliadora, e o autor ainda
+> não tinha julgado. Até aqui o texto dizia que a H1 é medida por precisão e recall relativo, mas
+> não dizia o que fazer se as duas medidas apontassem para lados opostos, e esse é o caso mais
+> provável (o braço único marca 11.964 regiões contra 7.289 do `regra_todas`).
+>
+> - **A comparação da H1 é `unico` × `regra_todas`** (**D5**). A referência é o julgamento da
+>   avaliadora (**D7**); o do autor entra como concordância e é reportado à parte.
+> - **Dominância:** um braço vence se for **melhor** numa medida (IC 95% da diferença todo acima
+>   de zero) e **não pior** na outra (IC 95% da diferença não fica todo abaixo de zero).
+> - **Se houver troca** (cada braço melhor numa medida), **a precisão desempata**: a H1 é
+>   confirmada se o `regra_todas` tiver precisão maior, e refutada se for o `unico`. A troca é
+>   reportada em números, nos dois sentidos.
+> - **Sem diferença em nenhuma das duas:** a H1 não é confirmada nesta amostra, e o texto reporta
+>   o IC, que diz o tamanho máximo do efeito compatível com os dados.
+> - **Por que a precisão desempata:** as marcações do Professor são rótulo de treino, e rótulo
+>   errado é aprendido pela rede (`sec:ruidosos`); e os defeitos são raros, porque a maioria das
+>   chapas chega quase limpa ao fim do beneficiamento (observação do Henrique), e com defeito raro
+>   quem marca muito erra quase sempre.
+> - **As outras duas comparações são aninhadas.** Como o autor ficou acima da regra nos 45 pares,
+>   `autor` ⊂ `regra_autor` ⊂ `regra_todas`: o recall relativo cai de um para o outro **por
+>   construção**. Nelas se reporta quanta precisão se ganha por ponto de recall perdido, e não
+>   cada medida sozinha.
+> - **Análises secundárias, declaradas agora como exploratórias** (não decidem a H1): o score do
+>   SAM3 prevê o "sim"?; a ordem dos braços é a mesma para os dois avaliadores?; o kappa e a taxa
+>   de "não sei" são piores nas movimentadas?; as discordâncias se concentram entre o limiar da
+>   regra e o do autor?; precisão por sonda; precisão de uma família de limiares entre o da regra
+>   e o do autor; precisão do braço `autor` julgada pelo autor × pela avaliadora. Detalhes em
+>   `reflexao.md`.
 
 ---
 
@@ -222,6 +288,7 @@ melhor descobrir agora.
 
 **Prioridade:** este experimento vem **antes** do Experimento 2. Ele fecha sozinho como
 contribuição, e garante que existe resultado mensurável mesmo se o prazo apertar.
+(Foi o que aconteceu: desde 23/11/2026 ele é o único experimento do TCC, **D6**.)
 
 ---
 
@@ -337,6 +404,13 @@ acerto, e torna a comparação entre braços sem sentido (cada braço teria um g
 > - **Por que assim:** o conjunto-ouro não tinha prazo para sair (anotar polígono de trinca fina
 >   à mão é lento), e a auditoria responde a pergunta que a calibração deixou aberta, regra × autor,
 >   em uma ou duas horas de cliques.
+> - **Alternativas consideradas e descartadas** (levantadas em 05/10/2026): preferência pareada
+>   cega (diz "A melhor que B", sem número absoluto); rótulo fraco por chapa ou por célula de uma
+>   grade (mede detecção, não a máscara); anomalia sintética inserida em chapa limpa (gabarito
+>   exato, realismo duvidoso); consistência sob espelhamento e rotação (mede robustez, não acerto);
+>   corrigir a máscara do modelo em vez de anotar do zero (a anotação ficaria ancorada no modelo).
+>   O rótulo fraco por chapa ("há defeito não marcado aqui?") é o único caminho barato para o
+>   recall absoluto e fica como extensão futura.
 
 ---
 

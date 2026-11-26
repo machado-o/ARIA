@@ -1,50 +1,58 @@
 # CLAUDE.md
 
 Guia de entrada para o Claude Code neste repositório.
-**Abrir a sessão lendo este arquivo + [`docs/decisoes.md`](docs/decisoes.md) + [`docs/pendencias.md`](docs/pendencias.md).**
+**Abrir a sessão lendo este arquivo + [`docs/decisoes.md`](docs/decisoes.md) (o resumo do topo
+basta para começar) + [`docs/pendencias.md`](docs/pendencias.md) (a seção "Por onde retomar").**
 
 ---
 
-**ARIA** (Análise e Reconhecimento Inteligente de Anomalias) — pipeline hierárquico de visão
-computacional para marcação automatizada de anomalias superficiais em chapas de rochas
-ornamentais. TCC de Henrique (Bacharelado em Sistemas de Informação, IFES Cachoeiro).
+**ARIA** (Análise e Reconhecimento Inteligente de Anomalias): pipeline de visão computacional para
+marcação de anomalias superficiais em chapas de rochas ornamentais. TCC do Henrique (Bacharelado em
+Sistemas de Informação, IFES Cachoeiro).
 
-**O projeto é isolado** (**D1**): não há vínculo com nenhuma plataforma, produto ou empresa.
-Se encontrar menções a "Hartheus" em algum arquivo, é texto desatualizado a corrigir.
+**O projeto é isolado** (**D1**): não há vínculo com nenhuma plataforma, produto ou empresa. Menção
+a "Hartheus" em algum arquivo é texto desatualizado a corrigir.
 
-Arquitetura: Xception (identifica a litologia) → SAM3 com sondas calibradas por litologia (gera
-os polígonos, offline) → YOLO11-seg (inferência rápida em produção).
+Arquitetura: Xception (identifica a litologia) → SAM3 com sondas calibradas por litologia (gera os
+polígonos, fora da linha) → YOLO11-seg (inferência rápida; trabalho futuro nesta versão, **D6**).
+
+O TCC tem **um** experimento e **uma** hipótese (H1): quatro braços do Professor avaliados por
+auditoria cega (**D4**, **D5**, **D7**).
 
 ---
 
-## Mapa da documentação — onde está a verdade
+## Mapa da documentação: onde está a verdade
 
-Cada fato mora em **um** lugar só (DRY). Antes de escrever ou codar, consultar a fonte.
+Cada fato mora em **um** lugar só. Antes de escrever ou codar, consultar a fonte.
 
 | Preciso de... | Fonte única |
 |---|---|
-| **Decisões fechadas, hipóteses, experimentos, métricas** | [`docs/decisoes.md`](docs/decisoes.md) |
+| Decisões fechadas, hipótese, experimento, métricas | [`docs/decisoes.md`](docs/decisoes.md) |
 | Como o sistema funciona (técnico) | [`docs/arquitetura.md`](docs/arquitetura.md) |
-| Dataset, litologias, faixas de volume, sondas | [`docs/dataset.md`](docs/dataset.md) |
-| Estado vivo + ordem de execução | [`docs/roadmap.md`](docs/roadmap.md) |
-| Pendências soltas e bloqueadores | [`docs/pendencias.md`](docs/pendencias.md) |
-| Como escrever o TCC (cláusulas, estilo, LaTeX) | [`docs/diretrizes-escrita.md`](docs/diretrizes-escrita.md) |
+| Dataset, litologias, faixas, sondas, sequência e blocos | [`docs/dataset.md`](docs/dataset.md) |
+| Estado de cada parte e ordem de execução | [`docs/roadmap.md`](docs/roadmap.md) |
+| O que está em aberto | [`docs/pendencias.md`](docs/pendencias.md) |
+| Como escrever o TCC (estilo, LaTeX, compilação) | [`docs/diretrizes-escrita.md`](docs/diretrizes-escrita.md) |
+| Ideias, leituras e análises propostas (não é fonte de verdade) | [`docs/reflexao.md`](docs/reflexao.md) |
 
-> ⚠️ **`apresentações/` (Overleaf do TCC, artigo LatinoWare2026, apresentação de PD1) NÃO é
-> fonte de verdade** (**D13**). É saída escrita antes das decisões atuais e ainda não revisada.
-> Nunca copiar um fato de lá — nem sobre metodologia, nem sobre números, nem sobre autoria.
+> ⚠️ **`apresentações/` não é fonte de verdade** (**D13**). A monografia
+> (`apresentações/Overleaf/TCC/`) foi realinhada às decisões e é onde se escreve, mas fato se
+> confere em `docs/`. O artigo da LatinoWare2026, o artigo e a apresentação de PD1 são saída
+> antiga: nunca copiar um fato de lá.
 
 ---
 
 ## Como eu trabalho aqui
 
 1. **Verificar antes de afirmar que funciona.** Rodar e observar a saída real antes de dizer
-   "pronto". Evidência antes de afirmação.
+   "pronto".
 2. **Decisão metodológica não se resolve sozinho no código.** Alinhar com `decisoes.md`; se for
-   decisão nova, perguntar ao Henrique e registrar lá.
-3. **`AI/dataset/` é somente-leitura.** Nunca modificar, mover ou apagar nada de lá.
+   decisão nova, perguntar ao Henrique (com alternativas prontas) e registrar lá, com data.
+3. **`AI/dataset/` é somente-leitura.** Nunca modificar, mover ou apagar nada de lá (a única
+   exceção registrada é o rename da **D9**).
 4. **Commit e push só quando o Henrique pedir.**
-5. **Todo edit vem com resumo do que mudou** — nunca edição silenciosa.
+5. **Todo edit vem com resumo do que mudou.** Nunca edição silenciosa.
+6. **Explicar em linguagem simples**, com exemplos e analogias. Texto denso e abstrato não ajuda.
 
 ---
 
@@ -57,80 +65,58 @@ python -m venv .venv
 .venv\Scripts\pip install ultralytics openai-clip opencv-python-headless streamlit timm
 ```
 
-> `cuXXX` **depende do driver desta máquina** — veja em <https://pytorch.org/get-started/locally/>
-> qual índice serve para o driver que o `nvidia-smi` reportar. `opencv-python-headless` em vez de
-> `opencv-python` porque nenhum script abre janela do OpenCV. `altair` e `pandas` não precisam ser
-> pedidos: vêm com o streamlit.
+- `cuXXX` depende do driver da máquina: ver em <https://pytorch.org/get-started/locally/> qual
+  índice serve para o driver que o `nvidia-smi` reportar.
+- `opencv-python-headless` porque nenhum script abre janela do OpenCV. `altair` e `pandas` vêm com
+  o streamlit.
+- O `.venv` vive em **`AI/.venv`**. A partir de `AI/SAM/`, o interpretador é
+  `..\.venv\Scripts\python.exe`. Na outra máquina, se o venv ainda estiver em `AI/SAM/.venv`,
+  recriar do zero: mover quebra os `.exe` de `Scripts/`.
+- **Nenhum documento compartilhado guarda número de máquina** (GPU, driver, versões). O Henrique
+  alterna entre dois PCs com hardware diferente de propósito, e esses números já foram escritos
+  errados antes. Para saber onde você está:
 
-> O `.venv` vive em **`AI/.venv`**, um nível acima de `AI/SAM/`. Rodando os scripts a partir de
-> `AI/SAM/`, o interpretador é `..\.venv\Scripts\python.exe`. O índice CUDA (`cuXXX`) depende do
-> driver, e o Henrique alterna entre **dois PCs com hardware diferente** — então GPU, driver,
-> torch, Python e ultralytics **são diferentes de propósito**, e não há nada a "acertar".
->
-> **Regra: nenhum documento compartilhado guarda número de máquina.** Até 09/10/2026 este
-> parágrafo dizia RTX 5060 Ti / driver 596.49 / torch 2.11.0+cu128 / ultralytics 8.4.61 /
-> Python 3.14.2 — números da **outra** máquina, escritos como se fossem deste PC. Para saber onde
-> você está:
->
-> ```bash
-> cd AI
-> .venv\Scripts\python.exe ambiente.py
-> ```
->
-> Ele mostra máquina, GPU, driver, versões, quais pesos existem **nesta** máquina (`sam3.pt`,
-> `xception_480.pt` — nenhum vai para o git) e se a **D18** já foi verificada na versão do
-> ultralytics daqui.
->
-> Neste PC o venv foi recriado em `AI/.venv` em 03/10/2026, com o mesmo `pip freeze` do antigo
-> `AI/SAM/.venv` (apagado). Na outra máquina, se o venv ainda estiver em `AI/SAM/.venv`, recriar
-> do zero — mover quebra os `.exe` de `Scripts/`.
+```bash
+cd AI
+.venv\Scripts\python.exe ambiente.py   # máquina, GPU, driver, versões, pesos presentes, estado da D18
+```
+
+---
 
 ## Comandos
 
-Onde estou e o que esta máquina pode rodar, a partir de `AI/`:
+Os de `AI/SAM/` rodam com `..\.venv\Scripts\python.exe`:
 
 ```bash
-.venv\Scripts\python.exe ambiente.py        # máquina, GPU, versões, pesos, estado da D18
+rock_viewer.py                 # seleção de imagem: próxima litologia pendente
+rock_viewer.py <rock_name>     # litologia específica (se já 4/4, abre em revisão)
+-m streamlit run calibrator.py # calibrador (sondas + limiar)
+inference.py                   # Professor: lê selectRocks/, grava em results/
+verificar_d18.py               # prova que a varredura offline é exata (D18)
+figuras_regra_autor.py         # regra × autor na mesma chapa, do cache, sem GPU
+auditoria_analisar.py          # precisão e recall relativo por braço, IC 95%, kappa
+auditoria_preparar.py --atualizar-app   # só troca o aplicativo do pacote e refaz o .zip
 ```
 
-Os demais rodam a partir de `AI/SAM/`, com o Python do venv em `AI/.venv` (`..\.venv\Scripts\`).
+- `figuras_regra_autor.py` grava em `apresentações/jacitec/` (figuras + `regra_x_autor.csv`) e
+  precisa do `_cache/`. Na máquina sem cache, capturar cada litologia no calibrador antes.
+- Auditoria: o avaliador recebe o `auditoria/pacote_*.zip`, abre o `index.html` e devolve o `.json`
+  exportado, que vai para `auditoria/respostas/`. O pacote não leva braço, sonda, litologia nem
+  score. **Não rodar o `auditoria_preparar.py` sem `--atualizar-app`** (ver *Auditoria*, abaixo).
+
+Classificador (**D19**), a partir de `AI/Xception/`:
 
 ```bash
-..\.venv\Scripts\python.exe rock_viewer.py                 # seleção de imagem: próxima litologia pendente
-..\.venv\Scripts\python.exe rock_viewer.py <rock_name>     # litologia específica (se já 4/4, abre em REVISÃO)
-..\.venv\Scripts\python.exe -m streamlit run calibrator.py # calibrador (sondas + limiar)
-..\.venv\Scripts\python.exe inference.py                   # inferência SAM: lê selectRocks/, grava em results/
-..\.venv\Scripts\python.exe verificar_d18.py                # prova que a varredura offline é exata (D18)
-..\.venv\Scripts\python.exe figuras_regra_autor.py          # regra × autor na mesma chapa, do cache (sem GPU)
-```
-
-Auditoria cega do Experimento 1 (**D7**, emenda de 19/11/2026), também a partir de `AI/SAM/`:
-
-```bash
-..\.venv\Scripts\python.exe auditoria_preparar.py   # amostra do test/, captura, limiares dos 4 braços, pacote .zip
-..\.venv\Scripts\python.exe auditoria_preparar.py --atualizar-app   # só troca o aplicativo do pacote e refaz o .zip
-..\.venv\Scripts\python.exe auditoria_analisar.py   # precisão e recall relativo por braço, IC 95%, kappa
-```
-
-> O avaliador recebe o `auditoria/pacote_*.zip`, abre o `index.html` no navegador e devolve o
-> `.json` exportado, que vai para `auditoria/respostas/`. O pacote não leva braço, sonda,
-> litologia nem score — só a imagem e o contorno.
-
-> `figuras_regra_autor.py` grava em `apresentações/jacitec/` (figuras + `regra_x_autor.csv`).
-> Precisa do `_cache/` — na máquina sem cache, abrir cada litologia no calibrador e capturar
-> antes.
-
-Classificador de litologia (**D19**), a partir de `AI/Xception/`:
-
-```bash
-..\.venv\Scripts\python.exe train.py                  # treino → ../models/xception_480.pt + runs/xception_480/
+..\.venv\Scripts\python.exe train.py                  # treino → ../models/xception_480.pt + runs/
 ..\.venv\Scripts\python.exe evaluate.py --split val   # à vontade
 ..\.venv\Scripts\python.exe evaluate.py               # test/, UMA vez — o script recusa repetir
 ..\.venv\Scripts\python.exe roteador.py chapa.jpg     # litologia + confiança + top-3
 ```
 
-> `runs/` (config, histórico, métricas em JSON) vai para o git; o `.pt` não. Para teste de
-> fumaça, `--limite N` e `--dir-runs/--dir-modelos` apontando para fora do repo.
+`runs/` (config, histórico, métricas em JSON) vai para o git; o `.pt` não. Para teste de fumaça,
+`--limite N` e `--dir-runs/--dir-modelos` apontando para fora do repositório.
+
+---
 
 ## Fluxo de dados
 
@@ -144,7 +130,7 @@ selectRocks/<rock>/meta.json           ← de onde veio cada uma (reprodutibilid
 calibrator.py  →  SAM uma vez por (imagem, sonda) no piso de conf  (D18)
 selectRocks/<rock>/_cache/<vaga>__<sonda>.npz   ← scores + polígonos (gitignored)
         ↓  varredura de limiar offline, sem GPU
-rock_prompts.json                      ← { litologia: { sonda: limiar } }  — resumo; só litologia calibrada
+rock_prompts.json                      ← { litologia: { sonda: limiar } }  — resumo; só calibradas
 selectRocks/<rock>/calibracao.json     ← limiar + contagem por vaga + CRITÉRIO escrito
         ↓  o limiar do inference.py sai do calibracao.json, não do rock_prompts.json
 inference.py (SAM3SemanticPredictor)
@@ -155,128 +141,102 @@ results/<rock>/<stem>/<stem>_combined.jpg          ← sobreposição
 results/<rock>/<stem>/<stem>.txt                   ← polígonos YOLO
 ```
 
-> **Isto é o fluxo de calibração, não de produção de dataset.** `inference.py` processa as
-> imagens de `selectRocks/`, não o dataset. O script de lote (`sam_batch.py`) ainda não existe —
-> ver `docs/roadmap.md` → Fase 3.0.
->
-> `inference.py` já aceita o layout em pasta sem alteração: `get_rock_name()` devolve o nome da
-> pasta quando a imagem está aninhada (verificado).
+Isto é o fluxo de **calibração**, não de produção de dataset: o `inference.py` processa as imagens
+de `selectRocks/`. O script de lote (`sam_batch.py`) não existe e é trabalho futuro (**D6**).
+
+Estado da seleção e da calibração: `docs/roadmap.md` (hoje, a faixa A inteira: 11 de 45).
 
 ---
 
 ## Gotchas críticos
 
-- **Monkey-patch CLIP** (topo de `inference.py` e `calibrator.py`): o Ultralytics SAM3 chama
-  `SimpleTokenizer()` como função, mas ele não tem `__call__`. O patch injeta `__call__`
-  delegando para `clip.tokenize`. **Não remover** — sem ele o modelo falha **silenciosamente**,
-  sem exceção e sem saída.
-- **Caminhos são ancorados no arquivo, não no CWD.** Os scripts de `AI/SAM/` montam
-  `selectRocks/`, `../dataset/` e `../models/sam3.pt` a partir de `Path(__file__).parent` —
-  rodam de qualquer pasta. Até 10/10/2026 o `rock_viewer.py` e o `verificar_d18.py` usavam
-  caminho relativo ao CWD e morriam com "Dataset não encontrado" fora de `AI/SAM/`.
-- **`rock_viewer.py` é interativo: só funciona no terminal do Henrique.** A guia do navegador
-  abre **antes** do `input()`; rodado pelo Claude (sem stdin), ele abre a guia e morre com
-  `EOFError`. Não tentar de novo — cada tentativa abre outra guia. Pedir para ele rodar com
+### Bibliotecas e ambiente
+
+- **Monkey-patch do CLIP** (topo de `inference.py` e `calibrator.py`): o SAM3 do Ultralytics chama
+  `SimpleTokenizer()` como função, mas ele não tem `__call__`. O patch injeta `__call__` delegando
+  para `clip.tokenize`. **Não remover**: sem ele o modelo falha em silêncio, sem exceção e sem
+  saída.
+- **`cv2.imread` não abre caminho com acento no Windows**, e o caminho deste projeto tem acento.
+  Importar o ultralytics troca o `cv2.imread` por uma versão que aceita Unicode: quem importa
+  ultralytics antes nunca vê o bug; quem não importa recebe `None` em silêncio. Em código sem
+  ultralytics, usar `np.fromfile` + `cv2.imdecode` (ver `calibrator.abrir_imagem`).
+- **Não usar `masks.xyn`; usar `sam_cache.pecas_por_deteccao`** (**D21**). O `masks.xyn` funde os
+  contornos soltos de uma detecção numa poligonal só, ligada por pontes que viravam retas na
+  preview e no `.txt`. Hoje uma detecção é uma **lista de peças** (no cache, `polys[i]`; no `.txt`,
+  uma linha por peça). "Marcação", na regra e no `calibracao.json`, continua sendo **detecção**.
+  Cache `.npz` de antes da mudança é tratado como ausente (`sam_cache.cache_atual`) e recapturado.
+- **A D18 vale por versão do ultralytics, não por máquina.** O `verificar_d18.py`, ao passar, anota
+  a versão em `AI/SAM/d18_verificado.json` (no git). Verificar numa máquina vale para a outra na
+  mesma versão. Quem responde "a versão daqui está coberta?" é o `ambiente.py`. Cada
+  `calibracao.json` grava a versão usada.
+- **No Bash, não chamar `python` puro**: no Windows ele pode abrir o atalho da Microsoft Store e
+  travar. Usar sempre o caminho do venv.
+
+### Caminhos
+
+- **Caminhos são ancorados no arquivo, não no CWD.** Os scripts de `AI/SAM/` montam `selectRocks/`,
+  `../dataset/` e `../models/sam3.pt` a partir de `Path(__file__).parent` e rodam de qualquer pasta.
+- **Casing:** a pasta é `AI/dataset/` (minúscula). No Windows o erro passa por acaso; no Linux
+  quebra, e aí o `.gitignore` deixa de proteger as 34.630 imagens. Ele lista as **duas** grafias
+  de propósito. Caminho novo, sempre em minúscula.
+
+### Seleção e calibração
+
+- **Seleção de imagem é sempre manual.** Usar o próprio SAM para escolher a imagem de calibração
+  é raciocínio circular. Só do `train/` (**D17**).
+- **`rock_viewer.py` é interativo e só funciona no terminal do Henrique.** A guia do navegador abre
+  antes do `input()`; rodado pelo Claude (sem stdin), abre a guia e morre com `EOFError`. Não
+  tentar de novo (cada tentativa abre outra guia). Pedir para ele rodar com
   `! ..\.venv\Scripts\python.exe rock_viewer.py`.
-- **Seleção de imagem é sempre manual** — usar o próprio SAM para escolher a imagem de
-  calibração é raciocínio circular.
-- **Casing de path é uma armadilha real.** A pasta é `AI/dataset/` (minúscula). Os scripts e o
-  `.gitignore` já foram corrigidos (Fase 0), e o `.gitignore` lista as **duas** grafias de
-  propósito. No Windows o erro passa por acaso; **no Linux quebra** — e aí o `.gitignore` deixa
-  de proteger as 34.630 imagens. Ao escrever caminho novo, sempre minúscula.
-- **Versionado:** `rock_prompts.json` e `selectRocks/` **estão no git**. Só `results/` (e o
-  `AI/Dataset/` miscased) são ignorados. `samples/` é a demo commitada (só `ice_leke`).
-- **Sonda fora do `CLASS_ID_MAP` não vira rótulo.** `inference.py` valida toda a configuração e
-  aborta **antes de carregar o modelo**; o `calibrator.py` deixa explorar a sonda mas não a salva
-  em `rock_prompts.json`. O cadastro (id **e** cor) mora num lugar só, `AI/SAM/sondas.py`:
-  registre a sonda nova lá e só lá (**D8**). O id é posicional e vai para o `.txt` — sonda nova
-  entra no fim, nunca renumere uma já usada.
-- **O `inference.py` só roda sobre litologia calibrada.** O limiar sai do `calibracao.json`;
-  litologia sem calibração (ou com calibração desatualizada) é **recusada e listada**, antes de o
-  modelo carregar. Até 09/10/2026 ele tinha três redes de segurança encadeadas — arquivo ausente
-  virava config vazia, rocha sem config caía na entrada `"default"` do `rock_prompts.json`, e a
-  ausência dela caía em três limiares chumbados no código — então **nunca se recusava a rodar**:
-  gerava `.txt` com números inventados, idênticos por fora aos de uma rocha calibrada. Para
-  explorar com os limiares provisórios existe `--provisorio`, e aí o
-  `results/<rock>/procedencia.json` grava que foi provisório. Esse arquivo é a resposta para "de
-  onde veio este limiar?" — ele sai em toda rodada, junto das máscaras.
-- **`rock_prompts.json` agora só tem litologia calibrada.** Em 09/10/2026 os 45 valores
-  provisórios (e a entrada `"default"`) foram **apagados** — eram chutes de antes da **D17**,
-  copiados entre litologias, que a **D15** já declarava sem valor e que nada no código usava mais.
-  Sobrou a `siena_white`. Regra nova e simples: **quem não está no arquivo não foi calibrado.**
-  Quem escreve nele é o calibrador. Os valores antigos estão no histórico do git. Calibração feita
-  é a que tem **`calibracao.json`** ao lado das vagas (limiar + critério escrito); é isso
-  que o calibrador usa para dizer "calibrada". Estado: **44 de 180 vagas — a faixa A fechou em
-  08/10/2026**, as 11 litologias com 4/4: `siena_white` (08/09/2026), `nevada_black`
-  (02/10/2026), `ubatuba_green` e `ipanema_beige` (03/10/2026), `itaunas_white` (05/10/2026),
-  `santa_cecilia` (06/10/2026), `white_mirage` (07/10/2026), `golden_storm`, `white_olympus`,
-  `shadow_white` e `san_francisco_green` (08/10/2026). As duas últimas tinham sido puladas e
-  foram selecionadas sem a opinião de especialista; elas, a `white_mirage` e a `golden_storm` são
-  rochas movimentadas (ver `docs/dataset.md` e **D20**). **11 de 45 litologias com
-  `calibracao.json` — a faixa A inteira**: `siena_white` (01/10/2026, refeita em 09/10),
-  `nevada_black` e `ubatuba_green` (09/10/2026), `ipanema_beige`, `itaunas_white` e
-  `shadow_white` (10/10/2026), `santa_cecilia` (refeita em 19/10/2026, sem a `vein`),
-  `san_francisco_green`, `white_mirage`, `golden_storm` e `white_olympus` (20/10/2026). As
-  conferências pós-bug de 10/10 foram feitas pelo Henrique em 19/10.
-- **A captura não mexe em limiar salvo** (corrigido em 10/10/2026). `capturar()` chamava
-  `semear_da_regra` para **todas** as sondas: capturar uma sonda nova numa litologia calibrada
-  trocava os limiares salvos pelos da regra, e salvar gravava isso por cima. Agora só a sonda
-  sem limiar no `calibracao.json` parte da regra. Vale em dobro na outra máquina: lá o cache não
-  existe, e a primeira captura de uma litologia calibrada apagaria todos.
-- **Mais de uma máquina.** O Henrique alterna entre este PC e outro. O que precisa existir nos
-  dois vai para o **git**; `_cache/`, `results/`, o `.venv` e o `sam3.pt` não vão, e cada máquina
-  tem os seus. **A versão do ultralytics pode diferir entre elas** — cada `calibracao.json` grava
-  a versão usada. A equivalência da **D18** depende dessa versão, não da máquina, então a
-  verificação agora **viaja no git**: o `verificar_d18.py`, ao passar, anota a versão em
-  `AI/SAM/d18_verificado.json`. Verificar numa máquina vale para a outra na mesma versão. Quem
-  responde "a versão daqui já está coberta?" é o `ambiente.py` — não a memória de ninguém.
-- **`cv2.imread` não abre caminho com acento no Windows** — e o caminho deste projeto tem acento
-  (`…ARIA - Análise e Reconhecimento…`). A armadilha é que **importar o ultralytics
-  monkey-patcha `cv2.imread`** por uma versão que aceita Unicode: quem importa ultralytics antes
-  nunca vê o bug, quem não importa recebe `None` silencioso. Em código que não depende do
-  ultralytics, use `np.fromfile` + `cv2.imdecode` (ver `calibrator.abrir_imagem`).
-- **Não usar `masks.xyn` — usar `sam_cache.pecas_por_deteccao`** (**D21**, 09/10/2026). O
-  `masks.xyn` funde os contornos soltos de uma detecção numa só poligonal
-  (`masks2segments(strategy="all")`), ligando-os por pontes de ida e volta, que viravam retas na
-  preview e iam para o `.txt`. Hoje cada contorno é um polígono próprio: uma detecção é uma
-  **lista de peças**, no cache (`polys[i]`) e no `.txt` (uma linha por peça). "Marcação", na
-  regra e no `calibracao.json`, continua sendo **detecção**, não peça. Cache `.npz` de antes da
-  mudança é tratado como ausente (`sam_cache.cache_atual`) e recapturado sozinho.
-- **`rock_viewer.py` ordena por volume de dados** (faixa A primeiro), não em ordem alfabética: a
-  ordem **é** a prioridade de trabalho. Cada litologia tem 4 vagas nomeadas pelo papel.
-- **Litologia 4/4 abre em modo revisão**, não recusa. `rock_viewer.py <rocha>` numa litologia
-  completa mostra a grade com as 4 escolhas no topo (serve para só olhar as imagens — Enter sai
-  sem alterar nada) e oferece substituir uma vaga. Se há `calibracao.json`, a troca exige digitar
-  `SUBSTITUIR`, e a troca é registrada em `substituicoes` do `meta.json`. Imagem nova na vaga
-  **apaga o `_cache/<vaga>__*.npz`** daquela vaga — o cache é indexado pela vaga, não pela
-  imagem, e reaproveitá-lo daria curva e polígonos da imagem antiga (reescolher a MESMA imagem
-  não apaga nada). O calibrador lê esse histórico: vaga trocada depois do `calibrado_em` faz a
-  litologia aparecer como **⊘ desatualizada**, não como calibrada — o limiar continua escrito,
-  mas não foi escolhido nas 4 imagens atuais. Quem grava `calibracao.json` continua sendo só
-  o calibrador.
-- **`sam_cache.py`** implementa a varredura offline de limiar (**D18**): roda o SAM uma vez com
-  `conf` no piso, guarda scores + polígonos, e filtra sem GPU. Equivalência provada no fonte do
-  ultralytics **e verificada empiricamente** — `python verificar_d18.py` compara a filtragem do
-  cache com o SAM rodando de novo em cada limiar.
-- **O pacote da auditoria foi sorteado uma vez só (19/11/2026), e não se refaz.** Os ids das
-  marcações (`m001`…) valem para aquele sorteio, cuja ligação com os braços está em
-  `auditoria/itens.json`. Rodar o `auditoria_preparar.py` de novo — principalmente na outra
-  máquina, onde o SAM dá scores um pouco diferentes — sortearia outros itens e desligaria as
-  respostas dos braços; por isso o script para antes do sorteio se o `itens.json` existe
-  (`--refazer-itens` só antes de qualquer resposta). Para reenviar, use o `.zip` já gerado (ele
-  e o `pacote/` são gitignored e só existem na máquina em que o pacote foi montado). Se só o
-  `auditoria_app.html` mudou, `--atualizar-app` recopia o aplicativo para o `pacote/` e refaz o
-  `.zip` sem tocar no sorteio: `itens.js`, imagens e ids ficam iguais, e o progresso salvo no
-  navegador do avaliador continua valendo. O Henrique
-  também é avaliador: ele não deve abrir `itens.json` nem `limiares.json` antes de julgar.
-  **Neste PC (desde 22/11/2026)** o `.zip` e as capturas das 33 chapas (`auditoria/<rocha>/_cache/`)
-  vieram da outra máquina (ultralytics 8.4.52), e o cache das vagas de lá, de onde saiu o
-  `limiares.json`, está em `auditoria/_vagas_maquina2/` — **não** em `selectRocks/*/_cache/`,
-  que aqui é o 8.4.61 das calibrações. Até 22/11/2026 a trava do `itens.json` vinha só antes
-  da etapa 5, e a etapa 4 regravava o `limiares.json` (que está no git) com o cache das vagas
-  da máquina em que rodasse. Agora a trava vem antes da etapa 2: com `itens.json` presente, o
-  script não captura nem recalcula nada (verificado: `limiares.json` intacto). Mesmo assim não
-  há motivo para rodá-lo; para analisar, só o `auditoria_analisar.py`, que não lê cache.
-- **O calibrador é o dono do limiar; o `inference.py` é o dono das máscaras finais.** O
-  `calibrator.py` não escreve em `results/` nem gera `.txt` — ele decide sondas e limiar e grava
-  `rock_prompts.json` + `calibracao.json`.
+- **`rock_viewer.py` ordena por volume de dados** (faixa A primeiro): a ordem é a prioridade.
+- **Litologia 4/4 abre em modo revisão.** Mostra as 4 escolhas no topo (Enter sai sem mudar nada) e
+  oferece substituir uma vaga. Com `calibracao.json`, a troca exige digitar `SUBSTITUIR` e fica
+  registrada em `substituicoes` do `meta.json`. Imagem nova na vaga **apaga o
+  `_cache/<vaga>__*.npz`** dela, porque o cache é indexado pela vaga, não pela imagem (reescolher
+  a mesma imagem não apaga nada). Vaga trocada depois do `calibrado_em` faz a litologia aparecer
+  no calibrador como **⊘ desatualizada**.
+- **A captura não mexe em limiar salvo.** Só a sonda sem limiar no `calibracao.json` parte da regra
+  (`semear_da_regra`). Até 10/10/2026, capturar uma sonda nova trocava todos os limiares salvos
+  pelos da regra; na outra máquina, sem cache, a primeira captura teria apagado todos.
+- **O calibrador abre o slider no limiar da regra.** O autor parte sempre dali (ancoragem; ver
+  `reflexao.md`, seção 3).
+- **Sonda fora do cadastro não vira rótulo.** O cadastro (id e cor) mora só em `AI/SAM/sondas.py`
+  (**D8**). O id é posicional e vai para o `.txt`: sonda nova entra no fim, nunca renumerar. O
+  `inference.py` valida a configuração e aborta antes de carregar o modelo; o calibrador deixa
+  explorar a sonda, mas não a salva.
+- **`rock_prompts.json` só tem litologia calibrada: quem não está nele não foi calibrado.** Quem
+  escreve nele é o calibrador. Os valores provisórios antigos (e a entrada `"default"`) foram
+  apagados em 09/10/2026 e estão no histórico do git.
+- **O `inference.py` só roda sobre litologia calibrada.** O limiar sai do `calibracao.json`; rocha
+  sem calibração, ou desatualizada, é recusada e listada antes de o modelo carregar. Para explorar
+  com o `rock_prompts.json` existe `--provisorio`, e o `results/<rock>/procedencia.json` grava isso.
+  Até 09/10/2026 o script nunca se recusava a rodar e gerava `.txt` com limiares inventados.
+- **O calibrador é dono do limiar; o `inference.py` é dono das máscaras finais.** O calibrador não
+  escreve em `results/` nem gera `.txt`.
+- **Versionado:** `rock_prompts.json` e `selectRocks/` estão no git. `results/`, `_cache/` e o
+  `AI/Dataset/` com maiúscula são ignorados. `samples/` é a demo antiga (só `ice_leke`).
+
+### Auditoria
+
+- **O pacote foi sorteado uma vez só (19/11/2026) e não se refaz.** Os ids das marcações (`m001`…)
+  valem para aquele sorteio, cuja ligação com os braços está em `auditoria/itens.json`. Rodar o
+  `auditoria_preparar.py` de novo, principalmente na outra máquina (onde o SAM dá scores um pouco
+  diferentes), sortearia outros itens. Por isso o script para antes de capturar qualquer coisa se o
+  `itens.json` existe (`--refazer-itens` só antes de qualquer resposta). Para reenviar, usar o
+  `.zip` já gerado. Se só o `auditoria_app.html` mudou, `--atualizar-app` recopia o aplicativo e
+  refaz o `.zip` sem tocar no sorteio.
+- **O Henrique também é avaliador:** ele não abre `itens.json` nem `limiares.json` antes de julgar,
+  e nenhuma figura com chapa do `test/` é mostrada a ele antes disso. O Claude também não expõe o
+  conteúdo desses arquivos.
+- **De onde vieram os arquivos neste PC (desde 22/11/2026):** o `.zip` e as capturas das 33 chapas
+  (`auditoria/<rocha>/_cache/`) vieram da outra máquina (ultralytics 8.4.52), e o cache das vagas de
+  lá, de onde saiu o `limiares.json`, está em `auditoria/_vagas_maquina2/`, **não** em
+  `selectRocks/*/_cache/` (que aqui é a versão das calibrações). Para analisar, só o
+  `auditoria_analisar.py`, que não lê cache.
+
+### Mais de uma máquina
+
+O Henrique alterna entre dois PCs. O que precisa existir nos dois vai para o **git**; `_cache/`,
+`results/`, o `.venv`, o `sam3.pt`, o `xception_480.pt` e o pacote da auditoria não vão, e cada
+máquina tem os seus. Dar commit e push antes de trocar de PC ou de editar no Overleaf: em 06/11 isso
+não foi feito e o texto do TCC divergiu entre as máquinas.

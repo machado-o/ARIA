@@ -1,213 +1,119 @@
-# Roadmap — ARIA
+# Roadmap
 
-Estado vivo do desenvolvimento e ordem de execução. As decisões que justificam esta ordem estão
-em [`decisoes.md`](decisoes.md).
+Onde cada parte do sistema está, e em que ordem o trabalho anda. O porquê de cada escolha está
+no [`decisoes.md`](decisoes.md); os itens soltos, no [`pendencias.md`](pendencias.md).
 
-> Última atualização: 2026-11-22
-> **Prazos (19/11/2026, ainda sem confirmação):** defesa para a banca **até dezembro de 2026**,
-> publicação **até fevereiro de 2027**. O **01/12/2026** (data de trabalho de 06/11) fica como a
-> versão que vai à banca. Falta confirmar com o Rafael. A Jacitec (22/10) já passou.
->
-> Em 19/11 o conjunto-ouro saiu: o Experimento 1 é avaliado por **auditoria cega** (emenda da
-> **D7**), com o pacote já montado. O que falta dele são os julgamentos. Em 23/11 o **Experimento 2
-> inteiro virou trabalho futuro**, com a H2 (nota na **D6**): a Fase 3 sai do caminho da
-> entrega. Ver `pendencias.md` → Retomada.
+Última atualização: 25/11/2026
+
+**Em uma frase:** a faixa A está selecionada e calibrada, o pacote da auditoria está pronto, e o
+que falta para fechar o TCC são os julgamentos da auditoria e o texto. O Experimento 2 virou
+trabalho futuro em 23/11 (**D6**).
+
+**Prazos (19/11, ainda sem confirmação do Rafael):** defesa até dezembro de 2026; publicação até
+fevereiro de 2027. Data de trabalho da versão para a banca: 01/12/2026.
 
 ---
 
-## Onde o projeto realmente está
+## Estado de cada parte
 
-| Componente | Estado |
+| Parte | Estado |
 |---|---|
-| `rock_viewer.py` — seleção das 4 vagas | ✅ reescrito para o protocolo D17; **modo revisão** (2026-10-08) numa litologia 4/4 |
-| `calibrator.py` — UI de calibração | ✅ **reescrito** (2026-09-26): 3 abas, um slider, 4 previews |
-| `inference.py` — inferência sobre `selectRocks/` | ✅ funciona; já aceita o layout em pasta |
-| `sam_cache.py` — varredura offline de limiar | ✅ núcleo pronto (D18) |
-| `verificar_d18.py` — prova empírica da D18 | ✅ **novo**: 32 comparações, nenhuma divergência |
-| `rock_prompts.json` | 🟡 só as litologias calibradas (11 da faixa A); os provisórios foram apagados em 09/10/2026 |
-| `selectRocks/` | 🟡 **44 de 180 vagas** — **faixa A completa**: as 11 litologias com 4/4, incluindo `shadow_white` e `san_francisco_green`, feitas em 08/10/2026 depois de puladas |
-| Litologias com `calibracao.json` | 🟡 **11 de 45 — faixa A completa** (20/10/2026). Autor acima do joelho da regra em 45 de 45 sondas (ver `pendencias.md` → *Código*) |
-| `figuras_regra_autor.py` | ✅ **novo** (20/10/2026): regra × autor na mesma chapa, do cache, sem GPU |
-| Inferência em lote sobre o dataset | ❌ **não existe** |
-| Auditoria cega do Exp. 1 (`auditoria_preparar.py` / `auditoria_analisar.py`) | 🟡 pacote montado em 19/11/2026 (33 chapas do `test/`, 420 itens); **faltam os julgamentos** da avaliadora e do autor |
-| Treino e avaliação YOLO | ❌ não existe (`AI/YOLO/` está vazio) |
-| Integração Xception | 🟡 **treinado** (03/10, D19): 96,72% no `test/` (98,71% no `val/`), abaixo dos 99,21% do original. Com o sorteio por imagem do original, o mesmo modelo dá 99,92%: a diferença vem da divisão dos dados. Os dois números são reportados (D19, 06/10); falta só integrar o roteador. Ver Fase 4 |
-| **Monografia** (`Overleaf/TCC/`) | 🟡 **reestruturada em 26/09**, revista em 10/10 e 19/11: bibliografia (44 entradas), Introdução, Fundamentação, Metodologia e Conclusão escritas; Resultados com 5 seções medidas (a 4.5, *Calibração da Faixa A*, e o Apêndice A em 19/11). Compila (22/11: 60 páginas, sem erro). Faltam os números do Experimento 1 e o Experimento 2 |
-| Artigo de PD1 e LatinoWare2026 | 🔴 intocados — continuam desalinhados (**D13**). O da LatinoWare foi **recusado** (informado em 06/11/2026) |
-
-> A monografia compila no Overleaf e, nesta máquina, com TinyTeX copiando `TCC/` para um caminho
-> sem acento (ver `pendencias.md`). `Overleaf/TCC/verificar_tex.py` faz a conferência estrutural
-> rápida (citação sem entrada no `.bib`, `\ref` sem `\label`, ambiente desbalanceado, figura
-> ausente).
-
-**O buraco estrutural:** `inference.py` lê de `selectRocks/`, que tem **as 4 imagens de
-calibração por rocha**. Não existe caminho do Professor para um conjunto de treino do Aluno. É a
-primeira coisa a resolver na Fase 3.
+| `rock_viewer.py`: seleção das 4 vagas | ✅ protocolo da D17; modo revisão numa litologia 4/4 (08/10) |
+| `calibrator.py`: sondas e limiar | ✅ 3 abas, um slider, 4 previews (26/09) |
+| `sam_cache.py`: varredura sem GPU | ✅ D18 |
+| `verificar_d18.py`: prova da D18 | ✅ 32 de 32 idênticas, nas duas versões do ultralytics |
+| `inference.py`: máscaras finais | ✅ só roda sobre litologia calibrada; grava a procedência |
+| `figuras_regra_autor.py` | ✅ regra × autor na mesma chapa, do cache (20/10) |
+| Seleção (`selectRocks/`) | 🟡 44 de 180 vagas: a faixa A inteira (08/10) |
+| Calibração (`calibracao.json`) | 🟡 11 de 45 litologias: a faixa A inteira (20/10) |
+| Auditoria (`auditoria_preparar.py` / `auditoria_analisar.py`) | 🟡 pacote pronto (19/11; app atualizado em 23/11); faltam os julgamentos |
+| Classificador Xception | ✅ treinado e avaliado (96,72% no `test/`; 99,92% com sorteio por imagem); 🟡 falta ligar o roteador ao resto |
+| Monografia (`apresentações/Overleaf/TCC/`) | 🟡 tudo escrito menos o resultado do experimento; compila (22/11: 60 páginas, sem erro) |
+| Inferência em lote sobre o dataset (`sam_batch.py`) | ⏸️ trabalho futuro (D6) |
+| Treino e avaliação do YOLO | ⏸️ trabalho futuro (D6); `AI/YOLO/` está vazio |
+| Artigos de PD1 e LatinoWare | 🔴 desatualizados (D13); o da LatinoWare foi recusado (06/11) |
 
 ---
 
-## ~~Fase 0 — Desbloqueio~~ ✅ 2026-08-23
+## Fase 0 — Desbloqueio ✅ (23/08/2026)
 
-1. ✅ **Casing de path.** `.gitignore` agora lista `AI/dataset/` **e** `AI/Dataset/`;
-   `calibrator.py` e `rock_viewer.py` apontam para `../dataset`. Antes, numa máquina Linux, o
-   `.gitignore` não protegia as 34.630 imagens.
-2. ✅ **`class_id = -1` silencioso eliminado.** `validate_prompts()` roda **antes** de carregar o
-   modelo e aborta nomeando a rocha e a sonda. Verificado: apontou `giallo_maracana: scratch`.
-3. ✅ **Sonda exploratória não corrompe mais o `.txt`.** No `calibrator.py`, sonda fora do
-   `CLASS_ID_MAP` aparece no preview mas não grava polígono, com aviso na tela.
-4. ✅ **`scratch` registrado como id 5** (**D8**) nos dois arquivos.
-5. ✅ **`rock_viewer.py` ordena por faixa de volume** (**D15**), não em ordem alfabética — a
-   ordem em que ele entrega as rochas **é** a prioridade de trabalho.
+Casing do caminho do dataset corrigido (o `.gitignore` lista as duas grafias); `class_id = -1`
+silencioso eliminado (a validação aborta antes de carregar o modelo); sonda exploratória não grava
+mais polígono; `scratch` registrada; `rock_viewer.py` ordenando por faixa de volume.
 
----
+## Fase 1 — Seleção e calibração da faixa A ✅ (20/10/2026)
 
-## Fase 1 — Recalibração pela faixa A
+Protocolo da **D17**: 4 imagens por litologia, só do `train/`, escolhidas à mão; regra do joelho
+fixada antes da primeira calibração.
 
-Ver **D15** e **D17**. O `selectRocks/` foi **zerado em 2026-08-23**: as 14 imagens antigas foram
-apagadas e a seleção recomeça com o protocolo de 4 vagas.
+| Litologia | Vagas selecionadas | `calibracao.json` |
+|---|---|---|
+| siena_white | 08/09 | 01/10 (refeita em 09–10/10) |
+| nevada_black | 02/10 | 09/10 |
+| ubatuba_green | 03/10 (típica revista no mesmo dia) | 09/10 |
+| ipanema_beige | 03/10 | 10/10 |
+| itaunas_white | 05/10 | 10/10 |
+| santa_cecilia | 06/10 | 19/10 (refeita sem `vein`) |
+| white_mirage | 07/10 | 20/10 |
+| golden_storm | 08/10 | 20/10 |
+| white_olympus | 08/10 | 20/10 |
+| shadow_white | 08/10 (pulada em 03/10) | 10/10 |
+| san_francisco_green | 08/10 (pulada em 07/10) | 20/10 |
 
-**Estado: 44 de 180 vagas; 11 de 45 litologias com `calibracao.json` — a faixa A inteira**
-(`siena_white`, `nevada_black` e `ubatuba_green` até 09/10/2026; `ipanema_beige`,
-`itaunas_white` e `shadow_white` em 10/10/2026; `santa_cecilia` refeita em 19/10/2026;
-`san_francisco_green`, `white_mirage`, `golden_storm` e `white_olympus` em 20/10/2026). A faixa A são as 11 primeiras —
-**44 vagas, todas feitas** (`siena_white`, em 08/09/2026, calibrada em 01/10/2026;
-`nevada_black`, em 02/10/2026; `ubatuba_green` e `ipanema_beige`, em 03/10/2026;
-`itaunas_white`, em 05/10/2026; `santa_cecilia`, em 06/10/2026; `white_mirage`, em 07/10/2026;
-`golden_storm`, `white_olympus`, `shadow_white` e `san_francisco_green`, em 08/10/2026; as dez a
-calibrar). A `shadow_white` havia sido pulada em 03/10 e a `san_francisco_green` em 07/10 por ser
-difícil julgar o que é defeito nelas; as duas foram selecionadas em 08/10 **sem a opinião de
-especialista**, que não veio. Elas, a `white_mirage` e a `golden_storm` são rochas movimentadas
-(lista em `dataset.md` → *Litologias movimentadas*). Ordem de trabalho da faixa A:
-`siena_white` ✅, `nevada_black` ✅ (seleção), `ubatuba_green` ✅ (seleção), `ipanema_beige` ✅ (seleção), `shadow_white` ✅ (seleção), `itaunas_white` ✅ (seleção),
-`santa_cecilia` ✅ (seleção), `san_francisco_green` ✅ (seleção), `white_mirage` ✅ (seleção), `golden_storm` ✅ (seleção), `white_olympus` ✅ (seleção).
-
-> **A seleção da faixa A está completa** (44/44, em 08/10/2026), e a calibração também (11/11,
-> em 20/10/2026).
+Resultado: o autor ficou acima da regra nas 45 sondas, com razão mediana de 3,3 (seção 4.5 do
+TCC). A faixa B não começou.
 
 ```bash
 cd AI/SAM
-python rock_viewer.py          # próxima vaga pendente, em ordem de faixa
-python rock_viewer.py <rocha>  # completa as vagas — ou, se já 4/4, abre em revisão
-python rock_viewer.py --all    # mostra val/ e test/ para estudo (não selecionáveis)
+..\.venv\Scripts\python.exe rock_viewer.py          # próxima vaga pendente, em ordem de faixa
+..\.venv\Scripts\python.exe rock_viewer.py <rocha>  # completa as vagas, ou revisa uma rocha 4/4
+..\.venv\Scripts\python.exe rock_viewer.py --all    # mostra val/ e test/ só para estudo
 ```
 
-A ferramenta conduz vaga por vaga, dizendo o que procurar em cada uma. Ela só oferece imagens do
-`train/` e recusa qualquer outra (**D17**).
+## Fase 2 — O experimento: auditoria cega dos quatro braços 🟡
 
-O `calibrator.py` **está pronto** (2026-09-26) e já calibrou a primeira litologia. Ele tem três
-abas:
+**D5** (os braços), **D7** (a auditoria) e **D4** (a hipótese e como ela se decide). Não exige
+treino nenhum.
 
-1. **Descoberta** — na chapa mais rica, quais sondas respondem a algo real;
-2. **Limiar** — um slider e as 4 previews simultâneas, mais a curva *limiar × marcações* das
-   três vagas de limiar, com o joelho marcado como **sugestão**;
-3. **Fechar** — a contagem por vaga, o **critério escrito** (obrigatório) e o salvamento.
+1. ✅ Sortear 3 chapas do `test/` por litologia calibrada (33), com semente fixa.
+2. ✅ Rodar o Professor uma vez por chapa, com todas as sondas no piso, e filtrar os quatro braços
+   (`unico`, `regra_todas`, `regra_autor`, `autor`) do mesmo cache (**D18**).
+3. ✅ Montar o pacote: 420 itens estratificados e intercalados, sem braço, sonda, litologia nem
+   score. **Não rodar o `auditoria_preparar.py` de novo** (ver `CLAUDE.md`).
+4. ✅ Fixar como a H1 é decidida, antes dos julgamentos (emenda de 25/11 na D4).
+5. [ ] Julgamentos: a avaliadora e o autor, separados.
+6. [ ] Analisar com o `auditoria_analisar.py`: precisão e recall relativo por braço, IC 95%,
+   kappa; e as análises secundárias registradas na D4.
+7. [ ] Escrever o resultado no TCC.
 
-> **A faixa A está calibrada** (11/11, em 20/10/2026). O passo seguinte foi a auditoria do
-> Experimento 1 (Fase 2); a seleção da faixa B não começou.
+**Entregável:** a H1 respondida, com número e figura.
 
-> **Primeira observação (`siena_white`, 01/10/2026):** o autor divergiu da regra nas 3 sondas
-> admitidas (`vein`, `Stain`, `Dark patches`), sempre para cima — limiar de trabalho ≈ 2× o joelho.
-> Uma litologia não é padrão; se repetir na faixa A, é o resultado previsto na **D17**
-> (*"onde a curva engana"*). A forma da regra já está fechada na D17 (joelho, sem parâmetro livre).
+## Fase 3 — Alunos especialistas × generalista ⏸️ trabalho futuro
 
----
+Saiu da entrega em 23/11/2026 (**D6**). Fica o registro do que seria preciso:
 
-## Fase 2 — Experimento 1: auditoria cega dos quatro braços
-
-Ver **D5** e **D7** (emenda de 19/11/2026, que trocou o conjunto-ouro e a preferência pareada pela
-auditoria). Não exige treino nenhum — é o caminho mais curto até um resultado real.
-
-1. ✅ **Sortear a amostra** — 3 chapas do `test/` por litologia calibrada (33), semente fixa.
-2. ✅ **Rodar o Professor uma vez por chapa, com todas as sondas no piso, e filtrar os quatro
-   braços do cache** (**D18**) — `unico`, `regra_todas`, `regra_autor` e `autor` (**D5**).
-3. ✅ **Montar o pacote** (19/11): 420 itens estratificados, intercalados, sem braço, sonda,
-   litologia nem score. `auditoria_preparar.py` — **não rodar de novo** (ver `CLAUDE.md`).
-4. [ ] **Julgamentos:** a avaliadora (estudante de Engenharia de Minas) e o autor, separados.
-5. [ ] **Analisar:** `auditoria_analisar.py` — precisão e recall relativo por braço, IC 95%,
-   kappa de Cohen entre os dois avaliadores.
-6. [ ] **Escrever o resultado** na Seção do Experimento 1 do TCC.
-
-**Entregável:** H1 respondida, com número e com figura. Fecha como contribuição mesmo se a Fase 2
-não terminar.
-
----
-
-## Fase 3 — Experimento 2: especialistas × generalista, por faixa
-
-> ⏸️ **Fora da entrega de 01/12** (23/11/2026, **D6**): tudo abaixo é trabalho futuro. Fica como
-> registro do que seria preciso construir.
-
-Ver **D6**. Executa faixa por faixa. **Cada faixa é escrita antes de a seguinte começar.**
-
-### 3.0 — Construir o que não existe
-
-- **`sam_batch.py`** — roda o Professor sobre uma **amostra** de N imagens por litologia (não
-  sobre as 34.630: são ~4 sondas por imagem, o custo é proibitivo e desnecessário), grava labels
-  e monta a estrutura `images/` + `labels/` + `data.yaml` que o Ultralytics exige.
-- **Pós-processamento do Professor** — área mínima, teto de instâncias por imagem, simplificação
-  de polígono. No único exemplo existente (`samples/ice_leke.txt`) são **107 polígonos numa
-  imagem**, com até 1.742 pontos. Um Aluno treinado nisso aprende a marcar tudo. Isso é etapa
-  metodológica documentada, não gambiarra.
-- ✅ **Ponte entre contornos — resolvida em 2026-10-09 (D21).** `masks.xyn` usa
-  `masks2segments(strategy="all")`: quando a máscara de uma detecção tem vários contornos, eles
-  são fundidos numa poligonal só, ligados por pontes de ida e volta — e era essa poligonal que o
-  `inference.py` gravava no `.txt`. Medido em `siena_white/descoberta` (crack @0,08): **45 das
-  76** detecções têm mais de um contorno; no agregado o polígono inflava só **2,4%** sobre a
-  máscara (IoU **0,93**), mas numa detecção com 18 contornos chegou a **2,5×**. Decisão do
-  Henrique: **cada contorno é um polígono próprio**. `sam_cache.pecas_por_deteccao` é a fonte
-  única, usada pelo cache do calibrador e pelo `inference.py`; o `sam_batch.py` deve usá-la
-  também. Sobra desta frente a **área mínima** (item acima): separar expõe fragmentos minúsculos.
-- **`train.py` / `eval.py`** — treino dos Alunos e avaliação. ⚠️ **Contra o quê, não está
-  decidido:** o conjunto-ouro saiu em 19/11 e a auditoria cega foi desenhada para o Experimento 1
-  (ver `pendencias.md`).
-
-### 3.1 — Faixa A (≥1000 imagens · 11 litologias)
-
-Treinar os três braços (especialista, generalista, controle calibrado — D6), avaliar,
-**escrever**.
-
-### 3.2 — Faixa B (500–999 · 6 litologias)
-### 3.3 — Faixa C (200–499 · 14 litologias)
-### 3.4 — Faixa D (<200 · 14 litologias)
-
-Cada uma repete o ciclo: treinar → avaliar → escrever. O gráfico final — desempenho da
-especialização **em função do volume de dados** — é o resultado que responde à segunda metade de
-H2 e que nenhum trabalho do referencial responde.
-
----
+- **`sam_batch.py`**: rodar o Professor sobre uma amostra de N imagens por litologia (não sobre as
+  34.630) e montar `images/` + `labels/` + `data.yaml`. Usar `sam_cache.pecas_por_deteccao` (**D21**).
+- **Pós-processamento do Professor**: área mínima dos fragmentos, teto de instâncias por imagem,
+  simplificação de polígono.
+- **Regra de divisão dos dados do Aluno** (por sequência ou por sorteio; ver `dataset.md`,
+  *Sequência e blocos*).
+- **Contra o que avaliar o Aluno**: medi-lo contra o próprio Professor só mostra o quanto ele copia.
+- **Execução por faixa** (A, B, C, D), cada uma escrita antes da seguinte, com os três braços da D6.
 
 ## Fase 4 — Integração e fechamento
 
-1. **Xception como roteador — reprodução do DeepStoneAI (D19).** Não depende de calibração nem
-   do SAM, então pode correr em paralelo às Fases 1–3. Ordem:
-   1. ✅ **estruturar** `AI/Xception/` (02/10) — `common.py`, `train.py`, `evaluate.py`,
-      `roteador.py`. Teste de fumaça passou (1.024 imagens, 2 + 2 épocas, de 39% para 60% de
-      acurácia na validação); a avaliação recusa reavaliar o `test/`;
-   2. ✅ **treinar** em 480 × 480 (03/10) — 15 + 10 épocas, sem parada antecipada, ~1h10 no
-      venv novo (`AI/.venv`). Melhor checkpoint: fase finetune, época 7 (val_loss 0,034).
-      Histórico em `AI/Xception/runs/xception_480/`;
-   3. ✅ **avaliado no `test/`** (03/10, uma vez): **96,72%** de acurácia, 92,32% balanceada,
-      F1 macro 0,924. No `val/`: 98,71% / 97,71% / 0,976. Fica abaixo dos 99,21% do original, e
-      o `test/` já não pode ser reusado. **Achado, ainda não decidido:** os erros se concentram
-      em poucas classes (`white_superiore` 0/36, `white_himalaya` 0,28, `naica` 0,69), e as
-      chapas de `white_superiore` no `test/` parecem visualmente de **outro bloco/lote** que as
-      de `train/` e `val/`. Hipótese: o split do dataset separa o `test/` por lote mas mistura
-      chapas vizinhas entre `train/` e `val/`, o que deixa o val otimista. **Confirmado em
-      04/10:** com o sorteio por imagem do DeepStoneAI, o mesmo modelo dá **99,92%** (run
-      `xception_480_aleatorio`). **Decidido em 06/10 (D19):** os dois números vão para a
-      monografia, sem ampliação e sem mais treino;
-   4. o **roteador**: recebe a imagem, identifica a litologia e seleciona a configuração de
-      sondas + o Aluno correspondente.
-2. **Teste end-to-end** dos três estágios.
-3. **FPS** — medir de fato, ou reduzir o discurso de tempo real no texto. Hoje o material escrito
-   vende velocidade em várias seções e nunca mede.
+1. ✅ Reproduzir o Xception do DeepStoneAI (**D19**): estrutura em `AI/Xception/` (02/10), treino
+   em 480 × 480 (03/10, ~1h10), avaliação única no `test/` (03/10), medição do vazamento com sorteio
+   por imagem (04/10), decisão de reportar os dois números (06/10). Não há mais treino previsto.
+2. [ ] **Roteador**: ligar o `roteador.py` (litologia + confiança + top-3) à escolha do
+   `calibracao.json`. Opcional para a entrega.
+3. [ ] **Teste de ponta a ponta** dos três estágios. Opcional.
+4. [ ] **FPS**: só se o YOLO de demonstração for feito. Sem medição, o texto não promete tempo real.
 
 ---
 
 ## Fora do escopo (trabalhos futuros declarados)
 
-- Loop de aprendizado ativo (**D11**)
-- Rotulagem multi-classe (**D12**)
-- Faixas não alcançadas do Experimento 2 (**D6**)
-- Generalização além das 45 litologias
-- API de serviço e integração com sistemas de chão de fábrica
+Aprendizado ativo (**D11**); rotulagem multiclasse (**D12**); o Experimento 2 e a H2 (**D6**); as
+faixas B, C e D; generalização além das 45 litologias; integração com sistemas de chão de fábrica.

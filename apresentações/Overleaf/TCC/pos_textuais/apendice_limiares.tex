@@ -5,10 +5,10 @@
 % o AI/SAM/figuras_regra_autor.py escreve lendo os calibracao.json da faixa A.
 % Se uma litologia for recalibrada, gerar o CSV de novo e refazer esta tabela.
 
-A Tabela \ref{tab:apendice_limiares} lista, para cada par de litologia e sonda admitida na calibração da faixa A, o limiar produzido pela regra da Seção \ref{sec:regra}, o limiar adotado pelo autor e a razão entre os dois. Os valores são os gravados no registro de calibração de cada litologia, com quatro casas decimais. O resumo por litologia e a discussão estão na Seção \ref{sec:res_calibracao}.
+As Tabelas \ref{tab:apendice_limiares} e \ref{tab:apendice_limiares_2} listam, para cada par de litologia e sonda admitida na calibração da faixa A, o limiar produzido pela regra da Seção \ref{sec:regra}, o limiar adotado pelo autor e a razão entre os dois. Os valores são os gravados no registro de calibração de cada litologia, com quatro casas decimais. O resumo por litologia e a discussão estão na Seção \ref{sec:res_calibracao}.
 
 \begin{table}[ht]
-  \caption{Limiar da regra e limiar adotado pelo autor, por litologia e sonda, na faixa A.}
+  \caption{Limiar da regra e limiar adotado pelo autor, por litologia e sonda, na faixa A (parte 1 de 2).}
   \label{tab:apendice_limiares}
   \centering
   \footnotesize
@@ -44,6 +44,19 @@ A Tabela \ref{tab:apendice_limiares} lista, para cada par de litologia e sonda a
      & \textit{Dark patches} & 0,2251 & 0,2629 & 1,17 \\
      & \textit{light spot} & 0,0321 & 0,1825 & 5,69 \\
      & \textit{white stain} & 0,0515 & 0,2460 & 4,78 \\
+    \hline
+  \end{tabular}
+  \legend{elaborado pelo autor. Nota: razão é o limiar do autor dividido pelo da regra. $^{\dagger}$Litologia identificada pelo autor como movimentada.}
+\end{table}
+
+\begin{table}[ht]
+  \caption{Limiar da regra e limiar adotado pelo autor, por litologia e sonda, na faixa A (parte 2 de 2).}
+  \label{tab:apendice_limiares_2}
+  \centering
+  \footnotesize
+  \begin{tabular}{llrrr}
+    \hline
+    \bfseries Litologia & \bfseries Sonda & \bfseries Regra & \bfseries Autor & \bfseries Razão \\
     \hline
     \textit{shadow\_white}$^{\dagger}$ & \textit{vein} & 0,0208 & 0,0272 & 1,31 \\
      & \textit{crack} & 0,1241 & 0,1340 & 1,08 \\
