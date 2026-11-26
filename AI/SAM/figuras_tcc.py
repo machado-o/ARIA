@@ -127,8 +127,8 @@ def regra_x_autor() -> None:
     ax.plot([lo, hi], [lo, hi], color="gray", ls=":", lw=1.3, label="autor = regra")
     ax.plot([lo, hi], [3.3 * lo, 3.3 * hi], color="gray", ls="--", lw=1.0,
             label="autor = 3,3 × regra (mediana)")
-    ax.scatter(r[~mov], u[~mov], color="#1f4e79", s=36, label="demais litologias")
-    ax.scatter(r[mov], u[mov], color="#c55a11", marker="^", s=44, label="movimentadas")
+    ax.scatter(r[~mov], u[~mov], color="#1f4e79", s=36, label="demais litotipos")
+    ax.scatter(r[mov], u[mov], color="#c55a11", marker="^", s=44, label="movimentados")
     ax.set_xscale("log")
     ax.set_yscale("log")
     eixo_log_decimal(ax.xaxis)

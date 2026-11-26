@@ -6,7 +6,7 @@
 > ⚠️ **A numeração foi refeita em 2026-08-23.** Referências a "D1…D10" em textos antigos
 > (dentro de `apresentações/`) apontam para a numeração velha e **não valem**.
 >
-> Última atualização: 2026-11-25
+> Última atualização: 2026-11-26
 >
 > **Como ler.** Cada decisão guarda o texto original e as emendas datadas, e nada é apagado: o
 > registro de *quando* cada coisa foi decidida é o que mostra que o desenho não foi ajustado depois
@@ -37,6 +37,7 @@
 | D19 | Classificador | Reprodução do Xception; reportar 96,72% (`test/` oficial) e 99,92% (sorteio por imagem) |
 | D20 | Movimentadas | Calibradas como as demais; termo "movimentada"; recorte à parte nos resultados |
 | D21 | Contornos | Cada contorno solto é um polígono; a unidade da regra continua sendo a detecção |
+| D22 | Termo | Na monografia, "litotipo" (variedade comercial); em `docs/` e no código, "litologia" continua, com o mesmo sentido |
 
 ---
 
@@ -924,3 +925,21 @@ comparações.
 - **Área mínima.** Separar gera fragmentos minúsculos, que antes ficavam costurados a uma peça
   maior. O filtro e o seu valor são parte do pós-processamento do Professor (`roadmap.md` →
   Fase 3.0).
+
+## D22 — "Litotipo" na monografia; "litologia" fica no código e em `docs/`
+
+**Contexto:** cada classe do conjunto de dados é uma variedade comercial de rocha
+(`siena_white`, `san_francisco_green`...). Em geologia, **litologia** é o tipo de rocha (granito,
+mármore), e vários desses nomes comerciais têm a mesma: uma banca com geólogo perguntaria por que
+dois granitos são "litologias diferentes". Na literatura brasileira de rochas ornamentais,
+**litotipo** é usado para a variedade com nome próprio (o "litotipo Pedra-Madeira"). A monografia
+usava "litologia" cerca de 170 vezes sem definir o termo.
+
+**Decisão (2026-11-26, Henrique):** a **monografia** passa a usar **litotipo**, definido em nota
+de rodapé no primeiro uso da Introdução (com a distinção para litologia). Em inglês, *lithotype*.
+"Movimentada" (**D20**) vira "movimentado" na monografia, por concordância; o conceito não muda.
+**`docs/`, código, nomes de arquivo e campos de JSON continuam com "litologia"**, no mesmo sentido
+de litotipo: são internos, e trocar lá só criaria risco. As alternativas descartadas foram manter
+"litologia" só com uma definição (termo continua impreciso) e trocar em tudo.
+
+O título também passou a "...Critério Parametrizado por Litotipo" (2026-11-26), por ora.
