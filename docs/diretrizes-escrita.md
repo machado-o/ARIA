@@ -38,6 +38,12 @@ Figura com chapa do `test/` só depois do julgamento do Henrique na auditoria (*
 os vícios (travessão demais, "não é X, é Y", trios forçados, palavras infladas, negrito mecânico).
 A parte dela que pede primeira pessoa e personalidade **não** vale aqui: o TCC segue a §1.1.
 
+1.8. **Analogias, poucas e sóbrias** (pedido do Henrique, 26/11/2026). Na conversa, analogia à
+vontade; no texto do TCC, só onde ela explica algo que a frase técnica sozinha não deixa claro, em
+uma frase, sem tom de conversa e sem repetir imagem (duas de incêndio, por exemplo). Hoje são
+quatro: a foto (varredura, Cap. 3), o alarme (precisão desempata, Cap. 3), a prova e a lista
+(particionamento, Cap. 4) e o rádio (vocabulário, Cap. 4).
+
 ---
 
 ## 2. Fidelidade aos fatos (inegociável)
