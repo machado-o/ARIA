@@ -22,9 +22,9 @@ versão anterior a esta reorganização é a do commit `fb24729`.
 3. mandar uma versão ao Rafael, ainda sem os resultados da auditoria (ele não pediu nem deu data);
 4. o Henrique faz os julgamentos dele na auditoria.
 
-**Prazos (informados em 19/11, ainda sem confirmação):** defesa até dezembro de 2026; publicação
-até fevereiro de 2027. A data de trabalho da versão que vai à banca é **01/12/2026**. Falta
-confirmar com o Rafael.
+**Prazos (confirmados em 26/11/2026):** versão escrita para a banca em **02/12/2026**;
+apresentação e defesa em **09/12 e 10/12/2026**. Publicação até fevereiro de 2027 (informada em
+19/11).
 
 **Ideias e análises da sessão de 25/11:** ver [`reflexao.md`](reflexao.md), seção 12 (próximos
 passos sugeridos). As que forem aceitas entram aqui como itens.
@@ -39,9 +39,13 @@ mas nenhuma marcação dela foi sorteada). Em 23/11 o aplicativo passou a afasta
 inteira; desde 24/11 os dois PCs têm o mesmo `.zip` (conferido por hash: só o `index.html` mudou).
 O sorteio não se refaz (ver `CLAUDE.md`).
 
-- [ ] Mandar o `.zip` para a avaliadora, **Marcelli da Fonseca Carvalho** (estudante de
+- [x] Mandar o `.zip` para a avaliadora, **Marcelli da Fonseca Carvalho** (estudante de
   Engenharia de Minas). Ela extrai, abre o `index.html`, julga quantas conseguir e devolve o
-  `.json` exportado.
+  `.json` exportado. Enviado em 26/11.
+- [ ] Gravar um vídeo curto explicando o aplicativo à Marcelli. Só como usar a ferramenta: sem
+  dizer o que o sistema deveria marcar, nem o que o Henrique espera, para não enviesar o julgamento.
+- [ ] Combinar com ela um prazo de devolução que caiba antes de 02/12 (ou decidir se o resultado
+  entra só na versão da defesa).
 - [ ] O Henrique julga a mesma amostra, separado: cada um na sua tela, sem ver nem comentar a
   resposta do outro, e sem abrir `itens.json` nem `limiares.json` antes.
 - [ ] Os `.json` vão para `AI/SAM/auditoria/respostas/`; rodar `auditoria_analisar.py`.
