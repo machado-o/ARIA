@@ -7,11 +7,18 @@ Regra da casa: item fechado sai daqui. Se ele deixou um fato que precisa ser lem
 para o documento certo (decisão, dataset, arquitetura). O histórico completo está no git; a
 versão anterior a esta reorganização é a do commit `fb24729`.
 
-Última atualização: 25/11/2026
+Última atualização: 28/11/2026
 
 ---
 
 ## Por onde retomar
+
+➡️ **Amanhã (29/11/2026):** continuar a **revisão do TCC em sessões** (ver *Texto do TCC →
+Revisão em sessões*). Primeiro, a sessão rápida de estrutura, discutindo as 6 marcas da segunda
+passada; depois, a de fatos (números) e a de citações. Pendentes da revisão de 28/11: a figura do
+Cap. 1 e a figura do aplicativo da auditoria (em *Melhorias aceitas ou a decidir*). Sugestão de
+calendário até a entrega de 02/12: 29/11 estrutura + fatos; 30/11 citações + consistência; 01/12
+escrita e compilação final.
 
 **Plano do Henrique (22/11/2026), nesta ordem:**
 
@@ -90,8 +97,60 @@ depois de *Menu → GitHub → Pull*.
 - [ ] Ler a seção *Adjustment and Anchoring* de Tversky e Kahneman (1974), citada desde 26/11 na
   ferramenta de calibração (ancoragem do controle no valor da regra).
 
+### Revisão em sessões (plano de 28/11/2026)
+
+O Henrique revisa o texto com o Claude em sessões separadas, cada uma olhando uma coisa só. As
+marcas de cada sessão vão para `revisao/marcas/` (importáveis no `revisao/revisao_pdf.html`). O
+Claude gera as marcas com `revisao/marcar.py` (achados em `.json` → marcas sobre o PDF; precisa do
+PyMuPDF, que não está no venv: instalar com `pip install --target <pasta temporária> pymupdf` e
+apontar o `PYTHONPATH` para ela). As posições valem para o PDF compilado do mesmo commit; se o
+texto mudou, o `revisao/mapear.py` ainda acha cada marca no `.tex` pelo trecho.
+
+1. [x] **Estrutura** (28/11). 20 marcas, todas tratadas, com a opinião do Henrique em cada uma.
+   Mudou: Introdução com lista de **Contribuições** (1.6) e objetivo 2 reescrito; Cap. 2 sem o
+   parágrafo dos prompts contextuais, YOLO logo depois de Professor–Aluno, kappa definido em
+   Métricas; Cap. 3 com a subseção "Litotipos de padrão movimentado" em Conjunto de Dados e uma
+   seção nova **"Estágio 2 — Professor"** (configuração, "Do contorno ao polígono" e as Sondas);
+   Cap. 4 na ordem do Cap. 3 (classificador primeiro), a 4.4 só com as medições dos contornos;
+   Cap. 5 retoma a pergunta, os objetivos e as contribuições, ganha **"Escopo e Limitações"** e
+   os trabalhos futuros em ordem; "escore" virou "confiança" em todo o texto; resumo com o
+   classificador antes da calibração. Marcas: `revisao/marcas/claude_estrutura_2026-11-28.json`.
+   - [ ] **Segunda passada de estrutura** (28/11, feita pelo Claude sobre o texto já mudado): 6
+     marcas, ainda **não discutidas**, em `revisao/marcas/claude_estrutura2_2026-11-28.json`.
+     Compilar o PDF deste commit e importar. Resumo: (a) objetivo 1 promete "pré-processar", mas
+     só houve o rename da pasta; (b) contribuição 5 e resumo dizem "duas ferramentas", e o
+     aplicativo da auditoria é a terceira; (c) a abertura do Protocolo (3.6) e a da nova 3.5
+     repetem a ideia de adaptação sem mexer nos pesos; (d) talvez a Varredura (3.8) vire
+     subseção do Estágio 2; (e) agrupar 4.2–4.4 numa seção "Verificações do Professor"; (f) mover
+     o comentário TODO do resultado da H1, na conclusão, para depois do parágrafo da pergunta de
+     pesquisa. O Henrique quer ainda uma sessão rápida de estrutura, por segurança.
+2. [ ] **Fatos: números** — cada número, data e contagem conferido em `docs/`, nos
+   `calibracao.json`, nos `runs/` e no código. Conferir em especial o que entrou em 28/11: as
+   imagens com "cerca de 1.300 × 800 pixels" (amostra de 693 imagens, tamanhos variam). A frase
+   "o autor observou que a maior parte das chapas tem a matriz limpa" (3.6 e 3.11.1) foi
+   **confirmada pelo Henrique em 28/11**: no `rock_viewer`, alguns litotipos tinham várias
+   imagens seguidas com anomalias (o mesmo bloco com defeito), mas no geral predominava a matriz
+   limpa.
+3. [ ] **Fatos: citações** — cada referência diz o que o texto atribui a ela? Inclui a epígrafe e
+   o `.bib` (4 entradas não citadas: `diffusion_rogers2003`, `iou_mahmood2021`,
+   `sociotech_trist1951`, `tam_davis1989`).
+4. [ ] **Consistência** — termos (imagem × vaga, nomes dos braços, *Stain* × *stain*), remissões,
+   legendas, ABNT.
+5. [ ] **Escrita** — frase por frase, com atenção a palavras repetidas (pedido do Henrique).
+6. [ ] **Leitura de banca** — perguntas prováveis, para a defesa.
+
 ### Melhorias aceitas ou a decidir
 
+- [ ] **Figura no Cap. 1** (aceita na revisão de estrutura, 28/11): a mesma feição sendo defeito
+  numa rocha e desenho valorizado em outra. Só imagens do `train/`. O Henrique escolhe as chapas,
+  porque a figura afirma o que é defeito.
+- [ ] **Figura do aplicativo da auditoria** na Seção 3.10 (aceita em 28/11). Não pode mostrar chapa
+  do `test/` antes de o Henrique julgar: ou uma tela montada com chapa do `train/`, ou a figura
+  entra depois dos julgamentos dele.
+- [ ] **Seção 4.4 (contornos) mais rica** (ideia do Henrique, 28/11): análise qualitativa com
+  figuras (marcações que acertaram ou não), segmentações sobrepostas e o que isso implica, quais
+  sondas geram mais polígonos, tamanho dos polígonos. Exige análise nova sobre o cache; hoje a
+  seção tem só as medições da fusão dos contornos.
 - [ ] **Figuras que ainda faltam.** Feitas em 26/11 (`AI/SAM/figuras_tcc.py`): as quatro imagens de
   calibração, a curva com o joelho, regra × autor, exemplos por rocha (capítulo 4 e Apêndice B).
   Candidata que falta: um desenho dos braços que se encaixam.

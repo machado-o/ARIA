@@ -1,0 +1,432 @@
+{
+ "formato": "aria-revisao/1",
+ "pdf": "main.pdf",
+ "impressao": "",
+ "exportado_em": "2026-11-28T03:14:22.336464+00:00",
+ "categorias": [
+  {
+   "id": "mover",
+   "nome": "Mover",
+   "cor": "#ec4899",
+   "descricao": "mudar de lugar; a nota diz para onde"
+  }
+ ],
+ "marcas": [
+  {
+   "id": "cl1a2202589fe00hsg7",
+   "pagina": 5,
+   "categoria": "mudar",
+   "texto": "O classificador de litotipos, reproduzido de trabalho anterior, atingiu 96,72% de acurácia",
+   "comentario": "[Claude · estrutura] Ordem do resumo: o classificador é o 1º estágio, mas o resultado dele vem por último, depois do da calibração. Quando entrar a frase da auditoria, a ordem natural é classificador → calibração → experimento. Sugestão: pôr esta frase antes de 'Nos onze litotipos com mais imagens'. Igual no abstract.",
+   "rects": [
+    {
+     "p": 5,
+     "x": 0.29,
+     "y": 0.767,
+     "w": 0.6148,
+     "h": 0.0143
+    },
+    {
+     "p": 5,
+     "x": 0.1429,
+     "y": 0.7927,
+     "w": 0.1696,
+     "h": 0.0143
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:20.798459+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a220258a5e01usq5",
+   "pagina": 14,
+   "categoria": "figura",
+   "texto": "não existe um critério escrito que separe uma feição natural da rocha de um defeito comercial",
+   "comentario": "[Claude · estrutura] O Cap. 1 não tem nenhuma figura, e a ideia central do trabalho é muito visual: a mesma feição é defeito numa rocha e desenho valorizado em outra. Sugestão: duas chapas lado a lado (ex.: um veio escuro na siena_white e o padrão natural de uma movimentada, como a white_mirage). Só imagens do train/ (D7, D17).",
+   "rects": [
+    {
+     "p": 14,
+     "x": 0.4217,
+     "y": 0.4405,
+     "w": 0.483,
+     "h": 0.0143
+    },
+    {
+     "p": 14,
+     "x": 0.1429,
+     "y": 0.4665,
+     "w": 0.3557,
+     "h": 0.0141
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:20.894578+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a220258ad6022j2y",
+   "pagina": 16,
+   "categoria": "mudar",
+   "texto": "que identifica a rocha e seleciona a configuração de marcação correspondente",
+   "comentario": "[Claude · estrutura] O objetivo promete que o classificador seleciona a configuração, mas a ligação classificador → Professor/Aluno está nos trabalhos futuros ('Integração de ponta a ponta'). A banca confere objetivo × resultado. Duas saídas: o objetivo diz só 'reproduzir e avaliar o classificador que, na arquitetura, seleciona...', ou a conclusão diz que o roteamento está previsto e não foi ligado.",
+   "rects": [
+    {
+     "p": 16,
+     "x": 0.3695,
+     "y": 0.7832,
+     "w": 0.5353,
+     "h": 0.0141
+    },
+    {
+     "p": 16,
+     "x": 0.192,
+     "y": 0.8089,
+     "w": 0.1395,
+     "h": 0.0142
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:21.014715+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a220258b3503bjjq",
+   "pagina": 17,
+   "categoria": "mudar",
+   "texto": "Construir um protocolo de avaliação cega, em que avaliadores humanos julgam as marcações",
+   "comentario": "[Claude · estrutura] O objetivo fala em 'avaliadores' (plural) como referência; o método tem UMA avaliadora como referência e o autor à parte, para a concordância. Alinhar a promessa do objetivo com o desenho da Seção 3.10.",
+   "rects": [
+    {
+     "p": 17,
+     "x": 0.192,
+     "y": 0.1672,
+     "w": 0.7127,
+     "h": 0.0143
+    },
+    {
+     "p": 17,
+     "x": 0.192,
+     "y": 0.1929,
+     "w": 0.1263,
+     "h": 0.0143
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:21.109720+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a220258b8504qcmz",
+   "pagina": 17,
+   "categoria": "acrescentar",
+   "texto": "O trabalho contribui com um elemento pouco explorado nessa interseção",
+   "comentario": "[Claude · estrutura] As contribuições aparecem em três lugares, cada vez com outra formulação: aqui (prompt condicionado por classe + registro auditável), na 2.8 (pontos i e ii) e na conclusão (quatro resultados). Sugestão: uma lista curta de contribuições no fim da Introdução (protocolo das 4 imagens; regra sem parâmetro livre + registro da divergência; prova da equivalência da varredura; desenho de 4 braços com regra de decisão pré-registrada; ferramentas), e a conclusão retoma a MESMA lista. É o que a banca vai procurar.",
+   "rects": [
+    {
+     "p": 17,
+     "x": 0.7185,
+     "y": 0.6472,
+     "w": 0.1863,
+     "h": 0.0143
+    },
+    {
+     "p": 17,
+     "x": 0.1429,
+     "y": 0.673,
+     "w": 0.468,
+     "h": 0.0143
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:21.189929+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a220258bc205mah6",
+   "pagina": 21,
+   "categoria": "acrescentar",
+   "texto": "O trabalho original sobre essas representações observou que",
+   "comentario": "[Claude · estrutura] Este parágrafo prepara uma pergunta que o Cap. 3 não responde: se frases funcionam melhor que palavras soltas, por que as sondas são palavras soltas? Hoje a resposta só aparece nos trabalhos futuros. Sugestão: uma frase na seção das Sondas (3.5) dizendo por que se usou palavra solta nesta versão e remetendo à análise futura. Sem ela, a fundamentação parece apoiar o contrário do que foi feito.",
+   "rects": [
+    {
+     "p": 21,
+     "x": 0.1429,
+     "y": 0.1734,
+     "w": 0.5701,
+     "h": 0.0143
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:21.250115+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a220258bfc06t1mg",
+   "pagina": 22,
+   "categoria": "mover",
+   "texto": "A segmentação semântica e de instâncias evoluiu de arquiteturas encoder",
+   "comentario": "[Claude · estrutura] A ordem do Cap. 2 segue o pipeline até Professor–Aluno, sai para rótulos ruidosos/limiar e só então volta ao Aluno (YOLO). Sugestão: pôr 'Segmentação em Tempo Real' logo depois de 'Professor–Aluno e Pseudo-rotulagem'; a leitura fica Classificador → Professor → Aluno → limiar → métricas → relacionados. Ajustar a lista da 'Organização do Trabalho'. Prioridade baixa.",
+   "rects": [
+    {
+     "p": 22,
+     "x": 0.1422,
+     "y": 0.6678,
+     "w": 0.6775,
+     "h": 0.0143
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:21.308323+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a220258c37070jk1",
+   "pagina": 26,
+   "categoria": "mudar",
+   "texto": "Este capítulo descreve o conjunto de dados, a arquitetura do",
+   "comentario": "[Claude · estrutura] A lista da abertura não bate com as seções do capítulo: faltam o classificador, as sondas, a varredura, as ferramentas e o ambiente. Ajustar depois de reorganizar o capítulo (e a frase do Cap. 3 na 'Organização do Trabalho').",
+   "rects": [
+    {
+     "p": 26,
+     "x": 0.1429,
+     "y": 0.1477,
+     "w": 0.5462,
+     "h": 0.0143
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:21.367787+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a220258c8f087mjb",
+   "pagina": 29,
+   "categoria": "acrescentar",
+   "texto": "O classificador do primeiro estágio é uma reprodução do modelo Xception",
+   "comentario": "[Claude · estrutura] Há uma seção 'Estágio 1', mas não há 'Estágio 2 — Professor'. O que é o Professor na prática (SAM3, prompt de texto, 644 px, FP32, captura no piso, máscara → polígonos) está espalhado entre 3.5, 3.8, 3.12 e 4.3, e o objetivo específico 4 ('Implementar o estágio Professor') não tem seção que o cumpra. Sugestão: uma seção 'Estágio 2 — Professor' logo depois desta, juntando a configuração do modelo e a conversão em polígonos; a seção das Sondas vira parte dela. Para o Aluno basta o que já está no Quadro dos estágios.",
+   "rects": [
+    {
+     "p": 29,
+     "x": 0.1429,
+     "y": 0.1479,
+     "w": 0.6489,
+     "h": 0.0141
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:21.455784+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a220258ce109ubn0",
+   "pagina": 34,
+   "categoria": "mover",
+   "texto": "Durante a seleção das imagens da faixa A, o autor encontrou litotipos de padrão movimentado",
+   "comentario": "[Claude · estrutura] Esta subseção não descreve um passo do protocolo (que é o mesmo para todos): ela define um recorte do experimento, movimentados × demais. Fica mais clara no 'Conjunto de Dados' (caracterização dos litotipos, junto das faixas) ou no Experimento, onde os recortes são anunciados. Deixa explícito que a classificação foi feita pelo autor, antes da calibração.",
+   "rects": [
+    {
+     "p": 34,
+     "x": 0.1429,
+     "y": 0.3397,
+     "w": 0.7619,
+     "h": 0.0143
+    },
+    {
+     "p": 34,
+     "x": 0.1429,
+     "y": 0.3656,
+     "w": 0.119,
+     "h": 0.0141
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:21.537336+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a220258d43108j0x",
+   "pagina": 45,
+   "categoria": "mover",
+   "texto": "A concordância entre os dois é medida pelo coeficiente kappa de Cohen",
+   "comentario": "[Claude · estrutura] Precisão, recall, IoU e pooling são definidos na 2.7 (Métricas); o kappa é definido só aqui, com equação. Sugestão: levar a definição e o exemplo dos dois avaliadores que dizem 'não' a quase tudo para a 2.7, e aqui dizer só sobre quais itens ele é calculado. O capítulo de método fica mais curto e as métricas ficam num lugar só.",
+   "rects": [
+    {
+     "p": 45,
+     "x": 0.4245,
+     "y": 0.3994,
+     "w": 0.4803,
+     "h": 0.0141
+    },
+    {
+     "p": 45,
+     "x": 0.1429,
+     "y": 0.425,
+     "w": 0.1486,
+     "h": 0.0143
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:21.635922+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a220258d7c119l4t",
+   "pagina": 43,
+   "categoria": "figura",
+   "texto": "As detecções são apresentadas ao avaliador uma a uma",
+   "comentario": "[Claude · estrutura] As duas ferramentas de calibração têm figura; o aplicativo da auditoria, que produz a referência da H1, não tem. Sugestão: captura de tela do aplicativo. CUIDADO: você é avaliador, então a captura não pode mostrar chapa do test/ antes de você julgar. Ou se monta uma tela de exemplo com chapa do train/, ou a figura entra depois dos seus julgamentos.",
+   "rects": [
+    {
+     "p": 43,
+     "x": 0.1422,
+     "y": 0.6116,
+     "w": 0.4885,
+     "h": 0.0141
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:21.692852+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a220258db412lwl7",
+   "pagina": 47,
+   "categoria": "mudar",
+   "texto": "Precisão e recall relativo podem apontar em sentidos opostos",
+   "comentario": "[Claude · estrutura] No trecho que diz que a regra foi fixada antes dos julgamentos, a metodologia se apoia num resultado do Cap. 4 (o braço único marca mais; logo abaixo, o 'encaixe' dos braços vem de um resultado da calibração). Não é erro, porque o volume é conhecido sem julgar nada, mas lido em sequência parece que o método foi escrito olhando o resultado. Sugestão: dizer isso com todas as letras ('o volume por braço, contado antes de qualquer julgamento, já indica que...').",
+   "rects": [
+    {
+     "p": 47,
+     "x": 0.1429,
+     "y": 0.6408,
+     "w": 0.5419,
+     "h": 0.0141
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:21.748801+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a220258e2713a7u0",
+   "pagina": 54,
+   "categoria": "mover",
+   "texto": "A reprodução do classificador",
+   "comentario": "[Claude · estrutura] Ordem do Cap. 4 × Cap. 3: no método o classificador vem antes do Professor (3.4); nos resultados vem depois das três verificações do Professor (4.1–4.3). Sugestão: espelhar o Cap. 3: classificador primeiro, depois as verificações do Professor, calibração e experimento. A abertura do capítulo e a 'Organização do Trabalho' mudam junto.",
+   "rects": [
+    {
+     "p": 54,
+     "x": 0.1422,
+     "y": 0.5907,
+     "w": 0.2654,
+     "h": 0.0142
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:21.863523+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a220258e6214jhro",
+   "pagina": 53,
+   "categoria": "sair",
+   "texto": "O dado também recomenda cautela na transposição de valores da literatura",
+   "comentario": "[Claude · estrutura] Repete a 2.5 quase igual ('transporta-se a direção da recomendação, e não o valor'). Basta uma frase remetendo à Seção 2.5, ou o parágrafo inteiro sai.",
+   "rects": [
+    {
+     "p": 53,
+     "x": 0.1429,
+     "y": 0.1994,
+     "w": 0.6616,
+     "h": 0.0141
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:21.922336+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a220258e9c15mbum",
+   "pagina": 53,
+   "categoria": "mover",
+   "texto": "A conversão das máscaras do Professor em polígonos no formato de anotação",
+   "comentario": "[Claude · estrutura] Esta seção é metade método (a decisão de separar os contornos, e que a detecção continua sendo a unidade da regra) e metade medição. Ela não fala com a H1 e interrompe a sequência de resultados. Sugestão: a decisão vai para a nova seção do Professor no Cap. 3; os números (45 de 76, IoU 0,928, 2,5×, 15 de 168) ficam aqui, mais curtos, ou vão para um apêndice.",
+   "rects": [
+    {
+     "p": 53,
+     "x": 0.1422,
+     "y": 0.3927,
+     "w": 0.7128,
+     "h": 0.0143
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:21.980417+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a220258f3816k0i2",
+   "pagina": 55,
+   "categoria": "sair",
+   "texto": "A forma da regra foi fixada antes da primeira calibração e não foi alterada depois.",
+   "comentario": "[Claude · estrutura] Frase idêntica à da Seção 3.7. Aqui pode sair.",
+   "rects": [
+    {
+     "p": 55,
+     "x": 0.5746,
+     "y": 0.6244,
+     "w": 0.3302,
+     "h": 0.0143
+    },
+    {
+     "p": 55,
+     "x": 0.1429,
+     "y": 0.6502,
+     "w": 0.3995,
+     "h": 0.0142
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:22.136131+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a220258f8a179k8p",
+   "pagina": 51,
+   "categoria": "acrescentar",
+   "texto": "Este capítulo começa pelas verificações que sustentam o método",
+   "comentario": "[Claude · estrutura] Falta uma seção de limitações (ameaças à validade), juntando o que hoje está espalhado ou não dito: uma só avaliadora, estudante e não inspetora do setor; o autor é calibrador e também avaliador; um só calibrador; 3 chapas por litotipo; a classificação 'movimentado' feita pelo próprio autor; calibração numa versão e auditoria preparada em outra (já mostrado reproduzível em 4.6); recall relativo e não absoluto. A banca vai perguntar isso, então é melhor que já esteja escrito. Lugar: uma seção 'Discussão e limitações' no fim do Cap. 4, ou 'Limitações' no Cap. 5, antes de 'Escopo'.",
+   "rects": [
+    {
+     "p": 51,
+     "x": 0.1429,
+     "y": 0.1478,
+     "w": 0.5789,
+     "h": 0.0141
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:22.218107+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a220258fc418nirk",
+   "pagina": 62,
+   "categoria": "acrescentar",
+   "texto": "Este trabalho partiu de uma constatação sobre a inspeção de chapas",
+   "comentario": "[Claude · estrutura] A pergunta de pesquisa tem duas partes (1.2) e há seis objetivos específicos (1.4), mas a conclusão não volta a nenhum deles com todas as letras. A banca costuma conferir objetivo por objetivo. Sugestão: um parágrafo ou lista curta que retoma cada objetivo e diz onde foi cumprido, e uma frase que responde à 1ª parte da pergunta ('é possível materializar...?'), que já tem resposta sem a auditoria: os 11 registros de calibração. A 2ª parte fica com o resultado da H1.",
+   "rects": [
+    {
+     "p": 62,
+     "x": 0.1429,
+     "y": 0.1911,
+     "w": 0.6603,
+     "h": 0.0143
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:22.276938+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a22025900019no28",
+   "pagina": 64,
+   "categoria": "mudar",
+   "texto": "Vocabulário de sondas para litotipos movimentados",
+   "comentario": "[Claude · estrutura] São nove trabalhos futuros sem ordem clara: o passo que completa a arquitetura (treinar o Aluno) é o 7º, e as faixas B–D são o 8º. Sugestão: do mais próximo ao mais distante: (1) faixas B–D e treino do Aluno, que completam o que o trabalho propõe; (2) melhorar o Professor (vocabulário, prompts contextuais, adaptação ao domínio, multiclasse); (3) avaliação (recall absoluto, concordância entre calibradores); (4) produção (integração e latência, aprendizado ativo).",
+   "rects": [
+    {
+     "p": 64,
+     "x": 0.1429,
+     "y": 0.1478,
+     "w": 0.4963,
+     "h": 0.0142
+    }
+   ],
+   "criada_em": "2026-11-28T03:14:22.336456+00:00",
+   "n_ocorrencias": 1
+  }
+ ]
+}

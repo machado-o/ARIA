@@ -1,16 +1,28 @@
 \chapter[RESULTADOS]{RESULTADOS}
 
-Este capítulo começa pelas verificações que sustentam o método descrito no Capítulo 3, sem as quais o experimento não faria sentido, apresenta o resultado do classificador e da calibração da faixa A, e termina no experimento propriamente dito.
+Este capítulo segue a ordem do Capítulo 3. Começa pelo classificador, o primeiro estágio; passa às verificações que sustentam o Professor, sem as quais o experimento não faria sentido, e à calibração da faixa A; e termina no experimento propriamente dito.
 
 % TODO (estrutura): as seções 4.1 a 4.5 estão completas; a do experimento
-% aguarda os julgamentos da auditoria cega.
+% aguarda os julgamentos da auditoria cega. A 4.4 (contornos) pode ganhar
+% análise qualitativa com figuras (ver docs/pendencias.md).
+
+\section{Classificador de Litotipos}
+\label{sec:res_classificador}
+
+A reprodução do classificador (Seção \ref{sec:classificador}) atingiu 96,72\% de acurácia sobre as 5.153 imagens da partição de teste original, com acurácia balanceada de 92,32\% e F1 macro de 0,924. Os erros concentram-se em poucos litotipos (15 dos 45 apresentam algum) e em poucos pares: \textit{naica} confundida com \textit{white\_olympus} em 33 imagens, \textit{white\_himalaya} com \textit{white\_liberdade} em 31, e \textit{white\_superiore} com \textit{kalahari} em 21 e com \textit{white\_olympus} em 15.
+
+O caso da \textit{white\_superiore} indica a causa. O modelo acertou 35 de suas 37 imagens de validação e nenhuma de suas 36 imagens de teste. Na inspeção visual, as imagens de teste são acinzentadas, com veios lineares e paralelos, enquanto as de treinamento e de validação são brancas, com veios ramificados: as de teste aparentam pertencer a outro bloco. Uma sondagem por similaridade de cor e brilho reforça essa leitura para esse litotipo, mas não se confirma em todos: em outros, o teste está tão próximo do treinamento quanto a validação.
+
+Para isolar o efeito do particionamento, o mesmo modelo foi treinado com a mesma receita e as partições sorteadas por imagem, como no trabalho original. O resultado foi de 99,92\% de acurácia, com 4 erros em 5.195 imagens, acima dos 99,21\% reportados pelo DeepStoneAI. A diferença de cerca de três pontos vem, portanto, da divisão dos dados, e não da resolução nem do modelo: no sorteio por imagem, chapas vizinhas das de treinamento, cortadas do mesmo bloco e com os mesmos veios, caem na partição de teste. A situação equivale a uma prova com questões quase iguais às da lista de exercícios: a nota passa a medir, em parte, a memória da lista.
+
+Os dois números descrevem cenários de uso distintos, e nenhum é tratado como erro do outro. O de 99,92\% corresponde a classificar chapas de um bloco já visto, situação comum na indústria, em que um mesmo bloco gera dezenas de chapas. O de 96,72\% aproxima-se de classificar chapas de um bloco novo. O valor do DeepStoneAI não é diretamente comparável a nenhum dos dois, por adotar particionamento próprio. O modelo empregado no \textit{pipeline} é o treinado sobre as partições originais.
 
 \section{Verificação da Equivalência da Varredura Fora de Linha}
 \label{sec:res_d18}
 
 A Seção \ref{sec:varredura} afirma que executar o Professor uma única vez com o limiar no piso e filtrar o material armazenado é exatamente equivalente a reexecutar o modelo em cada limiar. Como todo o protocolo de calibração depende dessa afirmação, ela foi verificada por execução, e não apenas por inspeção do código.
 
-O procedimento fixou uma imagem e, para cada uma de quatro sondas (\textit{crack}, \textit{vein}, \textit{Stain} e \textit{Dark patches}), comparou duas grandezas em oito limiares distribuídos entre 0,005 e 0,500: o resultado de executar o Professor com aquele limiar e o resultado de filtrar, naquele mesmo valor, o material capturado com o limiar no piso de 0,001. A comparação abrangeu o número de detecções, os escores e os vértices dos polígonos, sem tolerância numérica.
+O procedimento fixou uma imagem e, para cada uma de quatro sondas (\textit{crack}, \textit{vein}, \textit{Stain} e \textit{Dark patches}), comparou duas grandezas em oito limiares distribuídos entre 0,005 e 0,500: o resultado de executar o Professor com aquele limiar e o resultado de filtrar, naquele mesmo valor, o material capturado com o limiar no piso de 0,001. A comparação abrangeu o número de detecções, as confianças e os vértices dos polígonos, sem tolerância numérica.
 
 A verificação foi executada três vezes. A primeira, sobre a imagem de descoberta da \textit{siena\_white}, primeiro litotipo selecionado, antes do início da calibração. As outras duas, sobre a imagem de descoberta da \textit{golden\_storm}, uma em cada versão da biblioteca de modelos do Quadro \ref{quad:ambiente}; estas são as registradas no repositório, e a segunda delas já incorpora a mudança no tratamento dos contornos descrita na Seção \ref{sec:res_contornos}. Nas três, as 32 comparações deram resultado idêntico nas três grandezas, sem divergência em nenhum limiar, no número de regiões ou em qualquer coordenada de polígono. A Tabela \ref{tab:d18} resume o número de detecções sobreviventes em cada configuração na primeira execução; como o valor é idêntico nos dois métodos, cada célula traz um número só.
 
@@ -35,13 +47,13 @@ O resultado tem duas consequências. A primeira é prática: o ciclo de calibra�
 
 A equivalência é propriedade da implementação verificada, e por isso o procedimento de verificação integra o repositório: a cada atualização de versão da biblioteca, ele é reexecutado e o resultado é registrado junto da versão. Foi o que se fez com as duas versões usadas no trabalho (Quadro \ref{quad:ambiente}), ambas com as 32 comparações idênticas.
 
-\section{Caracterização dos Escores do Professor}
+\section{Caracterização da Confiança do Professor}
 \label{sec:res_escores}
 
-A escolha da escala logarítmica na regra de limiar (Seção \ref{sec:regra}) decorre da distribuição observada dos escores, medida sobre a imagem de descoberta da \textit{siena\_white} (a mesma da Tabela \ref{tab:d18}) e reportada na Tabela \ref{tab:escores}.
+A escolha da escala logarítmica na regra de limiar (Seção \ref{sec:regra}) decorre da distribuição observada da confiança, medida sobre a imagem de descoberta da \textit{siena\_white} (a mesma da Tabela \ref{tab:d18}) e reportada na Tabela \ref{tab:escores}.
 
 \begin{table}[ht]
-  \caption{Distribuição dos escores do Professor por sonda, com o limiar no piso.}
+  \caption{Distribuição da confiança do Professor por sonda, com o limiar no piso.}
   \label{tab:escores}
   \centering
   \begin{tabular}{lrrrr}
@@ -57,40 +69,25 @@ A escolha da escala logarítmica na regra de limiar (Seção \ref{sec:regra}) de
   \legend{elaborado pelo autor}
 \end{table}
 
-Os escores percorrem quase duas ordens de grandeza, de 0,011 a 0,766, mas a mediana situa-se entre 0,045 e 0,076 em todas as sondas: a massa da distribuição concentra-se na década baixa e a cauda superior é rala. Em uma grade linear de limiares, portanto, a quase totalidade dos pontos cairia em região sem detecção alguma, e o joelho da curva recairia sistematicamente sobre seu primeiro ponto; daí a normalização logarítmica do eixo.
+Os valores de confiança percorrem quase duas ordens de grandeza, de 0,011 a 0,766, mas a mediana situa-se entre 0,045 e 0,076 em todas as sondas: a massa da distribuição concentra-se na década baixa e a cauda superior é rala. Em uma grade linear de limiares, portanto, a quase totalidade dos pontos cairia em região sem detecção alguma, e o joelho da curva recairia sistematicamente sobre seu primeiro ponto; daí a normalização logarítmica do eixo.
 
-O dado também recomenda cautela na transposição de valores da literatura de pseudo-rotulagem. Os limiares elevados ali reportados referem-se a escores de detectores supervisionados calibrados, cuja escala não corresponde à observada aqui. O que se transporta daquela literatura é a direção do compromisso, privilegiar a precisão, e não a magnitude do corte.
-
-\section{Geometria dos Polígonos Produzidos pelo Professor}
+\section{Contornos Fundidos na Conversão em Polígonos}
 \label{sec:res_contornos}
 
-A conversão das máscaras do Professor em polígonos no formato de anotação apresenta uma particularidade com consequência sobre a qualidade do rótulo. Quando a máscara de uma detecção possui mais de um contorno desconexo, a implementação utilizada funde todos eles em uma única poligonal, ligando-os por trajetos de ida e volta.
+A Seção \ref{sec:poligonos} descreve a fusão dos contornos desconexos de uma detecção em uma única poligonal e a decisão de separá-los. Esta seção traz as medições que motivaram a decisão e as que verificaram o seu efeito.
 
 A medição sobre a imagem de descoberta da \textit{siena\_white}, com a sonda \textit{crack} no limiar de 0,08, encontrou 45 detecções com mais de um contorno em um total de 76. Como os trajetos de ligação têm área praticamente nula, o efeito agregado é pequeno: a área total dos polígonos supera a das máscaras em 2,4\%, e a sobreposição entre a união das máscaras e a união dos polígonos atinge IoU de 0,928. O caso individual, porém, não é igualmente benigno: em uma detecção composta por 18 contornos, a área do polígono alcançou 2,5 vezes a da máscara correspondente.
 
 A implicação é que o efeito é desprezível quando se avalia a cobertura agregada, mas não quando uma detecção fragmentada é tomada isoladamente como instância de treinamento. Os trajetos de ligação também se mostraram visíveis na prática: durante a calibração, cada um aparecia como uma reta atravessando a chapa.
 
-Adotou-se, por isso, a separação: cada contorno da máscara torna-se um polígono próprio, sem trajeto de ligação, tanto no material de calibração quanto nos arquivos de anotação. A alternativa de reter apenas o maior contorno foi descartada porque elimina área efetivamente marcada pelo Professor. A separação aumenta o número de polígonos por imagem, mas não altera a unidade sobre a qual a regra de limiar opera: o escore pertence à detecção, e os contornos de uma mesma detecção entram e saem juntos na varredura. Uma marcação, na curva da Seção \ref{sec:regra}, continua sendo uma detecção do Professor. Verificou-se, nos três litotipos calibrados à época, que as contagens por imagem no limiar adotado (36 pares de imagem e sonda) e o limiar produzido pela regra (nove sondas) permaneceram idênticos após a mudança, e a verificação da Seção \ref{sec:res_d18} foi repetida com o mesmo resultado.
+Depois da separação, verificou-se, nos três litotipos calibrados à época, que as contagens por imagem no limiar adotado (36 pares de imagem e sonda) e o limiar produzido pela regra (nove sondas) permaneceram idênticos após a mudança, e a verificação da Seção \ref{sec:res_d18} foi repetida com o mesmo resultado.
 
 A mudança tem um efeito residual no piso de confiança. Um contorno com menos de três pontos não forma polígono e é descartado; uma detecção composta apenas de contornos assim deixa de existir, quando antes a fusão reunia seus pontos e ela sobrevivia. Em 168 pares de imagem e sonda medidos, 15 perderam uma única detecção no piso de 0,001, e nenhum perdeu detecção acima do limiar adotado pelo autor.
-
-A separação desloca para o pós-processamento do conjunto de treinamento do Aluno a escolha de uma área mínima, abaixo da qual um fragmento isolado é descartado.
-
-\section{Classificador de Litotipos}
-\label{sec:res_classificador}
-
-A reprodução do classificador (Seção \ref{sec:classificador}) atingiu 96,72\% de acurácia sobre as 5.153 imagens da partição de teste original, com acurácia balanceada de 92,32\% e F1 macro de 0,924. Os erros concentram-se em poucos litotipos (15 dos 45 apresentam algum) e em poucos pares: \textit{naica} confundida com \textit{white\_olympus} em 33 imagens, \textit{white\_himalaya} com \textit{white\_liberdade} em 31, e \textit{white\_superiore} com \textit{kalahari} em 21 e com \textit{white\_olympus} em 15.
-
-O caso da \textit{white\_superiore} indica a causa. O modelo acertou 35 de suas 37 imagens de validação e nenhuma de suas 36 imagens de teste. Na inspeção visual, as imagens de teste são acinzentadas, com veios lineares e paralelos, enquanto as de treinamento e de validação são brancas, com veios ramificados: as de teste aparentam pertencer a outro bloco. Uma sondagem por similaridade de cor e brilho reforça essa leitura para esse litotipo, mas não se confirma em todos: em outros, o teste está tão próximo do treinamento quanto a validação.
-
-Para isolar o efeito do particionamento, o mesmo modelo foi treinado com a mesma receita e as partições sorteadas por imagem, como no trabalho original. O resultado foi de 99,92\% de acurácia, com 4 erros em 5.195 imagens, acima dos 99,21\% reportados pelo DeepStoneAI. A diferença de cerca de três pontos vem, portanto, da divisão dos dados, e não da resolução nem do modelo: no sorteio por imagem, chapas vizinhas das de treinamento, cortadas do mesmo bloco e com os mesmos veios, caem na partição de teste. A situação equivale a uma prova com questões quase iguais às da lista de exercícios: a nota passa a medir, em parte, a memória da lista.
-
-Os dois números descrevem cenários de uso distintos, e nenhum é tratado como erro do outro. O de 99,92\% corresponde a classificar chapas de um bloco já visto, situação comum na indústria, em que um mesmo bloco gera dezenas de chapas. O de 96,72\% aproxima-se de classificar chapas de um bloco novo. O valor do DeepStoneAI não é diretamente comparável a nenhum dos dois, por adotar particionamento próprio. O modelo empregado no \textit{pipeline} é o treinado sobre as partições originais.
 
 \section{Calibração da Faixa A}
 \label{sec:res_calibracao}
 
-Os onze litotipos da faixa A foram calibrados pelo protocolo da Seção \ref{sec:protocolo}. Foram selecionadas manualmente 44 imagens da partição de treinamento, quatro por litotipo, e cada litotipo recebeu um registro de calibração com o limiar produzido pela regra, o limiar adotado pelo autor e o critério escrito. A forma da regra foi fixada antes da primeira calibração e não foi alterada depois.
+Os onze litotipos da faixa A foram calibrados pelo protocolo da Seção \ref{sec:protocolo}. Foram selecionadas manualmente 44 imagens da partição de treinamento, quatro por litotipo, e cada litotipo recebeu um registro de calibração com o limiar produzido pela regra, o limiar adotado pelo autor e o critério escrito.
 
 A etapa de descoberta admitiu de duas a seis sondas por litotipo, em um total de 45 pares de litotipo e sonda. As sondas mais admitidas foram \textit{crack} e \textit{Dark patches}, em nove litotipos cada, e a menos admitida foi \textit{vein}, em três. A sonda \textit{white stain}, registrada durante a calibração da faixa, pôde ser avaliada nos sete litotipos calibrados depois do registro e foi admitida em seis deles; nos outros quatro, permanece candidata não avaliada, como prevê a Seção \ref{sec:sondas}.
 
@@ -182,7 +179,7 @@ A Figura \ref{fig:ex_mirage} mostra a imagem forte da \textit{white\_mirage}, um
 
 Os quatro braços foram aplicados às 33 chapas da amostra de avaliação (Seção \ref{sec:referencia}). Os limiares da regra foram recalculados sobre a captura feita na mesma versão da biblioteca usada nessas chapas, em uma máquina diferente da que produziu a calibração. Nos 45 pares de litotipo e sonda da calibração, o valor recalculado diferiu do registrado em no máximo 0,0002 em 43 casos, e em 0,0013 e 0,0125 nos outros dois: a regra mostrou-se reproduzível entre equipamentos e versões.
 
-O braço único, aplicado com o limiar obtido sobre os onze litotipos reunidos, produziu de longe o maior volume de marcações (Tabela \ref{tab:exp1_volume}). Sobre o material reunido, o joelho das sondas \textit{crack} e \textit{Dark patches} caiu em 0,0071 e 0,0167, próximo ao piso de captura, e as duas respondem por 77\% das marcações desse braço. A explicação mais provável é a mistura: cada litotipo tem a queda da sua curva num ponto diferente da escala de escores, e, somados os onze, as quedas se espalham e o joelho da soma desloca-se para perto do começo da curva. Tratar os litotipos como um só, portanto, empurra o limiar dessas sondas para perto do piso, o que não aconteceu em nenhum dos onze litotipos tomados um a um: neles, o limiar da regra foi de 0,018 a 0,179 para \textit{crack} e de 0,018 a 0,238 para \textit{Dark patches}. Quanto desse volume corresponde a defeito é o que a auditoria responde.
+O braço único, aplicado com o limiar obtido sobre os onze litotipos reunidos, produziu de longe o maior volume de marcações (Tabela \ref{tab:exp1_volume}). Sobre o material reunido, o joelho das sondas \textit{crack} e \textit{Dark patches} caiu em 0,0071 e 0,0167, próximo ao piso de captura, e as duas respondem por 77\% das marcações desse braço. A explicação mais provável é a mistura: cada litotipo tem a queda da sua curva num ponto diferente da escala de confiança, e, somados os onze, as quedas se espalham e o joelho da soma desloca-se para perto do começo da curva. Tratar os litotipos como um só, portanto, empurra o limiar dessas sondas para perto do piso, o que não aconteceu em nenhum dos onze litotipos tomados um a um: neles, o limiar da regra foi de 0,018 a 0,179 para \textit{crack} e de 0,018 a 0,238 para \textit{Dark patches}. Quanto desse volume corresponde a defeito é o que a auditoria responde.
 
 \begin{table}[ht]
   \caption{Volume de marcações por braço nas 33 chapas da amostra de avaliação.}

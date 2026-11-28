@@ -1,0 +1,124 @@
+{
+ "formato": "aria-revisao/1",
+ "pdf": "main.pdf",
+ "impressao": "",
+ "exportado_em": "2026-11-28T07:32:26.196892+00:00",
+ "categorias": [
+  {
+   "id": "mover",
+   "nome": "Mover",
+   "cor": "#ec4899",
+   "descricao": "mudar de lugar; a nota diz para onde"
+  }
+ ],
+ "marcas": [
+  {
+   "id": "cl1a22111d2dc00agao",
+   "pagina": 16,
+   "categoria": "mudar",
+   "texto": "Selecionar, caracterizar e pré-processar um conjunto de dados público",
+   "comentario": "[Claude · estrutura 2] O objetivo promete 'pré-processar', mas o único tratamento do conjunto é renomear uma pasta (whte_liberdade). A banca confere objetivo × método. Ou o objetivo tira 'pré-processar', ou a Seção 3.2 diz qual foi o pré-processamento.",
+   "rects": [
+    {
+     "p": 16,
+     "x": 0.192,
+     "y": 0.6542,
+     "w": 0.6076,
+     "h": 0.0141
+    }
+   ],
+   "criada_em": "2026-11-28T07:32:25.948878+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a22111d30a0143sd",
+   "pagina": 18,
+   "categoria": "acrescentar",
+   "texto": "duas ferramentas, uma de seleção de imagens e um calibrador",
+   "comentario": "[Claude · estrutura 2] Há uma terceira ferramenta feita para o trabalho: o aplicativo da auditoria (3.10), que produz a referência da H1. A contribuição 5 (e o resumo, que também diz 'duas ferramentas') pode dizer 'três ferramentas' ou explicar por que só duas contam. Combina com a figura do aplicativo que ainda falta.",
+   "rects": [
+    {
+     "p": 18,
+     "x": 0.1822,
+     "y": 0.4073,
+     "w": 0.5755,
+     "h": 0.0143
+    }
+   ],
+   "criada_em": "2026-11-28T07:32:25.994071+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a22111d337028kdw",
+   "pagina": 34,
+   "categoria": "mudar",
+   "texto": "O Professor não é empregado como modelo pronto",
+   "comentario": "[Claude · estrutura 2] Este parágrafo agora repete a abertura da nova 3.5 (Estágio 2): 'nenhum peso é alterado; o que se adapta são as sondas e os limiares'. Fica bom manter a ideia de 'adaptação ao domínio' aqui, que é onde ela é explicada, e encurtar a frase da 3.5 para só remeter a esta seção.",
+   "rects": [
+    {
+     "p": 34,
+     "x": 0.1429,
+     "y": 0.6759,
+     "w": 0.4579,
+     "h": 0.0142
+    }
+   ],
+   "criada_em": "2026-11-28T07:32:26.039445+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a22111d36503ema1",
+   "pagina": 40,
+   "categoria": "mover",
+   "texto": "Calibrar exige comparar muitos limiares",
+   "comentario": "[Claude · estrutura 2] A 3.5 (Estágio 2) já descreve a captura no piso e diz que os limiares são filtros aplicados depois; a justificativa disso (esta 3.8) só aparece três seções adiante. Opção: a 3.8 vira subseção do Estágio 2 ('Por que capturar uma vez basta'). Opção 2: deixar onde está, porque ela também prepara as Ferramentas (3.9). Decidir amanhã; prioridade baixa.",
+   "rects": [
+    {
+     "p": 40,
+     "x": 0.1429,
+     "y": 0.1477,
+     "w": 0.3613,
+     "h": 0.0143
+    }
+   ],
+   "criada_em": "2026-11-28T07:32:26.085635+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a22111d3a7041kwl",
+   "pagina": 54,
+   "categoria": "mudar",
+   "texto": "Como todo o protocolo de calibração depende dessa afirmação",
+   "comentario": "[Claude · estrutura 2] As seções 4.2, 4.3 e 4.4 são as 'verificações que sustentam o Professor' (é assim que a abertura do capítulo as chama). Sugestão: agrupá-las numa seção 'Verificações do Professor', com três subseções, espelhando a 3.5 (Estágio 2). O sumário fica com quatro seções no Cap. 4: classificador, Professor, calibração, experimento.",
+   "rects": [
+    {
+     "p": 54,
+     "x": 0.2011,
+     "y": 0.3494,
+     "w": 0.5525,
+     "h": 0.0141
+    }
+   ],
+   "criada_em": "2026-11-28T07:32:26.151397+00:00",
+   "n_ocorrencias": 1
+  },
+  {
+   "id": "cl1a22111d3d405lk1v",
+   "pagina": 63,
+   "categoria": "mover",
+   "texto": "A pergunta de pesquisa tem duas partes",
+   "comentario": "[Claude · estrutura 2] O TODO do resultado da H1 (comentário no .tex, invisível no PDF) está ANTES deste parágrafo, logo depois de 'A hipótese é testada por uma auditoria cega...'. Quando o resultado entrar, o lugar natural é logo depois deste parágrafo, que termina em 'é a H1, e depende da auditoria'. Mover o comentário TODO para cá, para não esquecer.",
+   "rects": [
+    {
+     "p": 63,
+     "x": 0.1422,
+     "y": 0.6564,
+     "w": 0.3595,
+     "h": 0.0141
+    }
+   ],
+   "criada_em": "2026-11-28T07:32:26.196888+00:00",
+   "n_ocorrencias": 1
+  }
+ ]
+}

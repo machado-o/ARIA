@@ -17,12 +17,11 @@ Redes neurais convolucionais (CNN) aprendem hierarquias de representações dire
 A identificação automática de tipos de rocha a partir de imagens é tarefa estabelecida na literatura geológica computacional \cite{rocktyping_baraboshkin2020}. No domínio específico das rochas ornamentais brasileiras, trabalhos anteriores do mesmo grupo de pesquisa aplicaram redes convolucionais ao reconhecimento de litotipos em chapas polidas \cite{deepstone_araujo2022}, trabalho que resultou no classificador DeepStoneAI \cite{deepstoneai_moreira2025}, cuja receita de treinamento é reproduzida no primeiro estágio deste trabalho.
 
 \section{Modelos de Fundação e Segmentação Guiada por Texto}
+\label{sec:fundacao}
 
-Modelos de fundação são redes treinadas em conjuntos de dados de escala muito superior à de um domínio específico, capazes de executar tarefas para as quais não foram explicitamente treinadas, a chamada capacidade \textit{zero-shot}. Em segmentação, o marco dessa mudança foi o \textit{Segment Anything Model} (SAM), que introduziu a segmentação condicionada por \textit{prompt}: em vez de aprender um conjunto fixo de classes, o modelo recebe uma indicação (um ponto, uma caixa ou um texto) e devolve a máscara correspondente \cite{sam_kirillov2023}. Este trabalho emprega a terceira geração dessa família, que aceita \textit{prompt} textual de forma nativa e devolve as máscaras de todas as instâncias que correspondem ao conceito indicado \cite{sam3_carion2026}. Na implementação utilizada, o escore de cada detecção é o produto da probabilidade da detecção por um escore de presença, que estima se o conceito aparece na imagem. O escore não é, portanto, uma probabilidade calibrada de que a região seja aquilo que a palavra nomeia, e sua escala precisa ser medida em vez de presumida (Seção \ref{sec:regra}).
+Modelos de fundação são redes treinadas em conjuntos de dados de escala muito superior à de um domínio específico, capazes de executar tarefas para as quais não foram explicitamente treinadas, a chamada capacidade \textit{zero-shot}. Em segmentação, o marco dessa mudança foi o \textit{Segment Anything Model} (SAM), que introduziu a segmentação condicionada por \textit{prompt}: em vez de aprender um conjunto fixo de classes, o modelo recebe uma indicação (um ponto, uma caixa ou um texto) e devolve a máscara correspondente \cite{sam_kirillov2023}. Este trabalho emprega a terceira geração dessa família, que aceita \textit{prompt} textual de forma nativa e devolve as máscaras de todas as instâncias que correspondem ao conceito indicado \cite{sam3_carion2026}. Na implementação utilizada, cada detecção recebe uma confiança, o produto da probabilidade da detecção por uma estimativa de presença, que indica se o conceito aparece na imagem. A confiança não é, portanto, uma probabilidade calibrada de que a região seja aquilo que a palavra nomeia, e sua escala precisa ser medida em vez de presumida (Seção \ref{sec:regra}).
 
 A ponte entre texto e imagem é feita por representações multimodais alinhadas, treinadas de modo contrastivo sobre pares imagem--legenda, como as do CLIP (\textit{Contrastive Language--Image Pre-training}) \cite{clip_radford2021}. Essa representação compartilhada permite que uma palavra selecione uma região da imagem sem nenhum treinamento supervisionado no domínio de destino.
-
-O trabalho original sobre essas representações observou que \textit{prompts} contextuais superam consistentemente palavras isoladas em tarefas \textit{zero-shot}: o modelo responde melhor a \textit{a photo of a \{classe\}} do que a \textit{\{classe\}} \cite{clip_radford2021}. A observação vale para o domínio deste trabalho, em que termos como \textit{vein} são lexicalmente ambíguos: a palavra designa tanto o veio mineral quanto a veia sanguínea.
 
 \section{Professor--Aluno e Pseudo-rotulagem}
 
@@ -30,20 +29,20 @@ A transferência de conhecimento de um modelo grande para um modelo menor é ide
 
 No arranjo descrito neste trabalho, o modelo de fundação atua como Professor, processando as imagens fora da linha de produção e gerando polígonos de anomalia; uma rede de segmentação compacta atua como Aluno, treinada sobre esses polígonos e responsável pela inferência em produção. A vantagem prática é econômica: o custo de inferência do modelo de fundação é pago uma única vez, na geração do conjunto de treinamento, e não a cada chapa inspecionada.
 
-\section{Aprendizado com Rótulos Ruidosos e a Escolha do Limiar}
-\label{sec:ruidosos}
-
-O rótulo produzido por um Professor é, por construção, ruidoso. Daí vem o problema central da calibração: onde cortar o escore de confiança do Professor.
-
-A literatura de detecção semissupervisionada converge em uma direção. \citeonline{softteacher_xu2021} reportam melhor desempenho com limiares de confiança altos, observando o compromisso esperado: limiar mais alto aumenta a precisão do pseudo-rótulo e reduz o \textit{recall}. \citeonline{unbiasedteacher_liu2021} chegam a conclusão análoga ao tratar o viés de confirmação introduzido por pseudo-rótulos incorretos. A razão é que redes de alta capacidade memorizam rótulos errados quando expostas a eles repetidamente \cite{memorization_arpit2017}, de modo que um rótulo falso-positivo é um sinal que a rede efetivamente aprende, e não ruído aleatório que se dilui.
-
-Duas ressalvas importam para a transposição desse consenso ao presente trabalho. A primeira é que os escores relatados naqueles trabalhos vêm de detectores supervisionados com saídas calibradas, e não são comparáveis em magnitude aos escores de um modelo de fundação guiado por texto. Por isso, este trabalho transporta a \textit{direção} da recomendação (na dúvida, cortar mais apertado) e não o valor numérico. A segunda é que o compromisso precisão--\textit{recall} do limiar não tem solução ótima única quando as imagens de um mesmo litotipo variam em intensidade das feições; daí o protocolo de calibração descrito no Capítulo 3 submeter um mesmo limiar a três casos distintos em vez de otimizá-lo em uma imagem.
-
-Para converter uma curva de comportamento em um ponto de operação, este trabalho adota a detecção de joelho proposta por \citeonline{kneedle_satopaa2011}, que define o joelho como o ponto de máxima distância à corda que liga os extremos da curva normalizada. Intuitivamente, o joelho é onde a curva deixa de cair depressa e passa a cair devagar: antes dele, cada pequeno aumento do limiar elimina muitas marcações; depois dele, elimina poucas.
-
 \section{Segmentação em Tempo Real}
 
 A segmentação semântica e de instâncias evoluiu de arquiteturas encoder--decoder \cite{unet_ronneberger2015} e de detectores em dois estágios estendidos para máscaras \cite{maskrcnn_he2017} até famílias de estágio único otimizadas para latência \cite{segsurvey_minaee2021}. A família YOLO (\textit{You Only Look Once}) consolidou a abordagem de predição em uma única passagem pela rede \cite{yolo_redmon2016}, e suas versões recentes incorporam cabeças de segmentação mantendo taxas de quadros compatíveis com inspeção em linha \cite{yolo11_khanam2024}. A inferência rápida em \textit{hardware} de custo moderado justifica seu papel como Aluno no \textit{pipeline}.
+
+\section{Aprendizado com Rótulos Ruidosos e a Escolha do Limiar}
+\label{sec:ruidosos}
+
+O rótulo produzido por um Professor é, por construção, ruidoso. Daí vem o problema central da calibração: onde cortar a confiança do Professor.
+
+A literatura de detecção semissupervisionada converge em uma direção. \citeonline{softteacher_xu2021} reportam melhor desempenho com limiares de confiança altos, observando o compromisso esperado: limiar mais alto aumenta a precisão do pseudo-rótulo e reduz o \textit{recall}. \citeonline{unbiasedteacher_liu2021} chegam a conclusão análoga ao tratar o viés de confirmação introduzido por pseudo-rótulos incorretos. A razão é que redes de alta capacidade memorizam rótulos errados quando expostas a eles repetidamente \cite{memorization_arpit2017}, de modo que um rótulo falso-positivo é um sinal que a rede efetivamente aprende, e não ruído aleatório que se dilui.
+
+Duas ressalvas importam para a transposição desse consenso ao presente trabalho. A primeira é que os valores de confiança relatados naqueles trabalhos vêm de detectores supervisionados com saídas calibradas, e não são comparáveis em magnitude aos de um modelo de fundação guiado por texto. Por isso, este trabalho transporta a \textit{direção} da recomendação (na dúvida, cortar mais apertado) e não o valor numérico. A segunda é que o compromisso precisão--\textit{recall} do limiar não tem solução ótima única quando as imagens de um mesmo litotipo variam em intensidade das feições; daí o protocolo de calibração descrito no Capítulo 3 submeter um mesmo limiar a três casos distintos em vez de otimizá-lo em uma imagem.
+
+Para converter uma curva de comportamento em um ponto de operação, este trabalho adota a detecção de joelho proposta por \citeonline{kneedle_satopaa2011}, que define o joelho como o ponto de máxima distância à corda que liga os extremos da curva normalizada. Intuitivamente, o joelho é onde a curva deixa de cair depressa e passa a cair devagar: antes dele, cada pequeno aumento do limiar elimina muitas marcações; depois dele, elimina poucas.
 
 \section{Métricas de Avaliação}
 \label{sec:metricas}
@@ -72,6 +71,15 @@ Quando existe uma referência desenhada à mão, a avaliação de segmentação 
 \end{equation}
 
 \noindent onde $A$ é a região predita e $B$ a região de referência. A precisão média (AP) agrega precisão e \textit{recall} ao longo dos limiares de decisão, e a \textit{mean Average Precision} (mAP) é sua média sobre as classes \cite{voc_everingham2010}. Essas medidas são as que os trabalhos relacionados reportam (Seção \ref{sec:relacionados}) e as que a avaliação de um Aluno treinado usaria. Como este trabalho adota rotulagem binária (Seção~\ref{sec:sondas}), há uma única classe de interesse e a mAP coincide com a própria AP. O experimento desta versão não usa nenhuma das duas, porque não há polígonos desenhados à mão contra os quais medir sobreposição: a referência é o julgamento humano de cada marcação, e dele saem a precisão e o \textit{recall} relativo.
+
+Quando a referência é um julgamento humano, resta medir quanto dois julgadores concordam entre si. A medida usual para duas pessoas que classificam os mesmos itens é o coeficiente kappa de Cohen \cite{kappa_cohen1960}, definido na Equação \ref{eq:kappa}:
+
+\begin{equation}
+  \kappa = \frac{p_o - p_e}{1 - p_e}
+  \label{eq:kappa}
+\end{equation}
+
+\noindent onde $p_o$ é a proporção de itens que receberam a mesma resposta dos dois e $p_e$ a proporção esperada ao acaso, calculada a partir da frequência com que cada um dá cada resposta. O kappa desconta a concordância que aconteceria por acaso: dois avaliadores que respondessem ``não'' a quase tudo concordariam na maior parte dos itens sem que isso indicasse um critério comum, e o kappa, nesse caso, ficaria perto de zero.
 
 \section{Trabalhos Relacionados e Posicionamento}
 \label{sec:relacionados}

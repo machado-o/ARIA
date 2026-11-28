@@ -15,41 +15,65 @@ A hipótese é testada por uma auditoria cega, em que uma avaliadora externa jul
 % na seção do experimento (sec:exp1) foi construído justamente para admitir essa
 % possibilidade, e a regra de decisão (sec:decisao_h1) já diz o que fazer em cada caso.
 
-Independentemente do desfecho do experimento, dois resultados já se firmaram. O primeiro é que o limiar de confiança do Professor é um filtro aplicado após a inferência, o que torna a varredura de limiares fora de linha exatamente equivalente a reexecutar o modelo. A propriedade foi verificada experimentalmente, sem tolerância numérica, em duas versões da biblioteca, e reduz o ciclo de calibração de minutos para milissegundos. O segundo é o próprio protocolo de calibração: a separação entre a imagem que descobre \textit{quais} sondas entram e as três que submetem um \textit{único} limiar a casos sutil, típico e forte, com a distinção explícita entre o valor do limiar, que varia por litotipo, e a regra que o produz, que não varia.
+A pergunta de pesquisa tem duas partes (Seção \ref{sec:problema}). A primeira, se é possível materializar o critério de marcação como um conjunto de parâmetros explícito, versionável e específico por litotipo, já tem resposta: os onze registros de calibração da faixa A são esse conjunto, cada um com as sondas admitidas, os dois limiares de cada sonda e o critério escrito pelo autor. A segunda, se esse critério produz marcações mais alinhadas ao julgamento humano do que um critério único, é a H1, e depende da auditoria.
+
+Os objetivos específicos (Seção \ref{sec:objetivos}) foram atendidos da seguinte forma:
+
+\begin{enumerate}
+  \item o conjunto de dados foi caracterizado, com as faixas de volume e os litotipos de padrão movimentado, e as partições originais foram adotadas (Seção \ref{sec:dados});
+  \item o classificador foi reproduzido, com a normalização corrigida, e avaliado nas partições originais, com 96,72\% de acurácia (Seções \ref{sec:classificador} e \ref{sec:res_classificador});
+  \item o protocolo de calibração, com a mesma regra para todos os litotipos, foi definido e aplicado aos onze litotipos da faixa A (Seções \ref{sec:protocolo}, \ref{sec:regra} e \ref{sec:res_calibracao});
+  \item o Professor foi implementado e as propriedades de que o protocolo depende foram verificadas (Seções \ref{sec:professor}, \ref{sec:res_d18} e \ref{sec:res_contornos});
+  \item o protocolo de avaliação cega foi construído, e a amostra de 420 marcações foi sorteada e entregue para julgamento (Seção \ref{sec:referencia});
+  \item a avaliação da H1 aguarda os julgamentos, com o critério de decisão já fixado (Seção \ref{sec:decisao_h1}).
+\end{enumerate}
+
+As cinco contribuições listadas na Seção \ref{sec:contribuicoes} não dependem do desfecho do experimento: mesmo o desenho de quatro braços, com a regra de decisão fixada antes dos julgamentos, vale qualquer que seja o resultado. Duas delas já se confirmaram na prática, e são os dois primeiros resultados do trabalho. O primeiro é que o limiar de confiança do Professor é um filtro aplicado após a inferência, o que torna a varredura de limiares fora de linha exatamente equivalente a reexecutar o modelo. A propriedade foi verificada experimentalmente, sem tolerância numérica, em duas versões da biblioteca, e reduz o ciclo de calibração de minutos para milissegundos. O segundo é o próprio protocolo de calibração: a separação entre a imagem que descobre \textit{quais} sondas entram e as três que submetem um \textit{único} limiar a casos sutil, típico e forte, com a distinção explícita entre o valor do limiar, que varia por litotipo, e a regra que o produz, que não varia.
 
 Um terceiro resultado veio da aplicação do protocolo aos onze litotipos da faixa A. O autor divergiu da regra em todos os 45 pares de litotipo e sonda, sempre para cima, com o limiar adotado em torno de três vezes o da regra (Seção \ref{sec:res_calibracao}), mesmo partindo, na ferramenta, do valor da regra. Os dois limiares andaram juntos (correlação de 0,71 entre seus logaritmos), o que indica que a forma da curva carrega informação sobre onde cortar, e os critérios escritos mostram o que ela não carrega: quanto de marcação é aceitável numa chapa comum. Em sete dos onze litotipos, o critério escrito foi subir o limiar até a chapa típica deixar de ter a matriz limpa marcada. O registro de cada divergência, com o critério escrito ao lado, é o que permite afirmar isso: no processo de marcação manual, uma divergência dessas não deixaria rastro.
 
 O quarto resultado é a localização da dificuldade nos litotipos movimentados. Neles, o ajuste do limiar seguiu o mesmo padrão dos demais, e o que faltou foi vocabulário: sondas capazes de responder ao que o autor queria marcar. A distinção entre o que marcar e quanto marcar, que o protocolo separa em imagens diferentes, aparece assim também nos resultados.
 
-\section{Escopo}
+\section{Escopo e Limitações}
+\label{sec:limitacoes}
 
 Os resultados desta versão cobrem a faixa A, os onze litotipos com mais de mil imagens. O desenho executa as faixas de volume em sequência, cada uma como marco completo, e as demais são a continuação direta do trabalho (Seção \ref{sec:futuros}). A avaliação trata das marcações do Professor, que são o lugar onde o critério se materializa; o Aluno, que aprende a reproduzi-las em produção, faz parte da arquitetura descrita, e o seu treinamento é o passo seguinte. Todas as calibrações foram feitas pelo autor; o protocolo torna o critério explícito, e a comparação entre calibradores diferentes, aplicando-o ao mesmo litotipo, é a extensão natural (Seção \ref{sec:futuros}).
 
 A auditoria cega compara os braços entre si, pela precisão e pelo \textit{recall} relativo ao conjunto de suas marcações, que é a pergunta da H1. O \textit{recall} absoluto, a qualidade do contorno contra polígonos desenhados à mão e a ampliação do grupo de avaliadores para profissionais do setor ampliam essa avaliação e estão entre os desdobramentos abaixo.
 
+Além do escopo, os resultados têm limitações que convém deixar explícitas:
+
+\begin{itemize}
+  \item \textbf{Imagens do conjunto.} As imagens têm cerca de 1.300 por 800 \textit{pixels}, são reduzidas a 644 \textit{pixels} na entrada do Professor e foram fotografadas com iluminação que varia entre blocos. Uma anomalia muito fina ou de baixo contraste pode não sobreviver a essas condições, e o que o Professor não vê nenhum limiar recupera.
+  \item \textbf{Conhecimento geológico.} As imagens, as sondas e os limiares foram escolhidos pelo autor, que não tem formação em geologia nem experiência de inspeção industrial. O protocolo torna essas escolhas visíveis e contestáveis, mas não as torna escolhas de especialista.
+  \item \textbf{Ausência de referência desenhada à mão.} Não há, para as chapas avaliadas, um conjunto de anomalias anotadas por especialistas (\textit{ground truth}). Por isso o \textit{recall} é relativo ao que os braços marcaram, e a qualidade do contorno não é medida.
+  \item \textbf{Tamanho da amostra por litotipo.} Três chapas por litotipo bastam para comparar os braços no conjunto da faixa A, mas são poucas para afirmar algo sobre um litotipo isolado.
+  \item \textbf{Professor genérico.} O modelo de fundação nunca foi treinado em rochas, e a calibração o adapta sem alterar os seus pesos: as sondas só alcançam o que ele já reconhece.
+\end{itemize}
+
 \section{Trabalhos Futuros}
 \label{sec:futuros}
 
+Os desdobramentos estão ordenados do mais próximo ao mais distante: primeiro os que completam o que este trabalho propõe, depois os que melhoram o Professor, os que ampliam a avaliação e, por fim, os que levam o sistema à produção.
+
 \begin{description}
 
-  \item[Vocabulário de sondas para litotipos movimentados] A calibração da faixa A indicou que, nos litotipos movimentados, o que limita a marcação é o vocabulário, e não o limiar (Seção \ref{sec:res_calibracao}). Sondas novas, compostas ou descritivas, registradas pelo mesmo mecanismo que admitiu a \textit{white stain}, e a opinião de especialistas em petrografia sobre essas rochas são a extensão mais direta do trabalho.
+  \item[Faixas de volume remanescentes] Calibrar e auditar as faixas B, C e D, que reúnem os 34 litotipos com menos de mil imagens, sob o mesmo protocolo.
 
-  \item[Concordância entre calibradores] Repetir a calibração de um mesmo litotipo com calibradores diferentes, sob o mesmo protocolo, mediria quanto do critério é do protocolo e quanto é de quem o aplica, uma pergunta que só pode ser feita porque o critério passou a estar escrito.
+  \item[Treinamento do Aluno e especialização por litotipo] Gerar, com o Professor e o critério calibrado, as anotações do conjunto de dados inteiro, definir a área mínima dos fragmentos (Seção \ref{sec:poligonos}) e treinar o Aluno. Com ele, cabe a pergunta que o FracStoneAI deixou em aberto: se modelos especialistas, um por litotipo, superam um modelo generalista. O desenho que torna essa comparação atribuível tem três braços (especialistas, generalista treinado sob o critério único e um controle generalista treinado sob o critério calibrado de cada litotipo), de modo que cada comparação muda um único fator: o número de modelos ou o critério que gerou as anotações. Reportada por faixa de volume, a comparação mostra a partir de quantas imagens a especialização compensa o custo de manter um modelo dedicado. A avaliação do Aluno pede uma referência própria, já que medi-lo contra as anotações do Professor mostraria apenas o quanto ele as imita; a auditoria cega aqui descrita é o ponto de partida.
 
-  \item[\textit{Recall} absoluto e qualidade do contorno] A auditoria mede o \textit{recall} em relação ao que os braços marcaram. Perguntar ao avaliador, chapa a chapa, se resta alguma anomalia sem marcação daria uma estimativa barata do que nenhum braço encontrou; desenhar polígonos de referência num subconjunto pequeno permitiria medir a qualidade da borda por IoU.
+  \item[Vocabulário de sondas para litotipos movimentados] A calibração da faixa A indicou que, nos litotipos movimentados, o que limita a marcação é o vocabulário, e não o limiar (Seção \ref{sec:res_calibracao}). Sondas novas, compostas ou descritivas, registradas pelo mesmo mecanismo que admitiu a \textit{white stain}, e a opinião de especialistas em petrografia sobre essas rochas são a extensão mais direta para esses litotipos.
 
   \item[Professor adaptado ao domínio geológico] O Professor empregado é um modelo de fundação genérico, que nunca foi treinado para distinguir uma feição natural da rocha de um defeito, e a calibração o adapta sem alterar os seus pesos. Um passo além seria ajustar o próprio modelo ao domínio, com imagens de rochas e com o vocabulário e o julgamento de especialistas em petrografia e em classificação comercial de chapas, de modo que conceitos geológicos passassem a fazer parte do que ele reconhece. Guiar o Professor por exemplos visuais, em vez de palavras, é uma variante do mesmo caminho.
 
   \item[Rotulagem multiclasse] Preservar a distinção entre sondas no treinamento do Aluno exigiria validar que cada sonda identifica o fenômeno que seu nome sugere. Como os identificadores por sonda já são gravados nos arquivos de anotação, a extensão não exige reprocessar o conjunto de dados.
 
-  \item[Aprendizado ativo] O arranjo Professor--Aluno admite um ciclo em que o Professor reexamina, fora de linha, as predições de baixa confiança do Aluno em produção, realimentando o conjunto de treinamento.
+  \item[\textit{Recall} absoluto e qualidade do contorno] A auditoria mede o \textit{recall} em relação ao que os braços marcaram. Perguntar ao avaliador, chapa a chapa, se resta alguma anomalia sem marcação daria uma estimativa barata do que nenhum braço encontrou; desenhar polígonos de referência num subconjunto pequeno permitiria medir a qualidade da borda por IoU.
 
-  \item[Treinamento do Aluno e especialização por litotipo] Gerar, com o Professor e o critério calibrado, as anotações do conjunto de dados inteiro, definir a área mínima dos fragmentos (Seção \ref{sec:res_contornos}) e treinar o Aluno. Com ele, cabe a pergunta que o FracStoneAI deixou em aberto: se modelos especialistas, um por litotipo, superam um modelo generalista. O desenho que torna essa comparação atribuível tem três braços (especialistas, generalista treinado sob o critério único e um controle generalista treinado sob o critério calibrado de cada litotipo), de modo que cada comparação muda um único fator: o número de modelos ou o critério que gerou as anotações. Reportada por faixa de volume, a comparação mostra a partir de quantas imagens a especialização compensa o custo de manter um modelo dedicado. A avaliação do Aluno pede uma referência própria, já que medi-lo contra as anotações do Professor mostraria apenas o quanto ele as imita; a auditoria cega aqui descrita é o ponto de partida.
-
-  \item[Faixas de volume remanescentes] Calibrar e auditar as faixas B, C e D, que reúnem os 34 litotipos com menos de mil imagens, sob o mesmo protocolo.
-
-  \item[Sensibilidade a \textit{prompts} contextuais] O trabalho que originou as representações multimodais empregadas reporta que \textit{prompts} contextuais superam palavras isoladas em tarefas \textit{zero-shot} \cite{clip_radford2021}. Como as sondas aqui adotadas são majoritariamente palavras isoladas, e algumas são lexicalmente ambíguas, uma análise de sensibilidade comparando as duas formulações é uma extensão de baixo custo, que exige apenas alterar o arquivo de configuração.
+  \item[Concordância entre calibradores] Repetir a calibração de um mesmo litotipo com calibradores diferentes, sob o mesmo protocolo, mediria quanto do critério é do protocolo e quanto é de quem o aplica, uma pergunta que só pode ser feita porque o critério passou a estar escrito.
 
   \item[Integração de ponta a ponta e medição de latência] Conectar o classificador, já treinado, ao roteamento automático entre os três estágios, e medir a latência do sistema completo na linha de produção.
+
+  \item[Aprendizado ativo] O arranjo Professor--Aluno admite um ciclo em que o Professor reexamina, fora de linha, as predições de baixa confiança do Aluno em produção, realimentando o conjunto de treinamento.
 
 \end{description}

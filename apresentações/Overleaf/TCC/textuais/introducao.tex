@@ -11,6 +11,7 @@ Sem esse registro, o critério existe apenas na experiência de cada operador. E
 A visão computacional é uma resposta natural a esse tipo de problema, e o setor já registra tentativas de automação da inspeção de superfícies pétreas \cite{stone_tereso2020, stone_lopez2010}. A dificuldade é que as abordagens supervisionadas convencionais exigem grandes volumes de imagens anotadas manualmente, e anotar anomalias sutis em chapas de rocha é caro, lento e, pelo mesmo motivo descrito acima, subjetivo. Anotar milhares de imagens apenas transfere a arbitrariedade do chão de fábrica para o conjunto de treinamento. O efeito já foi observado sobre o mesmo conjunto de dados utilizado neste trabalho: em um segmentador treinado com anotação manual de defeitos em quatro classes, parte das detecções contabilizadas como falsos positivos eram defeitos reais, deixados fora da referência pelo critério de anotação adotado \cite{fracstoneai_oliveira2026}. Nesse caso, o critério de quem anota passa a definir a própria métrica.
 
 \section{Problema de Pesquisa}
+\label{sec:problema}
 
 O problema que este trabalho ataca é a arbitrariedade não registrada do critério de marcação, mais do que a dificuldade técnica de detectar anomalias. Não existe uma resposta absolutamente correta a ser descoberta: o que é defeito em um litotipo pode ser exatamente o padrão estético valorizado em outro. Isso limita o que um sistema automatizado pode prometer: ele continua tendo de escolher onde fica a fronteira, mas essa escolha sai da cabeça do inspetor e passa a um parâmetro que qualquer pessoa pode ler.
 
@@ -35,10 +36,11 @@ A hipótese trata do critério que gera as marcações, e não do modelo que dep
 Desenvolver e avaliar o ARIA (Análise e Reconhecimento Inteligente de Anomalias), um \textit{pipeline} hierárquico de visão computacional que materializa o critério de marcação de anomalias superficiais em chapas de rochas ornamentais como um conjunto explícito e versionável de parâmetros por litotipo, e verificar se essa parametrização produz marcações mais alinhadas ao julgamento humano do que um critério único global.
 
 \subsection{Objetivos Específicos}
+\label{sec:objetivos}
 
 \begin{enumerate}
   \item Selecionar, caracterizar e pré-processar um conjunto de dados público de imagens de chapas polidas de rochas ornamentais, descrevendo sua composição, o desbalanceamento entre litotipos e o particionamento adotado.
-  \item Reproduzir, sobre as partições originais desse conjunto, o classificador de litotipos de trabalho anterior, que identifica a rocha e seleciona a configuração de marcação correspondente.
+  \item Reproduzir o classificador de litotipos de trabalho anterior, corrigindo a normalização da entrada e adotando as partições originais do conjunto, e avaliá-lo sobre elas.
   \item Definir um protocolo reprodutível de calibração que determine, para cada litotipo, quais sondas textuais entram no conjunto e qual limiar de confiança cada uma recebe, de modo que a regra que produz o limiar seja a mesma para todos os litotipos.
   \item Implementar o estágio Professor com um modelo de fundação guiado por texto, capaz de gerar polígonos de anomalia sem anotação humana prévia.
   \item Construir um protocolo de avaliação cega, em que avaliadores humanos julgam as marcações sem saber de que configuração vieram, para servir de referência quantitativa da avaliação.
@@ -47,12 +49,25 @@ Desenvolver e avaliar o ARIA (Análise e Reconhecimento Inteligente de Anomalias
 
 \section{Justificativa}
 
-Do ponto de vista industrial, tornar explícito o critério de marcação tem valor independente da acurácia alcançada. Um arquivo de parâmetros pode ser versionado, comparado entre unidades produtivas, negociado com um cliente e auditado quando uma classificação é contestada, o que um critério guardado na experiência de um operador não permite. A automação da marcação vem como consequência; a contribuição central é tornar o critério explícito.
+Do ponto de vista industrial, tornar explícito o critério de marcação tem valor independente da acurácia alcançada. Um arquivo de parâmetros pode ser versionado, comparado entre unidades produtivas, negociado com um cliente e auditado quando uma classificação é contestada, o que um critério guardado na experiência de um operador não permite. O centro do trabalho é tornar o critério explícito; a automação da marcação vem como consequência.
 
-Do ponto de vista acadêmico, o trabalho se situa no encontro de duas linhas ativas. A primeira é o uso de modelos de fundação como geradores de rótulos para domínios sem \textit{ground truth}, o que dispensa a anotação manual em larga escala. A segunda é o aprendizado a partir de rótulos ruidosos, campo que estuda justamente o que acontece quando a supervisão vem de um modelo e não de um humano. O trabalho contribui com um elemento pouco explorado nessa interseção: o condicionamento do \textit{prompt} por classe do domínio, aqui por litotipo, como forma de controlar a qualidade do rótulo gerado, e o registro desse condicionamento como artefato auditável.
+Do ponto de vista acadêmico, o trabalho se situa no encontro de duas linhas ativas. A primeira é o uso de modelos de fundação como geradores de rótulos para domínios sem \textit{ground truth}, o que dispensa a anotação manual em larga escala. A segunda é o aprendizado a partir de rótulos ruidosos, campo que estuda justamente o que acontece quando a supervisão vem de um modelo e não de um humano. Nessa interseção, é pouco explorado o condicionamento do \textit{prompt} por classe do domínio, aqui por litotipo, como forma de controlar a qualidade do rótulo gerado, assim como o registro desse condicionamento como artefato auditável.
 
 Por fim, o uso de um conjunto de dados público \cite{dataset_araujo2023} garante que todo o protocolo possa ser reproduzido por terceiros sem acordo com nenhuma empresa, o que é incomum em trabalhos de inspeção industrial.
 
+\section{Contribuições}
+\label{sec:contribuicoes}
+
+As contribuições deste trabalho são cinco:
+
+\begin{enumerate}
+  \item um protocolo de calibração por litotipo que separa a escolha das sondas, feita sobre uma imagem de descoberta, da escolha do limiar, um único valor submetido a três casos: sutil, típico e forte;
+  \item uma regra de limiar sem parâmetro livre, a mesma para todos os litotipos, acompanhada do registro escrito de cada divergência entre a regra e o autor;
+  \item a verificação de que a varredura de limiares fora de linha é exatamente equivalente a reexecutar o Professor, o que reduz o ciclo de calibração de minutos para milissegundos;
+  \item um experimento de quatro braços, em que cada comparação muda um único fator, avaliado por auditoria cega com a regra de decisão fixada antes dos julgamentos;
+  \item duas ferramentas, uma de seleção de imagens e um calibrador, que impõem o protocolo e gravam cada decisão em arquivo versionado.
+\end{enumerate}
+
 \section{Organização do Trabalho}
 
-O restante deste documento está organizado da seguinte forma. O Capítulo 2 apresenta a fundamentação teórica, cobrindo a inspeção de qualidade no setor de rochas ornamentais, redes neurais convolucionais aplicadas à classificação de litotipos, modelos de fundação com segmentação guiada por texto, a arquitetura Professor--Aluno com pseudo-rotulagem, a escolha do limiar sob rótulos ruidosos, a segmentação em tempo real, as métricas de avaliação e os trabalhos relacionados contra os quais a contribuição se posiciona. O Capítulo 3 detalha a metodologia: o conjunto de dados, a arquitetura do \textit{pipeline}, o protocolo de calibração, a regra que produz o limiar, a varredura de limiares fora de linha, as ferramentas de seleção e calibração, a avaliação por auditoria cega e o desenho do experimento, com o critério que decide a hipótese. O Capítulo 4 apresenta os resultados obtidos: as verificações que sustentam o método, a reprodução do classificador, a calibração dos litotipos de maior volume e o experimento. O Capítulo 5 traz as considerações finais, o escopo desta versão e os desdobramentos deixados como trabalho futuro. O Apêndice A lista os limiares de todos os pares de litotipo e sonda calibrados, e o Apêndice B mostra, para cada litotipo da faixa A, as marcações no limiar da regra e no limiar do autor sobre as mesmas chapas.
+O restante deste documento está organizado da seguinte forma. O Capítulo 2 apresenta a fundamentação teórica, cobrindo a inspeção de qualidade no setor de rochas ornamentais, redes neurais convolucionais aplicadas à classificação de litotipos, modelos de fundação com segmentação guiada por texto, a arquitetura Professor--Aluno com pseudo-rotulagem, a segmentação em tempo real, a escolha do limiar sob rótulos ruidosos, as métricas de avaliação e os trabalhos relacionados contra os quais o trabalho se posiciona. O Capítulo 3 detalha a metodologia: o conjunto de dados e os litotipos de padrão movimentado, a arquitetura do \textit{pipeline}, os dois estágios implementados (o classificador e o Professor, com as sondas que o guiam), o protocolo de calibração, a regra que produz o limiar, a varredura de limiares fora de linha, as ferramentas de seleção e calibração, a avaliação por auditoria cega, o desenho do experimento, com o critério que decide a hipótese, e o ambiente de execução. O Capítulo 4 apresenta os resultados na mesma ordem: a reprodução do classificador, as verificações que sustentam o Professor, a calibração dos litotipos de maior volume e o experimento. O Capítulo 5 retoma a pergunta de pesquisa e os objetivos, delimita o escopo e as limitações desta versão e reúne os desdobramentos deixados como trabalho futuro. O Apêndice A lista os limiares de todos os pares de litotipo e sonda calibrados, e o Apêndice B mostra, para cada litotipo da faixa A, as marcações no limiar da regra e no limiar do autor sobre as mesmas chapas.

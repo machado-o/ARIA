@@ -88,11 +88,14 @@ tirado da cabeça do inspetor e colocado num arquivo auditável (**D3**).
 **Exemplo visual no lugar de palavra:** segundo o Henrique (25/11/2026), já se tentou guiar o SAM
 por um exemplo visual, e pareceu marcar pior. Ainda sem registro de como foi (ver `pendencias.md`).
 
-**Prompts contextuais — hipótese não testada:** o paper do CLIP mostra que o template
-`"a photo of a [X]"` supera consistentemente `"X"` isolado em zero-shot. Para rochas,
-`"crack on a stone surface"` poderia desambiguar melhor que `"crack"` (a palavra "vein" cobre
-tanto veia sanguínea quanto veio mineral). Testável como sonda exploratória no calibrador — candidato a análise
-de sensibilidade **se sobrar tempo**. O crédito do achado é do paper do CLIP, não deste trabalho.
+**Prompts contextuais — testados sem registro, saíram piores:** o paper do CLIP mostra que o
+template `"a photo of a [X]"` supera `"X"` isolado em zero-shot. Segundo o Henrique (28/11/2026),
+sondas contextuais foram testadas como exploratórias no calibrador e marcaram cada vez pior nas
+rochas (palpite dele: geologia é pouco representada no treino do SAM 3). Não há registro de quais
+frases, em que rocha, nem do resultado. Por isso, em 28/11, o parágrafo sobre o achado do CLIP saiu
+do Cap. 2 da monografia, e o item "Sensibilidade a prompts contextuais" saiu dos trabalhos futuros.
+A citação do CLIP continua, para a ponte texto–imagem. Se o teste for refeito e registrado, ele
+pode voltar como resultado negativo.
 
 ### Configuração — `rock_prompts.json`
 
